@@ -6,6 +6,8 @@ import MaterialsContent from "@/components/materials/materials-content";
 import MaterialsFilters from "@/components/materials/materials-filters";
 import { Card } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Materials Library | EngiPortal",
@@ -25,20 +27,24 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams;
   const supabase = createClient(await cookies());
 
-  // Get current user
+  // Get current user - getUser is more secure and helps with session refresh
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) {
-    return null; // Should never happen due to layout protection
+  if (!user) {
+    return (
+      <div className="p-10 text-red-500 bg-red-50 border border-red-200 rounded-lg">
+        Debug: No session found. Please log in.
+      </div>
+    );
   }
 
   // Get user profile for subscription status
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", session.user.id)
+    .eq("id", user.id)
     .single();
 
   // Parse search params
@@ -59,6 +65,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
     type,
     search,
     limit: 50,
+    supabase,
   });
 
   return (
@@ -73,11 +80,18 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
             Access lecture notes, past questions, and study materials
           </p>
         </div>
-        <div className="flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-2">
-          <BookOpen className="h-5 w-5 text-blue-600" />
-          <span className="text-sm font-medium text-blue-900">
-            {materials.length} materials available
-          </span>
+        <div className="flex items-center gap-4">
+          <Link href="/dashboard/materials/upload">
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              Upload Material
+            </Button>
+          </Link>
+          <div className="flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-2">
+            <BookOpen className="h-5 w-5 text-blue-600" />
+            <span className="text-sm font-medium text-blue-900">
+              {materials.length} materials available
+            </span>
+          </div>
         </div>
       </div>
 

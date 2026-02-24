@@ -99,7 +99,7 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 mt-4">
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button type="submit" className="w-full bg-[#2563eb]" disabled={isSubmitting}>
               {isSubmitting ? "Signing in..." : "Sign In"}
             </Button>
             <p className="text-center text-sm text-slate-600">

@@ -1,4 +1,4 @@
-// lib/constants/index.ts
+// utils/constants/index.ts
 // Application-wide constants
 
 // ============================================================

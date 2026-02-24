@@ -1,8 +1,13 @@
-'use client';
+"use client";
 
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   FileText,
   Download,
@@ -10,10 +15,10 @@ import {
   Lock,
   Calendar,
   BookOpen,
-} from 'lucide-react';
-import { formatFileSize, formatRelativeTime } from '@/utils/lib/index';
-import { MATERIAL_TYPE_LABELS } from '@/utils/constants';
-import Link from 'next/link';
+} from "lucide-react";
+import { formatFileSize, formatRelativeTime } from "@/utils/lib/index";
+import { MATERIAL_TYPE_LABELS } from "@/utils/constants/constants";
+import Link from "next/link";
 
 interface MaterialCardProps {
   material: {
@@ -48,7 +53,7 @@ export default function MaterialCard({
         {/* Type Badge and Premium Lock */}
         <div className="flex items-center justify-between">
           <Badge variant="secondary" className="text-xs">
-            {MATERIAL_TYPE_LABELS[material.type] || 'Other'}
+            {MATERIAL_TYPE_LABELS[material.type] || "Other"}
           </Badge>
           {material.is_premium && !hasActiveSubscription && (
             <div className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1">

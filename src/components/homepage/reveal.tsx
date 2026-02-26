@@ -1,6 +1,6 @@
 "use client";
 
-import { useInView } from "./hooks";
+import { useInView } from "../../hooks/hooks";
 
 export function Reveal({
   children,

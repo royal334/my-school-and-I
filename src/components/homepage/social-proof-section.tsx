@@ -2,7 +2,7 @@
 
 import { Star } from "lucide-react";
 import { Reveal } from "./reveal";
-import { useInView, useCountUp } from "./hooks";
+import { useInView, useCountUp } from "../../hooks/hooks";
 
 const STATS = [
   { label: "Active Students", value: 500, suffix: "+" },
@@ -45,7 +45,7 @@ function StatCount({
   const { ref, inView } = useInView();
   const count = useCountUp(target, inView);
   return (
-    <span ref={ref} className="text-5xl font-bold" style={{ color: "#2563eb" }}>
+    <span ref={ref} className="text-5xl font-bold text-blue-600">
       {count}
       {suffix}
     </span>
@@ -54,20 +54,14 @@ function StatCount({
 
 export function SocialProofSection() {
   return (
-    <section className="py-20 lg:py-24" style={{ background: "#f8fafc" }}>
+    <section className="py-20 lg:py-24 bg-slate-50">
       <div className="max-w-[1440px] mx-auto px-6">
         <Reveal>
           <div className="text-center mb-14">
-            <p
-              className="text-sm font-semibold uppercase tracking-widest mb-2"
-              style={{ color: "#64748b" }}
-            >
+            <p className="text-sm font-semibold uppercase tracking-widest mb-2 text-slate-500">
               Social Proof
             </p>
-            <h2
-              className="text-3xl lg:text-4xl font-bold"
-              style={{ color: "#0f172a" }}
-            >
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900">
               Trusted by Engineering Students
             </h2>
           </div>
@@ -81,10 +75,7 @@ export function SocialProofSection() {
                 <div>
                   <StatCount target={s.value} suffix={s.suffix} />
                 </div>
-                <p
-                  className="text-sm mt-1 font-medium"
-                  style={{ color: "#475569" }}
-                >
+                <p className="text-sm mt-1 font-medium text-slate-600">
                   {s.label}
                 </p>
               </div>
@@ -96,48 +87,24 @@ export function SocialProofSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {TESTIMONIALS.map((t, i) => (
             <Reveal key={t.name} delay={i * 100}>
-              <div
-                className="rounded-xl p-6 border transition-all duration-200 h-full flex flex-col"
-                style={{ background: "#fff", borderColor: "#e2e8f0" }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.transform = "translateY(-4px)";
-                  el.style.boxShadow = "0 12px 32px rgba(0,0,0,0.08)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.transform = "translateY(0)";
-                  el.style.boxShadow = "none";
-                }}
-              >
+              <div className="rounded-xl p-6 border border-slate-200 bg-white hover:-translate-y-1 hover:shadow-xl transition-all duration-200 h-full flex flex-col">
                 <div className="flex gap-0.5 mb-4">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <Star key={s} size={16} fill="#f59e0b" color="#f59e0b" />
                   ))}
                 </div>
-                <p
-                  className="text-sm leading-6 flex-1 mb-5"
-                  style={{ color: "#475569" }}
-                >
+                <p className="text-sm leading-6 flex-1 mb-5 text-slate-600">
                   &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shrink-0"
-                    style={{ background: "#2563eb" }}
-                  >
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shrink-0 bg-blue-600">
                     {t.initials}
                   </div>
                   <div>
-                    <p
-                      className="font-semibold text-sm"
-                      style={{ color: "#0f172a" }}
-                    >
+                    <p className="font-semibold text-sm text-slate-900">
                       {t.name}
                     </p>
-                    <p className="text-xs" style={{ color: "#64748b" }}>
-                      {t.meta}
-                    </p>
+                    <p className="text-xs text-slate-500">{t.meta}</p>
                   </div>
                 </div>
               </div>

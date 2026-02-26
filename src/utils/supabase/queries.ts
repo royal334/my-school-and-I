@@ -3,6 +3,10 @@
 
 import { createClient } from "./client";
 import { Database } from "./database.types";
+import {
+  calculateCGPAFromSemesters,
+  getGradePoint,
+} from "@/utils/lib/cgpa-helpers";
 
 type Material = Database["public"]["Tables"]["materials"]["Row"];
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
@@ -356,39 +360,16 @@ export async function calculateCGPA(userId: string): Promise<{
   semesters: Semester[];
 }> {
   const semesters = await getUserSemesters(userId);
-
-  let totalPoints = 0;
-  let totalUnits = 0;
-
-  semesters.forEach((semester) => {
-    if (semester.gpa && semester.total_credit_units) {
-      totalPoints += semester.gpa * semester.total_credit_units;
-      totalUnits += semester.total_credit_units;
-    }
-  });
-
-  const cgpa = totalUnits > 0 ? totalPoints / totalUnits : 0;
+  const result = calculateCGPAFromSemesters(semesters);
 
   return {
-    cgpa: Math.round(cgpa * 100) / 100,
-    totalCreditUnits: totalUnits,
+    cgpa: result.cgpa,
+    totalCreditUnits: result.totalUnits,
     semesters,
   };
 }
 
-export function calculateGradePoint(grade: string): number {
-  const gradePoints: Record<string, number> = {
-    A: 5.0,
-    B: 4.0,
-    C: 3.0,
-    D: 2.0,
-    E: 1.0,
-    F: 0.0,
-  };
-
-  return gradePoints[grade] || 0;
-}
-
+export const calculateGradePoint = getGradePoint;
 // ============================================================
 // VENDORS QUERIES
 // ============================================================

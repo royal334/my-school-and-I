@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
-import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import 'react-pdf/dist/esm/Page/TextLayer.css';
+import { useState } from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react";
+import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
 
 // Configure PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
 
 interface PDFViewerProps {
   materialId: string;
@@ -21,7 +21,7 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
 
   // For now, we'll use a placeholder
   // In production, this would be a signed URL from your API
@@ -33,9 +33,9 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
   }
 
   function onDocumentLoadError(error: Error) {
-    setError('Failed to load PDF. Please try again later.');
+    setError("Failed to load PDF. Please try again later.");
     setLoading(false);
-    console.error('PDF Load Error:', error);
+    console.error("PDF Load Error:", error);
   }
 
   const previousPage = () => {
@@ -59,7 +59,7 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
       <CardHeader>
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-slate-900">Document Preview</h3>
-          
+
           {/* Controls */}
           <div className="flex items-center gap-2">
             {/* Zoom Controls */}
@@ -96,7 +96,7 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
                 <ChevronLeft className="h-4 w-4" />
               </Button>
               <span className="text-sm text-slate-600 min-w-[80px] text-center">
-                {numPages > 0 ? `${pageNumber} / ${numPages}` : '...'}
+                {numPages > 0 ? `${pageNumber} / ${numPages}` : "..."}
               </span>
               <Button
                 variant="outline"

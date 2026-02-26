@@ -29,30 +29,17 @@ const VALUE_PROPS = [
 
 export function PricingSection() {
   return (
-    <section
-      id="pricing"
-      className="py-20 lg:py-24"
-      style={{ background: "#fff" }}
-    >
+    <section id="pricing" className="py-20 lg:py-24 bg-white">
       <div className="max-w-[1440px] mx-auto px-6">
         <Reveal>
           <div className="text-center mb-14">
-            <p
-              className="text-sm font-semibold uppercase tracking-widest mb-2"
-              style={{ color: "#64748b" }}
-            >
+            <p className="text-sm font-semibold uppercase tracking-widest mb-2 text-slate-500">
               Pricing
             </p>
-            <h2
-              className="text-3xl lg:text-4xl font-bold mb-4"
-              style={{ color: "#0f172a" }}
-            >
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-slate-900">
               Simple, Transparent Pricing
             </h2>
-            <p
-              className="text-lg max-w-xl mx-auto"
-              style={{ color: "#475569" }}
-            >
+            <p className="text-lg max-w-xl mx-auto text-slate-600">
               Start free and upgrade when you need more. No surprises.
             </p>
           </div>
@@ -61,67 +48,32 @@ export function PricingSection() {
         <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-10">
           {/* Free tier */}
           <Reveal>
-            <div
-              className="rounded-2xl p-8 border h-full flex flex-col transition-all duration-200"
-              style={{ background: "#fff", borderColor: "#e2e8f0" }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 12px 32px rgba(0,0,0,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "none";
-              }}
-            >
-              <span
-                className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5"
-                style={{ background: "#f1f5f9", color: "#475569" }}
-              >
+            <div className="rounded-2xl p-8 border border-slate-200 bg-white h-full flex flex-col hover:shadow-xl transition-all duration-200">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5 bg-slate-100 text-slate-600">
                 Free
               </span>
               <div className="mb-6">
-                <span
-                  className="text-5xl font-bold"
-                  style={{ color: "#0f172a" }}
-                >
-                  ₦0
-                </span>
-                <span className="text-sm ml-2" style={{ color: "#64748b" }}>
-                  Forever
-                </span>
+                <span className="text-5xl font-bold text-slate-900">₦0</span>
+                <span className="text-sm ml-2 text-slate-500">Forever</span>
               </div>
               <ul className="space-y-3 mb-8 flex-1">
                 {FREE_FEATURES.map((f) => (
                   <li
                     key={f.text}
-                    className="flex items-center gap-3 text-sm"
-                    style={{ color: f.included ? "#334155" : "#94a3b8" }}
+                    className={`flex items-center gap-3 text-sm ${f.included ? "text-slate-700" : "text-slate-400"}`}
                   >
                     {f.included ? (
-                      <Check
-                        size={15}
-                        style={{ color: "#16a34a", flexShrink: 0 }}
-                      />
+                      <Check size={15} className="text-green-600 shrink-0" />
                     ) : (
-                      <X
-                        size={15}
-                        style={{ color: "#cbd5e1", flexShrink: 0 }}
-                      />
+                      <X size={15} className="text-slate-300 shrink-0" />
                     )}
                     {f.text}
                   </li>
                 ))}
               </ul>
               <Link
-                href="/sign-up"
-                className="block text-center py-3 rounded-lg font-semibold text-sm border transition-all duration-200"
-                style={{ borderColor: "#cbd5e1", color: "#334155" }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "#f8fafc";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background =
-                    "transparent";
-                }}
+                href="/signup"
+                className="block text-center py-3 rounded-lg font-semibold text-sm border border-slate-300 text-slate-700 hover:bg-slate-50 transition-all duration-200"
               >
                 Get Started
               </Link>
@@ -130,38 +82,13 @@ export function PricingSection() {
 
           {/* Premium tier */}
           <Reveal delay={100}>
-            <div
-              className="rounded-2xl p-8 border-2 h-full flex flex-col relative transition-all duration-200"
-              style={{
-                background: "#eff6ff",
-                borderColor: "#93c5fd",
-                boxShadow: "0 0 40px rgba(37,99,235,0.12)",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.boxShadow = "0 20px 48px rgba(37,99,235,0.2)";
-                el.style.transform = "translateY(-4px)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.boxShadow = "0 0 40px rgba(37,99,235,0.12)";
-                el.style.transform = "translateY(0)";
-              }}
-            >
-              <span
-                className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5 text-white"
-                style={{ background: "#2563eb" }}
-              >
+            <div className="rounded-2xl p-8 border-2 border-blue-300 bg-blue-50 h-full flex flex-col relative shadow-[0_0_40px_rgba(37,99,235,0.12)] hover:shadow-[0_20px_48px_rgba(37,99,235,0.2)] hover:-translate-y-1 transition-all duration-200">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5 text-white bg-blue-600">
                 Most Popular
               </span>
               <div className="mb-6">
-                <span
-                  className="text-5xl font-bold"
-                  style={{ color: "#2563eb" }}
-                >
-                  ₦400
-                </span>
-                <span className="text-sm ml-2" style={{ color: "#64748b" }}>
+                <span className="text-5xl font-bold text-blue-600">₦400</span>
+                <span className="text-sm ml-2 text-slate-500">
                   Per semester
                 </span>
               </div>
@@ -169,30 +96,16 @@ export function PricingSection() {
                 {PRO_FEATURES.map((f) => (
                   <li
                     key={f.text}
-                    className="flex items-center gap-3 text-sm"
-                    style={{ color: "#334155" }}
+                    className="flex items-center gap-3 text-sm text-slate-700"
                   >
-                    <Check
-                      size={15}
-                      style={{ color: "#16a34a", flexShrink: 0 }}
-                    />
+                    <Check size={15} className="text-green-600 shrink-0" />
                     {f.text}
                   </li>
                 ))}
               </ul>
               <Link
-                href="/sign-up"
-                className="block text-center py-3 rounded-lg font-semibold text-sm text-white transition-all duration-200"
-                style={{
-                  background: "#2563eb",
-                  boxShadow: "0 4px 14px rgba(37,99,235,0.35)",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "#1d4ed8";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "#2563eb";
-                }}
+                href="/signup"
+                className="block text-center py-3 rounded-lg font-semibold text-sm text-white bg-blue-600 hover:bg-blue-700 shadow-[0_4px_14px_rgba(37,99,235,0.35)] transition-all duration-200"
               >
                 Upgrade Now →
               </Link>
@@ -202,10 +115,7 @@ export function PricingSection() {
 
         {/* Value props */}
         <Reveal>
-          <div
-            className="flex flex-wrap justify-center gap-8 text-sm font-medium"
-            style={{ color: "#475569" }}
-          >
+          <div className="flex flex-wrap justify-center gap-8 text-sm font-medium text-slate-600">
             {VALUE_PROPS.map((v) => (
               <span key={v.text} className="flex items-center gap-2">
                 {v.icon} {v.text}

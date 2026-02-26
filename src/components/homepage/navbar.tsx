@@ -18,21 +18,16 @@ export function Navbar() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      className="fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300"
       style={{
-        background: "#fff",
         boxShadow: scrolled ? "0 1px 12px rgba(0,0,0,0.08)" : "0 1px 0 #e2e8f0",
         height: 64,
       }}
     >
       <div className="flex items-center justify-between max-w-[1440px] mx-auto px-6 h-full">
         {/* Logo */}
-        <a
-          href="#"
-          className="text-2xl font-bold tracking-tight"
-          style={{ color: "#2563eb" }}
-        >
-          Engi<span style={{ color: "#0f172a" }}>Portal</span>
+        <a href="#" className="text-2xl font-bold tracking-tight text-blue-600">
+          Engi<span className="text-slate-900">Portal</span>
         </a>
 
         {/* Desktop Links */}
@@ -41,10 +36,7 @@ export function Navbar() {
             <a
               key={l}
               href={`#${l.toLowerCase()}`}
-              className="text-sm font-medium transition-colors duration-200"
-              style={{ color: "#475569" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#2563eb")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
+              className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors duration-200"
             >
               {l}
             </a>
@@ -55,30 +47,13 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           <Link
             href="/login"
-            className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-            style={{ color: "#334155" }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#f1f5f9";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "transparent";
-            }}
+            className="px-4 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-all duration-200"
           >
             Sign In
           </Link>
           <Link
-            href="/sign-up"
-            className="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all duration-200"
-            style={{
-              background: "#2563eb",
-              boxShadow: "0 1px 4px rgba(37,99,235,0.3)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#1d4ed8";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#2563eb";
-            }}
+            href="/signup"
+            className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-all duration-200"
           >
             Get Started
           </Link>
@@ -87,8 +62,7 @@ export function Navbar() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden p-2 rounded-lg"
-          style={{ color: "#475569" }}
+          className="md:hidden p-2 rounded-lg text-slate-600"
         >
           <Menu size={22} />
         </button>
@@ -96,9 +70,8 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       <div
-        className="md:hidden absolute top-16 left-0 right-0 bg-white border-t transition-all duration-300 overflow-hidden"
+        className="md:hidden absolute top-16 left-0 right-0 bg-white border-t border-slate-200 overflow-hidden transition-all duration-300"
         style={{
-          borderColor: "#e2e8f0",
           maxHeight: open ? 320 : 0,
           boxShadow: open ? "0 8px 20px rgba(0,0,0,0.08)" : "none",
         }}
@@ -109,27 +82,21 @@ export function Navbar() {
               key={l}
               href={`#${l.toLowerCase()}`}
               onClick={() => setOpen(false)}
-              className="text-sm font-medium"
-              style={{ color: "#475569" }}
+              className="text-sm font-medium text-slate-600"
             >
               {l}
             </a>
           ))}
-          <div
-            className="flex flex-col gap-2 pt-2 border-t"
-            style={{ borderColor: "#e2e8f0" }}
-          >
+          <div className="flex flex-col gap-2 pt-2 border-t border-slate-200">
             <Link
               href="/login"
-              className="text-sm font-medium text-center py-2 rounded-lg"
-              style={{ color: "#334155", background: "#f8fafc" }}
+              className="text-sm font-medium text-center py-2 rounded-lg text-slate-700 bg-slate-50"
             >
               Sign In
             </Link>
             <Link
               href="/signup"
-              className="text-sm font-semibold text-center py-2 rounded-lg text-white"
-              style={{ background: "#2563eb" }}
+              className="text-sm font-semibold text-center py-2 rounded-lg text-white bg-blue-600"
             >
               Get Started
             </Link>

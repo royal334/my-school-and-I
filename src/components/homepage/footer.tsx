@@ -17,40 +17,32 @@ const SUPPORT_LINKS = [
   "Privacy Policy",
 ];
 
+const SOCIAL_ICONS = [
+  { icon: <Twitter size={18} />, href: "#", label: "Twitter" },
+  { icon: <Instagram size={18} />, href: "#", label: "Instagram" },
+  { icon: <MessageCircle size={18} />, href: "#", label: "WhatsApp" },
+];
+
 export function Footer() {
   return (
-    <footer style={{ background: "#0f172a" }}>
+    <footer className="bg-slate-900">
       <div className="max-w-[1440px] mx-auto px-6 pt-16 pb-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div>
-            <p className="text-2xl font-bold mb-3" style={{ color: "#fff" }}>
-              Engi<span style={{ color: "#60a5fa" }}>Portal</span>
+            <p className="text-2xl font-bold mb-3 text-white">
+              Engi<span className="text-blue-400">Portal</span>
             </p>
-            <p className="text-sm mb-6 leading-6" style={{ color: "#94a3b8" }}>
+            <p className="text-sm mb-6 leading-6 text-slate-400">
               Your complete academic companion for Engineering students.
             </p>
             <div className="flex gap-4">
-              {[
-                { icon: <Twitter size={18} />, href: "#" },
-                { icon: <Instagram size={18} />, href: "#" },
-                { icon: <MessageCircle size={18} />, href: "#" },
-              ].map((s, i) => (
+              {SOCIAL_ICONS.map((s) => (
                 <a
-                  key={i}
+                  key={s.label}
                   href={s.href}
-                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200"
-                  style={{ background: "#1e293b", color: "#64748b" }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.background = "#2563eb";
-                    el.style.color = "#fff";
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.background = "#1e293b";
-                    el.style.color = "#64748b";
-                  }}
+                  aria-label={s.label}
+                  className="w-9 h-9 rounded-full flex items-center justify-center bg-slate-800 text-slate-500 hover:bg-blue-600 hover:text-white transition-all duration-200"
                 >
                   {s.icon}
                 </a>
@@ -68,12 +60,7 @@ export function Footer() {
                 <li key={l}>
                   <a
                     href="#"
-                    className="text-sm transition-colors duration-200"
-                    style={{ color: "#94a3b8" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "#94a3b8")
-                    }
+                    className="text-sm text-slate-400 hover:text-white transition-colors duration-200"
                   >
                     {l}
                   </a>
@@ -92,12 +79,7 @@ export function Footer() {
                 <li key={l}>
                   <a
                     href="#"
-                    className="text-sm transition-colors duration-200"
-                    style={{ color: "#94a3b8" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "#94a3b8")
-                    }
+                    className="text-sm text-slate-400 hover:text-white transition-colors duration-200"
                   >
                     {l}
                   </a>
@@ -111,15 +93,12 @@ export function Footer() {
             <p className="text-xs font-bold uppercase tracking-widest mb-4 text-white">
               University
             </p>
-            <div className="space-y-2 text-sm" style={{ color: "#94a3b8" }}>
+            <div className="space-y-2 text-sm text-slate-400">
               <p>Nnamdi Azikiwe University</p>
               <p>Faculty of Engineering</p>
               <a
                 href="mailto:support@engiportal.com"
-                className="block transition-colors duration-200"
-                style={{ color: "#94a3b8" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#60a5fa")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
+                className="block hover:text-blue-400 transition-colors duration-200"
               >
                 support@engiportal.com
               </a>
@@ -127,10 +106,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div
-          className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm"
-          style={{ borderColor: "#1e293b", color: "#64748b" }}
-        >
+        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
           <p>© 2025 EngiPortal. All rights reserved.</p>
           <p>Built with ❤️ by Engineering Students</p>
         </div>

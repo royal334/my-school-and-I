@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 import { formatFileSize, formatDate } from "@/utils/lib";
 import { MATERIAL_TYPE_LABELS } from "@/utils/constants/constants";
-import PDFViewer from "@/components/materials/pdf-viewer";
+import PDFViewerWrapper from "@/components/materials/pdf-viewer-wrapper";
 
 interface PageProps {
   params: {
@@ -175,7 +175,10 @@ export default async function MaterialDetailPage({ params }: PageProps) {
 
           {/* PDF Preview */}
           {canAccess ? (
-            <PDFViewer materialId={material.id} fileName={material.file_name} />
+            <PDFViewerWrapper
+              materialId={material.id}
+              fileName={material.file_name}
+            />
           ) : (
             <Card className="p-12 text-center">
               <div className="mx-auto rounded-full bg-amber-100 p-4 w-fit">

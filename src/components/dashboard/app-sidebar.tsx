@@ -44,6 +44,14 @@ export function AppSidebar() {
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+                        <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link href="/dashboard/cgpa">
+                  <Upload className="mr-2 h-4 w-4" />
+                  <span>CGPA</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>

@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useForm, useFieldArray, Controller, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -27,11 +27,11 @@ import {
 } from "@/utils/lib/cgpa-helpers";
 import axios from "axios";
 
-// Define Zod schema
+// Define Zod schema (credit_units is number; form uses valueAsNumber so no coercion needed)
 const courseSchema = z.object({
   course_code: z.string().min(1, "Course code is required"),
   course_title: z.string().min(1, "Course title is required"),
-  credit_units: z.coerce
+  credit_units: z
     .number()
     .min(1, "Units must be at least 1")
     .max(6, "Units cannot exceed 6"),
@@ -108,7 +108,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
     return calculateSemesterGPA(validCourses as any);
   }, [watchedCourses]);
 
-  const onSubmit = async (values: SemesterFormValues) => {
+  const onSubmit: SubmitHandler<SemesterFormValues> = async (values: SemesterFormValues) => {
     setLoading(true);
 
     try {
@@ -277,126 +277,128 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
         <CardContent>
           <div className="space-y-4">
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="pb-2 text-left text-sm font-medium text-slate-700">
-                      Course Code
-                    </th>
-                    <th className="pb-2 text-left text-sm font-medium text-slate-700">
-                      Course Title
-                    </th>
-                    <th className="pb-2 text-center text-sm font-medium text-slate-700">
-                      Units
-                    </th>
-                    <th className="pb-2 text-center text-sm font-medium text-slate-700">
-                      Grade
-                    </th>
-                    <th className="pb-2 text-center text-sm font-medium text-slate-700">
-                      Points
-                    </th>
-                    <th className="pb-2 text-center text-sm font-medium text-slate-700">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {fields.map((field, index) => (
-                    <tr key={field.id} className="border-b border-slate-100">
-                      <td className="py-2">
-                        <Input
-                          placeholder="ENG201"
-                          {...register(`courses.${index}.course_code`)}
-                          className={`relative z-50 pointer-events-auto w-28 bg-white ${
-                            errors.courses?.[index]?.course_code
-                              ? "border-red-500"
-                              : ""
-                          }`}
-                        />
-                      </td>
-                      <td className="py-2">
-                        <Input
-                          placeholder="Course name"
-                          {...register(`courses.${index}.course_title`)}
-                          className={`relative z-50 pointer-events-auto bg-white ${
-                            errors.courses?.[index]?.course_title
-                              ? "border-red-500"
-                              : ""
-                          }`}
-                        />
-                      </td>
-                      <td className="py-2 text-center">
-                        <Input
-                          type="number"
-                          {...register(`courses.${index}.credit_units`, {
-                            valueAsNumber: true,
-                          })}
-                          className={`relative z-50 pointer-events-auto w-16 mx-auto text-center bg-white ${
-                            errors.courses?.[index]?.credit_units
-                              ? "border-red-500"
-                              : ""
-                          }`}
-                        />
-                      </td>
-                      <td className="py-2 text-center">
-                        <Controller
-                          name={`courses.${index}.grade`}
-                          control={control}
-                          render={({ field: subField }) => (
-                            <Select
-                              onValueChange={subField.onChange}
-                              value={subField.value}
-                            >
-                              <SelectTrigger className="relative z-50 pointer-events-auto w-20 mx-auto bg-white">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {Object.entries(GRADE_RANGES).map(
-                                  ([grade, range]) => (
-                                    <SelectItem key={grade} value={grade}>
-                                      <div className="flex items-center gap-2">
-                                        <span className="font-medium">
-                                          {grade}
-                                        </span>
-                                        <span className="text-xs text-slate-500">
-                                          ({range})
-                                        </span>
-                                      </div>
-                                    </SelectItem>
-                                  ),
-                                )}
-                              </SelectContent>
-                            </Select>
-                          )}
-                        />
-                      </td>
-                      <td className="py-2 text-center">
-                        <Badge
-                          className={getGradeColor(
-                            watchedCourses[index]?.grade,
-                          )}
-                        >
-                          {getGradePoint(watchedCourses[index]?.grade).toFixed(
-                            1,
-                          )}
-                        </Badge>
-                      </td>
-                      <td className="py-2 text-center">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => remove(index)}
-                          disabled={fields.length === 1}
-                        >
-                          <X className="h-4 w-4 text-red-600" />
-                        </Button>
-                      </td>
+            <div className=" hidden md:block overflow-x-auto">
+              <div className="relative z-100 isolate">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200">
+                      <th className="pb-2 text-left text-sm font-medium text-slate-700">
+                        Course Code
+                      </th>
+                      <th className="pb-2 text-left text-sm font-medium text-slate-700">
+                        Course Title
+                      </th>
+                      <th className="pb-2 text-center text-sm font-medium text-slate-700">
+                        Units
+                      </th>
+                      <th className="pb-2 text-center text-sm font-medium text-slate-700">
+                        Grade
+                      </th>
+                      <th className="pb-2 text-center text-sm font-medium text-slate-700">
+                        Points
+                      </th>
+                      <th className="pb-2 text-center text-sm font-medium text-slate-700">
+                        Actions
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {fields.map((field, index) => (
+                      <tr key={field.id} className="border-b border-slate-100">
+                        <td className="py-2">
+                          <Input
+                            placeholder="ENG201"
+                            {...register(`courses.${index}.course_code`)}
+                            className={`relative z-50 pointer-events-auto w-28 bg-white ${
+                              errors.courses?.[index]?.course_code
+                                ? "border-red-500"
+                                : ""
+                            }`}
+                          />
+                        </td>
+                        <td className="py-2">
+                          <Input
+                            placeholder="Course name"
+                            {...register(`courses.${index}.course_title`)}
+                            className={`relative z-50 pointer-events-auto bg-white ${
+                              errors.courses?.[index]?.course_title
+                                ? "border-red-500"
+                                : ""
+                            }`}
+                          />
+                        </td>
+                        <td className="py-2 text-center">
+                          <Input
+                            type="number"
+                            {...register(`courses.${index}.credit_units`, {
+                              valueAsNumber: true,
+                            })}
+                            className={`relative z-50 pointer-events-auto w-16 mx-auto text-center bg-white ${
+                              errors.courses?.[index]?.credit_units
+                                ? "border-red-500"
+                                : ""
+                            }`}
+                          />
+                        </td>
+                        <td className="py-2 text-center">
+                          <Controller
+                            name={`courses.${index}.grade`}
+                            control={control}
+                            render={({ field: subField }) => (
+                              <Select
+                                onValueChange={subField.onChange}
+                                value={subField.value}
+                              >
+                                <SelectTrigger className="relative z-50 pointer-events-auto w-20 mx-auto bg-white">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {Object.entries(GRADE_RANGES).map(
+                                    ([grade, range]) => (
+                                      <SelectItem key={grade} value={grade}>
+                                        <div className="flex items-center gap-2">
+                                          <span className="font-medium">
+                                            {grade}
+                                          </span>
+                                          <span className="text-xs text-slate-500">
+                                            ({range})
+                                          </span>
+                                        </div>
+                                      </SelectItem>
+                                    ),
+                                  )}
+                                </SelectContent>
+                              </Select>
+                            )}
+                          />
+                        </td>
+                        <td className="py-2 text-center">
+                          <Badge
+                            className={getGradeColor(
+                              watchedCourses[index]?.grade,
+                            )}
+                          >
+                            {getGradePoint(watchedCourses[index]?.grade).toFixed(
+                              1,
+                            )}
+                          </Badge>
+                        </td>
+                        <td className="py-2 text-center">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => remove(index)}
+                            disabled={fields.length === 1}
+                          >
+                            <X className="h-4 w-4 text-red-600" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             {/* Mobile Card View */}

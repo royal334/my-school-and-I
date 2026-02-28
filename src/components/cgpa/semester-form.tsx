@@ -124,7 +124,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
       };
 
       // API call
-      const response = await fetch("/api/cgpa/semesters", {
+      const response = await fetch("/api/cgpa/semester", {
         method: existingSemester ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

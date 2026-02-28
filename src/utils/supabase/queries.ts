@@ -296,8 +296,8 @@ export async function getCourseById(id: string) {
 // CGPA CALCULATOR QUERIES
 // ============================================================
 
-export async function getUserSemesters(userId: string) {
-  const supabase = createClient();
+export async function getUserSemesters(userId: string, supabaseProp?: any) {
+  const supabase = supabaseProp || createClient();
 
   const { data, error } = await supabase
     .from("semesters")

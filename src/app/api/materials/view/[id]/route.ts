@@ -26,12 +26,23 @@ export async function GET(
       return new NextResponse("Not Found", { status: 404 });
     }
 
-    // This route would normally serve the PDF file or a signed URL.
-    // For now, we'll return a placeholder to fix compilation.
-    return NextResponse.json({
-      message: "Material found",
-      material,
-    });
+    if (!material.file_path) {
+      return new NextResponse("File not found", { status: 404 });
+    }
+
+    // Generate a signed URL from Supabase Storage (valid for 60 seconds)
+    const { data: signedUrlData, error: signedUrlError } =
+      await supabase.storage
+        .from("materials")
+        .createSignedUrl(material.file_path, 60);
+
+    if (signedUrlError || !signedUrlData?.signedUrl) {
+      console.error("Signed URL error:", signedUrlError);
+      return new NextResponse("Failed to generate file URL", { status: 500 });
+    }
+
+    // Redirect browser to the signed URL — react-pdf will fetch real PDF bytes
+    return NextResponse.redirect(signedUrlData.signedUrl);
   } catch (error) {
     console.error("View route error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });

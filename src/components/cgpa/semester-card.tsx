@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp, Edit, Trash2, BookOpen } from "lucide-react";
+import { ChevronDown, ChevronUp, Edit, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import {
   getSemesterName,
   getGradeColor,
@@ -31,6 +33,7 @@ interface SemesterCardProps {
     gpa: number;
     total_credit_units: number;
     semester_courses: Array<{
+      id: string;
       course_code: string;
       course_title: string;
       credit_units: number;
@@ -48,6 +51,7 @@ export default function SemesterCard({
   onEdit,
   onDelete,
 }: SemesterCardProps) {
+  const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const gpaColor = getGPABadgeColor(semester.gpa);
@@ -143,12 +147,15 @@ export default function SemesterCard({
                   <th className="pb-2 text-center font-medium text-slate-700">
                     Points
                   </th>
+                  <th className="pb-2 text-center font-medium text-slate-700">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {semester.semester_courses.map((course, index) => (
+                {semester.semester_courses.map((course) => (
                   <tr
-                    key={index}
+                    key={course.id}
                     className="border-b border-slate-100 last:border-0"
                   >
                     <td className="py-2 font-medium text-slate-900">
@@ -168,6 +175,46 @@ export default function SemesterCard({
                     <td className="py-2 text-center font-medium text-slate-900">
                       {course.grade_point.toFixed(1)}
                     </td>
+                    <td className="py-2 text-center">
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Remove this course?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This will remove this course from the semester. GPA will be recalculated.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              className="bg-red-600 hover:bg-red-700"
+                              onClick={async () => {
+                                try {
+                                  const res = await fetch("/api/cgpa/semester/course", {
+                                    method: "DELETE",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ courseId: course.id }),
+                                  });
+                                  const data = await res.json();
+                                  if (!res.ok) throw new Error(data.error || "Failed to remove course");
+                                  toast.success("Course removed.");
+                                  router.refresh();
+                                } catch (err) {
+                                  toast.error(err instanceof Error ? err.message : "Failed to remove course");
+                                }
+                              }}
+                            >
+                              Remove
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -185,6 +232,7 @@ export default function SemesterCard({
                   <td className="pt-2 text-center font-bold text-primary-600">
                     GPA: {semester.gpa.toFixed(2)}
                   </td>
+                  <td></td>
                   <td></td>
                 </tr>
               </tfoot>

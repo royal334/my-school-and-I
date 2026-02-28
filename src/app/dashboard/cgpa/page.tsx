@@ -22,26 +22,32 @@ export default async function CGPAPage() {
   const supabase = createClient(await cookies());
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user},
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     redirect("/login");
   }
 
   // Get all semesters for the user
-  const semesters = await getUserSemesters(session.user.id);
+  const semesters = await getUserSemesters(user.id, supabase);
 
-  // Calculate CGPA
+  // Only show semesters that have at least one course
+  const semestersWithCourses =
+    semesters?.filter(
+      (s: any) => s.semester_courses && s.semester_courses.length > 0
+    ) ?? [];
+
+  // Calculate CGPA from semesters that have courses
   const cgpaData =
-    semesters && semesters.length > 0
-      ? calculateCGPAFromSemesters(semesters)
+    semestersWithCourses.length > 0
+      ? calculateCGPAFromSemesters(semestersWithCourses)
       : { cgpa: 0, totalPoints: 0, totalUnits: 0 };
 
-  // Get current semester GPA (most recent)
+  // Get current semester GPA (most recent semester that has courses)
   const currentSemesterGPA =
-    semesters && semesters.length > 0
-      ? semesters[semesters.length - 1].gpa
+    semestersWithCourses.length > 0
+      ? semestersWithCourses[semestersWithCourses.length - 1].gpa
       : null;
 
 
@@ -80,7 +86,7 @@ export default async function CGPAPage() {
       <div className="space-y-4">
         <h2 className="text-xl font-semibold">Academic Records</h2>
 
-        {!semesters || semesters.length === 0 ? (
+        {semestersWithCourses.length === 0 ? (
           <Card className="p-12 text-center">
             <div className="mx-auto w-fit rounded-full bg-slate-100 p-4">
               <Calculator className="h-8 w-8 text-slate-400" />
@@ -100,12 +106,12 @@ export default async function CGPAPage() {
           </Card>
         ) : (
           <div className="space-y-4">
-            {semesters.map((semester) => (
+            {semestersWithCourses.map((semester: any) => (
               <SemesterCard
                 key={semester.id}
                 semester={semester}
-                onEdit={(id) => console.log("Edit semester:", id)}
-                onDelete={ (id) => console.log("Delete semester:", id) }
+                // onEdit={(id) => console.log("Edit semester:", id)}
+                // onDelete={ (id) => console.log("Delete semester:", id) }
               />
             ))}
           </div>

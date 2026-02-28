@@ -9,10 +9,10 @@ export async function POST(request: NextRequest) {
 
     // Check authentication
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!session) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     const { data: semesterData, error: semesterError } = await supabase
       .from('semesters')
       .insert({
-        user_id: session.user.id,
+        user_id: user.id,
         level,
         semester,
         session: academicSession,
@@ -54,6 +54,85 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (semesterError) {
+      // On conflict (duplicate user_id + level + semester + session), append courses
+      if (semesterError.code === '23505') {
+        const { data: existing } = await supabase
+          .from('semesters')
+          .select('id')
+          .eq('user_id', user.id)
+          .eq('level', level)
+          .eq('semester', semester)
+          .eq('session', academicSession)
+          .single();
+
+        if (!existing?.id) {
+          return NextResponse.json(
+            { error: 'Failed to resolve conflicting semester' },
+            { status: 500 }
+          );
+        }
+
+        const semesterId = existing.id;
+
+        // Append new courses only (do not delete existing)
+        const courseRecords = courses.map((course: any) => ({
+          semester_id: semesterId,
+          course_code: course.course_code,
+          course_title: course.course_title,
+          credit_units: course.credit_units,
+          grade: course.grade,
+          grade_point: getGradePoint(course.grade),
+        }));
+
+        const { error: coursesError } = await supabase
+          .from('semester_courses')
+          .insert(courseRecords);
+
+        if (coursesError) {
+          return NextResponse.json(
+            { error: 'Failed to save courses' },
+            { status: 500 }
+          );
+        }
+
+        // Fetch all courses for this semester and recalculate GPA
+        const { data: allCourses } = await supabase
+          .from('semester_courses')
+          .select('grade_point, credit_units')
+          .eq('semester_id', semesterId);
+
+        let totalPoints = 0;
+        let totalUnits = 0;
+        if (allCourses?.length) {
+          allCourses.forEach((c: { grade_point: number; credit_units: number }) => {
+            totalPoints += c.grade_point * c.credit_units;
+            totalUnits += c.credit_units;
+          });
+        }
+        const newGpa = totalUnits > 0 ? totalPoints / totalUnits : 0;
+
+        const { error: updateError } = await supabase
+          .from('semesters')
+          .update({
+            gpa: Math.round(newGpa * 100) / 100,
+            total_credit_units: totalUnits,
+          })
+          .eq('id', semesterId)
+          .eq('user_id', user.id);
+
+        if (updateError) {
+          return NextResponse.json(
+            { error: 'Failed to update semester record' },
+            { status: 500 }
+          );
+        }
+
+        return NextResponse.json({
+          success: true,
+          message: 'Courses added to existing semester.',
+        });
+      }
+
       console.error('Semester error:', semesterError);
       return NextResponse.json(
         { error: 'Failed to create semester record' },
@@ -87,7 +166,7 @@ export async function POST(request: NextRequest) {
 
     // Log activity
     await supabase.from('activity_logs').insert({
-      user_id: session.user.id,
+      user_id: user.id,
       action: 'semester_added',
       resource_type: 'semester',
       resource_id: semesterData.id,
@@ -119,10 +198,10 @@ export async function PUT(request: NextRequest) {
     const supabase = createClient(await cookies());
 
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!session) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -164,7 +243,7 @@ export async function PUT(request: NextRequest) {
         total_credit_units: totalUnits,
       })
       .eq('id', semesterId)
-      .eq('user_id', session.user.id);
+      .eq('user_id', user.id);
 
     if (semesterError) {
       return NextResponse.json(

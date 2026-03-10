@@ -1,39 +1,36 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { User, Mail, CreditCard, Lock, Save } from 'lucide-react';
-import { toast } from 'sonner';
-import { createBrowserClient } from '@supabase/ssr';
+} from "@/components/ui/select";
+import { User, Mail, CreditCard, Lock, Save } from "lucide-react";
+import { toast } from "sonner";
+import { createBrowserClient } from "@supabase/ssr";
 
-interface ProfileFormProps {
-  profile: any;
-  email: string;
-}
+import { ProfileFormProps } from "@/utils/types";
 
 export default function ProfileForm({ profile, email }: ProfileFormProps) {
   const router = useRouter();
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    full_name: profile?.full_name || '',
-    phone_number: profile?.phone_number || '',
-    level: profile?.level?.toString() || '',
+    full_name: profile?.full_name || "",
+    phone_number: profile?.phone_number || "",
+    level: profile?.level?.toString() || "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,20 +39,24 @@ export default function ProfileForm({ profile, email }: ProfileFormProps) {
 
     try {
       const { error } = await supabase
-        .from('profiles')
+        .from("profiles")
         .update({
           full_name: formData.full_name,
           phone_number: formData.phone_number,
           level: parseInt(formData.level),
         })
-        .eq('id', profile.id);
+        .eq("id", profile.id);
 
       if (error) throw error;
 
-      toast.success('Profile updated successfully!');
+      toast.success("Profile updated successfully!", {
+        position: "top-center",
+      });
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message || 'Failed to update profile');
+      toast.error(error.message || "Failed to update profile", {
+        position: "top-center",
+      });
     } finally {
       setLoading(false);
     }
@@ -87,10 +88,13 @@ export default function ProfileForm({ profile, email }: ProfileFormProps) {
 
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" value={email} disabled className="bg-slate-50" />
-              <p className="text-xs text-slate-500">
-                Email cannot be changed
-              </p>
+              <Input
+                id="email"
+                value={email}
+                disabled
+                className="bg-slate-50"
+              />
+              <p className="text-xs text-slate-500">Email cannot be changed</p>
             </div>
 
             <div className="space-y-2">
@@ -170,12 +174,12 @@ export default function ProfileForm({ profile, email }: ProfileFormProps) {
             <div>
               <p className="font-medium text-slate-900">Status</p>
               <p className="text-sm text-slate-600">
-                {profile?.subscription_status === 'active'
-                  ? 'Premium Active'
-                  : 'Free Plan'}
+                {profile?.subscription_status === "active"
+                  ? "Premium Active"
+                  : "Free Plan"}
               </p>
             </div>
-            {profile?.subscription_status === 'active' ? (
+            {profile?.subscription_status === "active" ? (
               <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
                 Active
               </span>
@@ -187,7 +191,7 @@ export default function ProfileForm({ profile, email }: ProfileFormProps) {
           {profile?.subscription_expires_at && (
             <div>
               <p className="text-sm text-slate-600">
-                Expires on:{' '}
+                Expires on:{" "}
                 {new Date(profile.subscription_expires_at).toLocaleDateString()}
               </p>
             </div>
@@ -209,11 +213,7 @@ export default function ProfileForm({ profile, email }: ProfileFormProps) {
             Change Password
           </Button>
 
-          <form
-            action="/api/auth/logout"
-            method="POST"
-            className="w-full"
-          >
+          <form action="/api/auth/logout" method="POST" className="w-full">
             <Button
               type="submit"
               variant="outline"

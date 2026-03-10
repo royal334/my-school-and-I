@@ -20,26 +20,7 @@ import { formatFileSize, formatRelativeTime } from "@/utils/lib/index";
 import { MATERIAL_TYPE_LABELS } from "@/utils/constants/constants";
 import Link from "next/link";
 
-interface MaterialCardProps {
-  material: {
-    id: string;
-    title: string;
-    type: string;
-    file_name: string;
-    file_size_bytes: number | null;
-    is_premium: boolean;
-    view_count: number;
-    download_count: number;
-    created_at: string;
-    courses: {
-      course_code: string;
-      course_title: string;
-      level: number;
-      semester: number;
-    } | null;
-  };
-  hasActiveSubscription: boolean;
-}
+import { MaterialCardProps } from "@/utils/types";
 
 export default function MaterialCard({
   material,

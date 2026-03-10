@@ -41,11 +41,11 @@ export default function LoginPage() {
 
       if (error) throw error;
 
-      toast.success("Welcome back!");
+      toast.success("Welcome back!",{ position: "top-center"});
       router.push("/dashboard");
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message || "Login failed");
+      toast.error(error.message || "Login failed",{ position: "top-center"});
     }
   };
 
@@ -99,7 +99,7 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 mt-4">
-            <Button type="submit" className="w-full bg-[#2563eb] hover:bg-[#2563eb]/50" disabled={isSubmitting}>
+            <Button type="submit" className="w-full bg-primary-600 hover:bg-primary/50" disabled={isSubmitting}>
               {isSubmitting ? "Signing in..." : "Sign In"}
             </Button>
             <p className="text-center text-sm text-slate-600">

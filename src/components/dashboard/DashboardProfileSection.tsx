@@ -1,20 +1,9 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-type Profile = {
-  full_name?: string | null;
-  level?: string | number | null;
-  matric_number?: string | null;
-  daily_download_count?: number | null;
-};
-
-type DashboardProfileSectionProps = {
-  profile: Profile | null;
-  hasActiveSubscription: boolean;
-  currentGPA: number | null;
-};
+import { Profile, DashboardProfileSectionProps } from "@/utils/types";
 
 export function DashboardProfileSection({
   profile,
@@ -45,11 +34,11 @@ export function DashboardProfileSection({
             <Badge
               className={
                 hasActiveSubscription
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-slate-100 text-slate-700'
+                  ? "bg-green-100 text-green-700"
+                  : "bg-slate-100 text-slate-700"
               }
             >
-              {hasActiveSubscription ? 'Premium' : 'Free'}
+              {hasActiveSubscription ? "Premium" : "Free"}
             </Badge>
           </div>
           <Link href="/dashboard/profile">
@@ -76,7 +65,7 @@ export function DashboardProfileSection({
             </div>
             <div className="flex items-center gap-2">
               <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-100 text-xs text-primary-700">
-                {currentGPA ? '✓' : '1'}
+                {currentGPA ? "✓" : "1"}
               </div>
               <span className="text-sm text-slate-600">
                 Add your first semester
@@ -104,4 +93,3 @@ export function DashboardProfileSection({
     </div>
   );
 }
-

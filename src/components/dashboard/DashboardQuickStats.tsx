@@ -1,13 +1,8 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { BookOpen, Calculator, Download, Store } from 'lucide-react';
-import Link from 'next/link';
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { BookOpen, Calculator, Download, Store } from "lucide-react";
+import Link from "next/link";
 
-type DashboardQuickStatsProps = {
-  currentGPA: number | null;
-  materialsCount: number;
-  vendorsCount: number;
-  dailyDownloadCount: number;
-};
+import { DashboardQuickStatsProps } from "@/utils/types";
 
 export function DashboardQuickStats({
   currentGPA,
@@ -26,7 +21,7 @@ export function DashboardQuickStats({
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-slate-900">
-            {currentGPA ? currentGPA.toFixed(2) : '---'}
+            {currentGPA ? currentGPA.toFixed(2) : "---"}
           </div>
           <Link
             href="/dashboard/cgpa"
@@ -94,4 +89,3 @@ export function DashboardQuickStats({
     </div>
   );
 }
-

@@ -1,38 +1,17 @@
-'use client';
+"use client";
 
-import { Card } from '@/components/ui/card';
-import MaterialCard from './materials-card';
-import { FileX } from 'lucide-react';
+import { Card } from "@/components/ui/card";
+import MaterialCard from "./materials-card";
+import { FileX } from "lucide-react";
 
-interface Material {
-  id: string;
-  title: string;
-  type: string;
-  file_name: string;
-  file_size_bytes: number | null;
-  is_premium: boolean;
-  view_count: number;
-  download_count: number;
-  created_at: string;
-  courses: {
-    course_code: string;
-    course_title: string;
-    level: number;
-    semester: number;
-  } | null;
-}
-
-interface MaterialsContentProps {
-  materials: Material[];
-  profile: any;
-}
+import { Material, MaterialsContentProps } from "@/utils/types";
 
 export default function MaterialsContent({
   materials,
   profile,
 }: MaterialsContentProps) {
   const hasActiveSubscription =
-    profile?.subscription_status === 'active' &&
+    profile?.subscription_status === "active" &&
     profile?.subscription_expires_at &&
     new Date(profile.subscription_expires_at) > new Date();
 

@@ -1,19 +1,10 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Bell } from 'lucide-react';
-import Link from 'next/link';
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Bell } from "lucide-react";
+import Link from "next/link";
 
-type Announcement = {
-  id: string;
-  title: string;
-  type: string;
-  created_at: string;
-};
-
-type DashboardRecentAnnouncementsProps = {
-  announcements: Announcement[];
-};
+import { Announcement, DashboardRecentAnnouncementsProps } from "@/utils/types";
 
 export function DashboardRecentAnnouncements({
   announcements,
@@ -58,4 +49,3 @@ export function DashboardRecentAnnouncements({
     </Card>
   );
 }
-

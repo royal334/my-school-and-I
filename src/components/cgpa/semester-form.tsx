@@ -1,8 +1,13 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, useFieldArray, Controller, SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  Controller,
+  SubmitHandler,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -17,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Plus, X, Calculator, Save } from "lucide-react";
+import { Plus, X, Calculator, Save, Check, ChevronsUpDown } from "lucide-react";
 import { toast } from "sonner";
 import {
   calculateSemesterGPA,
@@ -26,48 +31,51 @@ import {
   getGradeColor,
 } from "@/utils/lib/cgpa-helpers";
 import axios from "axios";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import { getCourses } from "@/utils/supabase/queries";
 
-// Define Zod schema (credit_units is number; form uses valueAsNumber so no coercion needed)
-const courseSchema = z.object({
-  course_code: z.string().min(1, "Course code is required"),
-  course_title: z.string().min(1, "Course title is required"),
-  credit_units: z
-    .number()
-    .min(1, "Units must be at least 1")
-    .max(6, "Units cannot exceed 6"),
-  grade: z.enum(["A", "B", "C", "D", "E", "F"]),
-});
-
-const semesterSchema = z.object({
-  level: z.string().min(1, "Level is required"),
-  semester: z.string().min(1, "Semester is required"),
-  session: z
-    .string()
-    .min(1, "Session is required")
-    .regex(/^\d{4}\/\d{4}$/, "Format must be YYYY/YYYY"),
-  courses: z.array(courseSchema).min(1, "Add at least one course"),
-});
-
-type SemesterFormValues = z.infer<typeof semesterSchema>;
-
-interface SemesterFormProps {
-  existingSemester?: {
-    id: string;
-    level: number;
-    semester: number;
-    session: string;
-    courses: Array<{
-      course_code: string;
-      course_title: string;
-      credit_units: number;
-      grade: "A" | "B" | "C" | "D" | "E" | "F";
-    }>;
-  };
-}
+import {
+  semesterSchema,
+  SemesterFormValues,
+  SemesterFormProps,
+} from "@/utils/types";
 
 export default function SemesterForm({ existingSemester }: SemesterFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  const [availableCourses, setAvailableCourses] = useState<any[]>([]);
+  const [fetchingCourses, setFetchingCourses] = useState(true);
+  const [openPopoverIndex, setOpenPopoverIndex] = useState<
+    number | string | null
+  >(null);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const courses = await getCourses();
+        setAvailableCourses(courses);
+      } catch (e) {
+        console.error("Failed to fetch courses:", e);
+      } finally {
+        setFetchingCourses(false);
+      }
+    };
+    fetchCourses();
+  }, []);
 
   // Initialize RHF
   const {
@@ -75,6 +83,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
     control,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<SemesterFormValues>({
     resolver: zodResolver(semesterSchema),
@@ -108,7 +117,9 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
     return calculateSemesterGPA(validCourses as any);
   }, [watchedCourses]);
 
-  const onSubmit: SubmitHandler<SemesterFormValues> = async (values: SemesterFormValues) => {
+  const onSubmit: SubmitHandler<SemesterFormValues> = async (
+    values: SemesterFormValues,
+  ) => {
     setLoading(true);
 
     try {
@@ -143,12 +154,15 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
         existingSemester
           ? "Semester updated successfully!"
           : "Semester added successfully!",
+        { position: "top-center" },
       );
       router.push("/dashboard/cgpa");
       router.refresh();
     } catch (error: any) {
       console.error("Save error:", error);
-      toast.error(error.message || "Failed to save semester");
+      toast.error(error.message || "Failed to save semester", {
+        position: "top-center",
+      });
     } finally {
       setLoading(false);
     }
@@ -306,15 +320,72 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                     {fields.map((field, index) => (
                       <tr key={field.id} className="border-b border-slate-100">
                         <td className="py-2">
-                          <Input
-                            placeholder="ENG201"
-                            {...register(`courses.${index}.course_code`)}
-                            className={`relative z-50 pointer-events-auto w-28 bg-white ${
-                              errors.courses?.[index]?.course_code
-                                ? "border-red-500"
-                                : ""
-                            }`}
-                          />
+                          <Popover
+                            open={openPopoverIndex === index}
+                            onOpenChange={(open) =>
+                              setOpenPopoverIndex(open ? index : null)
+                            }
+                          >
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                className={cn(
+                                  "relative z-50 pointer-events-auto w-32 justify-between bg-white px-3 font-normal",
+                                  errors.courses?.[index]?.course_code &&
+                                    "border-red-500",
+                                )}
+                              >
+                                {watchedCourses[index]?.course_code ||
+                                  "Select..."}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[300px] p-0 z-100">
+                              <Command>
+                                <CommandInput placeholder="Search course..." />
+                                <CommandList>
+                                  <CommandEmpty>No course found.</CommandEmpty>
+                                  <CommandGroup>
+                                    {availableCourses.map((course) => (
+                                      <CommandItem
+                                        key={course.id}
+                                        value={course.course_code}
+                                        onSelect={() => {
+                                          setValue(
+                                            `courses.${index}.course_code`,
+                                            course.course_code,
+                                          );
+                                          setValue(
+                                            `courses.${index}.course_title`,
+                                            course.course_title,
+                                          );
+                                          setValue(
+                                            `courses.${index}.credit_units`,
+                                            course.credit_units || 0,
+                                          );
+                                          setOpenPopoverIndex(null);
+                                        }}
+                                      >
+                                        <Check
+                                          className={cn(
+                                            "mr-2 h-4 w-4",
+                                            watchedCourses[index]
+                                              ?.course_code ===
+                                              course.course_code
+                                              ? "opacity-100"
+                                              : "opacity-0",
+                                          )}
+                                        />
+                                        {course.course_code} (
+                                        {course.course_title})
+                                      </CommandItem>
+                                    ))}
+                                  </CommandGroup>
+                                </CommandList>
+                              </Command>
+                            </PopoverContent>
+                          </Popover>
                         </td>
                         <td className="py-2">
                           <Input
@@ -378,9 +449,9 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                               watchedCourses[index]?.grade,
                             )}
                           >
-                            {getGradePoint(watchedCourses[index]?.grade).toFixed(
-                              1,
-                            )}
+                            {getGradePoint(
+                              watchedCourses[index]?.grade,
+                            ).toFixed(1)}
                           </Badge>
                         </td>
                         <td className="py-2 text-center">
@@ -427,15 +498,70 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                       >
                         Course Code
                       </Label>
-                      <Input
-                        placeholder="ENG201"
-                        {...register(`courses.${index}.course_code`)}
-                        className={`relative z-50 pointer-events-auto bg-white ${
-                          errors.courses?.[index]?.course_code
-                            ? "border-red-500"
-                            : ""
-                        }`}
-                      />
+                      <Popover
+                        open={openPopoverIndex === `mobile-${index}`}
+                        onOpenChange={(open) =>
+                          setOpenPopoverIndex(open ? `mobile-${index}` : null)
+                        }
+                      >
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "relative z-50 pointer-events-auto w-full justify-between bg-white px-3 font-normal",
+                              errors.courses?.[index]?.course_code &&
+                                "border-red-500",
+                            )}
+                          >
+                            {watchedCourses[index]?.course_code ||
+                              "Select course..."}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-full p-0 z-100">
+                          <Command>
+                            <CommandInput placeholder="Search course..." />
+                            <CommandList>
+                              <CommandEmpty>No course found.</CommandEmpty>
+                              <CommandGroup>
+                                {availableCourses.map((course) => (
+                                  <CommandItem
+                                    key={course.id}
+                                    value={course.course_code}
+                                    onSelect={() => {
+                                      setValue(
+                                        `courses.${index}.course_code`,
+                                        course.course_code,
+                                      );
+                                      setValue(
+                                        `courses.${index}.course_title`,
+                                        course.course_title,
+                                      );
+                                      setValue(
+                                        `courses.${index}.credit_units`,
+                                        course.credit_units || 0,
+                                      );
+                                      setOpenPopoverIndex(null);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        watchedCourses[index]?.course_code ===
+                                          course.course_code
+                                          ? "opacity-100"
+                                          : "opacity-0",
+                                      )}
+                                    />
+                                    {course.course_code} ({course.course_title})
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                     </div>
 
                     <div className="space-y-2">

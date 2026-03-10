@@ -24,27 +24,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-interface SemesterCardProps {
-  semester: {
-    id: string;
-    level: number;
-    semester: number;
-    session: string;
-    gpa: number;
-    total_credit_units: number;
-    semester_courses: Array<{
-      id: string;
-      course_code: string;
-      course_title: string;
-      credit_units: number;
-      grade: string;
-      grade_point: number;
-    }>;
-  };
-  onEdit?: (semesterId: string) => void;
-  onDelete?: (semesterId: string) => void;
-}
-
+import { SemesterCardProps } from "@/utils/types";
 
 export default function SemesterCard({
   semester,
@@ -178,15 +158,22 @@ export default function SemesterCard({
                     <td className="py-2 text-center">
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Remove this course?</AlertDialogTitle>
+                            <AlertDialogTitle>
+                              Remove this course?
+                            </AlertDialogTitle>
                             <AlertDialogDescription>
-                              This will remove this course from the semester. GPA will be recalculated.
+                              This will remove this course from the semester.
+                              GPA will be recalculated.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -195,17 +182,34 @@ export default function SemesterCard({
                               className="bg-red-600 hover:bg-red-700"
                               onClick={async () => {
                                 try {
-                                  const res = await fetch("/api/cgpa/semester/course", {
-                                    method: "DELETE",
-                                    headers: { "Content-Type": "application/json" },
-                                    body: JSON.stringify({ courseId: course.id }),
-                                  });
+                                  const res = await fetch(
+                                    "/api/cgpa/semester/course",
+                                    {
+                                      method: "DELETE",
+                                      headers: {
+                                        "Content-Type": "application/json",
+                                      },
+                                      body: JSON.stringify({
+                                        courseId: course.id,
+                                      }),
+                                    },
+                                  );
                                   const data = await res.json();
-                                  if (!res.ok) throw new Error(data.error || "Failed to remove course");
-                                  toast.success("Course removed.");
+                                  if (!res.ok)
+                                    throw new Error(
+                                      data.error || "Failed to remove course",
+                                    );
+                                  toast.success("Course removed.", {
+                                    position: "top-center",
+                                  });
                                   router.refresh();
                                 } catch (err) {
-                                  toast.error(err instanceof Error ? err.message : "Failed to remove course");
+                                  toast.error(
+                                    err instanceof Error
+                                      ? err.message
+                                      : "Failed to remove course",
+                                    { position: "top-center" },
+                                  );
                                 }
                               }}
                             >

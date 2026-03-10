@@ -1,14 +1,10 @@
-'use client';
+"use client";
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { TrendingUp, Award, BookOpen } from 'lucide-react';
-import { getClassOfDegree, getGPAColor } from '@/utils/lib/cgpa-helpers';
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { TrendingUp, Award, BookOpen } from "lucide-react";
+import { getClassOfDegree, getGPAColor } from "@/utils/lib/cgpa-helpers";
 
-interface CGPASummaryProps {
-  currentSemesterGPA: number | null;
-  cumulativeCGPA: number;
-  totalCreditUnits: number;
-}
+import { CGPASummaryProps } from "@/utils/types";
 
 export default function CGPASummary({
   currentSemesterGPA,
@@ -34,7 +30,7 @@ export default function CGPASummary({
             <div className="text-3xl font-bold text-primary-900">
               {currentSemesterGPA.toFixed(2)}
               <span className="text-base font-normal text-primary-600">
-                {' '}
+                {" "}
                 / 5.0
               </span>
             </div>
@@ -60,7 +56,7 @@ export default function CGPASummary({
           <div className="text-3xl font-bold text-secondary-900">
             {cumulativeCGPA.toFixed(2)}
             <span className="text-base font-normal text-secondary-600">
-              {' '}
+              {" "}
               / 5.0
             </span>
           </div>
@@ -82,7 +78,7 @@ export default function CGPASummary({
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-amber-900">
-            {cumulativeCGPA > 0 ? classOfDegree : 'Not Available'}
+            {cumulativeCGPA > 0 ? classOfDegree : "Not Available"}
           </div>
           {cumulativeCGPA > 0 && (
             <div className="mt-1 text-xs text-amber-700">

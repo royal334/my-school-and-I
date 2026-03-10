@@ -24,24 +24,7 @@ import {
 } from "@/utils/constants/constants";
 import axios from "axios";
 
-interface UploadFormProps {
-  courses: Array<{
-    id: string;
-    course_code: string;
-    course_title: string;
-    level: number;
-    semester: number;
-  }>;
-}
-
-type UploadFormValues = {
-  file: FileList;
-  courseId: string;
-  title: string;
-  type: string;
-  description?: string;
-  isPremium: boolean;
-};
+import { UploadFormProps, UploadFormValues } from "@/utils/types";
 
 export default function UploadForm({ courses }: UploadFormProps) {
   const router = useRouter();
@@ -74,24 +57,27 @@ export default function UploadForm({ courses }: UploadFormProps) {
       uploadFormData.append("description", data.description || "");
       uploadFormData.append("isPremium", String(data.isPremium));
 
-     //  const response = await fetch("/api/materials/upload", {
-     //    method: "POST",
-     //    body: uploadFormData,
-     //  });
+      //  const response = await fetch("/api/materials/upload", {
+      //    method: "POST",
+      //    body: uploadFormData,
+      //  });
 
-     const response = await axios.post("/api/materials/upload", uploadFormData);
-
-
+      const response = await axios.post(
+        "/api/materials/upload",
+        uploadFormData,
+      );
 
       if (response.status !== 200) {
         throw new Error(response.data.error || "Upload failed");
       }
 
-      toast.success(response.data.message);
+      toast.success(response.data.message, { position: "top-center" });
       router.push("/dashboard/materials");
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message || "Failed to upload material");
+      toast.error(error.message || "Failed to upload material", {
+        position: "top-center",
+      });
     }
   };
 

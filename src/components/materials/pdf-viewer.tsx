@@ -14,10 +14,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url,
 ).toString();
 
-interface PDFViewerProps {
-  materialId: string;
-  fileName: string;
-}
+import { PDFViewerProps } from "@/utils/types";
 
 export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
   const [numPages, setNumPages] = useState<number>(0);

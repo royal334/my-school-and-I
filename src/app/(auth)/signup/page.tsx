@@ -78,10 +78,10 @@ export default function SignupPage() {
       //   if (profileError) throw profileError;
       // }
 
-      toast.success("Account created! Please check your email to verify.");
+      toast.success("Account created! Please check your email to verify.", { position: "top-center"});
       router.push("/login");
     } catch (error: any) {
-      toast.error(error.message || "Signup failed");
+      toast.error(error.message || "Signup failed", { position: "top-center"});
     }
   };
 

@@ -8,7 +8,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import { BookOpen, LayoutDashboard, Upload, Settings } from "lucide-react";
+import { BookOpen, LayoutDashboard, Upload, Settings, Calculator } from "lucide-react";
 import Link from "next/link";
 
 export function AppSidebar() {
@@ -19,7 +19,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarMenu>
+          <SidebarMenu className="space-y-4">
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link href="/dashboard">
@@ -47,7 +47,7 @@ export function AppSidebar() {
                         <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link href="/dashboard/cgpa">
-                  <Upload className="mr-2 h-4 w-4" />
+                  <Calculator className="mr-2 h-4 w-4" />
                   <span>CGPA</span>
                 </Link>
               </SidebarMenuButton>

@@ -15,10 +15,7 @@ const PDFViewer = dynamic(() => import("./pdf-viewer"), {
   ),
 });
 
-interface PDFViewerWrapperProps {
-  materialId: string;
-  fileName: string;
-}
+import { PDFViewerWrapperProps } from "@/utils/types";
 
 export default function PDFViewerWrapper(props: PDFViewerWrapperProps) {
   return <PDFViewer {...props} />;

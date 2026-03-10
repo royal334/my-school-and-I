@@ -253,7 +253,7 @@ export default async function MaterialDetailPage({ params }: PageProps) {
           )}
 
           {/* Download Button */}
-          {canAccess && (
+          {/* {canAccess && (
             <Card>
               <CardContent className="pt-6">
                 <Button className="w-full" size="lg">
@@ -265,7 +265,7 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                 </p>
               </CardContent>
             </Card>
-          )}
+          )} */}
 
           {/* Related Materials */}
           <Card>

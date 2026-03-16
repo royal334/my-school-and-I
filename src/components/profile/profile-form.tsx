@@ -13,141 +13,282 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { User, Mail, CreditCard, Lock, Save } from "lucide-react";
+import { User, Save, Upload } from "lucide-react";
 import { toast } from "sonner";
-import { createBrowserClient } from "@supabase/ssr";
+import { createClient } from "@/utils/supabase/client";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
-import { ProfileFormProps } from "@/utils/types";
+interface ProfileFormProps {
+  profile: any;
+  email: string;
+  userId: string;
+}
 
-export default function ProfileForm({ profile, email }: ProfileFormProps) {
+const profileSchema = z.object({
+  full_name: z.string().min(1, "Full name is required"),
+  phone_number: z
+    .string()
+    .optional()
+    .nullable()
+    .refine((val) => !val || /^(\+234|0)[789]\d{9}$/.test(val), {
+      message:
+        "Invalid Nigerian phone number format (e.g. 080XXXXXXXX or +234XXXXXXXXXX)",
+    }),
+  level: z.string().min(1, "Level is required"),
+  bio: z
+    .string()
+    .max(500, "Bio must be 500 characters or less")
+    .optional()
+    .nullable(),
+});
+
+type ProfileFormValues = z.infer<typeof profileSchema>;
+
+export default function ProfileForm({
+  profile,
+  email,
+  userId,
+}: ProfileFormProps) {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
+  const supabase = createClient();
 
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    full_name: profile?.full_name || "",
-    phone_number: profile?.phone_number || "",
-    level: profile?.level?.toString() || "",
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      full_name: profile?.full_name || "",
+      phone_number: profile?.phone_number || "",
+      level: profile?.level?.toString() || "",
+      bio: profile?.bio || "",
+    },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const watchFullName = watch("full_name");
+  const watchBio = watch("bio");
+
+  const onSubmit = async (data: ProfileFormValues) => {
     setLoading(true);
 
     try {
       const { error } = await supabase
         .from("profiles")
         .update({
-          full_name: formData.full_name,
-          phone_number: formData.phone_number,
-          level: parseInt(formData.level),
+          full_name: data.full_name,
+          phone_number: data.phone_number || null,
+          level: parseInt(data.level),
+          bio: data.bio || null,
+          updated_at: new Date().toISOString(),
         })
-        .eq("id", profile.id);
+        .eq("id", userId);
 
       if (error) throw error;
 
-      toast.success("Profile updated successfully!", {
-        position: "top-center",
-      });
+      toast.success("Profile updated successfully!");
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message || "Failed to update profile", {
-        position: "top-center",
-      });
+      console.error("Update error:", error);
+      toast.error(error.message || "Failed to update profile");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Personal Information */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <User className="h-5 w-5 text-primary-600" />
-            <h2 className="text-xl font-semibold">Personal Information</h2>
+    <Card>
+      <CardHeader>
+        <div className="flex items-center gap-2">
+          <User className="h-5 w-5 text-primary-600" />
+          <h2 className="text-xl font-semibold">Personal Information</h2>
+        </div>
+        <p className="text-sm text-slate-600">
+          Update your personal details and contact information
+        </p>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Avatar Section (Future Enhancement) */}
+          <div className="flex items-center gap-4">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-100 text-2xl font-bold text-primary-700">
+              {watchFullName
+                ?.split(" ")
+                .map((n: any) => n[0])
+                .join("")
+                .toUpperCase()
+                .slice(0, 2) || "U"}
+            </div>
+            <div>
+              <p className="font-medium text-slate-900">
+                {watchFullName || "Your Name"}
+              </p>
+              <p className="text-sm text-slate-600">{email}</p>
+              {/* Future: Add upload button */}
+              {/* <Button type="button" variant="outline" size="sm" className="mt-2">
+                <Upload className="mr-2 h-4 w-4" />
+                Change Photo
+              </Button> */}
+            </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {/* Full Name */}
             <div className="space-y-2">
-              <Label htmlFor="full_name">Full Name</Label>
+              <Label
+                htmlFor="full_name"
+                className={errors.full_name ? "text-red-500" : ""}
+              >
+                Full Name <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="full_name"
-                value={formData.full_name}
-                onChange={(e) =>
-                  setFormData({ ...formData, full_name: e.target.value })
-                }
-                required
+                placeholder="John Doe"
+                {...register("full_name")}
+                className={errors.full_name ? "border-red-500" : ""}
               />
+              {errors.full_name && (
+                <p className="text-xs text-red-500">
+                  {errors.full_name.message}
+                </p>
+              )}
             </div>
 
+            {/* Phone Number */}
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label
+                htmlFor="phone_number"
+                className={errors.phone_number ? "text-red-500" : ""}
+              >
+                Phone Number
+              </Label>
+              <Input
+                id="phone_number"
+                type="tel"
+                placeholder="08012345678 or +2348012345678"
+                {...register("phone_number")}
+                className={errors.phone_number ? "border-red-500" : ""}
+              />
+              {errors.phone_number ? (
+                <p className="text-xs text-red-500">
+                  {errors.phone_number.message}
+                </p>
+              ) : (
+                <p className="text-xs text-slate-500">
+                  Nigerian format: 080XXXXXXXX or +234XXXXXXXXXX
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {/* Email (Read-only) */}
+            <div className="space-y-2">
+              <Label htmlFor="email">Email Address</Label>
               <Input
                 id="email"
+                type="email"
                 value={email}
                 disabled
-                className="bg-slate-50"
+                className="bg-slate-50 cursor-not-allowed"
               />
               <p className="text-xs text-slate-500">Email cannot be changed</p>
             </div>
 
+            {/* Matric Number (Read-only) */}
             <div className="space-y-2">
               <Label htmlFor="matric_number">Matric Number</Label>
               <Input
                 id="matric_number"
-                value={profile?.matric_number}
+                value={profile?.matric_number || "N/A"}
                 disabled
-                className="bg-slate-50"
+                className="bg-slate-50 cursor-not-allowed"
               />
               <p className="text-xs text-slate-500">
                 Matric number cannot be changed
               </p>
             </div>
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="phone_number">Phone Number</Label>
-              <Input
-                id="phone_number"
-                type="tel"
-                placeholder="e.g., 08012345678"
-                value={formData.phone_number}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone_number: e.target.value })
-                }
-              />
-            </div>
+          {/* Current Level */}
+          <div className="space-y-2">
+            <Label
+              htmlFor="level"
+              className={errors.level ? "text-red-500" : ""}
+            >
+              Current Level <span className="text-red-500">*</span>
+            </Label>
+            <Controller
+              name="level"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger
+                    className={errors.level ? "border-red-500" : ""}
+                  >
+                    <SelectValue placeholder="Select your current level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="100">100 Level</SelectItem>
+                    <SelectItem value="200">200 Level</SelectItem>
+                    <SelectItem value="300">300 Level</SelectItem>
+                    <SelectItem value="400">400 Level</SelectItem>
+                    <SelectItem value="500">500 Level</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.level ? (
+              <p className="text-xs text-red-500">{errors.level.message}</p>
+            ) : (
+              <p className="text-xs text-slate-500">
+                Update this when you advance to the next level
+              </p>
+            )}
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="level">Current Level</Label>
-              <Select
-                value={formData.level}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, level: value })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="100">100 Level</SelectItem>
-                  <SelectItem value="200">200 Level</SelectItem>
-                  <SelectItem value="300">300 Level</SelectItem>
-                  <SelectItem value="400">400 Level</SelectItem>
-                  <SelectItem value="500">500 Level</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          {/* Bio (Optional) */}
+          <div className="space-y-2">
+            <Label htmlFor="bio" className={errors.bio ? "text-red-500" : ""}>
+              Bio (Optional)
+            </Label>
+            <textarea
+              id="bio"
+              placeholder="Tell us a bit about yourself..."
+              {...register("bio")}
+              className={`min-h-[100px] w-full rounded-lg border ${errors.bio ? "border-red-500" : "border-slate-300"} px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100`}
+              maxLength={500}
+            />
+            {errors.bio ? (
+              <p className="text-xs text-red-500">{errors.bio.message}</p>
+            ) : (
+              <p className="text-xs text-slate-500">
+                {watchBio?.length || 0} / 500 characters
+              </p>
+            )}
+          </div>
 
-            <Button type="submit" disabled={loading} className="w-full">
+          {/* Submit Button */}
+          <div className="flex gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.back()}
+              disabled={loading}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading} className="flex-1">
               {loading ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   Saving...
                 </>
               ) : (
@@ -157,74 +298,9 @@ export default function ProfileForm({ profile, email }: ProfileFormProps) {
                 </>
               )}
             </Button>
-          </form>
-        </CardContent>
-      </Card>
-
-      {/* Subscription Status */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <CreditCard className="h-5 w-5 text-amber-600" />
-            <h2 className="text-xl font-semibold">Subscription</h2>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium text-slate-900">Status</p>
-              <p className="text-sm text-slate-600">
-                {profile?.subscription_status === "active"
-                  ? "Premium Active"
-                  : "Free Plan"}
-              </p>
-            </div>
-            {profile?.subscription_status === "active" ? (
-              <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
-                Active
-              </span>
-            ) : (
-              <Button>Upgrade to Premium</Button>
-            )}
-          </div>
-
-          {profile?.subscription_expires_at && (
-            <div>
-              <p className="text-sm text-slate-600">
-                Expires on:{" "}
-                {new Date(profile.subscription_expires_at).toLocaleDateString()}
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Security */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <Lock className="h-5 w-5 text-red-600" />
-            <h2 className="text-xl font-semibold">Security</h2>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <Button variant="outline" className="w-full justify-start">
-            <Lock className="mr-2 h-4 w-4" />
-            Change Password
-          </Button>
-
-          <form action="/api/auth/logout" method="POST" className="w-full">
-            <Button
-              type="submit"
-              variant="outline"
-              className="w-full justify-start text-red-600 hover:text-red-700"
-            >
-              <Lock className="mr-2 h-4 w-4" />
-              Sign Out
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

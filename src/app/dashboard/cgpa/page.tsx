@@ -54,14 +54,14 @@ export default async function CGPAPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-bold">CGPA Calculator</h1>
           <p className="text-slate-600">
             Track your academic performance and calculate your CGPA
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex justify-end md:justify-start gap-3">
           <Button variant="outline" size="sm">
             <FileDown className="mr-2 h-4 w-4" />
             Export

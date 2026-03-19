@@ -42,7 +42,7 @@ export function Footer() {
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
-                  className="w-9 h-9 rounded-full flex items-center justify-center bg-slate-800 text-slate-500 hover:bg-blue-600 hover:text-white transition-all duration-200"
+                  className="w-9 h-9 rounded-full flex items-center justify-center bg-slate-800 text-slate-500 hover:bg-blue-600 hover:text-white transition-all duration-200 dark:bg-slate-700 dark:text-slate-400 dark:hover:bg-blue-700 dark:hover:text-white"
                 >
                   {s.icon}
                 </a>
@@ -106,7 +106,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500 dark:text-slate-400">
           <p>© 2025 EngiPortal. All rights reserved.</p>
           <p>Built with ❤️ by Engineering Students</p>
         </div>

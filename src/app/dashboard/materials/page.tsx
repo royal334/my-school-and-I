@@ -8,7 +8,6 @@ import MaterialsFilters from "@/components/materials/materials-filters";
 import { Card } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
 
-
 export const metadata = {
   title: "Materials Library | EngiPortal",
   description: "Access lecture notes, past questions, and study materials",
@@ -34,7 +33,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
 
   if (!user) {
     return (
-      <div className="p-10 text-red-500 bg-red-50 border border-red-200 rounded-lg">
+      <div className="p-10 text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-lg">
         Debug: No session found. Please log in.
       </div>
     );
@@ -71,7 +70,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
     type,
     search,
     limit: 50,
-    supabase: supabaseAdmin // use admin client
+    supabase: supabaseAdmin, // use admin client
   });
 
   return (
@@ -79,17 +78,17 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
             Materials Library
           </h1>
-          <p className="mt-1 text-slate-600">
+          <p className="mt-1 text-slate-600 dark:text-slate-400">
             Access lecture notes, past questions, and study materials
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-2">
-            <BookOpen className="h-5 w-5 text-blue-600" />
-            <span className="text-sm font-medium text-blue-900">
+          <div className="flex items-center gap-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 px-4 py-2">
+            <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
               {materials.length} materials available
             </span>
           </div>
@@ -98,20 +97,20 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
 
       {/* Subscription Status Banner */}
       {profile && profile.subscription_status !== "active" && (
-        <Card className="border-amber-200 bg-amber-50 p-4">
+        <Card className="border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-950/30 p-4">
           <div className="flex items-start gap-3">
-            <div className="rounded-full bg-amber-100 p-2">
-              <BookOpen className="h-5 w-5 text-amber-600" />
+            <div className="rounded-full bg-amber-100 dark:bg-amber-900/50 p-2">
+              <BookOpen className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-amber-900">
+              <h3 className="font-semibold text-amber-900 dark:text-amber-100">
                 Limited Access Mode
               </h3>
-              <p className="mt-1 text-sm text-amber-700">
+              <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">
                 You're viewing free materials only. Subscribe for ₦400/semester
                 to unlock all premium materials.
               </p>
-              <button className="mt-2 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700">
+              <button className="mt-2 rounded-lg bg-amber-600 dark:bg-amber-700 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 dark:hover:bg-amber-600 transition-colors">
                 Upgrade Now
               </button>
             </div>

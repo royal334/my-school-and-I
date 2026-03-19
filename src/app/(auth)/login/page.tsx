@@ -50,18 +50,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
+      <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
         <CardHeader>
-          <CardTitle>Welcome to EngiPortal</CardTitle>
-          <CardDescription>
+          <CardTitle className="dark:text-white">Welcome to EngiPortal</CardTitle>
+          <CardDescription className="dark:text-slate-400">
             Sign in to access materials and resources
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="dark:text-slate-200">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -79,7 +79,7 @@ export default function LoginPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="dark:text-slate-200">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -99,7 +99,7 @@ export default function LoginPage() {
               <div className="text-right">
                 <Link
                   href="/forgot-password"
-                  className="text-sm text-blue-600 hover:underline"
+                  className="text-sm text-blue-600 hover:underline dark:text-blue-400"
                 >
                   Forgot Password?
                 </Link>
@@ -107,12 +107,12 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 mt-4">
-            <Button type="submit" className="w-full bg-primary-600 hover:bg-primary/50" disabled={isSubmitting}>
+            <Button type="submit" className="w-full bg-primary-600 hover:bg-primary/50 dark:bg-blue-700 dark:hover:bg-blue-600" disabled={isSubmitting}>
               {isSubmitting ? "Signing in..." : "Sign In"}
             </Button>
-            <p className="text-center text-sm text-slate-600">
+            <p className="text-center text-sm text-slate-600 dark:text-slate-300">
               Don't have an account?{" "}
-              <Link href="/signup" className="text-blue-600 hover:underline">
+              <Link href="/signup" className="text-blue-600 hover:underline dark:text-blue-400">
                 Sign up
               </Link>
             </p>

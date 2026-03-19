@@ -88,18 +88,18 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
+      <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
         <CardHeader>
-          <CardTitle>Create Account</CardTitle>
-          <CardDescription>
+          <CardTitle className="dark:text-white">Create Account</CardTitle>
+          <CardDescription className="dark:text-slate-400">
             Join EngiPortal to access academic resources
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="full_name">Full Name</Label>
+              <Label htmlFor="full_name" className="dark:text-slate-200">Full Name</Label>
               <Input
                 id="full_name"
                 {...register("full_name", {
@@ -113,7 +113,7 @@ export default function SignupPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="matric_number">Matric Number</Label>
+              <Label htmlFor="matric_number" className="dark:text-slate-200">Matric Number</Label>
               <Input
                 id="matric_number"
                 placeholder="ENG/2024/001"
@@ -128,7 +128,7 @@ export default function SignupPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="level">Level</Label>
+              <Label htmlFor="level" className="dark:text-slate-200">Level</Label>
               <Controller
                 name="level"
                 control={control}
@@ -153,7 +153,7 @@ export default function SignupPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="department">Department</Label>
+              <Label htmlFor="department" className="dark:text-slate-200">Department</Label>
               <Controller
                 name="department"
                 control={control}
@@ -202,7 +202,7 @@ export default function SignupPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="dark:text-slate-200">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -220,7 +220,7 @@ export default function SignupPage() {
               )}
             </div>
             <div className="space-y-2 mb-4">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="dark:text-slate-200">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -242,14 +242,14 @@ export default function SignupPage() {
           <CardFooter className="flex flex-col space-y-4 mt-2">
             <Button
               type="submit"
-              className="w-full bg-[#2563eb] hover:bg-[#2563eb]/50"
+              className="w-full bg-[#2563eb] hover:bg-[#2563eb]/50 dark:bg-blue-700 dark:hover:bg-blue-600"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Creating account..." : "Sign Up"}
             </Button>
-            <p className="text-center text-sm text-slate-600">
+            <p className="text-center text-sm text-slate-600 dark:text-slate-300">
               Already have an account?{" "}
-              <Link href="/login" className="text-blue-600 hover:underline">
+              <Link href="/login" className="text-blue-600 hover:underline dark:text-blue-400">
                 Sign in
               </Link>
             </p>

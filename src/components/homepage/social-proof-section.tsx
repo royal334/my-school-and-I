@@ -45,7 +45,7 @@ function StatCount({
   const { ref, inView } = useInView();
   const count = useCountUp(target, inView);
   return (
-    <span ref={ref} className="text-5xl font-bold text-blue-600">
+    <span ref={ref} className="text-5xl font-bold text-blue-600 dark:text-blue-500">
       {count}
       {suffix}
     </span>
@@ -54,14 +54,14 @@ function StatCount({
 
 export function SocialProofSection() {
   return (
-    <section className="py-20 lg:py-24 bg-slate-50">
+    <section className="py-20 lg:py-24 bg-slate-50 dark:bg-slate-950">
       <div className="max-w-[1440px] mx-auto px-6">
         <Reveal>
           <div className="text-center mb-14">
-            <p className="text-sm font-semibold uppercase tracking-widest mb-2 text-slate-500">
+            <p className="text-sm font-semibold uppercase tracking-widest mb-2 text-slate-500 dark:text-slate-400">
               Social Proof
             </p>
-            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900">
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">
               Trusted by Engineering Students
             </h2>
           </div>
@@ -75,7 +75,7 @@ export function SocialProofSection() {
                 <div>
                   <StatCount target={s.value} suffix={s.suffix} />
                 </div>
-                <p className="text-sm mt-1 font-medium text-slate-600">
+                <p className="text-sm mt-1 font-medium text-slate-600 dark:text-slate-300">
                   {s.label}
                 </p>
               </div>
@@ -87,24 +87,24 @@ export function SocialProofSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {TESTIMONIALS.map((t, i) => (
             <Reveal key={t.name} delay={i * 100}>
-              <div className="rounded-xl p-6 border border-slate-200 bg-white hover:-translate-y-1 hover:shadow-xl transition-all duration-200 h-full flex flex-col">
+              <div className="rounded-xl p-6 border border-slate-200 bg-white hover:-translate-y-1 hover:shadow-xl transition-all duration-200 h-full flex flex-col dark:border-slate-800 dark:bg-slate-900">
                 <div className="flex gap-0.5 mb-4">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <Star key={s} size={16} fill="#f59e0b" color="#f59e0b" />
                   ))}
                 </div>
-                <p className="text-sm leading-6 flex-1 mb-5 text-slate-600">
+                <p className="text-sm leading-6 flex-1 mb-5 text-slate-600 dark:text-slate-300">
                   &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shrink-0 bg-blue-600">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shrink-0 bg-blue-600 dark:bg-blue-700">
                     {t.initials}
                   </div>
                   <div>
-                    <p className="font-semibold text-sm text-slate-900">
+                    <p className="font-semibold text-sm text-slate-900 dark:text-white">
                       {t.name}
                     </p>
-                    <p className="text-xs text-slate-500">{t.meta}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{t.meta}</p>
                   </div>
                 </div>
               </div>

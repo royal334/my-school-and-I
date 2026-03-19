@@ -1,25 +1,38 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
-import { toast } from 'sonner';
-import { createClient } from '@/utils/supabase/client';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Lock, Eye, EyeOff, CheckCircle } from "lucide-react";
+import { toast } from "sonner";
+import { createClient } from "@/utils/supabase/client";
 
 export default function UpdatePasswordPage() {
   const router = useRouter();
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const supabase = createClient();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+    mode: "onChange",
+  });
+
+  const currentPassword = watch("password");
 
   // Check if user is authenticated (from password reset link)
   useEffect(() => {
@@ -27,73 +40,35 @@ export default function UpdatePasswordPage() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      
+
       if (session) {
         setIsAuthenticated(true);
       } else {
-        toast.error('Invalid or expired reset link');
-        router.push('/forgot-password');
+        toast.error("Invalid or expired reset link");
+        router.push("/forgot-password");
       }
     };
 
     checkAuth();
-  }, []);
+  }, [router, supabase.auth]);
 
-  const validatePassword = (pass: string): string[] => {
-    const errors: string[] = [];
-    
-    if (pass.length < 8) {
-      errors.push('Password must be at least 8 characters');
-    }
-    if (!/[A-Z]/.test(pass)) {
-      errors.push('Include at least one uppercase letter');
-    }
-    if (!/[a-z]/.test(pass)) {
-      errors.push('Include at least one lowercase letter');
-    }
-    if (!/[0-9]/.test(pass)) {
-      errors.push('Include at least one number');
-    }
-    
-    return errors;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Check passwords match
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
-
-    // Validate password strength
-    const errors = validatePassword(password);
-    if (errors.length > 0) {
-      toast.error(errors[0]);
-      return;
-    }
-
-    setLoading(true);
-
+  const onSubmit = async (data: any) => {
     try {
       const { error } = await supabase.auth.updateUser({
-        password: password,
+        password: data.password,
       });
 
       if (error) throw error;
 
-      toast.success('Password updated successfully!');
-      
+      toast.success("Password updated successfully!");
+
       // Wait a moment then redirect
       setTimeout(() => {
-        router.push('/dashboard');
+        router.push("/dashboard");
       }, 1500);
     } catch (error: any) {
-      console.error('Update error:', error);
-      toast.error(error.message || 'Failed to update password');
-    } finally {
-      setLoading(false);
+      console.error("Update error:", error);
+      toast.error(error.message || "Failed to update password");
     }
   };
 
@@ -123,19 +98,32 @@ export default function UpdatePasswordPage() {
           </p>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* New Password */}
             <div className="space-y-2">
               <Label htmlFor="password">New Password</Label>
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="Enter new password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={8}
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Password must be at least 8 characters",
+                    },
+                    validate: {
+                      hasUpperCase: (v) =>
+                        /[A-Z]/.test(v) ||
+                        "Include at least one uppercase letter",
+                      hasLowerCase: (v) =>
+                        /[a-z]/.test(v) ||
+                        "Include at least one lowercase letter",
+                      hasNumber: (v) =>
+                        /[0-9]/.test(v) || "Include at least one number",
+                    },
+                  })}
                 />
                 <button
                   type="button"
@@ -149,6 +137,11 @@ export default function UpdatePasswordPage() {
                   )}
                 </button>
               </div>
+              {errors.password && (
+                <p className="text-sm text-red-500">
+                  {errors.password.message as string}
+                </p>
+              )}
             </div>
 
             {/* Confirm Password */}
@@ -157,12 +150,16 @@ export default function UpdatePasswordPage() {
               <div className="relative">
                 <Input
                   id="confirm-password"
-                  type={showConfirmPassword ? 'text' : 'password'}
+                  type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm new password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  minLength={8}
+                  {...register("confirmPassword", {
+                    required: "Please confirm your password",
+                    validate: (val) => {
+                      if (currentPassword !== val) {
+                        return "Passwords do not match";
+                      }
+                    },
+                  })}
                 />
                 <button
                   type="button"
@@ -176,6 +173,11 @@ export default function UpdatePasswordPage() {
                   )}
                 </button>
               </div>
+              {errors.confirmPassword && (
+                <p className="text-sm text-red-500">
+                  {errors.confirmPassword.message as string}
+                </p>
+              )}
             </div>
 
             {/* Password Requirements */}
@@ -187,9 +189,9 @@ export default function UpdatePasswordPage() {
                 <li className="flex items-center gap-2">
                   <CheckCircle
                     className={`h-3 w-3 ${
-                      password.length >= 8
-                        ? 'text-green-600'
-                        : 'text-slate-400'
+                      currentPassword?.length >= 8
+                        ? "text-green-600"
+                        : "text-slate-400"
                     }`}
                   />
                   At least 8 characters
@@ -197,9 +199,9 @@ export default function UpdatePasswordPage() {
                 <li className="flex items-center gap-2">
                   <CheckCircle
                     className={`h-3 w-3 ${
-                      /[A-Z]/.test(password)
-                        ? 'text-green-600'
-                        : 'text-slate-400'
+                      /[A-Z]/.test(currentPassword || "")
+                        ? "text-green-600"
+                        : "text-slate-400"
                     }`}
                   />
                   One uppercase letter
@@ -207,9 +209,9 @@ export default function UpdatePasswordPage() {
                 <li className="flex items-center gap-2">
                   <CheckCircle
                     className={`h-3 w-3 ${
-                      /[a-z]/.test(password)
-                        ? 'text-green-600'
-                        : 'text-slate-400'
+                      /[a-z]/.test(currentPassword || "")
+                        ? "text-green-600"
+                        : "text-slate-400"
                     }`}
                   />
                   One lowercase letter
@@ -217,9 +219,9 @@ export default function UpdatePasswordPage() {
                 <li className="flex items-center gap-2">
                   <CheckCircle
                     className={`h-3 w-3 ${
-                      /[0-9]/.test(password)
-                        ? 'text-green-600'
-                        : 'text-slate-400'
+                      /[0-9]/.test(currentPassword || "")
+                        ? "text-green-600"
+                        : "text-slate-400"
                     }`}
                   />
                   One number
@@ -227,10 +229,10 @@ export default function UpdatePasswordPage() {
               </ul>
             </div>
 
-            <Button type="submit" disabled={loading} className="w-full">
-              {loading ? (
+            <Button type="submit" disabled={isSubmitting} className="w-full">
+              {isSubmitting ? (
                 <>
-                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-slate-200 border-t-transparent" />
                   Updating Password...
                 </>
               ) : (

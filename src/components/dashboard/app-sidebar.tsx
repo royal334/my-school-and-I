@@ -93,7 +93,7 @@ export function AppSidebar() {
     try {
       const res = await axios.post("/api/auth/logout");
       if (res.status === 200) {
-        router.push("/login");
+        router.push("/");
       }
     } catch {
       // If the fetch itself throws (e.g. network error) still redirect
@@ -107,11 +107,13 @@ export function AppSidebar() {
   return (
     <>
       <Sidebar>
-        <SidebarHeader className="p-4 border-b bg-white">
-          <h2 className="text-xl font-bold text-blue-600">EngiPortal</h2>
+        <SidebarHeader className="p-4 border-b dark:border-slate-800 bg-white dark:bg-slate-950">
+          <h2 className="text-xl font-bold text-blue-600 dark:text-blue-500">
+            EngiPortal
+          </h2>
         </SidebarHeader>
 
-        <SidebarContent className="bg-white">
+        <SidebarContent className="bg-white dark:bg-slate-950">
           <SidebarGroup>
             <SidebarMenu className="space-y-4">
               {navItems.map(({ href, icon: Icon, label }) => (
@@ -128,12 +130,12 @@ export function AppSidebar() {
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter className="p-4 border-t bg-white">
+        <SidebarFooter className="p-4 border-t dark:border-slate-800 bg-white dark:bg-slate-950">
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
                 onClick={() => setShowLogoutDialog(true)}
-                className="w-full cursor-pointer text-red-600 hover:bg-red-50 hover:text-red-700"
+                className="w-full cursor-pointer text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950/50 dark:hover:text-red-300"
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Logout</span>
@@ -158,7 +160,7 @@ export function AppSidebar() {
             <AlertDialogAction
               onClick={handleLogout}
               disabled={loggingOut}
-              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600 dark:bg-red-700 dark:hover:bg-red-800"
             >
               {loggingOut ? "Logging out…" : "Yes, log out"}
             </AlertDialogAction>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Sidebar,
@@ -34,16 +34,12 @@ import {
   Settings,
 } from "lucide-react";
 import Link from "next/link";
-import axios from "axios"
+import axios from "axios";
+import { createClient } from "@/utils/supabase/client";
 
-const navItems = [
+const baseNavItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/dashboard/materials", icon: BookOpen, label: "Materials Library" },
-  {
-    href: "/dashboard/materials/upload",
-    icon: Upload,
-    label: "Upload Material",
-  },
   { href: "/dashboard/cgpa", icon: Calculator, label: "CGPA" },
   { href: "/dashboard/profile", icon: User, label: "Profile" },
   { href: "/dashboard/vendors", icon: Users, label: "Vendors" },
@@ -55,6 +51,42 @@ export function AppSidebar() {
   const router = useRouter();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+
+  useEffect(() => {
+    async function checkRole() {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data } = await supabase
+          .from("admin_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .single();
+
+        if (data && data.role === "super_admin") {
+          setIsSuperAdmin(true);
+        }
+      }
+    }
+    checkRole();
+  }, []);
+
+  const navItems = isSuperAdmin
+    ? [
+        baseNavItems[0],
+        baseNavItems[1],
+        {
+          href: "/dashboard/materials/upload",
+          icon: Upload,
+          label: "Upload Material",
+        },
+        ...baseNavItems.slice(2),
+      ]
+    : baseNavItems;
 
   const handleLogout = async () => {
     setLoggingOut(true);

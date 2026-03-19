@@ -37,12 +37,14 @@ export async function getMaterials({
 }) {
   const supabase = supabaseProp || createClient();
 
+  const courseInner = level || semester ? "!inner" : "";
+
   let query = supabase
     .from("materials")
     .select(
       `
       *,
-      courses (
+      courses${courseInner} (
         course_code,
         course_title,
         level,
@@ -50,7 +52,7 @@ export async function getMaterials({
       )
     `,
     )
-    // .eq("is_approved", true)
+    .eq("is_approved", true)
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
 

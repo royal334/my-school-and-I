@@ -1,13 +1,13 @@
 import { Suspense } from "react";
 import { createClient } from "@/utils/supabase/server";
+import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { getMaterials } from "@/utils/supabase/queries";
 import MaterialsContent from "@/components/materials/materials-content";
 import MaterialsFilters from "@/components/materials/materials-filters";
 import { Card } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+
 
 export const metadata = {
   title: "Materials Library | EngiPortal",
@@ -58,14 +58,20 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
     resolvedSearchParams.type !== "all" ? resolvedSearchParams.type : undefined;
   const search = resolvedSearchParams.search;
 
-  // Fetch materials
+  // Fetch materials using an admin client to bypass RLS, so that locked premium materials
+  // are still sent to the UI, where they render as locked cards!
+  const supabaseAdmin = createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  );
+
   const materials = await getMaterials({
     level,
     semester,
     type,
     search,
     limit: 50,
-    supabase,
+    supabase: supabaseAdmin // use admin client
   });
 
   return (

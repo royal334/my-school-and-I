@@ -65,23 +65,25 @@ export default function SignupPage() {
       if (authError) throw authError;
 
       // 2. Create profile record
-      // if (authData.user) {
-      //   const { error: profileError } = await supabase.from("profiles").insert({
-      //     id: authData.user.id,
-      //     email: data.email,
-      //     full_name: data.full_name,
-      //     matric_number: data.matric_number,
-      //     level: parseInt(data.level),
-      //     department: data.department,
-      //   });
+      if (authData.user) {
+        const { error: profileError } = await supabase.from("profiles").upsert({
+          id: authData.user.id,
+          email: data.email,
+          full_name: data.full_name,
+          matric_number: data.matric_number,
+          level: parseInt(data.level),
+          department: data.department,
+        });
 
-      //   if (profileError) throw profileError;
-      // }
+        if (profileError) throw profileError;
+      }
 
-      toast.success("Account created! Please check your email to verify.", { position: "top-center"});
+      toast.success("Account created successfully", {
+        position: "top-center",
+      });
       router.push("/login");
     } catch (error: any) {
-      toast.error(error.message || "Signup failed", { position: "top-center"});
+      toast.error(error.message || "Signup failed", { position: "top-center" });
     }
   };
 
@@ -238,7 +240,11 @@ export default function SignupPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 mt-2">
-            <Button type="submit" className="w-full bg-[#2563eb] hover:bg-[#2563eb]/50" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full bg-[#2563eb] hover:bg-[#2563eb]/50"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? "Creating account..." : "Sign Up"}
             </Button>
             <p className="text-center text-sm text-slate-600">

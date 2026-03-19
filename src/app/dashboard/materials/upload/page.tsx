@@ -1,7 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { isUserModerator } from "@/utils/supabase/queries";
 import { getCourses } from "@/utils/supabase/queries";
 import UploadForm from "@/components/materials/upload-form";
 import { ArrowLeft } from "lucide-react";
@@ -20,17 +19,21 @@ export default async function UploadMaterialPage() {
     redirect("/login");
   }
 
-  // Check if user is moderator or admin
-  const isModerator = await isUserModerator(user.id, supabase);
+  // Check if user is super_admin
+  const { data: roleData } = await supabase
+    .from("admin_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .single();
 
-  if (!isModerator) {
+  if (!roleData || roleData.role !== "super_admin") {
     return (
       <div className="p-10 space-y-4">
         <div className="p-6 text-amber-800 bg-amber-50 border border-amber-200 rounded-lg">
           <h2 className="text-lg font-bold">Access Denied</h2>
           <p>
-            Debug: You are logged in as {user.email}, but you do not have
-            moderator or admin permissions.
+            You are logged in as {user.email}, but you do not have
+            super admin permissions to upload materials.
           </p>
           <p className="text-sm mt-2 opacity-70">User ID: {user.id}</p>
         </div>

@@ -29,56 +29,92 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Parse form data
-    const formData = await request.formData();
-    const file = formData.get("file") as File;
-    const courseId = formData.get("courseId") as string;
-    const title = formData.get("title") as string;
-    const type = formData.get("type") as string;
-    const description = formData.get("description") as string | null;
-    const isPremium = formData.get("isPremium") === "true";
+    // Parse request body based on content type
+    let file: File | null = null;
+    let preUploadedPath: string | null = null;
+    let courseId: string;
+    let title: string;
+    let type: string;
+    let description: string | null;
+    let isPremium: boolean;
+    let fileSize: number;
+    let fileName: string;
+
+    const contentType = request.headers.get("content-type") || "";
+
+    if (contentType.includes("application/json")) {
+      const body = await request.json();
+      preUploadedPath = body.filePath || null;
+      courseId = body.courseId;
+      title = body.title;
+      type = body.type;
+      description = body.description || null;
+      isPremium = body.isPremium;
+      fileSize = body.fileSize || 0;
+      fileName = body.fileName || "unknown";
+    } else {
+      const formData = await request.formData();
+      file = formData.get("file") as File | null;
+      preUploadedPath = formData.get("filePath") as string | null;
+      courseId = formData.get("courseId") as string;
+      title = formData.get("title") as string;
+      type = formData.get("type") as string;
+      description = formData.get("description") as string | null;
+      isPremium = formData.get("isPremium") === "true";
+      fileSize = file?.size || Number(formData.get("fileSize") || 0);
+      fileName =
+        file?.name || (formData.get("fileName") as string) || "unknown";
+    }
 
     // Validate inputs
-    if (!file || !courseId || !title || !type) {
+    if ((!file && !preUploadedPath) || !courseId || !title || !type) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 },
       );
     }
 
-    // Validate file type
-    if (file.type !== "application/pdf") {
-      return NextResponse.json(
-        { error: "Only PDF files are allowed" },
-        { status: 400 },
-      );
-    }
+    let filePath = preUploadedPath;
 
-    // Validate file size
-    if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json(
-        { error: "File size must not exceed 10MB" },
-        { status: 400 },
-      );
-    }
+    if (file) {
+      // Validate file type
+      if (file.type !== "application/pdf") {
+        return NextResponse.json(
+          { error: "Only PDF files are allowed" },
+          { status: 400 },
+        );
+      }
 
-    // Generate unique filename
-    const uniqueFileName = generateUniqueFileName(file.name);
-    const filePath = `materials/${courseId}/${uniqueFileName}`;
+      // Validate file size
+      if (file.size > MAX_FILE_SIZE) {
+        return NextResponse.json(
+          {
+            error: `File size must not exceed ${MAX_FILE_SIZE / 1024 / 1024}MB`,
+          },
+          { status: 400 },
+        );
+      }
 
-    // Upload file to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from("materials")
-      .upload(filePath, file, {
-        contentType: file.type,
-        upsert: false,
-      });
+      // Generate unique filename
+      const uniqueFileName = generateUniqueFileName(file.name);
+      filePath = `materials/${courseId}/${uniqueFileName}`;
 
-    if (uploadError) {
-      return NextResponse.json(
-        { error: "Failed to upload file" },
-        { status: 500 },
-      );
+      // Upload file to Supabase Storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("materials")
+        .upload(filePath, file, {
+          contentType: file.type,
+          upsert: false,
+        });
+
+      if (uploadError) {
+        console.error("Storage upload error:", uploadError);
+        return NextResponse.json(
+          { error: "Failed to upload file" },
+          { status: 500 },
+        );
+      }
+      filePath = uploadData.path;
     }
 
     // Create material record in database
@@ -89,9 +125,9 @@ export async function POST(request: NextRequest) {
         title,
         type,
         description,
-        file_path: uploadData.path,
-        file_size_bytes: file.size,
-        file_name: file.name,
+        file_path: filePath,
+        file_size_bytes: fileSize,
+        file_name: fileName,
         uploaded_by: user.id,
         is_premium: isPremium,
         is_approved: isAdmin, // Admins auto-approve, moderators need approval
@@ -100,8 +136,14 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (dbError) {
+      if (!filePath) {
+        return NextResponse.json(
+          { error: "Failed to create material record" },
+          { status: 500 },
+        );
+      }
       // Clean up uploaded file
-      await supabase.storage.from("materials").remove([uploadData.path]);
+      await supabase.storage.from("materials").remove([filePath]);
       return NextResponse.json(
         { error: "Failed to create material record" },
         { status: 500 },
@@ -117,7 +159,7 @@ export async function POST(request: NextRequest) {
       metadata: {
         title,
         course_id: courseId,
-        file_name: file.name,
+        file_name: fileName,
       },
     });
 
@@ -128,10 +170,10 @@ export async function POST(request: NextRequest) {
         ? "Material uploaded and approved"
         : "Material uploaded, awaiting approval",
     });
-  } catch (error) {
-    console.error("Upload error:", error);
+  } catch (error: any) {
+    console.error("Critical Upload Error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: error.message || "Internal server error" },
       { status: 500 },
     );
   }

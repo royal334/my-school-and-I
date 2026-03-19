@@ -242,7 +242,7 @@ export default function SignupPage() {
           <CardFooter className="flex flex-col space-y-4 mt-2">
             <Button
               type="submit"
-              className="w-full bg-[#2563eb] hover:bg-[#2563eb]/50 dark:bg-blue-700 dark:hover:bg-blue-600"
+              className="w-full bg-primary-600 hover:bg-primary-600/50 dark:bg-blue-700 dark:hover:bg-blue-600"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Creating account..." : "Sign Up"}

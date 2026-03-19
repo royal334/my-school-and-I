@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -23,11 +24,14 @@ import {
   MATERIAL_TYPE_LABELS,
 } from "@/utils/constants/constants";
 import axios from "axios";
+import { createClient } from "@/utils/supabase/client";
+import { generateUniqueFileName } from "@/utils/lib";
 
 import { UploadFormProps, UploadFormValues } from "@/utils/types";
 
 export default function UploadForm({ courses }: UploadFormProps) {
   const router = useRouter();
+  const supabase = createClient();
   const {
     register,
     handleSubmit,
@@ -47,35 +51,82 @@ export default function UploadForm({ courses }: UploadFormProps) {
 
   const file = watch("file")?.[0];
 
+  const [uploadProgress, setUploadProgress] = useState(0);
+
   const onSubmit = async (data: UploadFormValues) => {
+    let filePath = "";
+    const selectedFile = data.file[0];
+
     try {
-      const uploadFormData = new FormData();
-      uploadFormData.append("file", data.file[0]);
-      uploadFormData.append("courseId", data.courseId);
-      uploadFormData.append("title", data.title);
-      uploadFormData.append("type", data.type);
-      uploadFormData.append("description", data.description || "");
-      uploadFormData.append("isPremium", String(data.isPremium));
+      setUploadProgress(0);
+      toast.loading("Preparing upload...", { id: "upload-progress" });
 
-      //  const response = await fetch("/api/materials/upload", {
-      //    method: "POST",
-      //    body: uploadFormData,
-      //  });
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) throw new Error("You must be logged in to upload");
 
-      const response = await axios.post(
-        "/api/materials/upload",
-        uploadFormData,
-      );
+      const uniqueFileName = generateUniqueFileName(selectedFile.name);
+      const storagePath = `materials/${data.courseId}/${uniqueFileName}`;
+
+      // 1. Upload directly to Supabase Storage using axios to track progress
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      const storageUrl = `${supabaseUrl}/storage/v1/object/materials/${storagePath}`;
+
+      await axios.post(storageUrl, selectedFile, {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${session.access_token}`,
+          "Content-Type": selectedFile.type,
+        },
+        onUploadProgress: (progressEvent) => {
+          const total = progressEvent.total || selectedFile.size;
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / total,
+          );
+          setUploadProgress(percentCompleted);
+          toast.loading(`Uploading: ${percentCompleted}%`, {
+            id: "upload-progress",
+          });
+        },
+      });
+
+      filePath = storagePath;
+      toast.loading("Finalizing material details...", {
+        id: "upload-progress",
+      });
+
+      // 2. Call API to create database record
+      const response = await axios.post("/api/materials/upload", {
+        filePath: filePath,
+        fileSize: selectedFile.size,
+        fileName: selectedFile.name,
+        courseId: data.courseId,
+        title: data.title,
+        type: data.type,
+        description: data.description || "",
+        isPremium: data.isPremium,
+      });
 
       if (response.status !== 200) {
-        throw new Error(response.data.error || "Upload failed");
+        throw new Error(
+          response.data.error || "Failed to save material details",
+        );
       }
 
-      toast.success(response.data.message, { position: "top-center" });
+      toast.success(response.data.message || "Material uploaded successfully", {
+        id: "upload-progress",
+        position: "top-center",
+      });
+
       router.push("/dashboard/materials");
       router.refresh();
     } catch (error: any) {
+      console.error("Upload process failed:", error);
+      setUploadProgress(0);
       toast.error(error.message || "Failed to upload material", {
+        id: "upload-progress",
         position: "top-center",
       });
     }
@@ -162,6 +213,22 @@ export default function UploadForm({ courses }: UploadFormProps) {
             )}
             {errors.file && (
               <p className="text-sm text-red-500">{errors.file.message}</p>
+            )}
+
+            {/* Progress Bar */}
+            {uploadProgress > 0 && uploadProgress < 100 && (
+              <div className="mt-4 space-y-2">
+                <div className="flex justify-between text-xs font-medium text-slate-600">
+                  <span>Uploading...</span>
+                  <span>{uploadProgress}%</span>
+                </div>
+                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary-600 transition-all duration-300"
+                    style={{ width: `${uploadProgress}%` }}
+                  />
+                </div>
+              </div>
             )}
           </div>
 

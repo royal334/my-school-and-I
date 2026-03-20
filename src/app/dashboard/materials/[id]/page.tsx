@@ -262,7 +262,7 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                 Premium Material
               </h3>
               <p className="mt-2 text-sm text-slate-600">
-                Subscribe for ₦400/semester to access this material
+                Subscribe for ₦1000/semester to access this material
               </p>
               <Button className="mt-4">Upgrade to Premium</Button>
             </Card>

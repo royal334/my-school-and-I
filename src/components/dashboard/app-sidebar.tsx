@@ -11,6 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   AlertDialog,
@@ -49,9 +50,17 @@ const baseNavItems = [
 
 export function AppSidebar() {
   const router = useRouter();
+  const { isMobile, setOpenMobile } = useSidebar();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+
+  // Helper to close sidebar on mobile
+  const closeSidebarOnMobile = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
 
   useEffect(() => {
     async function checkRole() {
@@ -118,7 +127,7 @@ export function AppSidebar() {
             <SidebarMenu className="space-y-4">
               {navItems.map(({ href, icon: Icon, label }) => (
                 <SidebarMenuItem key={href}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild onClick={closeSidebarOnMobile}>
                     <Link href={href}>
                       <Icon className="mr-2 h-4 w-4" />
                       <span>{label}</span>

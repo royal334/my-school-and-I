@@ -23,7 +23,7 @@ export const MAX_UPLOADS_PER_DAY = 5;
 // ============================================================
 
 export const PRICING = {
-  SEMESTER_SUBSCRIPTION: 400, // ₦400 per semester
+  SEMESTER_SUBSCRIPTION: 1000, // ₦1000 per semester
   VENDOR_BASIC: 5000, // ₦5,000 for basic listing
   VENDOR_PREMIUM: 10000, // ₦10,000 for premium listing
   VENDOR_FEATURED: 15000, // ₦15,000 for featured listing
@@ -267,7 +267,7 @@ export const PAGINATION = {
   MAX_PAGE_SIZE: 100,
   MATERIALS_PER_PAGE: 12,
   VENDORS_PER_PAGE: 12,
-  TRANSACTIONS_PER_PAGE: 20,
+  PAYMENTS_PER_PAGE: 20,
 } as const;
 
 // ============================================================
@@ -409,7 +409,7 @@ export const CACHE_KEYS = {
   VENDORS: "vendors",
   VENDOR: "vendor",
   ANNOUNCEMENTS: "announcements",
-  TRANSACTIONS: "transactions",
+  PAYMENTS: "payments",
   VENDOR_CATEGORIES: "vendor-categories",
 } as const;
 

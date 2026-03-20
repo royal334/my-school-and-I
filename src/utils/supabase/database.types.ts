@@ -10,577 +10,598 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export interface Database {
   public: {
     Tables: {
       profiles: {
         Row: {
-          id: string
-          matric_number: string
-          full_name: string
-          email: string
-          department: string
-          level: number
-          phone_number: string | null
-          avatar_url: string | null
-          subscription_status: 'free' | 'active' | 'expired' | 'trial'
-          subscription_expires_at: string | null
-          total_downloads: number
-          daily_download_count: number
-          daily_download_reset_at: string
-          created_at: string
-          updated_at: string
-        }
+          id: string;
+          matric_number: string;
+          full_name: string;
+          email: string;
+          department: string;
+          level: number;
+          phone_number: string | null;
+          avatar_url: string | null;
+          subscription_status: "free" | "active" | "expired" | "trial";
+          subscription_expires_at: string | null;
+          total_downloads: number;
+          daily_download_count: number;
+          daily_download_reset_at: string;
+          created_at: string;
+          updated_at: string;
+        };
         Insert: {
-          id: string
-          matric_number: string
-          full_name: string
-          email: string
-          department?: string
-          level: number
-          phone_number?: string | null
-          avatar_url?: string | null
-          subscription_status?: 'free' | 'active' | 'expired' | 'trial'
-          subscription_expires_at?: string | null
-          total_downloads?: number
-          daily_download_count?: number
-          daily_download_reset_at?: string
-          created_at?: string
-          updated_at?: string
-        }
+          id: string;
+          matric_number: string;
+          full_name: string;
+          email: string;
+          department?: string;
+          level: number;
+          phone_number?: string | null;
+          avatar_url?: string | null;
+          subscription_status?: "free" | "active" | "expired" | "trial";
+          subscription_expires_at?: string | null;
+          total_downloads?: number;
+          daily_download_count?: number;
+          daily_download_reset_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
         Update: {
-          id?: string
-          matric_number?: string
-          full_name?: string
-          email?: string
-          department?: string
-          level?: number
-          phone_number?: string | null
-          avatar_url?: string | null
-          subscription_status?: 'free' | 'active' | 'expired' | 'trial'
-          subscription_expires_at?: string | null
-          total_downloads?: number
-          daily_download_count?: number
-          daily_download_reset_at?: string
-          created_at?: string
-          updated_at?: string
-        }
-      }
+          id?: string;
+          matric_number?: string;
+          full_name?: string;
+          email?: string;
+          department?: string;
+          level?: number;
+          phone_number?: string | null;
+          avatar_url?: string | null;
+          subscription_status?: "free" | "active" | "expired" | "trial";
+          subscription_expires_at?: string | null;
+          total_downloads?: number;
+          daily_download_count?: number;
+          daily_download_reset_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       courses: {
         Row: {
-          id: string
-          course_code: string
-          course_title: string
-          level: number
-          semester: number
-          credit_units: number
-          description: string | null
-          created_at: string
-          updated_at: string
-        }
+          id: string;
+          course_code: string;
+          course_title: string;
+          level: number;
+          semester: number;
+          credit_units: number;
+          description: string | null;
+          created_at: string;
+          updated_at: string;
+        };
         Insert: {
-          id?: string
-          course_code: string
-          course_title: string
-          level: number
-          semester: number
-          credit_units: number
-          description?: string | null
-          created_at?: string
-          updated_at?: string
-        }
+          id?: string;
+          course_code: string;
+          course_title: string;
+          level: number;
+          semester: number;
+          credit_units: number;
+          description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
         Update: {
-          id?: string
-          course_code?: string
-          course_title?: string
-          level?: number
-          semester?: number
-          credit_units?: number
-          description?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-      }
+          id?: string;
+          course_code?: string;
+          course_title?: string;
+          level?: number;
+          semester?: number;
+          credit_units?: number;
+          description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       materials: {
         Row: {
-          id: string
-          course_id: string | null
-          title: string
-          type: 'lecture_note' | 'past_question' | 'textbook' | 'assignment' | 'lab_manual' | 'other'
-          description: string | null
-          file_path: string
-          file_size_bytes: number | null
-          file_name: string
-          uploaded_by: string | null
-          is_premium: boolean
-          view_count: number
-          download_count: number
-          academic_year: string | null
-          is_approved: boolean
-          approved_by: string | null
-          approved_at: string | null
-          created_at: string
-          updated_at: string
-        }
+          id: string;
+          course_id: string | null;
+          title: string;
+          type:
+            | "lecture_note"
+            | "past_question"
+            | "textbook"
+            | "assignment"
+            | "lab_manual"
+            | "other";
+          description: string | null;
+          file_path: string;
+          file_size_bytes: number | null;
+          file_name: string;
+          uploaded_by: string | null;
+          is_premium: boolean;
+          view_count: number;
+          download_count: number;
+          academic_year: string | null;
+          is_approved: boolean;
+          approved_by: string | null;
+          approved_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
         Insert: {
-          id?: string
-          course_id?: string | null
-          title: string
-          type: 'lecture_note' | 'past_question' | 'textbook' | 'assignment' | 'lab_manual' | 'other'
-          description?: string | null
-          file_path: string
-          file_size_bytes?: number | null
-          file_name: string
-          uploaded_by?: string | null
-          is_premium?: boolean
-          view_count?: number
-          download_count?: number
-          academic_year?: string | null
-          is_approved?: boolean
-          approved_by?: string | null
-          approved_at?: string | null
-          created_at?: string
-          updated_at?: string
-        }
+          id?: string;
+          course_id?: string | null;
+          title: string;
+          type:
+            | "lecture_note"
+            | "past_question"
+            | "textbook"
+            | "assignment"
+            | "lab_manual"
+            | "other";
+          description?: string | null;
+          file_path: string;
+          file_size_bytes?: number | null;
+          file_name: string;
+          uploaded_by?: string | null;
+          is_premium?: boolean;
+          view_count?: number;
+          download_count?: number;
+          academic_year?: string | null;
+          is_approved?: boolean;
+          approved_by?: string | null;
+          approved_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
         Update: {
-          id?: string
-          course_id?: string | null
-          title?: string
-          type?: 'lecture_note' | 'past_question' | 'textbook' | 'assignment' | 'lab_manual' | 'other'
-          description?: string | null
-          file_path?: string
-          file_size_bytes?: number | null
-          file_name?: string
-          uploaded_by?: string | null
-          is_premium?: boolean
-          view_count?: number
-          download_count?: number
-          academic_year?: string | null
-          is_approved?: boolean
-          approved_by?: string | null
-          approved_at?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-      }
+          id?: string;
+          course_id?: string | null;
+          title?: string;
+          type?:
+            | "lecture_note"
+            | "past_question"
+            | "textbook"
+            | "assignment"
+            | "lab_manual"
+            | "other";
+          description?: string | null;
+          file_path?: string;
+          file_size_bytes?: number | null;
+          file_name?: string;
+          uploaded_by?: string | null;
+          is_premium?: boolean;
+          view_count?: number;
+          download_count?: number;
+          academic_year?: string | null;
+          is_approved?: boolean;
+          approved_by?: string | null;
+          approved_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       semesters: {
         Row: {
-          id: string
-          user_id: string
-          level: number
-          semester: number
-          session: string
-          gpa: number | null
-          total_credit_units: number
-          created_at: string
-          updated_at: string
-        }
+          id: string;
+          user_id: string;
+          level: number;
+          semester: number;
+          session: string;
+          gpa: number | null;
+          total_credit_units: number;
+          created_at: string;
+          updated_at: string;
+        };
         Insert: {
-          id?: string
-          user_id: string
-          level: number
-          semester: number
-          session: string
-          gpa?: number | null
-          total_credit_units?: number
-          created_at?: string
-          updated_at?: string
-        }
+          id?: string;
+          user_id: string;
+          level: number;
+          semester: number;
+          session: string;
+          gpa?: number | null;
+          total_credit_units?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
         Update: {
-          id?: string
-          user_id?: string
-          level?: number
-          semester?: number
-          session?: string
-          gpa?: number | null
-          total_credit_units?: number
-          created_at?: string
-          updated_at?: string
-        }
-      }
+          id?: string;
+          user_id?: string;
+          level?: number;
+          semester?: number;
+          session?: string;
+          gpa?: number | null;
+          total_credit_units?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       semester_courses: {
         Row: {
-          id: string
-          semester_id: string
-          course_code: string
-          course_title: string
-          credit_units: number
-          grade: 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
-          grade_point: number
-          created_at: string
-          updated_at: string
-        }
+          id: string;
+          semester_id: string;
+          course_code: string;
+          course_title: string;
+          credit_units: number;
+          grade: "A" | "B" | "C" | "D" | "E" | "F";
+          grade_point: number;
+          created_at: string;
+          updated_at: string;
+        };
         Insert: {
-          id?: string
-          semester_id: string
-          course_code: string
-          course_title: string
-          credit_units: number
-          grade: 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
-          grade_point: number
-          created_at?: string
-          updated_at?: string
-        }
+          id?: string;
+          semester_id: string;
+          course_code: string;
+          course_title: string;
+          credit_units: number;
+          grade: "A" | "B" | "C" | "D" | "E" | "F";
+          grade_point: number;
+          created_at?: string;
+          updated_at?: string;
+        };
         Update: {
-          id?: string
-          semester_id?: string
-          course_code?: string
-          course_title?: string
-          credit_units?: number
-          grade?: 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
-          grade_point?: number
-          created_at?: string
-          updated_at?: string
-        }
-      }
+          id?: string;
+          semester_id?: string;
+          course_code?: string;
+          course_title?: string;
+          credit_units?: number;
+          grade?: "A" | "B" | "C" | "D" | "E" | "F";
+          grade_point?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       vendor_categories: {
         Row: {
-          id: string
-          name: string
-          description: string | null
-          icon: string | null
-          created_at: string
-        }
+          id: string;
+          name: string;
+          description: string | null;
+          icon: string | null;
+          created_at: string;
+        };
         Insert: {
-          id?: string
-          name: string
-          description?: string | null
-          icon?: string | null
-          created_at?: string
-        }
+          id?: string;
+          name: string;
+          description?: string | null;
+          icon?: string | null;
+          created_at?: string;
+        };
         Update: {
-          id?: string
-          name?: string
-          description?: string | null
-          icon?: string | null
-          created_at?: string
-        }
-      }
+          id?: string;
+          name?: string;
+          description?: string | null;
+          icon?: string | null;
+          created_at?: string;
+        };
+      };
       vendors: {
         Row: {
-          id: string
-          user_id: string
-          business_name: string
-          category_id: string | null
-          description: string
-          services: string[]
-          phone_number: string
-          whatsapp_number: string | null
-          location: string | null
-          operating_hours: string | null
-          logo_url: string | null
-          cover_image_url: string | null
-          is_verified: boolean
-          is_featured: boolean
-          subscription_tier: 'basic' | 'premium' | 'featured'
-          subscription_expires_at: string | null
-          view_count: number
-          contact_count: number
-          rating_avg: number
-          rating_count: number
-          is_approved: boolean
-          approved_by: string | null
-          approved_at: string | null
-          created_at: string
-          updated_at: string
-        }
+          id: string;
+          user_id: string;
+          business_name: string;
+          category_id: string | null;
+          description: string;
+          services: string[];
+          phone_number: string;
+          whatsapp_number: string | null;
+          location: string | null;
+          operating_hours: string | null;
+          logo_url: string | null;
+          cover_image_url: string | null;
+          is_verified: boolean;
+          is_featured: boolean;
+          subscription_tier: "basic" | "premium" | "featured";
+          subscription_expires_at: string | null;
+          view_count: number;
+          contact_count: number;
+          rating_avg: number;
+          rating_count: number;
+          is_approved: boolean;
+          approved_by: string | null;
+          approved_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
         Insert: {
-          id?: string
-          user_id: string
-          business_name: string
-          category_id?: string | null
-          description: string
-          services: string[]
-          phone_number: string
-          whatsapp_number?: string | null
-          location?: string | null
-          operating_hours?: string | null
-          logo_url?: string | null
-          cover_image_url?: string | null
-          is_verified?: boolean
-          is_featured?: boolean
-          subscription_tier?: 'basic' | 'premium' | 'featured'
-          subscription_expires_at?: string | null
-          view_count?: number
-          contact_count?: number
-          rating_avg?: number
-          rating_count?: number
-          is_approved?: boolean
-          approved_by?: string | null
-          approved_at?: string | null
-          created_at?: string
-          updated_at?: string
-        }
+          id?: string;
+          user_id: string;
+          business_name: string;
+          category_id?: string | null;
+          description: string;
+          services: string[];
+          phone_number: string;
+          whatsapp_number?: string | null;
+          location?: string | null;
+          operating_hours?: string | null;
+          logo_url?: string | null;
+          cover_image_url?: string | null;
+          is_verified?: boolean;
+          is_featured?: boolean;
+          subscription_tier?: "basic" | "premium" | "featured";
+          subscription_expires_at?: string | null;
+          view_count?: number;
+          contact_count?: number;
+          rating_avg?: number;
+          rating_count?: number;
+          is_approved?: boolean;
+          approved_by?: string | null;
+          approved_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
         Update: {
-          id?: string
-          user_id?: string
-          business_name?: string
-          category_id?: string | null
-          description?: string
-          services?: string[]
-          phone_number?: string
-          whatsapp_number?: string | null
-          location?: string | null
-          operating_hours?: string | null
-          logo_url?: string | null
-          cover_image_url?: string | null
-          is_verified?: boolean
-          is_featured?: boolean
-          subscription_tier?: 'basic' | 'premium' | 'featured'
-          subscription_expires_at?: string | null
-          view_count?: number
-          contact_count?: number
-          rating_avg?: number
-          rating_count?: number
-          is_approved?: boolean
-          approved_by?: string | null
-          approved_at?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-      }
+          id?: string;
+          user_id?: string;
+          business_name?: string;
+          category_id?: string | null;
+          description?: string;
+          services?: string[];
+          phone_number?: string;
+          whatsapp_number?: string | null;
+          location?: string | null;
+          operating_hours?: string | null;
+          logo_url?: string | null;
+          cover_image_url?: string | null;
+          is_verified?: boolean;
+          is_featured?: boolean;
+          subscription_tier?: "basic" | "premium" | "featured";
+          subscription_expires_at?: string | null;
+          view_count?: number;
+          contact_count?: number;
+          rating_avg?: number;
+          rating_count?: number;
+          is_approved?: boolean;
+          approved_by?: string | null;
+          approved_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       vendor_reviews: {
         Row: {
-          id: string
-          vendor_id: string
-          user_id: string
-          rating: number
-          comment: string | null
-          is_approved: boolean
-          created_at: string
-        }
+          id: string;
+          vendor_id: string;
+          user_id: string;
+          rating: number;
+          comment: string | null;
+          is_approved: boolean;
+          created_at: string;
+        };
         Insert: {
-          id?: string
-          vendor_id: string
-          user_id: string
-          rating: number
-          comment?: string | null
-          is_approved?: boolean
-          created_at?: string
-        }
+          id?: string;
+          vendor_id: string;
+          user_id: string;
+          rating: number;
+          comment?: string | null;
+          is_approved?: boolean;
+          created_at?: string;
+        };
         Update: {
-          id?: string
-          vendor_id?: string
-          user_id?: string
-          rating?: number
-          comment?: string | null
-          is_approved?: boolean
-          created_at?: string
-        }
-      }
-      transactions: {
+          id?: string;
+          vendor_id?: string;
+          user_id?: string;
+          rating?: number;
+          comment?: string | null;
+          is_approved?: boolean;
+          created_at?: string;
+        };
+      };
+      payments: {
         Row: {
-          id: string
-          user_id: string
-          reference: string
-          amount: number
-          currency: string
-          type: 'semester_subscription' | 'vendor_listing' | 'featured_listing'
-          status: 'pending' | 'success' | 'failed' | 'cancelled'
-          payment_channel: string | null
-          metadata: Json | null
-          paid_at: string | null
-          created_at: string
-          updated_at: string
-        }
+          id: string;
+          user_id: string;
+          reference: string;
+          amount: number;
+          currency: string;
+          type: "semester_subscription" | "vendor_listing" | "featured_listing";
+          status: "pending" | "success" | "failed" | "cancelled";
+          payment_channel: string | null;
+          metadata: Json | null;
+          paid_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
         Insert: {
-          id?: string
-          user_id: string
-          reference: string
-          amount: number
-          currency?: string
-          type: 'semester_subscription' | 'vendor_listing' | 'featured_listing'
-          status?: 'pending' | 'success' | 'failed' | 'cancelled'
-          payment_channel?: string | null
-          metadata?: Json | null
-          paid_at?: string | null
-          created_at?: string
-          updated_at?: string
-        }
+          id?: string;
+          user_id: string;
+          reference: string;
+          amount: number;
+          currency?: string;
+          type: "semester_subscription" | "vendor_listing" | "featured_listing";
+          status?: "pending" | "success" | "failed" | "cancelled";
+          payment_channel?: string | null;
+          metadata?: Json | null;
+          paid_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
         Update: {
-          id?: string
-          user_id?: string
-          reference?: string
-          amount?: number
-          currency?: string
-          type?: 'semester_subscription' | 'vendor_listing' | 'featured_listing'
-          status?: 'pending' | 'success' | 'failed' | 'cancelled'
-          payment_channel?: string | null
-          metadata?: Json | null
-          paid_at?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-      }
+          id?: string;
+          user_id?: string;
+          reference?: string;
+          amount?: number;
+          currency?: string;
+          type?:
+            | "semester_subscription"
+            | "vendor_listing"
+            | "featured_listing";
+          status?: "pending" | "success" | "failed" | "cancelled";
+          payment_channel?: string | null;
+          metadata?: Json | null;
+          paid_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       announcements: {
         Row: {
-          id: string
-          title: string
-          content: string
-          type: 'general' | 'urgent' | 'academic' | 'event' | 'maintenance'
-          target_levels: number[] | null
-          is_pinned: boolean
-          published_by: string | null
-          published_at: string | null
-          expires_at: string | null
-          created_at: string
-          updated_at: string
-        }
+          id: string;
+          title: string;
+          content: string;
+          type: "general" | "urgent" | "academic" | "event" | "maintenance";
+          target_levels: number[] | null;
+          is_pinned: boolean;
+          published_by: string | null;
+          published_at: string | null;
+          expires_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
         Insert: {
-          id?: string
-          title: string
-          content: string
-          type?: 'general' | 'urgent' | 'academic' | 'event' | 'maintenance'
-          target_levels?: number[] | null
-          is_pinned?: boolean
-          published_by?: string | null
-          published_at?: string | null
-          expires_at?: string | null
-          created_at?: string
-          updated_at?: string
-        }
+          id?: string;
+          title: string;
+          content: string;
+          type?: "general" | "urgent" | "academic" | "event" | "maintenance";
+          target_levels?: number[] | null;
+          is_pinned?: boolean;
+          published_by?: string | null;
+          published_at?: string | null;
+          expires_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
         Update: {
-          id?: string
-          title?: string
-          content?: string
-          type?: 'general' | 'urgent' | 'academic' | 'event' | 'maintenance'
-          target_levels?: number[] | null
-          is_pinned?: boolean
-          published_by?: string | null
-          published_at?: string | null
-          expires_at?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-      }
+          id?: string;
+          title?: string;
+          content?: string;
+          type?: "general" | "urgent" | "academic" | "event" | "maintenance";
+          target_levels?: number[] | null;
+          is_pinned?: boolean;
+          published_by?: string | null;
+          published_at?: string | null;
+          expires_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       admin_roles: {
         Row: {
-          id: string
-          user_id: string
-          role: 'super_admin' | 'admin' | 'moderator' | 'content_manager'
-          permissions: Json | null
-          assigned_by: string | null
-          created_at: string
-        }
+          id: string;
+          user_id: string;
+          role: "super_admin" | "admin" | "moderator" | "content_manager";
+          permissions: Json | null;
+          assigned_by: string | null;
+          created_at: string;
+        };
         Insert: {
-          id?: string
-          user_id: string
-          role: 'super_admin' | 'admin' | 'moderator' | 'content_manager'
-          permissions?: Json | null
-          assigned_by?: string | null
-          created_at?: string
-        }
+          id?: string;
+          user_id: string;
+          role: "super_admin" | "admin" | "moderator" | "content_manager";
+          permissions?: Json | null;
+          assigned_by?: string | null;
+          created_at?: string;
+        };
         Update: {
-          id?: string
-          user_id?: string
-          role?: 'super_admin' | 'admin' | 'moderator' | 'content_manager'
-          permissions?: Json | null
-          assigned_by?: string | null
-          created_at?: string
-        }
-      }
+          id?: string;
+          user_id?: string;
+          role?: "super_admin" | "admin" | "moderator" | "content_manager";
+          permissions?: Json | null;
+          assigned_by?: string | null;
+          created_at?: string;
+        };
+      };
       activity_logs: {
         Row: {
-          id: string
-          user_id: string | null
-          action: string
-          resource_type: string | null
-          resource_id: string | null
-          metadata: Json | null
-          ip_address: string | null
-          user_agent: string | null
-          created_at: string
-        }
+          id: string;
+          user_id: string | null;
+          action: string;
+          resource_type: string | null;
+          resource_id: string | null;
+          metadata: Json | null;
+          ip_address: string | null;
+          user_agent: string | null;
+          created_at: string;
+        };
         Insert: {
-          id?: string
-          user_id?: string | null
-          action: string
-          resource_type?: string | null
-          resource_id?: string | null
-          metadata?: Json | null
-          ip_address?: string | null
-          user_agent?: string | null
-          created_at?: string
-        }
+          id?: string;
+          user_id?: string | null;
+          action: string;
+          resource_type?: string | null;
+          resource_id?: string | null;
+          metadata?: Json | null;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          created_at?: string;
+        };
         Update: {
-          id?: string
-          user_id?: string | null
-          action?: string
-          resource_type?: string | null
-          resource_id?: string | null
-          metadata?: Json | null
-          ip_address?: string | null
-          user_agent?: string | null
-          created_at?: string
-        }
-      }
+          id?: string;
+          user_id?: string | null;
+          action?: string;
+          resource_type?: string | null;
+          resource_id?: string | null;
+          metadata?: Json | null;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          created_at?: string;
+        };
+      };
       material_access_logs: {
         Row: {
-          id: string
-          material_id: string
-          user_id: string
-          action: 'view' | 'download'
-          ip_address: string | null
-          user_agent: string | null
-          created_at: string
-        }
+          id: string;
+          material_id: string;
+          user_id: string;
+          action: "view" | "download";
+          ip_address: string | null;
+          user_agent: string | null;
+          created_at: string;
+        };
         Insert: {
-          id?: string
-          material_id: string
-          user_id: string
-          action: 'view' | 'download'
-          ip_address?: string | null
-          user_agent?: string | null
-          created_at?: string
-        }
+          id?: string;
+          material_id: string;
+          user_id: string;
+          action: "view" | "download";
+          ip_address?: string | null;
+          user_agent?: string | null;
+          created_at?: string;
+        };
         Update: {
-          id?: string
-          material_id?: string
-          user_id?: string
-          action?: 'view' | 'download'
-          ip_address?: string | null
-          user_agent?: string | null
-          created_at?: string
-        }
-      }
-    }
+          id?: string;
+          material_id?: string;
+          user_id?: string;
+          action?: "view" | "download";
+          ip_address?: string | null;
+          user_agent?: string | null;
+          created_at?: string;
+        };
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
       calculate_semester_gpa: {
-        Args: { semester_uuid: string }
-        Returns: number
-      }
+        Args: { semester_uuid: string };
+        Returns: number;
+      };
       reset_daily_downloads: {
-        Args: Record<PropertyKey, never>
-        Returns: void
-      }
+        Args: Record<PropertyKey, never>;
+        Returns: void;
+      };
       update_vendor_rating: {
-        Args: { vendor_uuid: string }
-        Returns: void
-      }
+        Args: { vendor_uuid: string };
+        Returns: void;
+      };
       is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       is_moderator: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       is_content_manager: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       has_active_subscription: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-    }
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
+    };
     Enums: {
-      [_ in never]: never
-    }
-  }
+      [_ in never]: never;
+    };
+  };
 }

@@ -8,7 +8,7 @@ const STATS = [
   { label: "Active Students", value: 500, suffix: "+" },
   { label: "Materials Available", value: 2000, suffix: "+" },
   { label: "Verified Vendors", value: 50, suffix: "+" },
-  { label: "Student Rating", value: 48, suffix: "/5" },
+  { label: "Student Rating", value: 4.8, suffix: "/5" },
 ];
 
 const TESTIMONIALS = [

@@ -1,16 +1,17 @@
-import { createClient } from '@/utils/supabase/server';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import AppearanceSettings from '@/components/settings/appearance-settings';
-import NotificationSettings from '@/components/settings/notification-settings';
-import PrivacySettings from '@/components/settings/privacy-settings';
-import PreferencesSettings from '@/components/settings/preferences-settings';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import AppearanceSettings from "@/components/settings/appearance-settings";
+import NotificationSettings from "@/components/settings/notification-settings";
+import PrivacySettings from "@/components/settings/privacy-settings";
+import PreferencesSettings from "@/components/settings/preferences-settings";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import ComingSoonOverlay from "@/components/settings/coming-soon-overlay";
 
 export const metadata = {
-  title: 'Settings | EngiPortal',
+  title: "Settings | EngiPortal",
 };
 
 export default async function SettingsPage() {
@@ -21,7 +22,7 @@ export default async function SettingsPage() {
   } = await supabase.auth.getSession();
 
   if (!session) {
-    redirect('/login');
+    redirect("/login");
   }
 
   return (
@@ -46,9 +47,18 @@ export default async function SettingsPage() {
       {/* Settings Sections */}
       <div className="space-y-6">
         <AppearanceSettings />
-        <NotificationSettings />
-        <PrivacySettings />
-        <PreferencesSettings />
+
+        <ComingSoonOverlay>
+          <NotificationSettings />
+        </ComingSoonOverlay>
+
+        <ComingSoonOverlay>
+          <PrivacySettings />
+        </ComingSoonOverlay>
+
+        <ComingSoonOverlay>
+          <PreferencesSettings />
+        </ComingSoonOverlay>
       </div>
     </div>
   );

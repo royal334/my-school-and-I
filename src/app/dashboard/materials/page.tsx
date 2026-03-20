@@ -7,6 +7,7 @@ import MaterialsContent from "@/components/materials/materials-content";
 import MaterialsFilters from "@/components/materials/materials-filters";
 import { Card } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
+import UpgradeButton from "@/components/payment/update-button";
 
 export const metadata = {
   title: "Materials Library | EngiPortal",
@@ -107,12 +108,10 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
                 Limited Access Mode
               </h3>
               <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">
-                You're viewing free materials only. Subscribe for ₦400/semester
+                You're viewing free materials only. Subscribe for ₦1000/semester
                 to unlock all premium materials.
               </p>
-              <button className="mt-2 rounded-lg bg-amber-600 dark:bg-amber-700 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 dark:hover:bg-amber-600 transition-colors">
-                Upgrade Now
-              </button>
+                <UpgradeButton className="mt-2 bg-amber-600 dark:bg-amber-700 hover:bg-amber-700 dark:hover:bg-amber-600 transition-colors" />
             </div>
           </div>
         </Card>

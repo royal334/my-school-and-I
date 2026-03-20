@@ -13,6 +13,7 @@ type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 type Vendor = Database["public"]["Tables"]["vendors"]["Row"];
 type Semester = Database["public"]["Tables"]["semesters"]["Row"];
 type Course = Database["public"]["Tables"]["courses"]["Row"];
+type Payment = Database["public"]["Tables"]["payments"]["Row"];
 
 // ============================================================
 // MATERIALS QUERIES
@@ -532,7 +533,7 @@ export async function getAnnouncements(userLevel?: number) {
 // PAYMENTS QUERIES
 // ============================================================
 
-export async function createTransaction(
+export async function createPayment(
   userId: string,
   type: "semester_subscription" | "vendor_listing" | "featured_listing",
   amount: number,
@@ -541,7 +542,7 @@ export async function createTransaction(
   const supabase = createClient();
 
   const { data, error } = await supabase
-    .from("transactions")
+    .from("payments")
     .insert({
       user_id: userId,
       reference,
@@ -557,7 +558,7 @@ export async function createTransaction(
   return data;
 }
 
-export async function updateTransactionStatus(
+export async function updatePaymentStatus(
   reference: string,
   status: "success" | "failed" | "cancelled",
   metadata?: any,
@@ -578,7 +579,7 @@ export async function updateTransactionStatus(
   }
 
   const { data, error } = await supabase
-    .from("transactions")
+    .from("payments")
     .update(updates)
     .eq("reference", reference)
     .select()
@@ -588,11 +589,11 @@ export async function updateTransactionStatus(
   return data;
 }
 
-export async function getUserTransactions(userId: string) {
+export async function getUserPayments(userId: string) {
   const supabase = createClient();
 
   const { data, error } = await supabase
-    .from("transactions")
+    .from("payments")
     .select("*")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });

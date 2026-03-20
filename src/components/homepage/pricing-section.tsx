@@ -87,7 +87,7 @@ export function PricingSection() {
                 Most Popular
               </span>
               <div className="mb-6">
-                <span className="text-5xl font-bold text-blue-600 dark:text-blue-500">₦400</span>
+                <span className="text-5xl font-bold text-blue-600 dark:text-blue-500">₦1000</span>
                 <span className="text-sm ml-2 text-slate-500 dark:text-slate-400">
                   Per semester
                 </span>

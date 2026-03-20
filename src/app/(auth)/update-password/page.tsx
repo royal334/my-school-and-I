@@ -94,7 +94,7 @@ export default function UpdatePasswordPage() {
             Set New Password
           </h1>
           <p className="mt-2 text-center text-slate-600">
-            Choose a strong password for your EngiPortal account
+            Choose a strong password for your UniHub account
           </p>
         </CardHeader>
         <CardContent>

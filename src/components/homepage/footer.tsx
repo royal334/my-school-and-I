@@ -31,7 +31,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <p className="text-2xl font-bold mb-3 text-white">
-              Engi<span className="text-blue-400">Portal</span>
+              Uni<span className="text-blue-400">Hub</span>
             </p>
             <p className="text-sm mb-6 leading-6 text-slate-400">
               Your complete academic companion for Engineering students.
@@ -97,17 +97,17 @@ export function Footer() {
               <p>Nnamdi Azikiwe University</p>
               <p>Faculty of Engineering</p>
               <a
-                href="mailto:support@engiportal.com"
+                href="mailto:support@unihub.com"
                 className="block hover:text-blue-400 transition-colors duration-200"
               >
-                support@engiportal.com
+                support@unihub.com
               </a>
             </div>
           </div>
         </div>
 
         <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500 dark:text-slate-400">
-          <p>© 2025 EngiPortal. All rights reserved.</p>
+          <p>© 2025 UniHub. All rights reserved.</p>
           <p>Built with ❤️ by Engineering Students</p>
         </div>
       </div>

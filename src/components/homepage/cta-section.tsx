@@ -18,7 +18,7 @@ export function CTASection() {
                       <h2 className="text-3xl lg:text-5xl font-bold mb-4 text-white dark:text-white">            Ready to Excel in Your Studies?
           </h2>
           <p className="text-lg mb-10 text-blue-200 dark:text-blue-100">
-            Join hundreds of engineering students already using EngiPortal.
+            Join hundreds of engineering students already using UniHu.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <Link

@@ -18,7 +18,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "EngiPortal — Your Complete Academic Companion",
+  title: "UniHub — Your Complete Academic Companion",
   description:
     "Access lecture materials, calculate your CGPA, and connect with student vendors — all in one platform for Nnamdi Azikiwe University engineering students.",
   keywords: [
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "university portal",
   ],
   openGraph: {
-    title: "EngiPortal — Your Complete Academic Companion",
+    title: "UniHub — Your Complete Academic Companion",
     description: "The all-in-one platform for engineering students.",
     type: "website",
   },

@@ -10,7 +10,7 @@ import { BookOpen } from "lucide-react";
 import UpgradeButton from "@/components/payment/update-button";
 
 export const metadata = {
-  title: "Materials Library | EngiPortal",
+  title: "Materials Library | UniHub",
   description: "Access lecture notes, past questions, and study materials",
 };
 

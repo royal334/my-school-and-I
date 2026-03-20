@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export const metadata = {
-  title: 'Add Semester | EngiPortal',
+  title: 'Add Semester | UniHub',
 };
 
 export default async function AddSemesterPage() {

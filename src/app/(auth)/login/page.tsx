@@ -53,7 +53,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
       <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
         <CardHeader>
-          <CardTitle className="dark:text-white">Welcome to EngiPortal</CardTitle>
+          <CardTitle className="dark:text-white">Welcome to UniHub</CardTitle>
           <CardDescription className="dark:text-slate-400">
             Sign in to access materials and resources
           </CardDescription>

@@ -14,7 +14,7 @@ import {
 } from '@/components/dashboard';
 
 export const metadata = {
-  title: 'Dashboard | EngiPortal',
+  title: 'Dashboard | UniHub',
 };
 
 export default async function DashboardPage() {

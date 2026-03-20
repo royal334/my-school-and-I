@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 export const metadata = {
-  title: 'Profile & Settings | EngiPortal',
+  title: 'Profile & Settings | UniHub',
 };
 
 export default async function ProfilePage() {

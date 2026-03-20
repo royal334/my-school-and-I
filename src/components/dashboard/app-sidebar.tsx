@@ -118,7 +118,7 @@ export function AppSidebar() {
       <Sidebar>
         <SidebarHeader className="p-4 border-b dark:border-slate-800 bg-white dark:bg-slate-950">
           <h2 className="text-xl font-bold text-blue-600 dark:text-blue-500">
-            EngiPortal
+            UniHub
           </h2>
         </SidebarHeader>
 
@@ -158,7 +158,7 @@ export function AppSidebar() {
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Log out of EngiPortal?</AlertDialogTitle>
+            <AlertDialogTitle>Log out of UniHub?</AlertDialogTitle>
             <AlertDialogDescription>
               You will be signed out of your account and redirected to the login
               page.

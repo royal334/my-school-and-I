@@ -37,7 +37,7 @@ export default function AppearanceSettings() {
           <h2 className="text-xl font-semibold">Appearance</h2>
         </div>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          Customize how EngiPortal looks on your device
+          Customize how UniHub looks on your device
         </p>
       </CardHeader>
       <CardContent className="space-y-4">

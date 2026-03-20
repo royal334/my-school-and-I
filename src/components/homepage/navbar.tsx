@@ -80,7 +80,7 @@ export function Navbar() {
           href="#"
           className="text-2xl font-bold tracking-tight text-blue-600 dark:text-blue-500"
         >
-          Engi<span className="text-slate-900 dark:text-white">Portal</span>
+          Uni<span className="text-slate-900 dark:text-white">Hub</span>
         </a>
 
         {/* Desktop Links */}

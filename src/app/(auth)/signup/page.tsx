@@ -93,7 +93,7 @@ export default function SignupPage() {
         <CardHeader>
           <CardTitle className="dark:text-white">Create Account</CardTitle>
           <CardDescription className="dark:text-slate-400">
-            Join EngiPortal to access academic resources
+            Join UniHub to access academic resources
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>

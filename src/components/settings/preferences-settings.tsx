@@ -34,7 +34,7 @@ export default function PreferencesSettings() {
           <h2 className="text-xl font-semibold">Preferences</h2>
         </div>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          Customize your EngiPortal experience
+          Customize your UniHub experience
         </p>
       </CardHeader>
       <CardContent className="space-y-6">

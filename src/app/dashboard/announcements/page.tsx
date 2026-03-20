@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Announcements | EngiPortal",
+  title: "Announcements | EUniHub",
   description: "Campus announcements — coming soon",
 };
 

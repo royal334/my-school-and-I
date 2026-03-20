@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import ComingSoonOverlay from "@/components/settings/coming-soon-overlay";
 
 export const metadata = {
-  title: "Settings | EngiPortal",
+  title: "Settings | UniHub",
 };
 
 export default async function SettingsPage() {

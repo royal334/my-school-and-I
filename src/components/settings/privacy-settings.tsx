@@ -114,7 +114,7 @@ export default function PrivacySettings() {
               <div className="space-y-0.5">
                 <Label htmlFor="data-analytics">Usage Analytics</Label>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Help improve EngiPortal with anonymous usage data
+                  Help improve UniHub with anonymous usage data
                 </p>
               </div>
               <Switch

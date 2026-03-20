@@ -1,51 +1,53 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
-import Link from 'next/link';
+import { useEffect, useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, XCircle, Loader2 } from "lucide-react";
+import Link from "next/link";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-export default function VerifyPaymentPage() {
+function VerifyPaymentContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const reference = searchParams.get('reference');
+  const reference = searchParams.get("reference");
 
-  const [status, setStatus] = useState<'loading' | 'success' | 'failed'>('loading');
-  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<"loading" | "success" | "failed">(
+    "loading",
+  );
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const verifyPayment = async () => {
       if (!reference) {
-        setStatus('failed');
-        setMessage('Invalid payment reference');
+        setStatus("failed");
+        setMessage("Invalid payment reference");
         return;
       }
 
       try {
         const response = await fetch(
-          `/api/payments/verify?reference=${reference}`
+          `/api/payments/verify?reference=${reference}`,
         );
         const data = await response.json();
 
         if (response.ok && data.success) {
-          setStatus('success');
-          setMessage('Your subscription has been activated!');
-          
+          setStatus("success");
+          setMessage("Your subscription has been activated!");
+
           // Redirect to dashboard after 3 seconds
           setTimeout(() => {
-            router.push('/dashboard');
+            router.push("/dashboard");
           }, 3000);
         } else {
-          setStatus('failed');
-          setMessage(data.error || 'Payment verification failed');
+          setStatus("failed");
+          setMessage(data.error || "Payment verification failed");
         }
       } catch (error) {
-        setStatus('failed');
-        setMessage('An error occurred while verifying payment');
+        setStatus("failed");
+        setMessage("An error occurred while verifying payment");
       }
     };
 
@@ -57,7 +59,7 @@ export default function VerifyPaymentPage() {
       <Card className="w-full max-w-md">
         <CardContent className="pt-6">
           <div className="text-center">
-            {status === 'loading' && (
+            {status === "loading" && (
               <>
                 <Loader2 className="mx-auto h-16 w-16 animate-spin text-primary-600" />
                 <h2 className="mt-4 text-xl font-semibold">
@@ -69,7 +71,7 @@ export default function VerifyPaymentPage() {
               </>
             )}
 
-            {status === 'success' && (
+            {status === "success" && (
               <>
                 <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
                   <CheckCircle className="h-16 w-16 text-green-600" />
@@ -84,7 +86,7 @@ export default function VerifyPaymentPage() {
               </>
             )}
 
-            {status === 'failed' && (
+            {status === "failed" && (
               <>
                 <div className="mx-auto w-fit rounded-full bg-red-100 p-4">
                   <XCircle className="h-16 w-16 text-red-600" />
@@ -109,5 +111,26 @@ export default function VerifyPaymentPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function VerifyPaymentPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+          <Card className="w-full max-w-md">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <Loader2 className="mx-auto h-16 w-16 animate-spin text-primary-600" />
+                <h2 className="mt-4 text-xl font-semibold">Loading...</h2>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      }
+    >
+      <VerifyPaymentContent />
+    </Suspense>
   );
 }

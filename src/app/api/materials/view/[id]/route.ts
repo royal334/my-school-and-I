@@ -41,8 +41,8 @@ export async function GET(
       return new NextResponse("Failed to generate file URL", { status: 500 });
     }
 
-    // Redirect browser to the signed URL — react-pdf will fetch real PDF bytes
-    return NextResponse.redirect(signedUrlData.signedUrl);
+    // Return the signed URL as JSON
+    return NextResponse.json({ url: signedUrlData.signedUrl });
   } catch (error) {
     console.error("View route error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });

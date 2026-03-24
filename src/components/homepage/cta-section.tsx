@@ -15,10 +15,12 @@ export function CTASection() {
     <section className="py-20 lg:py-28 bg-linear-to-br from-blue-600 to-blue-700 dark:from-slate-800 dark:to-slate-900">
       <div className="max-w-[1440px] mx-auto px-6 text-center">
         <Reveal>
-                      <h2 className="text-3xl lg:text-5xl font-bold mb-4 text-white dark:text-white">            Ready to Excel in Your Studies?
+          <h2 className="text-3xl lg:text-5xl font-bold mb-4 text-white dark:text-white">
+            {" "}
+            Ready to Excel in Your Studies?
           </h2>
           <p className="text-lg mb-10 text-blue-200 dark:text-blue-100">
-            Join hundreds of engineering students already using UniHu.
+            Join hundreds of engineering students already using UniHub.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <Link
@@ -28,7 +30,7 @@ export function CTASection() {
               Create Free Account <ChevronRight size={18} />
             </Link>
             <a
-              href="mailto:support@engiportal.com"
+              href="mailto:support@unihub.com"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-semibold text-base text-white border border-white/40 hover:bg-white/10 hover:-translate-y-0.5 transition-all duration-200 dark:text-white dark:border-white/50 dark:hover:bg-white/20"
             >
               Talk to Us

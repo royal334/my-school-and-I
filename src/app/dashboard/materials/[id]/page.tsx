@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 import { formatFileSize, formatDate } from "@/utils/lib";
 import { MATERIAL_TYPE_LABELS } from "@/utils/constants/constants";
-import PDFViewerWrapper from "@/components/materials/pdf-viewer-wrapper";
+import PDFViewerWrapper from "@/components/pdf/pdf-viewer-wrapper";
 
 interface PageProps {
   params: {
@@ -74,81 +74,81 @@ export default async function MaterialDetailPage({ params }: PageProps) {
       <div className="grid gap-6 md:grid-cols-2">
         {/* Main Content - Left Side */}
 
-          {/* Material Info Card */}
-          <div>
-            <Card className="h-full">
-              <CardHeader>
-                <div className="flex items-start justify-between ">
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary">
-                        {MATERIAL_TYPE_LABELS[material.type] || "Other"}
+        {/* Material Info Card */}
+        <div>
+          <Card className="h-full">
+            <CardHeader>
+              <div className="flex items-start justify-between ">
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary">
+                      {MATERIAL_TYPE_LABELS[material.type] || "Other"}
+                    </Badge>
+                    {material.is_premium && (
+                      <Badge variant="outline" className="gap-1">
+                        <Lock className="h-3 w-3" />
+                        Premium
                       </Badge>
-                      {material.is_premium && (
-                        <Badge variant="outline" className="gap-1">
-                          <Lock className="h-3 w-3" />
-                          Premium
-                        </Badge>
-                      )}
-                    </div>
-                    <h1 className="text-2xl font-bold text-slate-900">
-                      {material.title}
-                    </h1>
-                    {material.courses && (
-                      <div className="flex items-center gap-2 text-slate-600">
-                        <BookOpen className="h-4 w-4" />
-                        <span className="text-sm">
-                          {material.courses.course_code} -{" "}
-                          {material.courses.course_title}
-                        </span>
-                      </div>
                     )}
                   </div>
+                  <h1 className="text-2xl font-bold text-slate-900">
+                    {material.title}
+                  </h1>
+                  {material.courses && (
+                    <div className="flex items-center gap-2 text-slate-600">
+                      <BookOpen className="h-4 w-4" />
+                      <span className="text-sm">
+                        {material.courses.course_code} -{" "}
+                        {material.courses.course_title}
+                      </span>
+                    </div>
+                  )}
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Description */}
-                {material.description && (
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Description */}
+              {material.description && (
+                <div>
+                  <h3 className="font-semibold text-slate-900">Description</h3>
+                  <p className="mt-2 text-sm text-slate-600">
+                    {material.description}
+                  </p>
+                </div>
+              )}
+              {/* File Info */}
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <FileText className="h-4 w-4 text-slate-400" />
                   <div>
-                    <h3 className="font-semibold text-slate-900">Description</h3>
-                    <p className="mt-2 text-sm text-slate-600">
-                      {material.description}
-                    </p>
+                    <span className="font-medium text-slate-900">
+                      File Type:
+                    </span>
+                    <span className="ml-2 text-slate-600">PDF</span>
                   </div>
-                )}
-                {/* File Info */}
-                <div className="grid gap-3 sm:grid-cols-2">
+                </div>
+                {material.file_size_bytes && (
                   <div className="flex items-center gap-2 text-sm">
                     <FileText className="h-4 w-4 text-slate-400" />
                     <div>
-                      <span className="font-medium text-slate-900">
-                        File Type:
+                      <span className="font-medium text-slate-900">Size:</span>
+                      <span className="ml-2 text-slate-600">
+                        {formatFileSize(material.file_size_bytes)}
                       </span>
-                      <span className="ml-2 text-slate-600">PDF</span>
                     </div>
                   </div>
-                  {material.file_size_bytes && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <FileText className="h-4 w-4 text-slate-400" />
-                      <div>
-                        <span className="font-medium text-slate-900">Size:</span>
-                        <span className="ml-2 text-slate-600">
-                          {formatFileSize(material.file_size_bytes)}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2 text-sm">
-                    {/* <Eye className="h-4 w-4 text-slate-400" />
+                )}
+                <div className="flex items-center gap-2 text-sm">
+                  {/* <Eye className="h-4 w-4 text-slate-400" />
                     <div>
                       <span className="font-medium text-slate-900">Views:</span>
                       <span className="ml-2 text-slate-600">
                         {material.view_count}
                       </span>
                     </div> */}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    {/* <Download className="h-4 w-4 text-slate-400" />
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  {/* <Download className="h-4 w-4 text-slate-400" />
                     <div>
                       <span className="font-medium text-slate-900">
                         Downloads:
@@ -157,22 +157,22 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                         {material.download_count}
                       </span>
                     </div> */}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="h-4 w-4 text-slate-400" />
-                    <div>
-                      <span className="font-medium text-slate-900">
-                        Uploaded:
-                      </span>
-                      <span className="ml-2 text-slate-600">
-                        {formatDate(material.created_at)}
-                      </span>
-                    </div>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Calendar className="h-4 w-4 text-slate-400" />
+                  <div>
+                    <span className="font-medium text-slate-900">
+                      Uploaded:
+                    </span>
+                    <span className="ml-2 text-slate-600">
+                      {formatDate(material.created_at)}
+                    </span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Sidebar - Right Side */}
         <div className="space-y-6">
@@ -244,29 +244,29 @@ export default async function MaterialDetailPage({ params }: PageProps) {
               </p>
             </CardContent>
           </Card> */}
-  </div>
         </div>
+      </div>
 
-        {/* PDF Preview */}
-        {canAccess ? (
-          <PDFViewerWrapper
-            materialId={material.id}
-            fileName={material.file_name}
-          />
-        ) : (
-            <Card className="p-12 text-center">
-              <div className="mx-auto rounded-full bg-amber-100 p-4 w-fit">
-                <Lock className="h-8 w-8 text-amber-600" />
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-slate-900">
-                Premium Material
-              </h3>
-              <p className="mt-2 text-sm text-slate-600">
-                Subscribe for ₦1000/semester to access this material
-              </p>
-              <Button className="mt-4">Upgrade to Premium</Button>
-            </Card>
-          )}
+      {/* PDF Preview */}
+      {canAccess ? (
+        <PDFViewerWrapper
+          materialId={material.id}
+          fileName={material.file_name}
+        />
+      ) : (
+        <Card className="p-12 text-center">
+          <div className="mx-auto rounded-full bg-amber-100 p-4 w-fit">
+            <Lock className="h-8 w-8 text-amber-600" />
+          </div>
+          <h3 className="mt-4 text-lg font-semibold text-slate-900">
+            Premium Material
+          </h3>
+          <p className="mt-2 text-sm text-slate-600">
+            Subscribe for ₦1000/semester to access this material
+          </p>
+          <Button className="mt-4">Upgrade to Premium</Button>
+        </Card>
+      )}
     </div>
   );
 }

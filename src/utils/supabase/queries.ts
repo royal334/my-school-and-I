@@ -377,19 +377,14 @@ export const calculateGradePoint = getGradePoint;
 // VENDORS QUERIES
 // ============================================================
 
-export async function getVendors({
-  categoryId,
-  search,
-  featured,
-  limit = 20,
-  offset = 0,
-}: {
-  categoryId?: string;
+export async function getVendors(filters: {
+  category?: string;
   search?: string;
+  minRating?: number;
+  verifiedOnly?: boolean;
   featured?: boolean;
   limit?: number;
-  offset?: number;
-} = {}) {
+}) {
   const supabase = createClient();
 
   let query = supabase
@@ -400,36 +395,62 @@ export async function getVendors({
       vendor_categories (
         name,
         icon
+      ),
+      profiles (
+        full_name
       )
     `,
     )
-    .eq("is_approved", true)
-    .order("is_featured", { ascending: false })
-    .order("rating_avg", { ascending: false })
-    .range(offset, offset + limit - 1);
+    .eq("is_approved", true);
 
-  if (categoryId) {
-    query = query.eq("category_id", categoryId);
+  // Category filter
+  if (filters.category && filters.category !== "all") {
+    query = query.eq("category_id", filters.category);
   }
 
-  if (search) {
+  // Search filter (full-text search)
+  if (filters.search) {
     query = query.or(
-      `business_name.ilike.%${search}%,description.ilike.%${search}%`,
+      `business_name.ilike.%${filters.search}%,` +
+        `description.ilike.%${filters.search}%,` +
+        `services.cs.{${filters.search}}`,
     );
   }
 
-  if (featured !== undefined) {
-    query = query.eq("is_featured", featured);
+  // Rating filter
+  if (filters.minRating) {
+    query = query.gte("rating_avg", filters.minRating);
+  }
+
+  // Verified only
+  if (filters.verifiedOnly) {
+    query = query.eq("is_verified", true);
+  }
+
+  // Featured first, then by rating
+  if (filters.featured) {
+    query = query.order("is_featured", { ascending: false });
+  }
+  query = query.order("rating_avg", { ascending: false });
+  query = query.order("created_at", { ascending: false });
+
+  // Limit
+  if (filters.limit) {
+    query = query.limit(filters.limit);
   }
 
   const { data, error } = await query;
 
-  if (error) throw error;
+  if (error) {
+    console.error("Get vendors error:", error);
+    return [];
+  }
+
   return data;
 }
 
-export async function getVendorById(id: string) {
-  const supabase = createClient();
+export async function getVendorById(id: string, supabaseProp?: any) {
+  const supabase = supabaseProp || createClient();
 
   const { data, error } = await supabase
     .from("vendors")
@@ -440,23 +461,59 @@ export async function getVendorById(id: string) {
         name,
         icon
       ),
-      vendor_reviews (
-        id,
-        rating,
-        comment,
-        created_at,
-        profiles (
-          full_name,
-          avatar_url
-        )
+      profiles (
+        full_name
       )
     `,
     )
     .eq("id", id)
-    .eq("vendor_reviews.is_approved", true)
     .single();
 
-  if (error) throw error;
+  if (error) return null;
+  return data;
+}
+
+export async function getVendorReviews(
+  vendorId: string,
+  limit: number = 10,
+  supabaseProp?: any,
+) {
+  const supabase = supabaseProp || createClient();
+
+  const { data, error } = await supabase
+    .from("vendor_reviews")
+    .select(
+      `
+      *,
+      profiles (
+        full_name
+      )
+    `,
+    )
+    .eq("vendor_id", vendorId)
+    .eq("is_approved", true)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) return [];
+  return data;
+}
+
+export async function getUserVendorReview(
+  vendorId: string,
+  userId: string,
+  supabaseProp?: any,
+) {
+  const supabase = supabaseProp || createClient();
+
+  const { data, error } = await supabase
+    .from("vendor_reviews")
+    .select("id")
+    .eq("vendor_id", vendorId)
+    .eq("user_id", userId)
+    .single();
+
+  if (error) return null;
   return data;
 }
 

@@ -2,13 +2,13 @@ import { createClient } from "@/utils/supabase/server";
 import { createAdminClient } from "@/utils/supabase/admin";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import VendorForm from "@/components/vendors/vendor-form";
+import CreateVendorClient from "@/components/vendors/create-vendor-client";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Create Vendor Listing | EngiPortal",
+  title: "Create Vendor Listing | UniHub",
 };
 
 export default async function CreateVendorPage() {
@@ -45,7 +45,7 @@ export default async function CreateVendorPage() {
     .order("name");
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="mx-auto max-w-4xl space-y-6 pb-12">
       <Link href="/dashboard/vendors">
         <Button variant="ghost" size="sm">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -60,7 +60,7 @@ export default async function CreateVendorPage() {
         </p>
       </div>
 
-      <VendorForm categories={categories || []} mode="create" />
+      <CreateVendorClient categories={categories || []} />
     </div>
   );
 }

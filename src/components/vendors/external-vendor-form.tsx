@@ -13,7 +13,6 @@ import { Textarea } from '@/components/ui/textarea';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { toast } from 'sonner';
 import { Loader2, Store } from 'lucide-react';
+import Link from 'next/link';
 
 const externalVendorSchema = z
   .object({
@@ -59,7 +59,17 @@ const externalVendorSchema = z
 
 type ExternalVendorFormData = z.infer<typeof externalVendorSchema>;
 
-export default function ExternalVendorForm() {
+type ExternalVendorFormProps = {
+  subtitle?: string;
+  showSignInLink?: boolean;
+  signInHref?: string;
+};
+
+export default function ExternalVendorForm({
+  subtitle = "Join EngiPortal's vendor marketplace and connect with thousands of students",
+  showSignInLink = false,
+  signInHref = '/vendor-login',
+}: ExternalVendorFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -92,9 +102,9 @@ export default function ExternalVendorForm() {
       }
 
       toast.success(
-        'Registration successful! Please check your email to verify your account.'
+        'Registration successful!'
       );
-      router.push('/vendor-login?registered=true');
+      router.push('/login');
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -111,10 +121,7 @@ export default function ExternalVendorForm() {
               <Store className="h-8 w-8 text-primary-600" />
             </div>
             <CardTitle className="text-2xl">Register Your Business</CardTitle>
-            <p className="text-sm text-slate-600">
-              Join EngiPortal's vendor marketplace and connect with thousands of
-              students
-            </p>
+            <p className="text-sm text-slate-600">{subtitle}</p>
           </CardHeader>
 
           <CardContent className="space-y-6">
@@ -214,9 +221,6 @@ export default function ExternalVendorForm() {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      We'll send verification email to this address
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -237,9 +241,6 @@ export default function ExternalVendorForm() {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      Must contain uppercase, lowercase, and number
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -281,6 +282,17 @@ export default function ExternalVendorForm() {
             <p className="text-center text-xs text-slate-600">
               By registering, you agree to our Terms of Service and Privacy Policy
             </p>
+
+            {showSignInLink && (
+              <div className="text-center">
+                <p className="text-sm text-slate-600">
+                  Already have an account?{' '}
+                  <Link href={signInHref} className="text-primary-600 hover:underline">
+                    Sign in
+                  </Link>
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </form>

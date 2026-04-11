@@ -52,13 +52,11 @@ export async function POST(request: Request) {
       .single();
 
     if (existing) {
-      // Update existing record
       const updates: any = {};
 
       switch (event) {
         case 'view':
           updates.views = existing.views + 1;
-          // Update sources
           if (metadata.source) {
             const sources = existing.sources || {};
             sources[metadata.source] = (sources[metadata.source] || 0) + 1;
@@ -77,18 +75,20 @@ export async function POST(request: Request) {
           break;
       }
 
-      // Recalculate conversion rate
       const newViews = updates.views || existing.views;
       const newContacts = updates.total_contacts || existing.total_contacts;
       updates.view_to_contact_rate =
         newViews > 0 ? Number(((newContacts / newViews) * 100).toFixed(2)) : 0;
 
-      await supabase
+      const { error: updateError } = await supabase
         .from('vendor_analytics')
         .update(updates)
         .eq('id', existing.id);
+
+      if (updateError) {
+        console.error('Analytics update error:', updateError);
+      }
     } else {
-      // Create new record
       const initialData: any = {
         vendor_id,
         period_start: periodStart.toISOString(),
@@ -103,16 +103,21 @@ export async function POST(request: Request) {
         view_to_contact_rate: 0,
       };
 
-      await supabase.from('vendor_analytics').insert(initialData);
+      const { error: insertError } = await supabase.from('vendor_analytics').insert(initialData);
+
+      if (insertError) {
+        console.error('Analytics insert error:', insertError);
+      }
     }
 
     // Also update vendor-level counters
     if (event === 'view') {
-      await supabase.rpc('increment', {
+      const { error: rpcError } = await supabase.rpc('increment', {
         table_name: 'vendors',
         row_id: vendor_id,
         column_name: 'view_count',
       });
+      if (rpcError) console.error('Increment view_count error:', rpcError);
     } else if (event.startsWith('contact_')) {
       // Track contact
       if (user) {
@@ -123,11 +128,12 @@ export async function POST(request: Request) {
         });
       }
 
-      await supabase.rpc('increment', {
+      const { error: rpcError } = await supabase.rpc('increment', {
         table_name: 'vendors',
         row_id: vendor_id,
         column_name: 'contact_count',
       });
+      if (rpcError) console.error('Increment contact_count error:', rpcError);
     }
 
     return NextResponse.json({ success: true });

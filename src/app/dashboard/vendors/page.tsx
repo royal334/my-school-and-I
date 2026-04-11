@@ -26,14 +26,14 @@ export default async function VendorsPage({ searchParams }: PageProps) {
   const supabase = createClient(await cookies());
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session) redirect("/login");
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
 
   const { data: userVendor } = await supabase
     .from("vendors")
     .select("id")
-    .eq("owner_id", session.user.id)
+    .eq("owner_id", user.id)
     .maybeSingle();
 
   const listBusinessHref = userVendor

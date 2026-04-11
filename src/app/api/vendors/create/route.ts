@@ -28,6 +28,9 @@ export async function POST(request: Request) {
       whatsapp_number,
       location,
       operating_hours,
+      logo_url,
+      cover_image_url,
+      gallery_images,
     } = body;
 
     // Server-side validation
@@ -52,6 +55,26 @@ export async function POST(request: Request) {
       );
     }
 
+    // Sync business fields onto the user's profile
+    const { error: profileUpdateError } = await supabase
+      .from("profiles")
+      .update({
+        business_name,
+        business_phone: phone_number,
+        business_address: location ?? null,
+        business_verified: false,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", user.id);
+
+    if (profileUpdateError) {
+      console.error("Profile update error:", profileUpdateError);
+      return NextResponse.json(
+        { error: "Failed to update profile business details" },
+        { status: 500 },
+      );
+    }
+
     // Insert vendor
     const { data: vendor, error: insertError } = await supabase
       .from('vendors')
@@ -65,6 +88,9 @@ export async function POST(request: Request) {
         whatsapp_number,
         location,
         operating_hours,
+        logo_url: logo_url || null,
+        cover_image_url: cover_image_url || null,
+        gallery_images: gallery_images || [],
         is_approved: false, // Pending admin approval
         subscription_tier: 'basic',
       })

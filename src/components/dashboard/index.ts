@@ -5,4 +5,5 @@ export * from './DashboardQuickActions';
 export * from './DashboardRecentAnnouncements';
 export * from './DashboardProfileSection';
 export * from './app-sidebar';
+export * from './StudentDashboard';
 

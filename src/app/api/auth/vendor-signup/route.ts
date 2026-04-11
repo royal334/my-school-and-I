@@ -120,6 +120,23 @@ export async function POST(request: Request) {
       // Don't fail - user is created, they can update profile later
     }
 
+    // Create vendor record
+    const { error: vendorError } = await supabase.from('vendors').insert({
+      owner_id: authData.user.id,
+      business_name,
+      phone_number: business_phone,
+      location: business_address,
+      description: `New vendor account for ${business_name}. Please update your business description.`,
+      services: [],
+      is_approved: false, // Pending admin approval
+      subscription_tier: 'basic',
+    });
+
+    if (vendorError) {
+      console.error('Vendor creation error:', vendorError);
+      // Don't fail - user is created, they can create vendor profile later
+    }
+
     // Log activity
     await supabase.from('activity_logs').insert({
       user_id: authData.user.id,
@@ -130,7 +147,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: true,
-        message: 'Account created! Please check your email to verify.',
+        message: 'Account created!',
       },
       { status: 201 }
     );

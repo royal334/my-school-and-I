@@ -41,10 +41,11 @@ export async function GET(
 // PUT - Update vendor
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createClient(await cookies());
+    const { id } = await params;
 
     // Get authenticated user
     const {
@@ -60,7 +61,7 @@ export async function PUT(
     const { data: vendor } = await supabase
       .from('vendors')
       .select('owner_id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (!vendor || vendor.owner_id !== user.id) {
@@ -143,7 +144,7 @@ export async function PUT(
         operating_hours: operating_hours || null,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single();
 
@@ -155,11 +156,29 @@ export async function PUT(
       );
     }
 
+    // Sync any changed business fields onto the user's profile
+    const profileUpdates: Record<string, unknown> = {};
+    if (typeof business_name === "string") profileUpdates.business_name = business_name;
+    if (typeof phone_number === "string") profileUpdates.business_phone = phone_number;
+    if (typeof location === "string") profileUpdates.business_address = location;
+
+    if (Object.keys(profileUpdates).length > 0) {
+      profileUpdates.updated_at = new Date().toISOString();
+      const { error: profileUpdateError } = await supabase
+        .from("profiles")
+        .update(profileUpdates)
+        .eq("id", user.id);
+
+      if (profileUpdateError) {
+        console.error("Profile update error:", profileUpdateError);
+      }
+    }
+
     // Log activity
     await supabase.from('activity_logs').insert({
       user_id: user.id,
       action: 'update_vendor',
-      details: { vendor_id: params.id },
+      details: { vendor_id: id },
     });
 
     return NextResponse.json({ vendor: updatedVendor });

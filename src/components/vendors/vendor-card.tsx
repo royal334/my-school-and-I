@@ -4,7 +4,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Star, MapPin, Phone, MessageCircle, Crown, Award } from 'lucide-react';
+import { Star, MapPin, Phone, MessageCircle, Crown, Award, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -32,6 +32,8 @@ interface VendorCardProps {
 }
 
 export default function VendorCard({ vendor }: VendorCardProps) {
+  const isVerified = vendor.is_verified || vendor.subscription_tier === 'featured';
+
   return (
     <Card className="group overflow-hidden transition-all hover:shadow-lg pt-0">
       {/* Cover Image */}
@@ -58,7 +60,7 @@ export default function VendorCard({ vendor }: VendorCardProps) {
         )}
 
         {/* Verified Badge */}
-        {vendor.is_verified && (
+        {isVerified && (
           <div className="absolute left-3 top-3">
             <Badge className="bg-blue-500 text-white">
               <Award className="mr-1 h-3 w-3" />
@@ -88,9 +90,14 @@ export default function VendorCard({ vendor }: VendorCardProps) {
         </div>
 
         {/* Business Name */}
-        <h3 className="mb-1 text-lg font-bold line-clamp-1">
-          {vendor.business_name}
-        </h3>
+        <div className="mb-1 flex items-center gap-1">
+          <h3 className="text-lg font-bold line-clamp-1">
+            {vendor.business_name}
+          </h3>
+          {isVerified && (
+            <CheckCircle2 className="h-4 w-4 fill-blue-500 text-white" />
+          )}
+        </div>
 
         {/* Category */}
         {vendor.vendor_categories && (

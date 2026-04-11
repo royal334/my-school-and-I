@@ -18,6 +18,7 @@ export default function UpgradeButton({
 }: UpgradeButtonProps) {
   const [loading, setLoading] = useState(false);
 
+
   const handleUpgrade = async () => {
     setLoading(true);
 

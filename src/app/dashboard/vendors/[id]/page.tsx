@@ -20,6 +20,7 @@ import {
   Award,
   Edit,
   Share2,
+  CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -36,7 +37,7 @@ interface PageProps {
 
 export default async function VendorDetailPage({ params }: PageProps) {
   const supabase = createClient(await cookies());
-  const parameters = await params;
+  const { id } = await params;
 
   const {
     data: { user },
@@ -44,11 +45,13 @@ export default async function VendorDetailPage({ params }: PageProps) {
   if (!user) redirect("/login");
 
   // Get vendor details
-  const vendor = await getVendorById(parameters.id, supabase);
+  const vendor = await getVendorById(id, supabase);
 
   if (!vendor) {
     notFound();
   }
+
+  const isVerified = vendor.is_verified || vendor.subscription_tier === 'featured';
 
   // Check if user owns this vendor
   const isOwner = vendor.owner_id === user.id;
@@ -59,26 +62,30 @@ export default async function VendorDetailPage({ params }: PageProps) {
   }
 
   // Get reviews
-  const reviews = await getVendorReviews(parameters.id, 10, supabase);
+  const reviews = await getVendorReviews(id, 10, supabase);
 
   // Check if user already reviewed
   const existingReview = await getUserVendorReview(
-    parameters.id,
+    id,
     user.id,
     supabase,
   );
 
   // Track view (only if not owner)
   if (!isOwner) {
-    await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/vendors/track-event`, {
+    await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/vendors/track-event`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        vendor_id: parameters.id,
+        vendor_id: id,
         event: "view",
         metadata: { source: "direct" },
       }),
-    }).catch(() => {}); // Fail silently
+    }
+  )
+  .catch((error) => {
+      console.error("Error tracking event:", error);
+    }); // Fail silently
   }
 
   return (
@@ -93,13 +100,13 @@ export default async function VendorDetailPage({ params }: PageProps) {
 
         {isOwner && (
           <div className="flex gap-2">
-            <Link href={`/dashboard/vendors/${parameters.id}/edit`}>
+            <Link href={`/dashboard/vendors/${id}/edit`}>
               <Button variant="outline" size="sm">
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
               </Button>
             </Link>
-            <Link href={`/dashboard/vendors/${parameters.id}/analytics`}>
+            <Link href={`/dashboard/vendors/${id}/analytics`}>
               <Button variant="outline" size="sm">
                 View Analytics
               </Button>
@@ -147,7 +154,7 @@ export default async function VendorDetailPage({ params }: PageProps) {
                     Featured
                   </Badge>
                 )}
-                {vendor.is_verified && (
+                {isVerified && (
                   <Badge className="bg-blue-500 text-white">
                     <Award className="mr-1 h-3 w-3" />
                     Verified
@@ -176,9 +183,14 @@ export default async function VendorDetailPage({ params }: PageProps) {
               </div>
 
               {/* Business Name & Category */}
-              <h1 className="mb-2 text-3xl font-bold">
-                {vendor.business_name}
-              </h1>
+              <div className="mb-2 flex items-center gap-2">
+                <h1 className="text-3xl font-bold">
+                  {vendor.business_name}
+                </h1>
+                {isVerified && (
+                  <CheckCircle2 className="h-6 w-6 fill-blue-500 text-white" />
+                )}
+              </div>
 
               {vendor.vendor_categories && (
                 <p className="mb-4 text-lg text-slate-600">
@@ -226,7 +238,7 @@ export default async function VendorDetailPage({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* Location & Hours */}
+                {/* Location & Hours */}
               <div className="space-y-2 text-sm">
                 {vendor.location && (
                   <div className="flex items-center gap-2 text-slate-600">
@@ -241,6 +253,30 @@ export default async function VendorDetailPage({ params }: PageProps) {
                   </div>
                 )}
               </div>
+
+              {/* Photo Gallery */}
+              {vendor.gallery_images && vendor.gallery_images.length > 0 && (
+                <div className="mb-8">
+                  <h3 className="my-4 font-semibold">Photo Gallery</h3>
+                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                    {vendor.gallery_images.map((url: string, index: number) => (
+                      <div
+                        key={index}
+                        className="relative aspect-square overflow-hidden rounded-lg border bg-slate-100 transition-all hover:opacity-90"
+                      >
+                        <Image
+                          src={url}
+                          alt={`${vendor.business_name} gallery ${index + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+
             </CardContent>
           </Card>
 
@@ -252,7 +288,7 @@ export default async function VendorDetailPage({ params }: PageProps) {
               {/* Review Form (if not owner and haven't reviewed) */}
               {!isOwner && !existingReview && (
                 <div className="mb-6">
-                  <ReviewForm vendorId={parameters.id} />
+                  <ReviewForm vendorId={id} />
                 </div>
               )}
 
@@ -280,7 +316,7 @@ export default async function VendorDetailPage({ params }: PageProps) {
               <CardContent className="p-6">
                 <h3 className="mb-4 font-semibold">Contact Vendor</h3>
                 <ContactButtons
-                  vendorId={parameters.id}
+                  vendorId={id}
                   phoneNumber={vendor.phone_number}
                   whatsappNumber={vendor.whatsapp_number}
                 />
@@ -317,7 +353,7 @@ export default async function VendorDetailPage({ params }: PageProps) {
                 </div>
 
                 <Link
-                  href={`/dashboard/vendors/${parameters.id}/upgrade`}
+                  href={`/dashboard/vendors/${id}/upgrade`}
                   className="mt-4 block"
                 >
                   <Button className="w-full" variant="outline">

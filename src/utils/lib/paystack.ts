@@ -22,7 +22,7 @@ export async function initializePaystackTransaction(
   const response = await fetch('https://api.paystack.co/transaction/initialize', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_TEST_SECRET_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
@@ -44,7 +44,7 @@ export async function verifyPaystackTransaction(reference: string) {
     {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_TEST_SECRET_KEY}`,
       },
     }
   );
@@ -64,7 +64,7 @@ export function verifyPaystackWebhook(
   signature: string
 ): boolean {
   const hash = crypto
-    .createHmac('sha512', process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY!)
+    .createHmac('sha512', process.env.NEXT_PUBLIC_PAYSTACK_TEST_SECRET_KEY!)
     .update(payload)
     .digest('hex');
 
@@ -77,7 +77,7 @@ export function verifyPaystackWebhook(
 export function generatePaymentReference(userId: string): string {
   const timestamp = Date.now();
   const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-  return `ENGI_${userId.slice(0, 8)}_${timestamp}_${random}`;
+  return `UNIHUB_${userId.slice(0, 8)}_${timestamp}_${random}`;
 }
 
 /**

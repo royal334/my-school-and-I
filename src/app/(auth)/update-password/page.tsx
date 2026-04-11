@@ -38,10 +38,10 @@ export default function UpdatePasswordPage() {
   useEffect(() => {
     const checkAuth = async () => {
       const {
-        data: { session },
-      } = await supabase.auth.getSession();
+        data: { user },
+      } = await supabase.auth.getUser();
 
-      if (session) {
+      if (user) {
         setIsAuthenticated(true);
       } else {
         toast.error("Invalid or expired reset link");

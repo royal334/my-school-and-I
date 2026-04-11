@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { toast } from "sonner";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 const SERVICES = [
   "Printing",
@@ -44,12 +45,14 @@ type VendorFormProps = {
   initialData?: Partial<VendorFormData> & { id?: string };
   mode?: "create" | "edit";
   categories?: Array<{ id: string; name: string }>;
+  onSuccess?: (vendor: any) => void;
 };
 
 export default function VendorForm({
   initialData,
   mode = "create",
   categories,
+  onSuccess,
 }: VendorFormProps) {
   const router = useRouter();
 
@@ -87,14 +90,15 @@ export default function VendorForm({
     );
   };
 
+
   const onSubmit = async (data: VendorFormData) => {
     try {
       const isEdit = mode === "edit" && initialData?.id;
       const url = isEdit
-        ? `/api/vendors/${initialData!.id}/update`
+        ? `/api/vendors/${initialData!.id}`
         : "/api/vendors/create";
       const response = await fetch(url, {
-        method: "POST",
+        method: isEdit ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
@@ -113,7 +117,12 @@ export default function VendorForm({
           ? "Vendor listing updated!"
           : "Vendor listing created! Pending admin approval.",
       );
-      router.push(`/dashboard/vendors/${vendor.id}`);
+      
+      if (onSuccess) {
+        onSuccess(vendor);
+      } else {
+        router.push(`/dashboard/vendors/${vendor.id}`);
+      }
     } catch (error: any) {
       toast.error(error.message);
     }

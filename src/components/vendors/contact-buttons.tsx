@@ -14,11 +14,11 @@ export default function ContactButtons({
 }) {
   const handleContact = async (type: 'phone' | 'whatsapp') => {
     // Track contact
-    await fetch('/api/vendors/track-contact', {
+    await fetch('/api/vendors/track-event', {
       method: 'POST',
       body: JSON.stringify({
         vendor_id: vendorId,
-        contact_type: type,
+        event: type === 'phone' ? 'contact_phone' : 'contact_whatsapp',
       }),
     });
 

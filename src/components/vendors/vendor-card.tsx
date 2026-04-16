@@ -1,38 +1,22 @@
-// components/vendors/vendor-card.tsx
 'use client';
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Star, MapPin, Phone, MessageCircle, Crown, Award, CheckCircle2 } from 'lucide-react';
+import { Star, MapPin, Phone, MessageCircle, Crown, Award, CheckCircle2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useVendorFeatures } from '@/hooks/use-vendor-features';
 
 interface VendorCardProps {
-  vendor: {
-    id: string;
-    business_name: string;
-    description: string;
-    location: string | null;
-    logo_url: string | null;
-    cover_image_url: string | null;
-    rating_avg: number;
-    rating_count: number;
-    phone_number: string;
-    whatsapp_number: string | null;
-    services: string[];
-    is_featured: boolean;
-    is_verified: boolean;
-    subscription_tier: string;
-    vendor_categories: {
-      name: string;
-      icon: string;
-    } | null;
-  };
+  vendor: any
+  showPriority?:boolean
 }
 
-export default function VendorCard({ vendor }: VendorCardProps) {
+export default function VendorCard({ vendor,showPriority = false }: VendorCardProps) {
   const isVerified = vendor.is_verified || vendor.subscription_tier === 'featured';
+
+  const features = useVendorFeatures(vendor)
 
   return (
     <Card className="group overflow-hidden transition-all hover:shadow-lg pt-0">
@@ -50,7 +34,7 @@ export default function VendorCard({ vendor }: VendorCardProps) {
         )}
         
         {/* Featured Badge */}
-        {vendor.is_featured && (
+        {features.isFeatured && (
           <div className="absolute right-3 top-3">
             <Badge className="bg-amber-500 text-white">
               <Crown className="mr-1 h-3 w-3" />
@@ -59,8 +43,17 @@ export default function VendorCard({ vendor }: VendorCardProps) {
           </div>
         )}
 
+        {features.isPremium && !features.isFeatured && (
+          <div className="absolute right-3 top-3">
+            <Badge className="bg-blue-600 text-white">
+              <Sparkles className="mr-1 h-3 w-3" />
+              Premium
+            </Badge>
+          </div>
+        )}
+
         {/* Verified Badge */}
-        {isVerified && (
+        {isVerified&& (
           <div className="absolute left-3 top-3">
             <Badge className="bg-blue-500 text-white">
               <Award className="mr-1 h-3 w-3" />
@@ -113,7 +106,7 @@ export default function VendorCard({ vendor }: VendorCardProps) {
 
         {/* Services */}
         <div className="mb-3 flex flex-wrap gap-1">
-          {vendor.services.slice(0, 3).map((service, index) => (
+          {vendor.services.slice(0, 3).map((service :any, index:any) => (
             <Badge key={index} variant="outline" className="text-xs">
               {service}
             </Badge>

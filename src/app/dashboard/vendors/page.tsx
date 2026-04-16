@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Store, Plus, Building,Edit } from "lucide-react";
 import Link from "next/link";
+import { getVendors } from "@/utils/supabase/queries";
 
 export const metadata = {
   title: "Vendors Marketplace | EngiPortal",
@@ -52,41 +53,44 @@ export default async function VendorsPage({ searchParams }: PageProps) {
     .order("name");
 
   // Build query (admin client bypasses RLS)
-  let query = supabase
-    .from("vendors")
-    .select(
-      `
-      *,
-      vendor_categories (
-        name,
-        icon
-      ),
-      profiles (
-        full_name
-      )
-    `,
-    )
-    .eq("is_approved", true);
+  // let query = supabase
+  //   .from("vendors")
+  //   .select(
+  //     `
+  //     *,
+  //     vendor_categories (
+  //       name,
+  //       icon
+  //     ),
+  //     profiles (
+  //       full_name
+  //     )
+  //   `,
+  //   )
+  //   .eq("is_approved", true);
 
-  // Apply filters
-  if (paramaters.category && paramaters.category !== "all") {
-    query = query.eq("category_id", paramaters.category);
-  }
+  // // Apply filters
+  // if (paramaters.category && paramaters.category !== "all") {
+  //   query = query.eq("category_id", paramaters.category);
+  // }
 
-  if (paramaters.search) {
-    query = query.or(
-      `business_name.ilike.%${paramaters.search}%,` +
-        `description.ilike.%${paramaters.search}%`,
-    );
-  }
+  // if (paramaters.search) {
+  //   query = query.or(
+  //     `business_name.ilike.%${paramaters.search}%,` +
+  //       `description.ilike.%${paramaters.search}%`,
+  //   );
+  // }
 
-  // Sort: Featured first, then by rating
-  query = query
-    .order("is_featured", { ascending: false })
-    .order("rating_avg", { ascending: false })
-    .order("created_at", { ascending: false });
+  // // Sort: Featured first, then by rating
+  // query = query
+  //   .order("is_featured", { ascending: false })
+  //   .order("rating_avg", { ascending: false })
+  //   .order("created_at", { ascending: false });
 
-  const { data: vendors } = await query;
+  const vendors = await getVendors({
+    category: paramaters.category,
+    search: paramaters.search,
+  });
 
   return (
     <div className="space-y-6 overflow-x-hidden">

@@ -42,7 +42,7 @@ export async function POST(request: Request) {
         user_id: user.id,
         rating,
         comment,
-        is_approved: false, // Pending moderation
+        is_approved: true, 
       })
       .select()
       .single();

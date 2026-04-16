@@ -128,12 +128,15 @@ export async function POST(request: Request) {
         });
       }
 
-      const { error: rpcError } = await supabase.rpc('increment', {
-        table_name: 'vendors',
-        row_id: vendor_id,
-        column_name: 'contact_count',
+      const {error: viewRpcError }= await supabase.rpc('increment_vendor_view', {
+        vendor_id: vendor_id,
       });
-      if (rpcError) console.error('Increment contact_count error:', rpcError);
+      
+      // For contacts
+      const {error: contactRpcError } = await supabase.rpc('increment_vendor_contact', {
+        vendor_id: vendor_id,
+      });
+      if (viewRpcError || contactRpcError) console.error('Increment rpc error:', viewRpcError, contactRpcError);
     }
 
     return NextResponse.json({ success: true });

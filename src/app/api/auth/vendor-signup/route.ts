@@ -126,9 +126,9 @@ export async function POST(request: Request) {
       business_name,
       phone_number: business_phone,
       location: business_address,
-      description: `New vendor account for ${business_name}. Please update your business description.`,
+      description: '',
       services: [],
-      is_approved: false, // Pending admin approval
+      is_approved: true, // Pending admin approval
       subscription_tier: 'basic',
     });
 

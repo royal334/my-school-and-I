@@ -292,7 +292,6 @@ export interface Database {
           cover_image_url: string | null;
           gallery_images: string[] | null;
           is_verified: boolean;
-          is_featured: boolean;
           subscription_tier: "basic" | "premium" | "featured";
           subscription_expires_at: string | null;
           view_count: number;
@@ -320,7 +319,6 @@ export interface Database {
           cover_image_url?: string | null;
           gallery_images?: string[] | null;
           is_verified?: boolean;
-          is_featured?: boolean;
           subscription_tier?: "basic" | "premium" | "featured";
           subscription_expires_at?: string | null;
           view_count?: number;
@@ -348,7 +346,6 @@ export interface Database {
           cover_image_url?: string | null;
           gallery_images?: string[] | null;
           is_verified?: boolean;
-          is_featured?: boolean;
           subscription_tier?: "basic" | "premium" | "featured";
           subscription_expires_at?: string | null;
           view_count?: number;

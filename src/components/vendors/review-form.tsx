@@ -44,7 +44,7 @@ export default function ReviewForm({
         throw new Error('Failed to submit review');
       }
 
-      toast.success('Review submitted! Pending approval.');
+      toast.success('Review submitted!');
       setRating(0);
       setComment('');
       onSuccess?.();

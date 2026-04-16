@@ -12,7 +12,7 @@ export function DashboardQuickStats({
 }: DashboardQuickStatsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card className="border-primary-200 bg-primary-50 dark:bg-primary-950/30 dark:border-primary-900/50 transition-all hover:shadow-md">
+      <Card className="border-primary-200 bg-primary-50 dark:bg-primary-950/30 dark:border-primary-900/30 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
@@ -34,7 +34,7 @@ export function DashboardQuickStats({
         </CardContent>
       </Card>
 
-      <Card className="border-secondary-200 bg-secondary-50 dark:bg-secondary-950/30 dark:border-secondary-900/50 transition-all hover:shadow-md">
+      <Card className="border-secondary-200 bg-secondary-50 dark:bg-secondary-950/30 dark:border-secondary-900/30 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
@@ -56,7 +56,7 @@ export function DashboardQuickStats({
         </CardContent>
       </Card>
 
-      <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/50 transition-all hover:shadow-md">
+      <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
@@ -75,7 +75,7 @@ export function DashboardQuickStats({
         </CardContent>
       </Card>
 
-      <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-900/50 transition-all hover:shadow-md">
+      <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-900/30 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-amber-700 dark:text-amber-300">

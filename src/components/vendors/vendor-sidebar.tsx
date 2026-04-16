@@ -63,24 +63,9 @@ const vendorNavigation = [
     icon: Crown,
   },
   {
-    name: "Billing",
-    href: "/dashboard/billing",
-    icon: CreditCard,
-  },
-  {
-    name: "Notifications",
-    href: "/dashboard/notifications",
-    icon: Bell,
-  },
-  {
     name: "Settings",
     href: "/dashboard/settings",
     icon: Settings,
-  },
-  {
-    name: "Help & Support",
-    href: "/dashboard/support",
-    icon: HelpCircle,
   },
 ];
 

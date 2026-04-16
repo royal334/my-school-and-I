@@ -91,7 +91,7 @@ export async function POST(request: Request) {
         logo_url: logo_url || null,
         cover_image_url: cover_image_url || null,
         gallery_images: gallery_images || [],
-        is_approved: false, // Pending admin approval
+        is_approved: true, // Pending admin approval
         subscription_tier: 'basic',
       })
       .select()

@@ -35,7 +35,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
     ? ((vendor.contact_count / vendor.view_count) * 100).toFixed(1)
     : '0.0';
 
-  // Mock data for trends (replace with actual data from analytics)
+  // TODO: Mock data for trends (replace with actual data from analytics)
   const viewsTrend = 12.5;
   const contactsTrend = 8.3;
   const ratingTrend = 0.2;
@@ -45,14 +45,14 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
       {/* Welcome Section */}
       <div>
         <h1 className="text-3xl font-bold">Welcome back, {profile.full_name}!</h1>
-        <p className="text-slate-600">
+        <p className="text-muted-foreground">
           Here's what's happening with your business today
         </p>
       </div>
 
       {/* Quick Actions */}
       {!vendor && (
-        <Card className="border-blue-200 bg-blue-50">
+        <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30">
           <CardContent className="flex items-start gap-4 p-6">
             <AlertCircle className="h-6 w-6 text-blue-600" />
             <div className="flex-1">
@@ -62,7 +62,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               <p className="mb-3 text-sm text-blue-800">
                 Start connecting with thousands of students by listing your business
               </p>
-              <Link href="/dashboard/vendors/create">
+              <Link href="/vendor-signup">
                 <Button size="sm">Create Listing</Button>
               </Link>
             </div>
@@ -74,7 +74,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
         <>
           {/* Pending Approval Notice */}
           {!vendor.is_approved && (
-            <Card className="border-amber-200 bg-amber-50">
+            <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-900/30">
               <CardContent className="p-4">
                 <p className="text-sm font-medium text-amber-900">
                   ⏳ Your listing is pending admin approval. It will be visible to
@@ -89,7 +89,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-medium text-slate-600">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
                     Total Views
                   </CardTitle>
                   <Eye className="h-4 w-4 text-blue-600" />
@@ -109,7 +109,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                       <span className="text-red-600">{viewsTrend}%</span>
                     </>
                   )}
-                  <span className="ml-1 text-slate-500">vs last week</span>
+                  <span className="ml-1 text-muted-foreground">vs last week</span>
                 </div>
               </CardContent>
             </Card>
@@ -117,7 +117,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-medium text-slate-600">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
                     Total Contacts
                   </CardTitle>
                   <Phone className="h-4 w-4 text-green-600" />
@@ -128,7 +128,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                 <div className="mt-1 flex items-center text-xs">
                   <TrendingUp className="mr-1 h-3 w-3 text-green-600" />
                   <span className="text-green-600">+{contactsTrend}%</span>
-                  <span className="ml-1 text-slate-500">vs last week</span>
+                  <span className="ml-1 text-muted-foreground">vs last week</span>
                 </div>
               </CardContent>
             </Card>
@@ -136,7 +136,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-medium text-slate-600">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
                     Average Rating
                   </CardTitle>
                   <Star className="h-4 w-4 text-amber-600" />
@@ -147,9 +147,9 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <div className="text-2xl font-bold">
                     {vendor.rating_avg.toFixed(1)}
                   </div>
-                  <div className="text-sm text-slate-500">/ 5.0</div>
+                  <div className="text-sm text-muted-foreground">/ 5.0</div>
                 </div>
-                <div className="mt-1 text-xs text-slate-500">
+                <div className="mt-1 text-xs text-muted-foreground">
                   {vendor.rating_count} reviews
                 </div>
               </CardContent>
@@ -158,7 +158,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-medium text-slate-600">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
                     Conversion Rate
                   </CardTitle>
                   <TrendingUp className="h-4 w-4 text-purple-600" />
@@ -166,7 +166,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{conversionRate}%</div>
-                <div className="mt-1 text-xs text-slate-500">
+                <div className="mt-1 text-xs text-muted-foreground">
                   Views to contacts
                 </div>
               </CardContent>
@@ -215,7 +215,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                             )}
                           </div>
                           {vendor.vendor_categories && (
-                            <p className="text-sm text-slate-600">
+                            <p className="text-sm text-muted-foreground">
                               {vendor.vendor_categories.icon}{' '}
                               {vendor.vendor_categories.name}
                             </p>
@@ -246,7 +246,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                         </div>
                       </div>
 
-                      <p className="mb-3 text-sm text-slate-600 line-clamp-2">
+                      <p className="mb-3 text-sm text-muted-foreground line-clamp-2">
                         {vendor.description}
                       </p>
 
@@ -277,7 +277,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <div className="flex h-48 items-center justify-center rounded-lg border-2 border-dashed">
                     <div className="text-center">
                       <BarChart3 className="mx-auto h-12 w-12 text-slate-400" />
-                      <p className="mt-2 text-sm text-slate-600">
+                      <p className="mt-2 text-sm text-muted-foreground">
                         {vendor.subscription_tier === 'basic'
                           ? 'Upgrade to Premium to see detailed analytics'
                           : 'Analytics chart coming soon'}
@@ -317,7 +317,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
 
                   {vendor.subscription_tier === 'basic' ? (
                     <>
-                      <p className="mb-3 text-sm text-slate-600">
+                      <p className="mb-3 text-sm text-muted-foreground">
                         Upgrade to unlock premium features and boost your visibility
                       </p>
                       <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
@@ -335,7 +335,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                           <span>Active subscription</span>
                         </div>
                         {vendor.subscription_expires_at && (
-                          <p className="text-slate-600">
+                          <p className="text-muted-foreground">
                             Renews on{' '}
                             {new Date(
                               vendor.subscription_expires_at
@@ -387,7 +387,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               </Card>
 
               {/* Help Card */}
-              <Card className="border-blue-200 bg-blue-50">
+              <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30">
                 <CardContent className="p-4">
                   <h3 className="mb-2 font-semibold text-blue-900">
                     Need Help?

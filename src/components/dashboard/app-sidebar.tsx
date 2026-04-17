@@ -74,7 +74,7 @@ export function AppSidebar() {
           .from("admin_roles")
           .select("role")
           .eq("user_id", user.id)
-          .single();
+          .maybeSingle();
 
         if (data && data.role === "super_admin") {
           setIsSuperAdmin(true);

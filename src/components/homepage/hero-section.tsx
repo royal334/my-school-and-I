@@ -37,7 +37,7 @@ export function HeroSection() {
             <Reveal>
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
                 <Zap size={14} />
-                For Engineering Students
+                For University Students
               </span>
             </Reveal>
 
@@ -70,13 +70,11 @@ export function HeroSection() {
                 >
                   Start Free <ArrowRight size={18} />
                 </Link>
-                <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-base border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:-translate-y-0.5 transition-all duration-200">
-                  <Play
-                    size={16}
-                    className="fill-slate-700 dark:fill-slate-200 text-slate-700 dark:text-slate-200"
-                  />{" "}
-                  Watch Demo
-                </button>
+                <Link href="/vendor-signup">
+                  <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-base border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:-translate-y-0.5 transition-all duration-200">
+                    Signup as a Non-Student Vendor <ArrowRight size={18} />
+                  </button>
+                </Link>
               </div>
             </Reveal>
 

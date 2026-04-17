@@ -7,8 +7,8 @@
 
 export const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB in bytes
 export const MAX_FILE_SIZE_MB = 50;
-export const ALLOWED_FILE_TYPES = ["application/pdf"];
-export const ALLOWED_FILE_EXTENSIONS = [".pdf"];
+export const ALLOWED_FILE_EXTENSIONS = [".pdf", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".ico", ".webp"];
+export const ALLOWED_FILE_TYPES = ["application/pdf", "image/jpeg", "image/png", "image/gif", "image/bmp", "image/tiff", "image/ico", "image/webp"];
 
 // ============================================================
 // DOWNLOAD LIMITS

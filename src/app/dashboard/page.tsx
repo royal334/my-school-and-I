@@ -3,15 +3,8 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getUserSemesters } from '@/utils/supabase/queries';
 import { calculateCGPAFromSemesters } from '@/utils/lib/cgpa-helpers';
-import { Badge } from '@/components/ui/badge';
-import {
-  DashboardWelcomeHeader,
-  DashboardSubscriptionBanner,
-  DashboardQuickStats,
-  DashboardQuickActions,
-  DashboardRecentAnnouncements,
-  DashboardProfileSection,
-} from '@/components/dashboard';
+import { StudentDashboard } from '@/components/dashboard';
+import VendorDashboard from '@/components/dashboard/vendor-dashboard';
 
 export const metadata = {
   title: 'Dashboard | UniHub',
@@ -46,7 +39,7 @@ export default async function DashboardPage() {
     .select('*', { count: 'exact', head: true })
     .eq('is_approved', true);
 
-  // Get user's CGPA (same as CGPA page: cumulative over all semesters)
+  // Get user's CGPA
   const semesters = await getUserSemesters(user.id, supabase);
   const cgpaResult =
     semesters && semesters.length > 0
@@ -69,28 +62,33 @@ export default async function DashboardPage() {
     profile?.subscription_expires_at &&
     new Date(profile.subscription_expires_at) > new Date();
 
+    const isVendor = profile?.account_type === 'vendor';
+
+    if (isVendor) {
+      // Get vendor data
+      const { data: vendor } = await supabase
+        .from('vendors')
+        .select(`
+          *,
+          vendor_categories (
+            name,
+            icon
+          )
+        `)
+        .eq('owner_id', user.id)
+        .single();
+   
+      return <VendorDashboard profile={profile} vendor={vendor} />;
+    }
+
   return (
-    <div className="space-y-6">
-      <DashboardWelcomeHeader fullName={profile?.full_name} />
-
-      {!hasActiveSubscription && <DashboardSubscriptionBanner />}
-
-      <DashboardQuickStats
-        currentGPA={currentGPA}
-        materialsCount={materialsCount || 0}
-        vendorsCount={vendorsCount || 0}
-        dailyDownloadCount={profile?.daily_download_count || 0}
-      />
-
-      <DashboardQuickActions />
-
-      <DashboardRecentAnnouncements announcements={announcements || []} />
-
-      <DashboardProfileSection
-        profile={profile}
-        hasActiveSubscription={hasActiveSubscription}
-        currentGPA={currentGPA}
-      />
-    </div>
+    <StudentDashboard
+      profile={profile}
+      materialsCount={materialsCount || 0}
+      vendorsCount={vendorsCount || 0}
+      currentGPA={currentGPA}
+      announcements={announcements || []}
+      hasActiveSubscription={hasActiveSubscription}
+    />
   );
 }

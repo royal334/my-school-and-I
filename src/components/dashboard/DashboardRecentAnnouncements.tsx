@@ -29,14 +29,14 @@ export function DashboardRecentAnnouncements({
         {announcements.map((announcement) => (
           <div
             key={announcement.id}
-            className="flex items-start gap-3 rounded-lg border border-slate-200 p-3"
+            className="flex items-start gap-3 rounded-lg border border-slate-200 dark:border-slate-800 p-3"
           >
             <Bell className="h-5 w-5 text-primary-600" />
             <div className="flex-1">
-              <h3 className="font-medium text-slate-900">
+              <h3 className="font-medium text-foreground">
                 {announcement.title}
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-muted-foreground">
                 {new Date(announcement.created_at).toLocaleDateString()}
               </p>
             </div>

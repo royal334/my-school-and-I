@@ -77,7 +77,7 @@ export function verifyPaystackWebhook(
 export function generatePaymentReference(userId: string): string {
   const timestamp = Date.now();
   const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-  return `ENGI_${userId.slice(0, 8)}_${timestamp}_${random}`;
+  return `UNIHUB_${userId.slice(0, 8)}_${timestamp}_${random}`;
 }
 
 /**

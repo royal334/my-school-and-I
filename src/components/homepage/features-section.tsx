@@ -39,7 +39,7 @@ const MAIN_FEATURES = [
     icon: <Store size={28} />,
     iconBgClass: "bg-amber-100",
     iconColorClass: "text-amber-500",
-    title: "Student Vendors",
+    title: "Student and Non-Student Vendors",
     desc: "Connect with trusted departmental vendors for printing, typing, repairs, and more.",
     items: [
       "Verified vendors only",

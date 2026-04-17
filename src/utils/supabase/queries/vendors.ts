@@ -1,5 +1,4 @@
-import { createClient } from "../server";
-import { cookies } from "next/headers";
+import { createClient } from "../client";
 
 export async function getVendors(filters: {
   category?: string;
@@ -9,8 +8,9 @@ export async function getVendors(filters: {
   verifiedOnly?: boolean;
   featured_only?: boolean;
   limit?: number;
+  supabaseProp?:any
 }) {
-  const supabase = createClient(await cookies());
+  const supabase =  filters.supabaseProp || createClient()
 
   let query = supabase
     .from("vendors")
@@ -114,7 +114,7 @@ export async function getVendors(filters: {
 }
 
 export async function getVendorById(id: string, supabaseProp?: any) {
-  const supabase = supabaseProp || createClient(await cookies());
+  const supabase = supabaseProp || createClient();
 
   const { data, error } = await supabase
     .from("vendors")
@@ -142,7 +142,7 @@ export async function getVendorReviews(
   limit: number = 10,
   supabaseProp?: any,
 ) {
-  const supabase = supabaseProp || createClient(await cookies());
+  const supabase = supabaseProp || createClient();
 
   const { data, error } = await supabase
     .from("vendor_reviews")
@@ -168,7 +168,7 @@ export async function getUserVendorReview(
   userId: string,
   supabaseProp?: any,
 ) {
-  const supabase = supabaseProp || createClient(await cookies());
+  const supabase = supabaseProp || createClient();
 
   const { data, error } = await supabase
     .from("vendor_reviews")
@@ -182,7 +182,7 @@ export async function getUserVendorReview(
 }
 
 export async function getVendorCategories() {
-  const supabase = createClient(await cookies());
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from("vendor_categories")
@@ -199,7 +199,7 @@ export async function createVendorReview(
   rating: number,
   comment?: string,
 ) {
-  const supabase = createClient(await cookies());
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from("vendor_reviews")

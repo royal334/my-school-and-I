@@ -68,7 +68,7 @@ type ExternalVendorFormProps = {
 export default function ExternalVendorForm({
   subtitle = "Join EngiPortal's vendor marketplace and connect with thousands of students",
   showSignInLink = false,
-  signInHref = '/vendor-login',
+  signInHref = '/login',
 }: ExternalVendorFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);

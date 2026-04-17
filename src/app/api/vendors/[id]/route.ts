@@ -6,10 +6,11 @@ import { NextResponse } from 'next/server';
 // GET - Fetch single vendor
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{id: string }> }
 ) {
   try {
     const supabase = createClient(await cookies());
+    const { id } = await params
 
     const { data: vendor, error } = await supabase
       .from('vendors')
@@ -25,7 +26,7 @@ export async function GET(
         )
       `
       )
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (error) {
@@ -194,10 +195,11 @@ export async function PUT(
 // DELETE - Delete vendor
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createClient(await cookies());
+    const { id } = await params
 
     // Get authenticated user
     const {
@@ -213,7 +215,7 @@ export async function DELETE(
     const { data: vendor } = await supabase
       .from('vendors')
       .select('owner_id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (!vendor || vendor.owner_id !== user.id) {
@@ -224,7 +226,7 @@ export async function DELETE(
     const { error: deleteError } = await supabase
       .from('vendors')
       .delete()
-      .eq('id', params.id);
+      .eq('id', id);
 
     if (deleteError) {
       console.error('Delete error:', deleteError);
@@ -238,7 +240,7 @@ export async function DELETE(
     await supabase.from('activity_logs').insert({
       user_id: user.id,
       action: 'delete_vendor',
-      details: { vendor_id: params.id },
+      details: { vendor_id: id },
     });
 
     return NextResponse.json({ success: true });

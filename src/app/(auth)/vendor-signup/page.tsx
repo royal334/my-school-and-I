@@ -22,7 +22,7 @@ export default function VendorSignupPage() {
         <ExternalVendorForm
           subtitle="Join UniHub's vendor marketplace and connect with thousands of students"
           showSignInLink
-          signInHref="/vendor-login"
+          signInHref="/login"
         />
       </div>
     </div>

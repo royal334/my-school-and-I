@@ -20,14 +20,11 @@ import { MATERIAL_TYPE_LABELS } from "@/utils/constants/constants";
 import PDFViewerWrapper from "@/components/pdf/pdf-viewer-wrapper";
 
 interface PageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{id: string;}>;
 }
 
 export default async function MaterialDetailPage({ params }: PageProps) {
   const supabase = createClient(await cookies());
-
   // Get current user
   const {
     data: { user },

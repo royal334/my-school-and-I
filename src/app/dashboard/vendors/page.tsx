@@ -17,10 +17,10 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 interface PageProps {
-  searchParams: {
+  searchParams: Promise<{
     category?: string;
     search?: string;
-  };
+  }>;
 }
 
 export default async function VendorsPage({ searchParams }: PageProps) {
@@ -52,44 +52,10 @@ export default async function VendorsPage({ searchParams }: PageProps) {
     .select("id, name, icon")
     .order("name");
 
-  // Build query (admin client bypasses RLS)
-  // let query = supabase
-  //   .from("vendors")
-  //   .select(
-  //     `
-  //     *,
-  //     vendor_categories (
-  //       name,
-  //       icon
-  //     ),
-  //     profiles (
-  //       full_name
-  //     )
-  //   `,
-  //   )
-  //   .eq("is_approved", true);
-
-  // // Apply filters
-  // if (paramaters.category && paramaters.category !== "all") {
-  //   query = query.eq("category_id", paramaters.category);
-  // }
-
-  // if (paramaters.search) {
-  //   query = query.or(
-  //     `business_name.ilike.%${paramaters.search}%,` +
-  //       `description.ilike.%${paramaters.search}%`,
-  //   );
-  // }
-
-  // // Sort: Featured first, then by rating
-  // query = query
-  //   .order("is_featured", { ascending: false })
-  //   .order("rating_avg", { ascending: false })
-  //   .order("created_at", { ascending: false });
-
   const vendors = await getVendors({
     category: paramaters.category,
     search: paramaters.search,
+    supabaseProp:supabase
   });
 
   return (

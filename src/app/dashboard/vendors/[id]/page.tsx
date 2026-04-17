@@ -19,9 +19,7 @@ import VendorReviewsSection from "@/components/vendors/vendor-reviews-section";
 import VendorOwnerStats from "@/components/vendors/vendor-owner-stats";
 
 interface PageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{id: string;}>;
 }
 
 export default async function VendorDetailPage({ params }: PageProps) {

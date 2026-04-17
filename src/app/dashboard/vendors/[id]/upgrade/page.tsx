@@ -12,12 +12,8 @@ export const metadata = {
 };
 
 interface PageProps {
-  params: {
-    id: string;
-  };
-  searchParams: {
-    tier?: string;
-  };
+  params: Promise<{id: string;}>;
+  searchParams: Promise<{tier?: string;}>;
 }
 
 export default async function UpgradePage({ params, searchParams }: PageProps) {

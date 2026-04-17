@@ -49,28 +49,35 @@ export async function POST(request: Request) {
     // DO UPDATE clause can use arithmetic (vendor_analytics.views + EXCLUDED.views)
     // rather than a plain replacement — making this truly atomic under concurrency.
     // See: supabase/migrations/upsert_vendor_analytics.sql
-    const isView = event === 'view';
-    const isPhone = event === 'contact_phone';
-    const isWhatsapp = event === 'contact_whatsapp';
+    const isView = event === "view";
+    const isPhone = event === "contact_phone";
+    const isWhatsapp = event === "contact_whatsapp";
     const isContact = isPhone || isWhatsapp;
 
-    const { error: analyticsError } = await supabase.rpc('upsert_vendor_analytics', {
-      p_vendor_id: vendor_id,
-      p_period_start: periodStart.toISOString(),
-      p_period_end: periodEnd.toISOString(),
-      p_granularity: 'hour',
-      p_views: isView ? 1 : 0,
-      p_unique_views: isView ? 1 : 0,
-      p_phone_contacts: isPhone ? 1 : 0,
-      p_whatsapp_contacts: isWhatsapp ? 1 : 0,
-      p_total_contacts: isContact ? 1 : 0,
-      // Only track sources for view events
-      p_source: isView && metadata.source ? (metadata.source as string) : null,
-    });
+    const { error: analyticsError } = await supabase.rpc(
+      "upsert_vendor_analytics",
+      {
+        p_vendor_id: vendor_id,
+        p_period_start: periodStart.toISOString(),
+        p_period_end: periodEnd.toISOString(),
+        p_granularity: "hour",
+        p_views: isView ? 1 : 0,
+        p_unique_views: isView ? 1 : 0,
+        p_phone_contacts: isPhone ? 1 : 0,
+        p_whatsapp_contacts: isWhatsapp ? 1 : 0,
+        p_total_contacts: isContact ? 1 : 0,
+        // Only track sources for view events
+        p_source:
+          isView && metadata.source ? (metadata.source as string) : null,
+      },
+    );
 
     if (analyticsError) {
       return NextResponse.json(
-        { error: 'Failed to record analytics event', details: analyticsError.message },
+        {
+          error: "Failed to record analytics event",
+          details: analyticsError.message,
+        },
         { status: 500 },
       );
     }
@@ -86,11 +93,28 @@ export async function POST(request: Request) {
     } else if (event.startsWith("contact_")) {
       // Track contact
       if (user) {
-        await supabase.from("vendor_contacts").insert({
-          vendor_id,
-          user_id: user.id,
-          contact_type: event === "contact_phone" ? "phone" : "whatsapp",
-        });
+        const { error: contactInsertError } = await supabase
+          .from("vendor_contacts")
+          .insert({
+            vendor_id,
+            user_id: user.id,
+            contact_type: event === "contact_phone" ? "phone" : "whatsapp",
+          });
+
+        if (contactInsertError) {
+          console.error("vendor_contacts insert error:", {
+            error: contactInsertError,
+            vendor_id,
+            user_id: user.id,
+          });
+          return NextResponse.json(
+            {
+              error: "Failed to record contact event",
+              details: contactInsertError.message,
+            },
+            { status: 500 },
+          );
+        }
       }
 
       const { error: viewRpcError } = await supabase.rpc(

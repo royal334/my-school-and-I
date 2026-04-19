@@ -121,7 +121,7 @@ export default function AnalyticsDashboard({
     );
   }
 
-  const { summary, analytics, sources, granularity } = data;
+  const { summary, analytics, sources, granularity, previousSummary } = data;
 
   // Format chart data with all metrics
   const chartData = analytics.map((item: any) => {
@@ -155,18 +155,16 @@ export default function AnalyticsDashboard({
     };
   });
 
-  // Calculate trends (compare first half vs second half)
-  const midPoint = Math.floor(analytics.length / 2);
-  const firstHalf = analytics.slice(0, midPoint);
-  const secondHalf = analytics.slice(midPoint);
+  // Calculate trends using actual previous period from API
+  const viewsTrend = previousSummary?.views > 0 
+    ? ((summary.views - previousSummary.views) / previousSummary.views) * 100 
+    : summary.views > 0 ? 100 : 0;
 
-  const firstHalfAvgViews = firstHalf.reduce((acc: number, item: any) => acc + (item.views || 0), 0) / firstHalf.length || 0;
-  const secondHalfAvgViews = secondHalf.reduce((acc: number, item: any) => acc + (item.views || 0), 0) / secondHalf.length || 0;
-  const viewsTrend = ((secondHalfAvgViews - firstHalfAvgViews) / (firstHalfAvgViews || 1)) * 100;
+  const contactsTrend = previousSummary?.total_contacts > 0 
+    ? ((summary.total_contacts - previousSummary.total_contacts) / previousSummary.total_contacts) * 100 
+    : summary.total_contacts > 0 ? 100 : 0;
 
-  const firstHalfAvgContacts = firstHalf.reduce((acc: number, item: any) => acc + (item.total_contacts || 0), 0) / firstHalf.length || 0;
-  const secondHalfAvgContacts = secondHalf.reduce((acc: number, item: any) => acc + (item.total_contacts || 0), 0) / secondHalf.length || 0;
-  const contactsTrend = ((secondHalfAvgContacts - firstHalfAvgContacts) / (firstHalfAvgContacts || 1)) * 100;
+  const prevPeriodLabel = `vs previous ${period} days`;
 
   // Contact type breakdown
   const contactTypeData = [
@@ -331,7 +329,7 @@ export default function AnalyticsDashboard({
                   <span className="text-red-600">{viewsTrend.toFixed(1)}%</span>
                 </>
               )}
-              <span className="text-slate-500">vs previous period</span>
+              <span className="text-slate-500">{prevPeriodLabel}</span>
             </div>
           </CardContent>
         </Card>
@@ -366,7 +364,7 @@ export default function AnalyticsDashboard({
                   </span>
                 </>
               )}
-              <span className="text-slate-500">vs previous period</span>
+              <span className="text-slate-500">{prevPeriodLabel}</span>
             </div>
           </CardContent>
         </Card>

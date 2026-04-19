@@ -39,6 +39,7 @@ import {
   HelpCircle,
   LogOut,
   Crown,
+  MessageSquare,
 } from "lucide-react";
 
 const vendorNavigation = [
@@ -56,6 +57,11 @@ const vendorNavigation = [
     name: "Subscription",
     href: "/dashboard/subscription",
     icon: Crown,
+  },
+  {
+    name:"Notification",
+    href:"/dashboard/notifications",
+    icon:MessageSquare,
   },
   {
     name: "Settings",

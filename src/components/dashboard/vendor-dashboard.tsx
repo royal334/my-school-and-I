@@ -300,7 +300,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               </Card>
 
               {/* Quick Stats Chart Placeholder */}
-              <Card>
+              {/* <Card>
                 <CardHeader>
                   <CardTitle>Performance Overview</CardTitle>
                 </CardHeader>
@@ -323,7 +323,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                     </div>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
 
             {/* Right Column - Quick Actions */}
@@ -384,41 +384,10 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                 </CardContent>
               </Card>
 
-              {/* Quick Actions */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <Link href="/dashboard/vendors/my-listings">
-                    <Button variant="outline" className="w-full justify-start">
-                      <Store className="mr-2 h-4 w-4" />
-                      Manage Listing
-                    </Button>
-                  </Link>
-                  <Link href="/dashboard/vendors/analytics">
-                    <Button variant="outline" className="w-full justify-start">
-                      <BarChart3 className="mr-2 h-4 w-4" />
-                      View Analytics
-                    </Button>
-                  </Link>
-                  <Link href="/dashboard/notifications">
-                    <Button variant="outline" className="w-full justify-start">
-                      <MessageSquare className="mr-2 h-4 w-4" />
-                      Notifications
-                    </Button>
-                  </Link>
-                  <Link href="/dashboard/settings">
-                    <Button variant="outline" className="w-full justify-start">
-                      <Users className="mr-2 h-4 w-4" />
-                      Account Settings
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+
 
               {/* Help Card */}
-              <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30">
+              {/* <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30">
                 <CardContent className="p-4">
                   <h3 className="mb-2 font-semibold text-blue-900">
                     Need Help?
@@ -432,8 +401,42 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                     </Button>
                   </Link>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
+                {/* Quick Actions */}
+                <div className='lg:col-span-3'>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Quick Actions</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <Link href="/dashboard/vendors/my-listings">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Store className="mr-2 h-4 w-4" />
+                        Manage Listing
+                      </Button>
+                    </Link>
+                    <Link href="/dashboard/vendors/analytics">
+                      <Button variant="outline" className="w-full justify-start">
+                        <BarChart3 className="mr-2 h-4 w-4" />
+                        View Analytics
+                      </Button>
+                    </Link>
+                    <Link href="/dashboard/notifications">
+                      <Button variant="outline" className="w-full justify-start">
+                        <MessageSquare className="mr-2 h-4 w-4" />
+                        Notifications
+                      </Button>
+                    </Link>
+                    <Link href="/dashboard/settings">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Users className="mr-2 h-4 w-4" />
+                        Account Settings
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </div>
           </div>
         </>
       )}

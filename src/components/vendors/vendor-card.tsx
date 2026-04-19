@@ -164,7 +164,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
               onClick={(e) => {
                 e.preventDefault();
                 const number = vendor.whatsapp_number!.replace(/\D/g, '');
-                const message = encodeURIComponent('Hi, I found you on EngiPortal!');
+                const message = encodeURIComponent('Hi, I found you on UniHub!');
                 window.open(`https://wa.me/234${number.slice(1)}?text=${message}`);
               }}
             >

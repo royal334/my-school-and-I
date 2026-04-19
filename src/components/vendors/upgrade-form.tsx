@@ -68,7 +68,7 @@ export default function UpgradeForm({ vendor, preSelectedTier }: UpgradeFormProp
 
     try {
       // Initialize payment
-      const response = await fetch('/api/vendors/subscribe/initialize', {
+      const response = await fetch('/api/vendors/subscription/initialize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

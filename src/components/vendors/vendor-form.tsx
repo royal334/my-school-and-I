@@ -57,15 +57,77 @@ type VendorFormProps = {
   mode?: "create" | "edit";
   categories?: Array<{ id: string; name: string }>;
   onSuccess?: (vendor: any) => void;
-  vendor?:any
+  vendor?: any;
 };
+
+// Helper component to follow Rules of Hooks
+function CategorySelector({
+  field,
+  categories,
+}: {
+  field: any;
+  categories?: Array<{ id: string; name: string }>;
+}) {
+  const [query, setQuery] = useState("");
+
+  // Filter categories based on query
+  const filteredCategories =
+    query === ""
+      ? categories
+      : categories?.filter((c) =>
+          c.name.toLowerCase().includes(query.toLowerCase()),
+        );
+
+  // Sync query with selected category name on load or change
+  useEffect(() => {
+    if (field.value && categories) {
+      const selected = categories.find((c) => c.id === field.value);
+      if (selected) setQuery(selected.name);
+    }
+  }, [field.value, categories]);
+
+  return (
+    <Combobox
+      value={field.value}
+      onValueChange={(val) => {
+        field.onChange(val);
+        const selected = categories?.find((c) => c.id === val);
+        if (selected) setQuery(selected.name);
+      }}
+    >
+      <div className="mt-1">
+        <ComboboxInput
+          placeholder="Select or search category"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          showTrigger
+          showClear={!!query}
+          onClear={() => {
+            setQuery("");
+            field.onChange("");
+          }}
+        />
+      </div>
+      <ComboboxContent>
+        <ComboboxList>
+          {filteredCategories?.map((category) => (
+            <ComboboxItem key={category.id} value={category.id}>
+              {category.name}
+            </ComboboxItem>
+          ))}
+        </ComboboxList>
+        <ComboboxEmpty>No categories found</ComboboxEmpty>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
 
 export default function VendorForm({
   initialData,
   mode = "create",
   categories,
   onSuccess,
-  vendor
+  vendor,
 }: VendorFormProps) {
   const router = useRouter();
   const features = vendor ? useVendorFeatures(vendor) : null;
@@ -175,59 +237,9 @@ export default function VendorForm({
           name="category_id"
           control={control}
           rules={{ required: "Please select a category" }}
-          render={({ field }) => {
-            const [query, setQuery] = useState("");
-            
-            // Filter categories based on query
-            const filteredCategories = query === "" 
-              ? categories 
-              : categories?.filter((c) => 
-                  c.name.toLowerCase().includes(query.toLowerCase())
-                );
-
-            // Sync query with selected category name on load or change
-            useEffect(() => {
-              if (field.value && categories) {
-                const selected = categories.find(c => c.id === field.value);
-                if (selected) setQuery(selected.name);
-              }
-            }, [field.value, categories]);
-
-            return (
-              <Combobox
-                value={field.value}
-                onValueChange={(val) => {
-                  field.onChange(val);
-                  const selected = categories?.find(c => c.id === val);
-                  if (selected) setQuery(selected.name);
-                }}
-              >
-                <div className="mt-1">
-                  <ComboboxInput
-                    placeholder="Select or search category"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    showTrigger
-                    showClear={!!query}
-                    onClear={() => {
-                      setQuery("");
-                      field.onChange("");
-                    }}
-                  />
-                </div>
-                <ComboboxContent>
-                  <ComboboxList>
-                    {filteredCategories?.map((category) => (
-                      <ComboboxItem key={category.id} value={category.id}>
-                        {category.name}
-                      </ComboboxItem>
-                    ))}
-                  </ComboboxList>
-                  <ComboboxEmpty>No categories found</ComboboxEmpty>
-                </ComboboxContent>
-              </Combobox>
-            );
-          }}
+          render={({ field }) => (
+            <CategorySelector field={field} categories={categories} />
+          )}
         />
         {errors.category_id && (
           <p className="mt-1 text-xs text-red-500">

@@ -301,7 +301,7 @@ export default function VendorForm({
             >
               Upgrade to Premium
             </Link>
-            {' '}for 15 services.
+            {' '}for 10 services.
           </>
         )}
         {features?.tier === 'premium' && (

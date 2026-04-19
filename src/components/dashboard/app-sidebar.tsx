@@ -33,6 +33,7 @@ import {
   Users,
   Bell,
   Settings,
+  Store,
 } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
@@ -43,7 +44,7 @@ const baseNavItems = [
   { href: "/dashboard/materials", icon: BookOpen, label: "Materials Library" },
   { href: "/dashboard/cgpa", icon: Calculator, label: "CGPA" },
   { href: "/dashboard/profile", icon: User, label: "Profile" },
-  { href: "/dashboard/vendors", icon: Users, label: "Vendors" },
+  { href: "/dashboard/vendors", icon: Store, label: "Vendors" },
   { href: "/dashboard/announcements", icon: Bell, label: "Announcements" },
   { href: "/dashboard/settings", icon: Settings, label: "Settings" },
 ];

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Upload, Loader2, X } from 'lucide-react';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 interface LogoUploadProps {
   vendorId: string;
@@ -121,9 +122,11 @@ export default function LogoUpload({
         <p className="mt-2 text-sm text-slate-600">
           Upgrade to Premium or Featured to add a business logo
         </p>
-        <Button className="mt-4" size="sm">
-          Upgrade Now
-        </Button>
+        <Link href={`/dashboard/vendors/${vendorId}/upgrade`}>
+          <Button className="mt-4" size="sm">
+            Upgrade Now
+          </Button>
+        </Link>
       </div>
     );
   }

@@ -9,7 +9,7 @@ import { Crown, Calendar, CreditCard, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Subscription | EngiPortal',
+  title: 'Subscription | UniHub',
   description: 'Manage your subscription',
 };
 

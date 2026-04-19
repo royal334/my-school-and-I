@@ -1,4 +1,3 @@
-// app/api/vendors/track-event/route.ts
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -84,14 +83,13 @@ export async function POST(request: Request) {
 
     // Also update vendor-level counters
     if (event === "view") {
-      const { error: rpcError } = await supabase.rpc("increment", {
-        table_name: "vendors",
-        row_id: vendor_id,
-        column_name: "view_count",
+      const { error: rpcError } = await supabase.rpc("increment_vendor_counter", {
+        p_vendor_id: vendor_id,
+        p_column_name: "view_count",
       });
       if (rpcError) console.error("Increment view_count error:", rpcError);
     } else if (event.startsWith("contact_")) {
-      // Track contact
+      // Track contact in detailed table
       if (user) {
         const { error: contactInsertError } = await supabase
           .from("vendor_contacts")
@@ -107,32 +105,18 @@ export async function POST(request: Request) {
             vendor_id,
             user_id: user.id,
           });
-          return NextResponse.json(
-            {
-              error: "Failed to record contact event",
-              details: contactInsertError.message,
-            },
-            { status: 500 },
-          );
         }
       }
 
-      const { error: viewRpcError } = await supabase.rpc(
-        "increment_vendor_view",
-        {
-          vendor_id: vendor_id,
-        },
-      );
-
-      // For contacts
+      // Increment the contact counter in the vendors table
       const { error: contactRpcError } = await supabase.rpc(
-        "increment_vendor_contact",
+        "increment_vendor_counter",
         {
-          vendor_id: vendor_id,
-        },
+          p_vendor_id: vendor_id,
+          p_column_name: "contact_count",
+        }
       );
-      if (viewRpcError || contactRpcError)
-        console.error("Increment rpc error:", viewRpcError, contactRpcError);
+      if (contactRpcError) console.error("Increment contact_count error:", contactRpcError);
     }
 
     return NextResponse.json({ success: true });

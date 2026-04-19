@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { getVendorFeatures } from '@/utils/lib/vendor-features';
 
 export async function GET(
   request: Request,
@@ -25,7 +26,7 @@ export async function GET(
     // Get vendor and check ownership
     const { data: vendor, error: vendorError } = await supabase
       .from('vendors')
-      .select('owner_id, subscription_tier')
+      .select('owner_id, subscription_tier, subscription_expires_at')
       .eq('id', id)
       .single();
 
@@ -45,15 +46,9 @@ export async function GET(
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
 
-    // Determine granularity based on subscription tier
-    let granularity: 'hour' | 'day' | 'month';
-    if (vendor.subscription_tier === 'featured') {
-      granularity = 'hour';
-    } else if (vendor.subscription_tier === 'premium') {
-      granularity = 'day';
-    } else {
-      granularity = 'month';
-    }
+    // Get features including granularity
+    const features = getVendorFeatures(vendor);
+    const granularity = features.analyticsGranularity;
 
     // Fetch analytics data
     const { data: analytics, error: analyticsError } = await supabase
@@ -101,7 +96,7 @@ export async function GET(
 
     // Aggregate sources (Featured tier only)
     let sources: Record<string, number> = {};
-    if (vendor.subscription_tier === 'featured' && analytics) {
+    if (features.isFeatured && analytics) {
       sources = analytics.reduce((acc, curr) => {
         const currSources = (curr.sources as Record<string, number>) || {};
         Object.keys(currSources).forEach((key) => {

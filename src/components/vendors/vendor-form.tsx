@@ -2,18 +2,29 @@
 
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+  ComboboxEmpty,
+} from "@/components/ui/combobox";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '../ui/alert'
+import Link from "next/link";
+import { CircleAlert } from "lucide-react";
+import { Badge } from "../ui/badge";
 import { toast } from "sonner";
-import { SupabaseClient } from "@supabase/supabase-js";
+import { useVendorFeatures } from "@/hooks/use-vendor-features";
+import { Checkbox } from "../ui/checkbox";
 
 const SERVICES = [
   "Printing",
@@ -46,6 +57,7 @@ type VendorFormProps = {
   mode?: "create" | "edit";
   categories?: Array<{ id: string; name: string }>;
   onSuccess?: (vendor: any) => void;
+  vendor?:any
 };
 
 export default function VendorForm({
@@ -53,8 +65,12 @@ export default function VendorForm({
   mode = "create",
   categories,
   onSuccess,
+  vendor
 }: VendorFormProps) {
   const router = useRouter();
+  const features = vendor ? useVendorFeatures(vendor) : null;
+  const maxServices = features?.maxServices || 5;
+  const isUnlimited = features?.canHaveUnlimitedServices || false;
 
   const {
     register,
@@ -111,6 +127,11 @@ export default function VendorForm({
         );
       }
 
+      if(selectedServices.length > maxServices){
+        toast.error(isEdit ? "Failed to update vendor" : "Failed to create vendor")
+        throw new Error(isEdit ? "Failed to update vendor" : "Failed to create vendor")
+      }
+
       const { vendor } = await response.json();
       toast.success(
         isEdit
@@ -155,31 +176,56 @@ export default function VendorForm({
           control={control}
           rules={{ required: "Please select a category" }}
           render={({ field }) => {
-            const selected = categories?.find((c) => c.id === field.value);
+            const [query, setQuery] = useState("");
+            
+            // Filter categories based on query
+            const filteredCategories = query === "" 
+              ? categories 
+              : categories?.filter((c) => 
+                  c.name.toLowerCase().includes(query.toLowerCase())
+                );
+
+            // Sync query with selected category name on load or change
+            useEffect(() => {
+              if (field.value && categories) {
+                const selected = categories.find(c => c.id === field.value);
+                if (selected) setQuery(selected.name);
+              }
+            }, [field.value, categories]);
+
             return (
-              <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    type="button"
-                    className="border-input mt-1 flex h-9 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <span className={selected ? "" : "text-muted-foreground"}>
-                      {selected ? selected.name : "Select category"}
-                    </span>
-                    <ChevronDown className="size-4 opacity-50" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) min-w-48">
-                  {categories?.map((category) => (
-                    <DropdownMenuItem
-                      key={category.id}
-                      onSelect={() => field.onChange(category.id)}
-                    >
-                      {category.name}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Combobox
+                value={field.value}
+                onValueChange={(val) => {
+                  field.onChange(val);
+                  const selected = categories?.find(c => c.id === val);
+                  if (selected) setQuery(selected.name);
+                }}
+              >
+                <div className="mt-1">
+                  <ComboboxInput
+                    placeholder="Select or search category"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    showTrigger
+                    showClear={!!query}
+                    onClear={() => {
+                      setQuery("");
+                      field.onChange("");
+                    }}
+                  />
+                </div>
+                <ComboboxContent>
+                  <ComboboxList>
+                    {filteredCategories?.map((category) => (
+                      <ComboboxItem key={category.id} value={category.id}>
+                        {category.name}
+                      </ComboboxItem>
+                    ))}
+                  </ComboboxList>
+                  <ComboboxEmpty>No categories found</ComboboxEmpty>
+                </ComboboxContent>
+              </Combobox>
             );
           }}
         />
@@ -213,7 +259,55 @@ export default function VendorForm({
 
       {/* Services Multi-select */}
       <div>
-        <label className="text-sm font-medium">Services Offered *</label>
+        <div className="flex items-center justify-between">
+          <label className="text-sm font-medium">Services Offered *</label>
+          <div className="flex items-center gap-2">
+          <Badge variant={selectedServices.length >= maxServices ? 'destructive' : 'default'}>
+            {selectedServices.length} / {isUnlimited ? '∞' : maxServices}
+          </Badge>
+          {vendor && features && (
+          <Badge variant="outline" className="text-xs">
+          {features.tier}
+          </Badge>
+      )}
+          </div>
+        </div>
+
+          {/* ADD THIS: Warning when at/near limit */}
+  {selectedServices.length >= maxServices && !isUnlimited && (
+    <Alert variant="destructive" className="border-amber-300 bg-amber-50 mt-3">
+      <CircleAlert className="h-4 w-4 text-amber-600" />
+      <AlertTitle className="text-amber-900">Service Limit Reached</AlertTitle>
+      <AlertDescription className="text-amber-800">
+        You've reached your limit of {maxServices} services.
+        {features?.tier === 'basic' && (
+          <>
+            {' '}
+            <Link 
+              href={`/dashboard/vendors/${vendor?.id}/upgrade?tier=premium`}
+              className="font-medium underline"
+            >
+              Upgrade to Premium
+            </Link>
+            {' '}for 15 services.
+          </>
+        )}
+        {features?.tier === 'premium' && (
+          <>
+            {' '}
+            <Link 
+              href={`/dashboard/vendors/${vendor?.id}/upgrade?tier=featured`}
+              className="font-medium underline"
+            >
+              Upgrade to Featured
+            </Link>
+            {' '}for unlimited services.
+          </>
+        )}
+      </AlertDescription>
+    </Alert>
+  )}
+
         {/* Hidden input so RHF tracks & validates */}
         <input
           type="hidden"
@@ -223,16 +317,25 @@ export default function VendorForm({
           })}
         />
         <div className="mt-2 grid grid-cols-2 gap-2">
-          {SERVICES.map((service) => (
-            <label key={service} className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={selectedServices?.includes(service) ?? false}
-                onChange={() => toggleService(service)}
-              />
-              <span className="text-sm">{service}</span>
-            </label>
-          ))}
+          {SERVICES.map((service) => {
+            const isSelected = selectedServices.includes(service);
+            const isDisabled = !isSelected && selectedServices.length >= maxServices && !isUnlimited;
+            
+            return (
+              <label 
+                key={service} 
+                className={`flex items-center gap-2 ${isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+              >
+                <Checkbox
+                  id={`service-${service}`}
+                  checked={isSelected}
+                  onCheckedChange={() => toggleService(service)}
+                  disabled={isDisabled}
+                />
+                <span className="text-sm font-normal">{service}</span>
+              </label>
+            );
+          })}
         </div>
         {errors.services && (
           <p className="mt-1 text-xs text-red-500">{errors.services.message}</p>

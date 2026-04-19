@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Upload, Loader2, X, Plus } from 'lucide-react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { toast } from 'sonner';
 
@@ -136,9 +137,11 @@ export default function GalleryUpload({
         <p className="mt-2 text-sm text-slate-600">
           Upgrade to Premium (5 photos) or Featured (10 photos)
         </p>
-        <Button className="mt-4" size="sm">
-          Upgrade Now
-        </Button>
+        <Link href={`/dashboard/vendors/${vendorId}/upgrade`}>
+          <Button className="mt-4" size="sm">
+            Upgrade Now
+          </Button>
+        </Link>
       </div>
     );
   }

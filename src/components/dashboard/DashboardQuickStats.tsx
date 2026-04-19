@@ -56,7 +56,7 @@ export function DashboardQuickStats({
         </CardContent>
       </Card>
 
-      <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30 transition-all hover:shadow-md">
+      {/* <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
@@ -73,7 +73,7 @@ export function DashboardQuickStats({
             Resets daily
           </p>
         </CardContent>
-      </Card>
+      </Card> */}
 
       <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-900/30 transition-all hover:shadow-md">
         <CardHeader className="pb-3">

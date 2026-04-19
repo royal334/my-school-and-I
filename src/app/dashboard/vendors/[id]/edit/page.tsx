@@ -76,6 +76,7 @@ export default async function EditVendorPage({ params }: PageProps) {
           <VendorForm
             categories={categories || []}
             mode="edit"
+            vendor= {vendor}
             initialData={{
               id: vendor.id,
               business_name: vendor.business_name,

@@ -112,7 +112,7 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
   return (
     <>
       <Sidebar>
-        <SidebarHeader className="border-b p-4 dark:border-slate-800">
+        <SidebarHeader className="border-b p-4 dark:border-slate-800 bg-white dark:bg-slate-950">
           <Link href="/dashboard" onClick={closeSidebarOnMobile}>
             <h1 className="text-xl font-bold text-primary-600 dark:text-primary-500">
               UniHub
@@ -121,7 +121,7 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
           </Link>
         </SidebarHeader>
 
-        <SidebarContent>
+        <SidebarContent className="bg-white dark:bg-slate-950">
           <SidebarGroup>
             <SidebarMenu className="gap-1">
               {vendorNavigation.map((item) => {
@@ -147,7 +147,7 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter className="border-t p-4 dark:border-slate-800">
+        <SidebarFooter className="border-t p-4 dark:border-slate-800 bg-white dark:bg-slate-950">
           <div className="mb-3 rounded-lg bg-sidebar-accent p-3">
             <p className="truncate text-sm font-medium">{userName}</p>
             <p className="text-xs text-muted-foreground">Vendor Account</p>

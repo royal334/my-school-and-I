@@ -1,4 +1,3 @@
-// app/api/vendors/subscribe/initialize/route.ts
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -70,7 +69,7 @@ export async function POST(request: Request) {
       email: profile?.email || user.email!,
       amount,
       reference,
-      callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/vendors/subscribe/verify?reference=${reference}`,
+      callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/vendors/subscription/verify?reference=${reference}`,
       metadata: {
         vendor_id,
         tier,

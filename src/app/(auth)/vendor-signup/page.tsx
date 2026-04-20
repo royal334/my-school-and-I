@@ -1,12 +1,20 @@
 
-'use client';
-
 import { Button } from '@/components/ui/button';
 import ExternalVendorForm from '@/components/vendors/external-vendor-form';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
 
-export default function VendorSignupPage() {
+export default async function VendorSignupPage() {
+  const supabase = createClient(await cookies());
+  
+  // Get categories
+  const { data: categories } = await supabase
+    .from('vendor_categories')
+    .select('id, name')
+    .order('name');
+
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4">
       <div className="mx-auto max-w-2xl">
@@ -23,6 +31,7 @@ export default function VendorSignupPage() {
           subtitle="Join UniHub's vendor marketplace and connect with thousands of students"
           showSignInLink
           signInHref="/login"
+          categories={categories || []}
         />
       </div>
     </div>

@@ -1,6 +1,7 @@
 // components/dashboard/vendor-dashboard.tsx
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,7 +17,8 @@ import {
   MessageSquare,
   AlertCircle,
   Store,
-  CheckCircle2
+  CheckCircle2,
+  Loader2
 } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
@@ -28,17 +30,41 @@ interface VendorDashboardProps {
 }
 
 export default function VendorDashboard({ profile, vendor }: VendorDashboardProps) {
+  const [analytics, setAnalytics] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAnalytics() {
+      if (!vendor?.id) return;
+      try {
+        const response = await fetch(`/api/vendors/${vendor.id}/analytics?days=30`);
+        if (response.ok) {
+          const data = await response.json();
+          setAnalytics(data);
+        }
+      } catch (error) {
+        console.error('Error fetching analytics:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchAnalytics();
+  }, [vendor?.id]);
+
   const isVerified = vendor?.is_verified || vendor?.subscription_tier === 'featured';
   
-  // Calculate conversion rate
-  const conversionRate = vendor?.view_count > 0
-    ? ((vendor.contact_count / vendor.view_count) * 100).toFixed(1)
+  // Use 30-day stats if available, otherwise fallback to lifetime (with a note)
+  const views = analytics ? analytics.summary.views : vendor.view_count;
+  const contacts = analytics ? analytics.summary.total_contacts : vendor.contact_count;
+  const conversionRate = views > 0
+    ? ((contacts / views) * 100).toFixed(1)
     : '0.0';
 
-  // TODO: Mock data for trends (replace with actual data from analytics)
-  const viewsTrend = 12.5;
-  const contactsTrend = 8.3;
-  const ratingTrend = 0.2;
+  // Trends (using a simple comparison if we had historical data, but for now we'll just show the 30d total)
+  // In a real scenario, the API would return trend percentages.
+  const viewsTrend = 0; 
+  const contactsTrend = 0;
 
   return (
     <div className="space-y-6">
@@ -46,7 +72,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
       <div>
         <h1 className="text-3xl font-bold">Welcome back, {profile.full_name}!</h1>
         <p className="text-muted-foreground">
-          Here's what's happening with your business today
+          Here's what's happening with your business in the last 30 days
         </p>
       </div>
 
@@ -96,21 +122,16 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{vendor.view_count}</div>
-                <div className="mt-1 flex items-center text-xs">
-                  {viewsTrend > 0 ? (
-                    <>
-                      <TrendingUp className="mr-1 h-3 w-3 text-green-600" />
-                      <span className="text-green-600">+{viewsTrend}%</span>
-                    </>
-                  ) : (
-                    <>
-                      <TrendingDown className="mr-1 h-3 w-3 text-red-600" />
-                      <span className="text-red-600">{viewsTrend}%</span>
-                    </>
-                  )}
-                  <span className="ml-1 text-muted-foreground">vs last week</span>
-                </div>
+                {loading ? (
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                ) : (
+                  <>
+                    <div className="text-2xl font-bold">{views}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      Last 30 days
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
 
@@ -124,12 +145,16 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{vendor.contact_count}</div>
-                <div className="mt-1 flex items-center text-xs">
-                  <TrendingUp className="mr-1 h-3 w-3 text-green-600" />
-                  <span className="text-green-600">+{contactsTrend}%</span>
-                  <span className="ml-1 text-muted-foreground">vs last week</span>
-                </div>
+                {loading ? (
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                ) : (
+                  <>
+                    <div className="text-2xl font-bold">{contacts}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      Last 30 days
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
 
@@ -165,10 +190,16 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{conversionRate}%</div>
-                <div className="mt-1 text-xs text-muted-foreground">
-                  Views to contacts
-                </div>
+                {loading ? (
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                ) : (
+                  <>
+                    <div className="text-2xl font-bold">{conversionRate}%</div>
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      Views to contacts
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -228,7 +259,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                               Featured
                             </Badge>
                           )}
-                          <Badge
+                          {/* <Badge
                             variant={vendor.is_approved ? 'default' : 'secondary'}
                             className={
                               vendor.is_approved
@@ -237,7 +268,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                             }
                           >
                             {vendor.is_approved ? 'Approved' : 'Pending'}
-                          </Badge>
+                          </Badge> */}
                           {isVerified && (
                             <Badge className="bg-blue-500 text-white">
                               Verified
@@ -269,7 +300,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               </Card>
 
               {/* Quick Stats Chart Placeholder */}
-              <Card>
+              {/* <Card>
                 <CardHeader>
                   <CardTitle>Performance Overview</CardTitle>
                 </CardHeader>
@@ -292,7 +323,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                     </div>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
 
             {/* Right Column - Quick Actions */}
@@ -353,41 +384,10 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                 </CardContent>
               </Card>
 
-              {/* Quick Actions */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <Link href="/dashboard/vendors/my-listings">
-                    <Button variant="outline" className="w-full justify-start">
-                      <Store className="mr-2 h-4 w-4" />
-                      Manage Listing
-                    </Button>
-                  </Link>
-                  <Link href="/dashboard/vendors/analytics">
-                    <Button variant="outline" className="w-full justify-start">
-                      <BarChart3 className="mr-2 h-4 w-4" />
-                      View Analytics
-                    </Button>
-                  </Link>
-                  <Link href="/dashboard/notifications">
-                    <Button variant="outline" className="w-full justify-start">
-                      <MessageSquare className="mr-2 h-4 w-4" />
-                      Notifications
-                    </Button>
-                  </Link>
-                  <Link href="/dashboard/settings">
-                    <Button variant="outline" className="w-full justify-start">
-                      <Users className="mr-2 h-4 w-4" />
-                      Account Settings
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+
 
               {/* Help Card */}
-              <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30">
+              {/* <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30">
                 <CardContent className="p-4">
                   <h3 className="mb-2 font-semibold text-blue-900">
                     Need Help?
@@ -401,8 +401,42 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                     </Button>
                   </Link>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
+                {/* Quick Actions */}
+                <div className='lg:col-span-3'>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Quick Actions</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <Link href="/dashboard/vendors/my-listings">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Store className="mr-2 h-4 w-4" />
+                        Manage Listing
+                      </Button>
+                    </Link>
+                    <Link href="/dashboard/vendors/analytics">
+                      <Button variant="outline" className="w-full justify-start">
+                        <BarChart3 className="mr-2 h-4 w-4" />
+                        View Analytics
+                      </Button>
+                    </Link>
+                    <Link href="/dashboard/notifications">
+                      <Button variant="outline" className="w-full justify-start">
+                        <MessageSquare className="mr-2 h-4 w-4" />
+                        Notifications
+                      </Button>
+                    </Link>
+                    <Link href="/dashboard/settings">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Users className="mr-2 h-4 w-4" />
+                        Account Settings
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </div>
           </div>
         </>
       )}

@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
+import { createAdminClient } from '@/utils/supabase/admin';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getUserSemesters } from '@/utils/supabase/queries';
@@ -12,6 +13,7 @@ export const metadata = {
 
 export default async function DashboardPage() {
   const supabase = createClient(await cookies());
+  const adminClient = createAdminClient();
 
   const {
     data: { user },
@@ -28,8 +30,9 @@ export default async function DashboardPage() {
     .eq('id', user.id)
     .single();
 
-  // Get user statistics
-  const { count: materialsCount } = await supabase
+  // Get user statistics - Use admin client to count ALL approved materials
+  // regardless of user's subscription status
+  const { count: materialsCount } = await adminClient
     .from('materials')
     .select('*', { count: 'exact', head: true })
     .eq('is_approved', true);
@@ -62,22 +65,29 @@ export default async function DashboardPage() {
     profile?.subscription_expires_at &&
     new Date(profile.subscription_expires_at) > new Date();
 
+    const cookieStore = await cookies();
+    const isStudentToggle = cookieStore.get('isStudent')?.value !== 'false';
+
+
     const isVendor = profile?.account_type === 'vendor';
 
-    if (isVendor) {
-      // Get vendor data
-      const { data: vendor } = await supabase
-        .from('vendors')
-        .select(`
-          *,
-          vendor_categories (
-            name,
-            icon
-          )
-        `)
-        .eq('owner_id', user.id)
-        .single();
-   
+    const { data: vendor } = await supabase
+    .from('vendors')
+    .select(`
+      *,
+      vendor_categories (
+        name,
+        icon
+      )
+    `)
+    .eq('owner_id', user.id)
+    .single();
+
+    const hasVendor = !!vendor && vendor.is_approved;
+
+    const showVendorDashboard = isVendor || (hasVendor && !isStudentToggle)
+
+    if (showVendorDashboard) {
       return <VendorDashboard profile={profile} vendor={vendor} />;
     }
 

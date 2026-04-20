@@ -14,7 +14,7 @@ interface VendorCardProps {
 }
 
 export default function VendorCard({ vendor,showPriority = false }: VendorCardProps) {
-  const isVerified = vendor.is_verified || vendor.subscription_tier === 'featured';
+  const isVerified = vendor.is_verified;
 
   const features = useVendorFeatures(vendor)
 
@@ -22,7 +22,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
     <Card className="group overflow-hidden transition-all hover:shadow-lg pt-0">
       {/* Cover Image */}
       <div className="relative h-32 bg-linear-to-r from-primary-500 to-secondary-500">
-        {vendor.cover_image_url ? (
+        {vendor.cover_image_url && features.canUploadCover ?(
           <Image
             src={vendor.cover_image_url}
             alt={vendor.business_name}
@@ -66,7 +66,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
       <CardContent className="pt-0">
         {/* Logo */}
         <div className="relative -mt-12 mb-4">
-          {vendor.logo_url ? (
+          {vendor.logo_url && features.canUploadLogo ? (
             <div className="relative h-24 w-24 overflow-hidden rounded-lg border-4 border-white shadow-lg">
               <Image
                 src={vendor.logo_url}
@@ -164,7 +164,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
               onClick={(e) => {
                 e.preventDefault();
                 const number = vendor.whatsapp_number!.replace(/\D/g, '');
-                const message = encodeURIComponent('Hi, I found you on EngiPortal!');
+                const message = encodeURIComponent('Hi, I found you on UniHub!');
                 window.open(`https://wa.me/234${number.slice(1)}?text=${message}`);
               }}
             >

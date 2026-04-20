@@ -1,4 +1,3 @@
-// app/dashboard/subscription/page.tsx
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -7,9 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Crown, Calendar, CreditCard, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
+import CancelSubscriptionButton from '@/components/vendors/cancel-subscription-button';
+import ReactivateSubscriptionButton from '@/components/vendors/reactivate-subscription-button';
 
 export const metadata = {
-  title: 'Subscription | EngiPortal',
+  title: 'Subscription | UniHub',
   description: 'Manage your subscription',
 };
 
@@ -41,6 +42,8 @@ export default async function SubscriptionPage() {
   const isActive = vendor.subscription_tier !== 'basic' && 
     vendor.subscription_expires_at &&
     new Date(vendor.subscription_expires_at) > new Date();
+
+  const autoRenewOn = vendor.subscription_auto_renew;
 
   const daysUntilExpiry = vendor.subscription_expires_at
     ? Math.ceil(
@@ -95,17 +98,41 @@ export default async function SubscriptionPage() {
               </p>
             </div>
 
-            {vendor.subscription_tier === 'basic' ? (
-              <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
-                <Button>
-                  <Crown className="mr-2 h-4 w-4" />
-                  Upgrade Plan
-                </Button>
-              </Link>
-            ) : (
+            {isActive ? (
+              <div className='flex gap-3'>
               <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
                 <Button variant="outline">Change Plan</Button>
               </Link>
+            {autoRenewOn   ? (         
+            <>
+              <CancelSubscriptionButton
+                vendorId={vendor.id}
+                tier={vendor.subscription_tier}
+                expiresAt={vendor.subscription_expires_at}
+                type="hard"/>
+              
+                <CancelSubscriptionButton
+                vendorId={vendor.id}
+                tier={vendor.subscription_tier}
+                expiresAt={vendor.subscription_expires_at}
+                type="soft"
+              />
+            </>
+            ) : (
+              <ReactivateSubscriptionButton
+              vendorId={vendor.id}
+              tier={vendor.subscription_tier}
+              expiresAt={vendor.subscription_expires_at}
+            />
+            )}
+            </div>
+            ) : (
+              <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
+              <Button>
+                <Crown className="mr-2 h-4 w-4" />
+                Upgrade Plan
+              </Button>
+            </Link>
             )}
           </div>
 
@@ -170,7 +197,7 @@ export default async function SubscriptionPage() {
               <ul className="mt-2 space-y-1 text-sm text-blue-800">
                 <li>• Logo & cover image</li>
                 <li>• 5 photo gallery</li>
-                <li>• Up to 15 services</li>
+                <li>• Up to 10 services</li>
                 <li>• Priority in search (2x)</li>
                 <li>• Daily analytics</li>
               </ul>
@@ -192,9 +219,7 @@ export default async function SubscriptionPage() {
                 <li>• 10 photo gallery</li>
                 <li>• Unlimited services</li>
                 <li>• Top of search results (10x)</li>
-                <li>• Homepage spotlight</li>
                 <li>• Hourly analytics</li>
-                <li>• 500 SMS credits/month</li>
               </ul>
             </div>
           </div>

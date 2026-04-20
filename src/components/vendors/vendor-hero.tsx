@@ -18,7 +18,7 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
     <Card className="overflow-hidden">
       {/* Cover Image */}
       <div className="relative h-48 bg-linear-to-r from-primary-500 to-secondary-500">
-        {vendor.cover_image_url ? (
+        {vendor.cover_image_url && features.canUploadCover ? (
           <Image
             src={vendor.cover_image_url}
             alt={vendor.business_name}
@@ -49,7 +49,7 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
       <CardContent className="pt-0">
         {/* Logo */}
         <div className="relative -mt-16 mb-4">
-          {vendor.logo_url ? (
+          {vendor.logo_url && features.canUploadLogo ? (
             <div className="relative h-32 w-32 overflow-hidden rounded-lg border-4 border-white shadow-lg bg-white dark:border-slate-800">
               <Image
                 src={vendor.logo_url}

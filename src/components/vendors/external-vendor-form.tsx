@@ -1,7 +1,6 @@
-// components/vendors/external-vendor-form.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +17,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+  ComboboxEmpty,
+} from "@/components/ui/combobox";
 import { toast } from 'sonner';
 import { Loader2, Store } from 'lucide-react';
 import Link from 'next/link';
@@ -29,6 +36,7 @@ const externalVendorSchema = z
       .string()
       .min(3, 'Business name must be at least 3 characters')
       .max(200),
+    category_id: z.string().min(1, 'Please select a category'),
     business_phone: z
       .string()
       .regex(/^(\+234|0)[789]\d{9}$/, 'Invalid Nigerian phone number'),
@@ -63,12 +71,14 @@ type ExternalVendorFormProps = {
   subtitle?: string;
   showSignInLink?: boolean;
   signInHref?: string;
+  categories?: Array<{ id: string; name: string }>;
 };
 
 export default function ExternalVendorForm({
-  subtitle = "Join EngiPortal's vendor marketplace and connect with thousands of students",
+  subtitle = "Join UniHub's vendor marketplace and connect with thousands of students",
   showSignInLink = false,
   signInHref = '/login',
+  categories = [],
 }: ExternalVendorFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -77,6 +87,7 @@ export default function ExternalVendorForm({
     resolver: zodResolver(externalVendorSchema),
     defaultValues: {
       business_name: '',
+      category_id: '',
       business_phone: '',
       business_address: '',
       full_name: '',
@@ -143,6 +154,68 @@ export default function ExternalVendorForm({
                     <FormMessage />
                   </FormItem>
                 )}
+              />
+
+              <FormField
+                control={form.control}
+                name="category_id"
+                render={({ field }) => {
+                  const [query, setQuery] = useState("");
+                  
+                  const filteredCategories = query === "" 
+                    ? categories 
+                    : categories.filter((c) => 
+                        c.name.toLowerCase().includes(query.toLowerCase())
+                      );
+
+                  useEffect(() => {
+                    if (field.value && categories.length > 0) {
+                      const selected = categories.find(c => c.id === field.value);
+                      if (selected) setQuery(selected.name);
+                    }
+                  }, [field.value, categories]);
+
+                  return (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>
+                        Category <span className="text-red-600">*</span>
+                      </FormLabel>
+                      <Combobox
+                        value={field.value}
+                        onValueChange={(val) => {
+                          field.onChange(val);
+                          const selected = categories.find(c => c.id === val);
+                          if (selected) setQuery(selected.name);
+                        }}
+                      >
+                        <FormControl>
+                          <ComboboxInput
+                            placeholder="Select or search category"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            showTrigger
+                            showClear={!!query}
+                            onClear={() => {
+                              setQuery("");
+                              field.onChange("");
+                            }}
+                          />
+                        </FormControl>
+                        <ComboboxContent>
+                          <ComboboxList>
+                            {filteredCategories.map((category) => (
+                              <ComboboxItem key={category.id} value={category.id}>
+                                {category.name}
+                              </ComboboxItem>
+                            ))}
+                          </ComboboxList>
+                          <ComboboxEmpty>No categories found</ComboboxEmpty>
+                        </ComboboxContent>
+                      </Combobox>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
 
               <FormField

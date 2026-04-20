@@ -10,6 +10,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const {
       business_name,
+      category_id,
       business_phone,
       business_address,
       full_name,
@@ -21,6 +22,13 @@ export async function POST(request: Request) {
     if (!business_name || business_name.length < 3) {
       return NextResponse.json(
         { error: 'Business name must be at least 3 characters' },
+        { status: 400 }
+      );
+    }
+
+    if (!category_id) {
+      return NextResponse.json(
+        { error: 'Please select a category' },
         { status: 400 }
       );
     }
@@ -111,7 +119,6 @@ export async function POST(request: Request) {
         business_name,
         business_phone,
         business_address,
-        business_verified: false,
       })
       .eq('id', authData.user.id);
 
@@ -124,12 +131,14 @@ export async function POST(request: Request) {
     const { error: vendorError } = await supabase.from('vendors').insert({
       owner_id: authData.user.id,
       business_name,
+      category_id,
       phone_number: business_phone,
       location: business_address,
       description: '',
       services: [],
       is_approved: true, // Pending admin approval
       subscription_tier: 'basic',
+      vendor_type: 'vendor',
     });
 
     if (vendorError) {

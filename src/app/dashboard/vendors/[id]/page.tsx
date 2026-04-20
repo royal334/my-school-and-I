@@ -17,6 +17,7 @@ import VendorDetailsInfo from "@/components/vendors/vendor-details-info";
 import VendorGallery from "@/components/vendors/vendor-gallery";
 import VendorReviewsSection from "@/components/vendors/vendor-reviews-section";
 import VendorOwnerStats from "@/components/vendors/vendor-owner-stats";
+import { checkSubscriptionActive } from "@/utils/lib/vendor-features";
 
 interface PageProps {
   params: Promise<{id: string;}>;
@@ -41,6 +42,8 @@ export default async function VendorDetailPage({ params }: PageProps) {
   
   const isVerified = vendor.is_verified || vendor.subscription_tier === 'featured';
   const isOwner = vendor.owner_id === user.id;
+  const isActive = checkSubscriptionActive(vendor);
+  const showGallery = isActive && vendor.subscription_tier !== 'basic';
 
   // Check if can view (approved or owner)
   if (!vendor.is_approved && !isOwner) {
@@ -96,10 +99,12 @@ export default async function VendorDetailPage({ params }: PageProps) {
             <Card>
               <CardContent className="">
                 <VendorDetailsInfo vendor={vendor} />
-                <VendorGallery 
-                  images={vendor.gallery_images} 
-                  businessName={vendor.business_name} 
-                />
+                {showGallery && (
+                  <VendorGallery 
+                    images={vendor.gallery_images} 
+                    businessName={vendor.business_name} 
+                  />
+                )}
               </CardContent>
             </Card>
           </div>

@@ -5,6 +5,7 @@ import LogoUpload from './logo-upload';
 import CoverImageUpload from './cover-image-upload';
 import GalleryUpload from './gallery-upload';
 import { useRouter } from 'next/navigation';
+import { useVendorFeatures } from '@/hooks/use-vendor-features';
 
 interface VendorMediaEditorProps {
   vendor: {
@@ -13,11 +14,14 @@ interface VendorMediaEditorProps {
     cover_image_url: string | null;
     gallery_images?: string[] | null;
     subscription_tier: 'basic' | 'premium' | 'featured';
+    subscription_expires_at?: string | null;
   };
 }
 
 export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
   const router = useRouter();
+  const features = useVendorFeatures(vendor);
+  const effectiveTier = features.tier;
 
   const handleRefresh = () => {
     router.refresh();
@@ -30,7 +34,7 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
         <CardHeader>
           <CardTitle>Business Logo</CardTitle>
           <p className="text-sm text-slate-600">
-            {vendor.subscription_tier === 'basic'
+            {effectiveTier === 'basic'
               ? 'Upgrade to Premium or Featured to add a logo'
               : 'Upload your business logo (square image recommended)'}
           </p>
@@ -39,7 +43,7 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
           <LogoUpload
             vendorId={vendor.id}
             currentLogoUrl={vendor.logo_url}
-            tier={vendor.subscription_tier}
+            tier={effectiveTier}
             onUploadComplete={handleRefresh}
           />
         </CardContent>
@@ -50,7 +54,7 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
         <CardHeader>
           <CardTitle>Cover Image</CardTitle>
           <p className="text-sm text-slate-600">
-            {vendor.subscription_tier === 'basic'
+            {effectiveTier === 'basic'
               ? 'Upgrade to Premium or Featured to add a cover image'
               : 'Upload a cover image for your vendor page'}
           </p>
@@ -59,7 +63,7 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
           <CoverImageUpload
             vendorId={vendor.id}
             currentCoverUrl={vendor.cover_image_url}
-            tier={vendor.subscription_tier}
+            tier={effectiveTier}
             onUploadComplete={handleRefresh}
           />
         </CardContent>
@@ -70,9 +74,9 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
         <CardHeader>
           <CardTitle>Photo Gallery</CardTitle>
           <p className="text-sm text-slate-600">
-            {vendor.subscription_tier === 'basic'
+            {effectiveTier === 'basic'
               ? 'Upgrade to Premium (5 photos) or Featured (10 photos)'
-              : vendor.subscription_tier === 'premium'
+              : effectiveTier === 'premium'
               ? 'Upload up to 5 photos showcasing your business'
               : 'Upload up to 10 photos showcasing your business'}
           </p>
@@ -81,7 +85,7 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
           <GalleryUpload
             vendorId={vendor.id}
             currentImages={vendor.gallery_images || []}
-            tier={vendor.subscription_tier}
+            tier={effectiveTier}
             onImagesChange={handleRefresh}
           />
         </CardContent>

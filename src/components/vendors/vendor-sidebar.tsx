@@ -39,6 +39,7 @@ import {
   HelpCircle,
   LogOut,
   Crown,
+  MessageSquare,
 } from "lucide-react";
 
 const vendorNavigation = [
@@ -46,11 +47,6 @@ const vendorNavigation = [
     name: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
-  },
-  {
-    name: "My Listing",
-    href: "/dashboard/vendors/my-listings",
-    icon: Store,
   },
   {
     name: "Analytics",
@@ -61,6 +57,11 @@ const vendorNavigation = [
     name: "Subscription",
     href: "/dashboard/subscription",
     icon: Crown,
+  },
+  {
+    name:"Notification",
+    href:"/dashboard/notifications",
+    icon:MessageSquare,
   },
   {
     name: "Settings",
@@ -122,13 +123,12 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
 
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Navigation</SidebarGroupLabel>
             <SidebarMenu className="gap-1">
               {vendorNavigation.map((item) => {
                 const Icon = item.icon;
                 const active = isNavActive(pathname, item.href);
                 return (
-                  <SidebarMenuItem key={item.name}>
+                  <SidebarMenuItem key={item.name} className="mb-4">
                     <SidebarMenuButton
                       asChild
                       isActive={active}

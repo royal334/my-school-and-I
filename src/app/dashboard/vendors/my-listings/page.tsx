@@ -212,7 +212,7 @@ export default async function MyListingsPage() {
                       Featured
                     </Badge>
                   )}
-                  <Badge
+                  {/* <Badge
                     variant={vendor.is_approved ? 'default' : 'secondary'}
                     className={
                       vendor.is_approved
@@ -221,7 +221,7 @@ export default async function MyListingsPage() {
                     }
                   >
                     {vendor.is_approved ? 'Approved' : 'Pending'}
-                  </Badge>
+                  </Badge> */}
                   {isVerified && (
                     <Badge className="bg-blue-500 text-white">
                       Verified

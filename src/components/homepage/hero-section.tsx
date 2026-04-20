@@ -94,7 +94,7 @@ export function HeroSection() {
                   <strong className="text-slate-900 dark:text-white">
                     500+
                   </strong>{" "}
-                  engineering students already joined
+                  students already joined
                 </p>
               </div>
             </Reveal>

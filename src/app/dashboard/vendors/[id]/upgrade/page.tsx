@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export const metadata = {
-  title: 'Upgrade Subscription | EngiPortal',
+  title: 'Upgrade Subscription | UniHub',
   description: 'Upgrade your vendor subscription',
 };
 

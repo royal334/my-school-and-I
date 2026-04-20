@@ -99,7 +99,10 @@ function CategorySelector({
         <ComboboxInput
           placeholder="Select or search category"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            if (field.value) field.onChange("");
+          }}
           showTrigger
           showClear={!!query}
           onClear={() => {

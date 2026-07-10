@@ -62,10 +62,10 @@ export default async function CGPAPage() {
           </p>
         </div>
         <div className="flex justify-end md:justify-start gap-3">
-          <Button variant="outline" size="sm">
+          {/* <Button variant="outline" size="sm">
             <FileDown className="mr-2 h-4 w-4" />
             Export
-          </Button>
+          </Button> */}
           <Link href="/dashboard/cgpa/add-semester">
             <Button>
               <Plus className="mr-2 h-4 w-4" />

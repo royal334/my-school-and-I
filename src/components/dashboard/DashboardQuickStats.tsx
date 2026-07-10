@@ -1,5 +1,11 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { BookOpen, Calculator, Download, Store } from "lucide-react";
+import {
+  BookOpen,
+  Calculator,
+  Download,
+  MessageSquare,
+  Store,
+} from "lucide-react";
 import Link from "next/link";
 
 import { DashboardQuickStatsProps } from "@/utils/types";
@@ -93,6 +99,28 @@ export function DashboardQuickStats({
             className="mt-2 inline-block text-xs font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
           >
             Explore vendors →
+          </Link>
+        </CardContent>
+      </Card>
+
+      <Card className="border-purple-200 bg-purple-50 dark:bg-purple-950/30 dark:border-purple-900/30 transition-all hover:shadow-md">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
+              Suggestions
+            </span>
+            <MessageSquare className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold text-purple-900 dark:text-white">
+            Feedback
+          </div>
+          <Link
+            href="/suggestion-page"
+            className="mt-2 inline-block text-xs font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
+          >
+            Give feedback →
           </Link>
         </CardContent>
       </Card>

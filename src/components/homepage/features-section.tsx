@@ -76,11 +76,10 @@ export function FeaturesSection() {
               Everything You Need
             </p>
             <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-slate-900 dark:text-white">
-              Built for Engineering Excellence
+              Built for Excellence
             </h2>
             <p className="text-lg max-w-xl mx-auto text-slate-600 dark:text-slate-300">
-              Comprehensive tools designed specifically for engineering
-              department students.
+              Comprehensive tools designed specifically for students.
             </p>
           </div>
         </Reveal>

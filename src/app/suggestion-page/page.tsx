@@ -20,6 +20,8 @@ import Link from "next/link";
 export default function SuggestionPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10_000);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,6 +41,7 @@ export default function SuggestionPage() {
           Accept: "application/json",
         },
         body: JSON.stringify(data),
+        signal: controller.signal,
       });
 
       const result = await response.json();
@@ -52,11 +55,18 @@ export default function SuggestionPage() {
         throw new Error(result.message || "Something went wrong");
       }
     } catch (error: any) {
-      toast.error(error.message || "Failed to send feedback", {
+          const message =
+          error instanceof Error && error.name === "AbortError"
+          ? "Request timed out. Please try again."
+          : error instanceof Error
+            ? error.message
+            : "Failed to send feedback";
+      toast.error(message,{
         position: "top-center",
       });
     } finally {
       setIsSubmitting(false);
+      clearTimeout(timeoutId);
     }
   };
 

@@ -7,7 +7,7 @@ import MaterialsContent from "@/components/materials/materials-content";
 import MaterialsFilters from "@/components/materials/materials-filters";
 import { Card } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
-import UpgradeButton from "@/components/payment/update-button";
+//import UpgradeButton from "@/components/payment/update-button";
 
 export const metadata = {
   title: "Materials Library | UniHub",
@@ -97,7 +97,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
       </div>
 
       {/* Subscription Status Banner */}
-      {profile && profile.subscription_status !== "active" && (
+      {/* {profile && profile.subscription_status !== "active" && (
         <Card className="border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-950/30 p-4">
           <div className="flex items-start gap-3">
             <div className="rounded-full bg-amber-100 dark:bg-amber-900/50 p-2">
@@ -115,7 +115,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
             </div>
           </div>
         </Card>
-      )}
+      )} */}
 
       {/* Filters */}
       <MaterialsFilters />

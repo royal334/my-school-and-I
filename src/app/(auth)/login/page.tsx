@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 type LoginFormValues = {
@@ -41,16 +42,28 @@ export default function LoginPage() {
 
       if (error) throw error;
 
-      toast.success("Welcome back!",{ position: "top-center"});
+      toast.success("Welcome back!", { position: "top-center" });
       router.push("/dashboard");
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message || "Login failed",{ position: "top-center"});
+      toast.error(error.message || "Login failed", { position: "top-center" });
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950 flex-col space-y-6">
+      <div className="w-full max-w-md">
+        <Link href="/">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-0 hover:bg-transparent"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Home
+          </Button>
+        </Link>
+      </div>
       <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
         <CardHeader>
           <CardTitle className="dark:text-white">Welcome to UniHub</CardTitle>
@@ -61,7 +74,9 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="dark:text-slate-200">Email</Label>
+              <Label htmlFor="email" className="dark:text-slate-200">
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -79,7 +94,9 @@ export default function LoginPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="dark:text-slate-200">Password</Label>
+              <Label htmlFor="password" className="dark:text-slate-200">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
@@ -107,12 +124,19 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 mt-4">
-            <Button type="submit" className="w-full bg-primary-600 hover:bg-primary/50 dark:bg-blue-700 dark:hover:bg-blue-600" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full bg-primary-600 hover:bg-primary/50 dark:bg-blue-700 dark:hover:bg-blue-600"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? "Signing in..." : "Sign In"}
             </Button>
             <p className="text-center text-sm text-slate-600 dark:text-slate-300">
               Don't have an account?{" "}
-              <Link href="/signup" className="text-blue-600 hover:underline dark:text-blue-400">
+              <Link
+                href="/signup"
+                className="text-blue-600 hover:underline dark:text-blue-400"
+              >
                 Sign up
               </Link>
             </p>

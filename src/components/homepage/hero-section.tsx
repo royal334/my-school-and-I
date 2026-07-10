@@ -57,7 +57,7 @@ export function HeroSection() {
             <Reveal delay={160}>
               <p className="text-lg leading-8 max-w-xl text-slate-600 dark:text-slate-300">
                 Access materials, calculate CGPA, connect with vendors — all in
-                one platform designed for engineering students at Nnamdi Azikiwe
+                one platform designed for students at Nnamdi Azikiwe
                 University.
               </p>
             </Reveal>

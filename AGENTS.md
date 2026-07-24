@@ -2,129 +2,98 @@
 
 ## Project Overview
 
-EnGiPortal is a Next.js 16 application with TypeScript, Tailwind CSS v4, and Supabase backend. It provides educational materials, vendor services, and CGPA tracking for engineering students.
+EnGiPortal is a Next.js 16 app with TypeScript, Tailwind CSS v4, and Supabase backend. Educational materials, vendor services, and CGPA tracking for engineering students.
 
-## Build, Lint, and Test Commands
+## Commands
 
-### Development
 ```bash
-npm run dev          # Start development server at http://localhost:3000
+npm run dev          # Dev server at http://localhost:3000
+npm run build        # Production build
+npm run start        # Production server
+npm run lint         # ESLint (next/core-web-vitals + typescript)
 ```
 
-### Production
-```bash
-npm run build        # Build for production
-npm run start        # Start production server
+No test framework configured. Typecheck with `npx tsc --noEmit`.
+
+## Environment
+
+Required in `.env`: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+## Database Schema (Critical)
+
+The `profiles` table does NOT have a `role` or `announcement_role` column. Roles work via a foreign key:
+
+- `profiles.role_id` → `admin_roles.id`
+- `admin_roles` table has columns: `id`, `user_id`, `role` (the role name string)
+- Role names: `super_admin`, `admin`, `faculty_president`, `departmental_president`, `course_rep`, `department_admin`, `student_union_rep`
+
+### Fetching roles — DO NOT use Supabase join syntax
+
+The FK constraint name `profiles_role_id_fkey` does not work in client-side `.select()` joins. Always fetch profile and role separately:
+
+```typescript
+// ✅ Correct — two separate queries
+const { data: profile } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle();
+const { data: role } = await supabase.from('admin_roles').select('role').eq('user_id', userId).maybeSingle();
+
+// ❌ Wrong — join syntax fails on client side
+supabase.from('profiles').select('*, role:admin_roles!profiles_role_id_fkey (role)')
 ```
 
-### Linting
-```bash
-npm run lint         # Run ESLint with next/core-web-vitals and TypeScript rules
-```
+Server-side API routes CAN use the join syntax (it works in the GET announcements endpoint).
 
-### Environment Variables
-Required in `.env`:
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+### Supabase Edge Functions reference table `admin_roles`, NOT `roles`
 
-## Code Style Guidelines
+Any SQL functions (RLS helpers, permission checks) must use `admin_roles` as the table name and `r.role` as the column (not `r.name`).
 
-### TypeScript
-- **Strict mode enabled** - no implicit any, strict null checks
-- Use explicit type annotations for function parameters and return types
-- Use `any` sparingly; prefer `unknown` for truly unknown types
-- Define interfaces/types in `src/utils/types/` directory
-- Database types auto-generated in `src/utils/supabase/database.types.ts`
+## File Structure
 
-### File Organization
 ```
 src/
-├── app/              # Next.js App Router pages and API routes
-│   ├── api/          # API routes (route.ts files)
-│   ├── (auth)/       # Auth pages (login, signup, etc.)
-│   └── dashboard/    # Protected dashboard pages
+├── app/
+│   ├── api/              # API routes (route.ts)
+│   │   └── announcements/
+│   ├── (auth)/           # Login, signup pages
+│   └── dashboard/
+│       └── announcements/
 ├── components/
-│   ├── ui/           # shadcn/ui components (Button, Card, Dialog, etc.)
-│   └── [feature]/    # Feature-specific components
-├── hooks/            # Custom React hooks
-├── lib/              # Utilities (utils.ts with cn helper)
-└── utils/            # Helper functions, types, Supabase clients
+│   ├── ui/               # shadcn/ui components
+│   └── announcements/    # announcement-feed.tsx, announcement-form.tsx
+├── hooks/                # use-session.ts (client auth hook)
+├── lib/                  # utils.ts (cn helper)
+└── utils/
+    ├── supabase/
+    │   ├── client.ts     # Browser client: createClient()
+    │   └── server.ts     # Server client: createClient(await cookies())
+    └── queries/          # Database query helpers
 ```
 
-### Imports
-- Use path alias `@/*` for imports (e.g., `@/components/ui/button`)
-- shadcn/ui imports: `@/components/ui/[component]`
-- Utils: `import { cn } from "@/lib/utils"`
-- Supabase: `import { createClient } from '@/utils/supabase/server'` (server) or `'@/utils/supabase/client'` (client)
+## Supabase Clients
 
-### Components
-- **Server Components**: Default in Next.js App Router
-- **Client Components**: Add `'use client'` directive at the top
-- Use functional components with explicit prop interfaces
-- shadcn/ui components use `class-variance-authority` for variants
+- **Client components**: `import { createClient } from '@/utils/supabase/client'`
+- **Server (API routes, pages)**: `import { createClient } from '@/utils/supabase/server'` — requires `await cookies()`
+- **Client components must NOT use the server client** and vice versa
 
-### Naming Conventions
-- **Components**: PascalCase (`VendorCard`, `DashboardSidebar`)
-- **Hooks**: camelCase with `use` prefix (`useTheme`, `usePdfCache`)
-- **Files**: kebab-case for most files (`vendor-card.tsx`), PascalCase for components
-- **Types/Interfaces**: PascalCase (`interface VendorCardProps`)
-- **API Routes**: kebab-case directories, `route.ts` files
+## Announcement System
 
-### API Routes
-- Located in `src/app/api/`
-- Use `NextResponse.json()` for responses
-- Return appropriate HTTP status codes (201 created, 400 bad request, 500 server error)
-- Validate input and return descriptive error messages
-- Example pattern:
-```typescript
-export async function POST(request: Request) {
-  try {
-    // Implementation
-    return NextResponse.json({ success: true }, { status: 201 });
-  } catch (error: any) {
-    console.error('Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-```
+- Feed and form fetch their own auth/profile directly via `supabase.auth.getUser()` — they do NOT use `useSession`
+- The form fetches profile fields (`faculty_id`, `department_id`, `level`) and role separately, then computes allowed scopes client-side via `getAllowedScopes()`
+- API routes handle permission checks server-side using the `admin_roles` table
+- `sender_role` column in announcements stores the role string at send time
 
-### Form Handling
-- Use `react-hook-form` with `zod` resolvers for validation
-- Define schemas in components or separate validation files
-- Use shadcn/ui `Form` component
+## Key Libraries
 
-### Styling
-- Tailwind CSS v4 with CSS variables
-- Use `cn()` utility for conditional class merging
-- shadcn/ui components accept `className` prop
-- Use Tailwind's dark mode with `dark:` prefix
-
-### Error Handling
-- Wrap async operations in try/catch blocks
-- Log errors with `console.error()` before returning
-- Return user-friendly error messages in API responses
-- Use descriptive error messages, not generic ones
-
-### Database (Supabase)
-- Use server client for API routes: `createClient(await cookies())`
-- Use client client for client components: `createClientComponentClient()`
-- Always check for errors from Supabase responses (`if (error) {...}`)
-- Use `.select()` with specific columns when possible for performance
-
-### Key Libraries
-- **UI**: shadcn/ui (New York style), Radix UI primitives, Lucide icons
-- **Forms**: react-hook-form, zod, @hookform/resolvers
-- **State**: zustand (if needed)
-- **PDF**: pdf-lib, react-pdf
-- **Dates**: date-fns
+- **UI**: shadcn/ui (New York style), Radix UI, Lucide icons
+- **Forms**: react-hook-form + zod + @hookform/resolvers
 - **Styling**: Tailwind CSS v4, class-variance-authority, tailwind-merge
+- **Dates**: date-fns
+- **PDF**: pdf-lib, react-pdf
 
-### ESLint Configuration
-Uses `eslint-config-next` with:
-- `next/core-web-vitals` - React best practices
-- `next/typescript` - TypeScript strict rules
+## Code Conventions
 
-### Notes
-- No test framework configured yet
-- All UI components are in `src/components/ui/` (managed by shadcn)
-- Feature components organized by domain in `src/components/[domain]/`
+- Client components use `'use client'` directive
+- Path alias `@/*` for all imports
+- `cn()` utility for conditional classes
+- API routes return `NextResponse.json()` with appropriate status codes
+- Strict TypeScript — avoid `any`, use explicit types
+- Feature components in `src/components/[domain]/`

@@ -60,10 +60,16 @@ export default function SignupPage() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormValues>({
-    defaultValues: { level: "100", faculty: "", department: "" },
+    defaultValues: {
+      level: "100",
+      faculty: "",
+      department: "",
+      faculty_id: "",
+      department_id: "",
+    },
   });
 
-  const selectedFaculty = watch("faculty");
+  const selectedFaculty = watch("faculty_id");
 
   // Load faculties and departments once on mount
   useEffect(() => {
@@ -89,7 +95,7 @@ export default function SignupPage() {
         setFaculties(facs ?? []);
         setAllDepartments(depts ?? []);
       } catch (err) {
-        console.error(err)
+        console.error(err);
       } finally {
         setLoadingData(false);
       }
@@ -105,8 +111,11 @@ export default function SignupPage() {
       );
       // Reset department when faculty changes
       setValue("department", "");
+      setValue("department_id", "");
     } else {
       setFilteredDepartments([]);
+      setValue("department", "");
+      setValue("department_id", "");
     }
   }, [selectedFaculty, allDepartments, setValue]);
 
@@ -129,8 +138,6 @@ export default function SignupPage() {
 
       if (authError) throw authError;
 
-      console.log(data.faculty, data.department)
-
       // 2. Create profile record
       if (authData.user) {
         const { error: profileError } = await supabase.from("profiles").upsert({
@@ -139,8 +146,7 @@ export default function SignupPage() {
           full_name: data.full_name,
           matric_number: data.matric_number,
           level: parseInt(data.level),
-          department: data.department_id,
-          faculty: data.faculty_id,
+          department: data.department,
         });
 
         if (profileError) throw profileError;
@@ -150,8 +156,10 @@ export default function SignupPage() {
         position: "top-center",
       });
       router.push("/login");
-    } catch (error: any) {
-      toast.error(error.message || "Signup failed", { position: "top-center" });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Signup failed";
+      toast.error(message, { position: "top-center" });
     }
   };
 
@@ -269,7 +277,7 @@ export default function SignupPage() {
                 Faculty
               </Label>
               <Controller
-                name="faculty"
+                name="faculty_id"
                 control={control}
                 rules={{ required: "Faculty is required" }}
                 render={({ field }) => {
@@ -295,13 +303,22 @@ export default function SignupPage() {
                       <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) max-h-60 overflow-y-auto">
                         <DropdownMenuRadioGroup
                           value={field.value}
-                          onValueChange={field.onChange}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            setValue("faculty", "");
+                            setValue("department", "");
+                            setValue("department_id", "");
+                          }}
                         >
                           {faculties.map((f) => (
-                            <DropdownMenuRadioItem key={f.id} value={f.id} onSelect={() => {
+                            <DropdownMenuRadioItem
+                              key={f.id}
+                              value={f.id}
+                              onSelect={() => {
                                 setValue("faculty_id", f.id);
-                              setValue("faculty", f.name);
-                            }}>
+                                setValue("faculty", f.name);
+                              }}
+                            >
                               {f.name}
                             </DropdownMenuRadioItem>
                           ))}
@@ -311,8 +328,8 @@ export default function SignupPage() {
                   );
                 }}
               />
-              {errors.faculty && (
-                <p className="text-sm text-red-500">{errors.faculty.message}</p>
+              {errors.faculty_id && (
+                <p className="text-sm text-red-500">{errors.faculty_id.message}</p>
               )}
             </div>
 
@@ -322,7 +339,7 @@ export default function SignupPage() {
                 Department
               </Label>
               <Controller
-                name="department"
+                name="department_id"
                 control={control}
                 rules={{ required: "Department is required" }}
                 render={({ field }) => {
@@ -348,13 +365,20 @@ export default function SignupPage() {
                       <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) max-h-60 overflow-y-auto">
                         <DropdownMenuRadioGroup
                           value={field.value}
-                          onValueChange={field.onChange}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            setValue("department", "");
+                          }}
                         >
                           {filteredDepartments.map((d) => (
-                            <DropdownMenuRadioItem key={d.id} value={d.id} onSelect={() => {
-                              setValue("department_id", d.id);
-                              setValue("department", d.name);
-                            }}>
+                            <DropdownMenuRadioItem
+                              key={d.id}
+                              value={d.id}
+                              onSelect={() => {
+                                setValue("department_id", d.id);
+                                setValue("department", d.name);
+                              }}
+                            >
                               {d.name}
                             </DropdownMenuRadioItem>
                           ))}
@@ -370,9 +394,9 @@ export default function SignupPage() {
                   );
                 }}
               />
-              {errors.department && (
+              {errors.department_id && (
                 <p className="text-sm text-red-500">
-                  {errors.department.message}
+                  {errors.department_id.message}
                 </p>
               )}
             </div>

@@ -29,18 +29,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {
-  LayoutDashboard,
-  Store,
-  BarChart3,
-  Settings,
-  CreditCard,
-  Bell,
-  HelpCircle,
-  LogOut,
-  Crown,
-  MessageSquare,
-} from "lucide-react";
+import { VendorMobileBottomNav } from "@/components/vendors/vendor-mobile-bottom-nav";
+import {LayoutDashboard, BarChart3, Crown, MessageSquare, Settings, LogOut} from 'lucide-react';
 
 const vendorNavigation = [
   {
@@ -111,60 +101,68 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
 
   return (
     <>
-      <Sidebar>
-        <SidebarHeader className="border-b p-4 dark:border-slate-800 bg-white dark:bg-slate-950">
-          <Link href="/dashboard" onClick={closeSidebarOnMobile}>
-            <h1 className="text-xl font-bold text-primary-600 dark:text-primary-500">
-              UniHub
-            </h1>
-            <p className="text-xs text-muted-foreground">Vendor Dashboard</p>
-          </Link>
-        </SidebarHeader>
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block">
+        <Sidebar>
+          <SidebarHeader className="border-b p-4 dark:border-slate-800 bg-white dark:bg-slate-950">
+            <Link href="/dashboard" onClick={closeSidebarOnMobile}>
+              <h1 className="text-xl font-bold text-primary-600 dark:text-primary-500">
+                UniHub
+              </h1>
+              <p className="text-xs text-muted-foreground">Vendor Dashboard</p>
+            </Link>
+          </SidebarHeader>
 
-        <SidebarContent className="bg-white dark:bg-slate-950">
-          <SidebarGroup>
-            <SidebarMenu className="gap-1">
-              {vendorNavigation.map((item) => {
-                const Icon = item.icon;
-                const active = isNavActive(pathname, item.href);
-                return (
-                  <SidebarMenuItem key={item.name} className="mb-4">
-                    <SidebarMenuButton
-                      asChild
-                      isActive={active}
-                      tooltip={item.name}
-                      onClick={closeSidebarOnMobile}
-                    >
-                      <Link href={item.href}>
-                        <Icon />
-                        <span>{item.name}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
+          <SidebarContent className="bg-white dark:bg-slate-950">
+            <SidebarGroup>
+              <SidebarMenu className="gap-1">
+                {vendorNavigation.map((item) => {
+                  const Icon = item.icon;
+                  const active = isNavActive(pathname, item.href);
+                  return (
+                    <SidebarMenuItem key={item.name} className="mb-4">
+                      <SidebarMenuButton
+                        asChild
+                        isActive={active}
+                        tooltip={item.name}
+                        onClick={closeSidebarOnMobile}
+                      >
+                        <Link href={item.href}>
+                          <Icon />
+                          <span>{item.name}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroup>
+          </SidebarContent>
+
+          <SidebarFooter className="border-t p-4 dark:border-slate-800 bg-white dark:bg-slate-950">
+            <div className="mb-3 rounded-lg bg-sidebar-accent p-3">
+              <p className="truncate text-sm font-medium">{userName}</p>
+              <p className="text-xs text-muted-foreground">Vendor Account</p>
+            </div>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={() => setShowLogoutDialog(true)}
+                  className="w-full cursor-pointer text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950/50 dark:hover:text-red-300"
+                >
+                  <LogOut />
+                  <span>Sign Out</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
-          </SidebarGroup>
-        </SidebarContent>
+          </SidebarFooter>
+        </Sidebar>
+      </div>
 
-        <SidebarFooter className="border-t p-4 dark:border-slate-800 bg-white dark:bg-slate-950">
-          <div className="mb-3 rounded-lg bg-sidebar-accent p-3">
-            <p className="truncate text-sm font-medium">{userName}</p>
-            <p className="text-xs text-muted-foreground">Vendor Account</p>
-          </div>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={() => setShowLogoutDialog(true)}
-                className="w-full cursor-pointer text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950/50 dark:hover:text-red-300"
-              >
-                <LogOut />
-                <span>Sign Out</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </Sidebar>
+      {/* Mobile Bottom Nav */}
+      <div className="md:hidden">
+        <VendorMobileBottomNav />
+      </div>
 
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>

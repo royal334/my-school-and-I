@@ -37,6 +37,8 @@ type SignupFormValues = {
   department: string;
   email: string;
   password: string;
+  faculty_id: string;
+  department_id: string;
 };
 
 export default function SignupPage() {
@@ -127,6 +129,8 @@ export default function SignupPage() {
 
       if (authError) throw authError;
 
+      console.log(data.faculty, data.department)
+
       // 2. Create profile record
       if (authData.user) {
         const { error: profileError } = await supabase.from("profiles").upsert({
@@ -135,8 +139,8 @@ export default function SignupPage() {
           full_name: data.full_name,
           matric_number: data.matric_number,
           level: parseInt(data.level),
-          department: data.department,
-          faculty: data.faculty,
+          department: data.department_id,
+          faculty: data.faculty_id,
         });
 
         if (profileError) throw profileError;
@@ -195,7 +199,7 @@ export default function SignupPage() {
               </Label>
               <Input
                 id="matric_number"
-                placeholder="ENG/2024/001"
+                placeholder="20XXXXXXXX"
                 {...register("matric_number", {
                   required: "Matric number is required",
                 })}
@@ -294,7 +298,10 @@ export default function SignupPage() {
                           onValueChange={field.onChange}
                         >
                           {faculties.map((f) => (
-                            <DropdownMenuRadioItem key={f.id} value={f.id}>
+                            <DropdownMenuRadioItem key={f.id} value={f.id} onSelect={() => {
+                                setValue("faculty_id", f.id);
+                              setValue("faculty", f.name);
+                            }}>
                               {f.name}
                             </DropdownMenuRadioItem>
                           ))}
@@ -344,7 +351,10 @@ export default function SignupPage() {
                           onValueChange={field.onChange}
                         >
                           {filteredDepartments.map((d) => (
-                            <DropdownMenuRadioItem key={d.id} value={d.id}>
+                            <DropdownMenuRadioItem key={d.id} value={d.id} onSelect={() => {
+                              setValue("department_id", d.id);
+                              setValue("department", d.name);
+                            }}>
                               {d.name}
                             </DropdownMenuRadioItem>
                           ))}

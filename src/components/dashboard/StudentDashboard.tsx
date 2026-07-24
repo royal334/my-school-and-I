@@ -28,7 +28,7 @@ export function StudentDashboard({
     <div className="space-y-6">
       <DashboardWelcomeHeader fullName={profile?.full_name} />
 
-      {!hasActiveSubscription && <DashboardSubscriptionBanner />}
+      {/* {!hasActiveSubscription && <DashboardSubscriptionBanner />} */}
 
       <DashboardQuickStats
         currentGPA={currentGPA}

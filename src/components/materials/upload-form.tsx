@@ -45,7 +45,7 @@ export default function UploadForm({ courses }: UploadFormProps) {
       title: "",
       type: "lecture_note",
       description: "",
-      isPremium: true,
+      isPremium: false,
     },
   });
 

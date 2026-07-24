@@ -84,7 +84,7 @@ export default async function ProfilePage() {
       />
 
       {/* Subscription Status */}
-      <SubscriptionCard profile={profile} />
+      {/* <SubscriptionCard profile={profile} /> */}
 
       {/* Security Settings */}
       <SecurityCard email={user.email!} />

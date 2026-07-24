@@ -40,102 +40,104 @@ export default function OptimizedPDFViewer({
   return (
     <>
       {/* ── Normal (inline) view ── */}
-      <div className="space-y-4">
-        {/* Navigation & Actions Controls */}
-        <div className="flex items-center justify-between bg-slate-100 p-4 rounded-lg">
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage <= 1}
-            >
-              <ChevronLeft className="h-4 w-4" />
-              Previous
-            </Button>
+      {!isFullscreen && (
+        <div className="space-y-4">
+          {/* Navigation & Actions Controls */}
+          <div className="flex items-center justify-between bg-slate-100 p-4 rounded-lg">
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage <= 1}
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Previous
+              </Button>
+
+              <Button
+                size="sm"
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, numPages))}
+                disabled={currentPage >= numPages}
+              >
+                Next
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+
+            <span className="text-sm font-medium">
+              Page {currentPage} of {numPages}
+            </span>
 
             <Button
+              variant="outline"
               size="sm"
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, numPages))}
-              disabled={currentPage >= numPages}
+              className="gap-2"
+              onClick={openFullscreen}
             >
-              Next
-              <ChevronRight className="h-4 w-4" />
+              <Maximize2 className="h-4 w-4" />
+              <span className="hidden sm:inline">Full Screen</span>
             </Button>
           </div>
 
-          <span className="text-sm font-medium">
-            Page {currentPage} of {numPages}
-          </span>
+          {/* PDF Display */}
+          <Card className="overflow-hidden">
+            <div
+              className="flex justify-center bg-slate-50 p-4 cursor-zoom-in group relative"
+              onClick={openFullscreen}
+              title="Click to view full screen"
+            >
+              {pdfError ? (
+                <div className="flex h-96 flex-col items-center justify-center gap-2 text-red-500">
+                  <p className="font-semibold">Failed to render PDF</p>
+                  <p className="text-sm">{pdfError}</p>
+                </div>
+              ) : (
+                <Document
+                  file={fileUrl}
+                  onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+                  onLoadError={(err) => setPdfError(err.message)}
+                  loading={
+                    <div className="flex h-96 items-center justify-center">
+                      <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+                    </div>
+                  }
+                >
+                  {/* ⚡ Only render current page */}
+                  <Page
+                    pageNumber={currentPage}
+                    width={800}
+                    renderTextLayer={true}
+                    renderAnnotationLayer={false}
+                  />
+                </Document>
+              )}
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={openFullscreen}
-          >
-            <Maximize2 className="h-4 w-4" />
-            <span className="hidden sm:inline">Full Screen</span>
-          </Button>
-        </div>
-
-        {/* PDF Display */}
-        <Card className="overflow-hidden">
-          <div
-            className="flex justify-center bg-slate-50 p-4 cursor-zoom-in group relative"
-            onClick={openFullscreen}
-            title="Click to view full screen"
-          >
-            {pdfError ? (
-              <div className="flex h-96 flex-col items-center justify-center gap-2 text-red-500">
-                <p className="font-semibold">Failed to render PDF</p>
-                <p className="text-sm">{pdfError}</p>
-              </div>
-            ) : (
-              <Document
-                file={fileUrl}
-                onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-                onLoadError={(err) => setPdfError(err.message)}
-                loading={
-                  <div className="flex h-96 items-center justify-center">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
-                  </div>
-                }
-              >
-                {/* ⚡ Only render current page */}
-                <Page
-                  pageNumber={currentPage}
-                  width={800}
-                  renderTextLayer={true}
-                  renderAnnotationLayer={false}
-                />
-              </Document>
-            )}
-
-            {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-colors flex items-center justify-center pointer-events-none">
-              <div className="bg-white/90 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-200">
-                <Maximize2 className="h-5 w-5 text-slate-700" />
+              {/* Hover Overlay */}
+              <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-colors flex items-center justify-center pointer-events-none">
+                <div className="bg-white/90 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-200">
+                  <Maximize2 className="h-5 w-5 text-slate-700" />
+                </div>
               </div>
             </div>
-          </div>
-        </Card>
+          </Card>
 
-        {/* Page Navigation Dots */}
-        {numPages > 0 && numPages <= 10 && (
-          <div className="flex justify-center gap-2">
-            {Array.from({ length: numPages }, (_, i) => i + 1).map((page) => (
-              <Button
-                key={page}
-                size="sm"
-                variant={page === currentPage ? "default" : "outline"}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </Button>
-            ))}
-          </div>
-        )}
-      </div>
+          {/* Page Navigation Dots */}
+          {numPages > 0 && numPages <= 10 && (
+            <div className="flex justify-center gap-2">
+              {Array.from({ length: numPages }, (_, i) => i + 1).map((page) => (
+                <Button
+                  key={page}
+                  size="sm"
+                  variant={page === currentPage ? "default" : "outline"}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </Button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ── Full-screen overlay ── covers entire viewport incl. sidebar/header */}
       {isFullscreen && (

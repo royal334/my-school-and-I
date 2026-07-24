@@ -38,7 +38,7 @@ interface VendorDashboardProps {
     is_featured?: boolean;
     is_approved?: boolean;
     logo_url?: string;
-    business_name?: string;
+    business_name: string;
     vendor_categories?: { icon?: string; name?: string };
     description?: string;
     subscription_expires_at?: string;
@@ -187,7 +187,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               <CardContent>
                 <div className="flex items-baseline gap-2">
                   <div className="text-2xl font-bold">
-                    {vendor.rating_avg.toFixed(1)}
+                    {vendor.rating_avg?.toFixed(1)}
                   </div>
                   <div className="text-sm text-muted-foreground">/ 5.0</div>
                 </div>
@@ -245,7 +245,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                         </div>
                       ) : (
                         <div className="flex h-20 w-20 items-center justify-center rounded-lg bg-primary-100 text-xl font-bold text-primary-700">
-                          {vendor.business_name.slice(0, 2).toUpperCase()}
+                          {vendor.business_name?.slice(0, 2).toUpperCase()}
                         </div>
                       )}
                     </div>

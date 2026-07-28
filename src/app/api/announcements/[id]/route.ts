@@ -32,32 +32,28 @@ export async function PATCH(request: Request) {
        if (!existing) {
          return NextResponse.json({ error: 'Not found' }, { status: 404 });
        }
+    const body = await request.json();
    
-        // Check permission
-        const isOwner = existing.sender_id === user.id || existing.author_id === user.id;
-        const { data: adminRoleRow } = await supabase
-          .from('admin_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .maybeSingle();
+    const editable = ['title', 'content', 'type', 'category', 'priority', 'expires_at'] as const;
+    const updates: Record<string, unknown> = {};
+    for (const key of editable) {
+      if (key in body) updates[key] = body[key];
+    }
 
-        const adminRole = adminRoleRow?.role as string | undefined;
-        if (!isOwner && !['super_admin', 'admin'].includes(adminRole || '')) {
-         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-       }
-   
-       const body = await request.json();
-   
-       // Update announcement
-       const { data: updated, error } = await supabase
-         .from('announcements')
-         .update({
-           ...body,
-           updated_at: new Date().toISOString(),
-         })
-         .eq('id', id)
-         .select()
-         .single();
+    if (Object.keys(updates).length === 0) {
+      return NextResponse.json({ error: 'No editable fields provided' }, { status: 400 });
+    }
+
+    // Update announcement
+    const { data: updated, error } = await supabase
+      .from('announcements')
+      .update({
+        ...updates,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id)
+      .select()
+      .single();
    
        if (error) throw error;
    

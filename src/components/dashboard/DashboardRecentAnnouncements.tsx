@@ -33,7 +33,7 @@ export function DashboardRecentAnnouncements({
           >
             <Bell className="h-5 w-5 text-primary-600" />
             <div className="flex-1">
-              <h3 className="font-medium text-foreground">
+              <h3 className="text-sm text-foreground">
                 {announcement.title}
               </h3>
               <p className="text-xs text-muted-foreground">

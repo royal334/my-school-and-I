@@ -4,10 +4,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 // POST /api/announcements/[id]/read - Mark announcement as read
-export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: Request,{ params }: { params: Promise<{ id: string }> }) {
   try {
     const supabase = createClient(await cookies());
     const { data: { user } } = await supabase.auth.getUser();

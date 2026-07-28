@@ -2,7 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import ProfileForm from '@/components/profile/profile-form';
-import SubscriptionCard from '@/components/profile/subscription-card';
+//import SubscriptionCard from '@/components/profile/subscription-card';
 import SecurityCard from '@/components/profile/security-card';
 import { ArrowLeft, User } from 'lucide-react';
 import Link from 'next/link';

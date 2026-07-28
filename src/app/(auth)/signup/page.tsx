@@ -84,6 +84,7 @@ export default function SignupPage() {
               .order("name"),
           ]);
 
+
         if (facErr) {
           toast.error("Could not load faculties: " + facErr.message);
         }
@@ -138,7 +139,8 @@ export default function SignupPage() {
 
       if (authError) throw authError;
 
-      // 2. Create profile record
+      // 2. Create profile record when possible. Some setups handle this via DB trigger/RLS,
+      // so we should not block the signup flow if the profile write is not allowed.
       if (authData.user) {
         const { error: profileError } = await supabase.from("profiles").upsert({
           id: authData.user.id,
@@ -149,13 +151,19 @@ export default function SignupPage() {
           department: data.department,
         });
 
-        if (profileError) throw profileError;
+        if (profileError) {
+          console.warn("Profile sync skipped:", profileError.message);
+        }
       }
 
-      toast.success("Account created successfully", {
+      const successMessage = authData.session
+        ? "Account created successfully"
+        : "Account created successfully. Please check your email to confirm your account before signing in.";
+
+      toast.success(successMessage, {
         position: "top-center",
       });
-      router.push("/login");
+      router.replace("/login");
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : "Signup failed";

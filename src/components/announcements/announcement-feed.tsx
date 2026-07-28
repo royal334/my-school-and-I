@@ -21,7 +21,6 @@ import {
   Bookmark,
   Clock,
   AlertCircle,
-  Loader2,
   ChevronRight,
   Search,
 } from 'lucide-react';
@@ -34,9 +33,11 @@ interface Announcement {
   type: 'academic' | 'official_school';
   category: string;
   priority: 'normal' | 'important' | 'urgent';
+  status?: 'draft' | 'published' | 'archived';
   published_at: string;
   expires_at?: string;
   is_read: boolean;
+  sender_role?: string | null;
   author: { full_name: string; role: { role: string } | null };
   total_reads?: number;
 }
@@ -68,7 +69,6 @@ export default function AnnouncementFeed() {
       const { data: { user } } = await supabase.auth.getUser();
       if (cancelled || !user) return;
       fetchAnnouncements();
-      subscribeToNewAnnouncements();
       fetchSavedAnnouncements();
     }
 
@@ -77,18 +77,29 @@ export default function AnnouncementFeed() {
     return () => { cancelled = true; };
   }, [selectedType, selectedPriority]);
 
+  // useEffect(() => {
+  //   const unsubscribe = subscribeToNewAnnouncements();
+  //   return () => {
+  //     unsubscribe?.();
+  //   };
+  // }, [selectedType, selectedPriority]);
+
+  function getAnnouncementParams() {
+    const params = new URLSearchParams({
+      include_read: 'true',
+      limit: '100',
+    });
+
+    if (selectedType !== 'all') params.append('type', selectedType);
+    if (selectedPriority !== 'all') params.append('priority', selectedPriority);
+
+    return params;
+  }
+
   async function fetchAnnouncements() {
     try {
       setLoading(true);
-      const params = new URLSearchParams({
-        include_read: 'true',
-        limit: '100',
-      });
-
-      if (selectedType !== 'all') params.append('type', selectedType);
-      if (selectedPriority !== 'all') params.append('priority', selectedPriority);
-
-      const response = await fetch(`/api/announcements?${params}`);
+      const response = await fetch(`/api/announcements?${getAnnouncementParams()}`);
 
       if (!response.ok) throw new Error('Failed to fetch announcements');
 
@@ -103,35 +114,58 @@ export default function AnnouncementFeed() {
     }
   }
 
-  function subscribeToNewAnnouncements() {
-    const channel = supabase
-      .channel('announcements-updates')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'announcements',
-        },
-        (payload) => {
-          // New announcement - add to top
-          setAnnouncements((prev) => [payload.new as Announcement, ...prev]);
-          setUnreadCount((prev) => prev + 1);
+  // function subscribeToNewAnnouncements() {
+  //   const channel = supabase.channel('public:announcements');
 
-          // Show notification toast (optional)
-          showNotification(payload.new as Announcement);
-        }
-      )
-      .subscribe();
+  //   channel.on(
+  //     'postgres_changes',
+  //     {
+  //       event: 'INSERT',
+  //       schema: 'public',
+  //       table: 'announcements',
+  //     },
+  //     async (payload) => {
+  //       try {
+  //         const incomingAnnouncement = payload.new as Announcement;
+  //         const params = getAnnouncementParams();
+  //         const response = await fetch(`/api/announcements?${params}`);
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }
+  //         if (!response.ok) {
+  //           throw new Error('Failed to refresh announcements');
+  //         }
+
+  //         const data = await response.json();
+  //         const normalizedAnnouncements = (data.announcements || []) as Announcement[];
+  //         const normalizedNewAnnouncement = normalizedAnnouncements.find(
+  //           (announcement) => announcement.id === incomingAnnouncement.id
+  //         );
+
+  //         setAnnouncements(normalizedAnnouncements);
+  //         setUnreadCount(data.total_unread || 0);
+
+  //         if (normalizedNewAnnouncement) {
+  //           showNotification(normalizedNewAnnouncement);
+  //         } else {
+  //           showNotification(incomingAnnouncement);
+  //         }
+  //       } catch (err) {
+  //         console.error('Realtime announcement update failed:', err);
+  //       }
+  //     }
+  //   );
+
+  //   channel.subscribe();
+
+  //   return () => {
+  //     channel.unsubscribe();
+  //     supabase.removeChannel(channel);
+  //   };
+  // }
 
   function showNotification(announcement: Announcement) {
     // TODO: You can implement a toast notification here
     // For now, just log
+
     console.log('New announcement:', announcement.title);
   }
 
@@ -158,9 +192,7 @@ export default function AnnouncementFeed() {
       if (response.ok) {
         // Update local state
         setAnnouncements((prev) =>
-          prev.map((a) =>
-            a.id === announcementId ? { ...a, is_read: true } : a
-          )
+          prev.map((a) => a.id === announcementId ? { ...a, is_read: true } : a)
         );
         setUnreadCount((prev) => Math.max(0, prev - 1));
       }
@@ -244,6 +276,9 @@ export default function AnnouncementFeed() {
     return icons[category] || '📢';
   };
 
+  const formatRoleLabel = (role?: string | null) =>
+    role?.replace(/_/g, ' ') || '';
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Unread badge header */}
@@ -268,7 +303,7 @@ export default function AnnouncementFeed() {
 
       {/* Search and filters */}
       <Card>
-        <CardContent className="pt-6 space-y-4">
+        <CardContent className=" space-y-4">
           <div className="flex gap-2">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
@@ -310,8 +345,37 @@ export default function AnnouncementFeed() {
 
       {/* Loading state */}
       {loading && (
-        <div className="flex justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
+        <div className="space-y-4">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <Card key={index} className="border-slate-200">
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 space-y-3">
+                    <div className="flex flex-wrap gap-2">
+                      <div className="h-6 w-16 animate-pulse rounded-full bg-slate-200" />
+                      <div className="h-6 w-24 animate-pulse rounded-full bg-slate-200" />
+                    </div>
+                    <div className="h-6 w-3/4 animate-pulse rounded bg-slate-200" />
+                    <div className="h-4 w-full animate-pulse rounded bg-slate-200" />
+                    <div className="h-4 w-2/3 animate-pulse rounded bg-slate-200" />
+                  </div>
+                  <div className="h-9 w-9 animate-pulse rounded bg-slate-200" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div className="flex flex-1 flex-wrap gap-3">
+                    <div className="h-4 w-28 animate-pulse rounded bg-slate-200" />
+                    <div className="h-4 w-24 animate-pulse rounded bg-slate-200" />
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="h-8 w-20 animate-pulse rounded bg-slate-200" />
+                    <div className="h-8 w-20 animate-pulse rounded bg-slate-200" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       )}
 
@@ -413,15 +477,19 @@ export default function AnnouncementFeed() {
             <CardContent>
               <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
                 {/* Meta info */}
-                <div className="flex items-center gap-4">
-                  <span className="flex items-center gap-1">
-                    <span className="font-medium text-slate-700">
+                <div className="flex items-center justify-between w-full">
+                  <span className="flex flex-col gap-2">
+                    <span className="font-lg text-slate-700">
                       {announcement.author.full_name}
                     </span>
-                    •
-                    <span className="capitalize">
-                      {announcement.author.role?.role?.replace(/_/g, ' ')}
-                    </span>
+
+                    {(announcement.author.role?.role || announcement.sender_role) && (
+                      <span className="capitalize font-lg text-slate-700">
+                        {formatRoleLabel(
+                          announcement.author.role?.role || announcement.sender_role
+                        )}
+                      </span>
+                    )}
                   </span>
 
                   <span className="flex items-center gap-1">
@@ -431,12 +499,12 @@ export default function AnnouncementFeed() {
                     })}
                   </span>
 
-                  {announcement.expires_at && (
+                  {/* {announcement.expires_at && (
                     <span className="text-orange-600">
                       Expires{' '}
                       {formatDistanceToNow(new Date(announcement.expires_at))}
                     </span>
-                  )}
+                  )} */}
                 </div>
 
                 {/* Actions */}

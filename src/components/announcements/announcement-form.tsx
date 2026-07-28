@@ -27,7 +27,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs';
-import { Loader2, AlertCircle, CheckCircle2, Users } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Users, Loader2 } from 'lucide-react';
 
 interface Faculty {
   id: string;
@@ -92,7 +92,16 @@ const announcementSchema = z
 
 type AnnouncementFormValues = z.infer<typeof announcementSchema>;
 
-function getAllowedScopes(role: string | undefined): string[] {
+
+
+function getDefaultScope(
+  allowedScopes: string[],
+): AnnouncementFormValues['scope'] {
+  if (allowedScopes.includes('department')) return 'department';
+  return (allowedScopes[0] as AnnouncementFormValues['scope']) || 'department';
+}
+
+  function getAllowedScopes(role: string | undefined): string[] {
   switch (role) {
     case 'super_admin':
       return ['general', 'faculty', 'department', 'level']
@@ -111,13 +120,6 @@ function getAllowedScopes(role: string | undefined): string[] {
     default:
       return [];
   }
-}
-
-function getDefaultScope(
-  allowedScopes: string[],
-): AnnouncementFormValues['scope'] {
-  if (allowedScopes.includes('department')) return 'department';
-  return (allowedScopes[0] as AnnouncementFormValues['scope']) || 'department';
 }
 
 interface Profile {
@@ -349,7 +351,43 @@ export default function AnnouncementForm() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="mx-auto max-w-4xl space-y-6">
+        <Card>
+          <CardHeader>
+            <div className="h-6 w-40 animate-pulse rounded bg-slate-200" />
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <div className="h-4 w-24 animate-pulse rounded bg-slate-200" />
+              <div className="h-10 animate-pulse rounded bg-slate-200" />
+            </div>
+            <div className="space-y-2">
+              <div className="h-4 w-24 animate-pulse rounded bg-slate-200" />
+              <div className="h-32 animate-pulse rounded bg-slate-200" />
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <div className="h-4 w-24 animate-pulse rounded bg-slate-200" />
+                <div className="h-10 animate-pulse rounded bg-slate-200" />
+              </div>
+              <div className="space-y-2">
+                <div className="h-4 w-24 animate-pulse rounded bg-slate-200" />
+                <div className="h-10 animate-pulse rounded bg-slate-200" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="h-4 w-28 animate-pulse rounded bg-slate-200" />
+              <div className="h-10 animate-pulse rounded bg-slate-200" />
+            </div>
+            <div className="flex gap-3">
+              <div className="h-10 w-24 animate-pulse rounded bg-slate-200" />
+              <div className="h-10 w-32 animate-pulse rounded bg-slate-200" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   if (!allowedScopes.length) {

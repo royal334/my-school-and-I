@@ -50,7 +50,24 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
     if (href === '/dashboard') {
       return pathname === '/dashboard' || pathname === '/dashboard/';
     }
-    return pathname.startsWith(href);
+
+    if (href === '/dashboard/materials') {
+      return (
+        pathname === '/dashboard/materials' ||
+        pathname === '/dashboard/materials/' ||
+        (pathname.startsWith('/dashboard/materials/') &&
+          !pathname.startsWith('/dashboard/materials/upload'))
+      );
+    }
+
+    if (href === '/dashboard/materials/upload') {
+      return (
+        pathname === '/dashboard/materials/upload' ||
+        pathname.startsWith('/dashboard/materials/upload/')
+      );
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
   };
 
   const handleLogout = async () => {

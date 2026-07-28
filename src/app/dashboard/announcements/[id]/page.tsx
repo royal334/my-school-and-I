@@ -10,16 +10,18 @@ import { formatDistanceToNow } from 'date-fns';
 export default async function AnnouncementDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const supabase = createClient(await cookies());
   const { data: { user } } = await supabase.auth.getUser();
+  const { id } = await params;
 
   // Fetch announcement
   const { data: announcement } = await supabase
     .from('announcements')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
+    .eq('status', 'published')  
     .single();
 
   if (!announcement) {
@@ -41,10 +43,38 @@ export default async function AnnouncementDetailPage({
     };
   }
 
+  let faculty = null;
+  let department = null;
+
+  if (announcement.faculty_id) {
+    const { data: facultyData } = await supabase
+      .from('faculties')
+      .select('id, name')
+      .eq('id', announcement.faculty_id)
+      .maybeSingle();
+
+    faculty = facultyData;
+  }
+
+  if (announcement.department_id) {
+    const { data: departmentData } = await supabase
+      .from('departments')
+      .select('id, name')
+      .eq('id', announcement.department_id)
+      .maybeSingle();
+
+    department = departmentData;
+  }
+
+  const facultyName = faculty?.name || 'selected faculty';
+  const departmentName = department?.name || 'selected department';
+  const levelLabel = announcement.level ? `${announcement.level}` : 'selected level';
+  const authorRoleLabel = author?.role?.role || announcement.sender_role;
+
   // Mark as read if user is logged in
   if (user) {
     await supabase.from('announcement_reads').insert({
-      announcement_id: params.id,
+      announcement_id: id,
       user_id: user.id,
     });
   }
@@ -62,7 +92,7 @@ export default async function AnnouncementDetailPage({
 
   return (
     <div className="min-h-screen bg-slate-50 py-8">
-      <div className="max-w-3xl mx-auto px-4">
+      <div className="max-w-3xl mx-auto">
         {/* Back button */}
         <Link href="/dashboard/announcements">
           <Button variant="ghost" size="sm" className="mb-6">
@@ -83,7 +113,7 @@ export default async function AnnouncementDetailPage({
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl font-bold text-slate-900">
+          <h1 className="text-xl md:text-3xl font-bold text-slate-900">
             {announcement.title}
           </h1>
 
@@ -92,11 +122,11 @@ export default async function AnnouncementDetailPage({
             <span className="font-medium text-slate-900">
               {author?.full_name}
             </span>
-            {author?.role?.role && (
+            {authorRoleLabel && (
               <>
                 <span>•</span>
                 <span className="capitalize">
-                  {author.role.role.replace(/_/g, ' ')}
+                  {authorRoleLabel.replace(/_/g, ' ')}
                 </span>
               </>
             )}
@@ -131,10 +161,10 @@ export default async function AnnouncementDetailPage({
               {announcement.target_scope === 'general'
                 ? 'All students'
                 : announcement.target_scope === 'faculty'
-                ? `${announcement.faculty?.name} students`
+                ? `All ${facultyName} students`
                 : announcement.target_scope === 'department'
-                ? `${announcement.department?.name} students`
-                : `${announcement.level}-level in ${announcement.department?.name}`}
+                ? `All ${departmentName} students`
+                : `${levelLabel}-level in ${departmentName}`}
             </p>
           </div>
 

@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { getAllowedScopes } from '@/utils/lib/announcements';
 
 // GET /api/announcements - Fetch announcements visible to current user
 export async function GET(request: Request) {
@@ -107,13 +108,15 @@ export async function GET(request: Request) {
       const authorId = a.sender_id || a.author_id;
       const profile = authorId ? profilesById.get(authorId) : null;
       const role = authorId ? rolesByUserId.get(authorId) : null;
+      const fallbackRole = typeof a.sender_role === 'string' && a.sender_role ? a.sender_role : null;
+      const resolvedRole = fallbackRole || role;
 
       return {
         ...a,
         is_read: readIds.has(a.id),
         author: {
           full_name: profile?.full_name || 'Unknown author',
-          role: role ? { role } : null,
+          role: resolvedRole ? { role: resolvedRole } : null,
         },
       };
     });
@@ -195,6 +198,28 @@ export async function POST(request: Request) {
       );
     }
 
+       // Permission check via RPC
+    const { data: canPost, error: permError } = await supabase.rpc(
+      'can_user_send_announcement',
+      {
+        p_user_id: user.id,
+        p_scope: scope,
+        p_faculty_id: faculty_id || null,
+        p_department_id: department_id || null,
+        p_level: level || null,
+      }
+    );
+ 
+    if (permError || !canPost) {
+      return NextResponse.json(
+        {
+          error:
+            'You do not have permission to send announcements to this audience',
+        },
+        { status: 403 }
+      );
+    }
+
     const { data: adminRoleRow, error: adminRoleError } = await supabase
       .from('admin_roles')
       .select('role')
@@ -210,36 +235,48 @@ export async function POST(request: Request) {
     }
 
     const senderRole = adminRoleRow?.role || 'student';
-    const allowedScopes = (() => {
-      switch (senderRole) {
-        case 'super_admin':
-        case 'admin':
-          return ['general', 'faculty', 'department', 'level'];
-        case 'faculty_president':
-          return ['faculty', 'department', 'level'];
-        case 'departmental_president':
-          return ['department', 'level'];
-        case 'course_rep':
-        case 'department_admin':
-          return ['department', 'level'];
-        case 'student_union_rep':
-          return ['general'];
-        default:
-          return [];
-      }
-    })();
+    // const allowedScopes = getAllowedScopes(senderRole);
 
-    if (!allowedScopes.includes(scope)) {
-      return NextResponse.json(
-        {
-          error:
-            'You do not have permission to send announcements to this audience',
-        },
-        { status: 403 }
-      );
-    }
+    // if (!allowedScopes.includes(scope)) {
+    //   return NextResponse.json(
+    //     {
+    //       error:
+    //         'You do not have permission to send announcements to this audience',
+    //     },
+    //     { status: 403 }
+    //   );
+    // }
 
-    // Create announcement
+    // // Create announcement
+    // const isGlobalAdmin = ['super_admin', 'admin'].includes(senderRole);
+
+    // if (!isGlobalAdmin) {
+    //   const { data: senderProfile, error: senderProfileError } = await supabase
+    //     .from('profiles')
+    //     .select('faculty_id, department_id')
+    //     .eq('id', user.id)
+    //     .maybeSingle();
+
+    //   if (senderProfileError) throw senderProfileError;
+
+    //   if (scope !== 'general' && faculty_id !== senderProfile?.faculty_id) {
+    //     return NextResponse.json(
+    //       { error: 'You can only send announcements within your own faculty' },
+    //       { status: 403 }
+    //     );
+    //   }
+
+    //   if (
+    //     ['department', 'level'].includes(scope) &&
+    //     department_id !== senderProfile?.department_id
+    //   ) {
+    //     return NextResponse.json(
+    //       { error: 'You can only send announcements within your own department' },
+    //       { status: 403 }
+    //     );
+    //   }
+    // }
+
     const { data: announcement, error } = await supabase
       .from('announcements')
       .insert({

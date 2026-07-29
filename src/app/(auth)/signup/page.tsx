@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,17 +31,19 @@ import Link from "next/link";
 type Faculty = { id: string; name: string };
 type Department = { id: string; name: string; faculty_id: string };
 
-type SignupFormValues = {
-  full_name: string;
-  matric_number: string;
-  level: string;
-  faculty: string;
-  department: string;
-  email: string;
-  password: string;
-  faculty_id: string;
-  department_id: string;
-};
+const signupSchema = z.object({
+  full_name: z.string().min(1, "Full name is required"),
+  matric_number: z.string().min(1, "Matric number is required"),
+  level: z.string().min(1, "Level is required"),
+  faculty: z.string(),
+  department: z.string(),
+  email: z.string().min(1, "Email is required").email("Enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  faculty_id: z.string().min(1, "Faculty is required"),
+  department_id: z.string().min(1, "Department is required"),
+});
+
+type SignupFormValues = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
   const router = useRouter();
@@ -60,6 +64,7 @@ export default function SignupPage() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       level: "100",
       faculty: "",
@@ -197,9 +202,7 @@ export default function SignupPage() {
               </Label>
               <Input
                 id="full_name"
-                {...register("full_name", {
-                  required: "Full name is required",
-                })}
+                {...register("full_name")}
               />
               {errors.full_name && (
                 <p className="text-sm text-red-500">
@@ -216,9 +219,7 @@ export default function SignupPage() {
               <Input
                 id="matric_number"
                 placeholder="20XXXXXXXX"
-                {...register("matric_number", {
-                  required: "Matric number is required",
-                })}
+                {...register("matric_number")}
               />
               {errors.matric_number && (
                 <p className="text-sm text-red-500">
@@ -235,7 +236,6 @@ export default function SignupPage() {
               <Controller
                 name="level"
                 control={control}
-                rules={{ required: "Level is required" }}
                 render={({ field }) => (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -287,7 +287,6 @@ export default function SignupPage() {
               <Controller
                 name="faculty_id"
                 control={control}
-                rules={{ required: "Faculty is required" }}
                 render={({ field }) => {
                   const selectedFacultyObj = faculties.find(
                     (f) => f.id === field.value,
@@ -349,7 +348,6 @@ export default function SignupPage() {
               <Controller
                 name="department_id"
                 control={control}
-                rules={{ required: "Department is required" }}
                 render={({ field }) => {
                   const selectedDeptObj = allDepartments.find(
                     (d) => d.id === field.value,
@@ -418,13 +416,7 @@ export default function SignupPage() {
                 id="email"
                 type="email"
                 placeholder="your.email@university.edu"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Enter a valid email address",
-                  },
-                })}
+                {...register("email")}
               />
               {errors.email && (
                 <p className="text-sm text-red-500">{errors.email.message}</p>
@@ -439,13 +431,7 @@ export default function SignupPage() {
               <Input
                 id="password"
                 type="password"
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 8,
-                    message: "Password must be at least 8 characters",
-                  },
-                })}
+                {...register("password")}
               />
               {errors.password && (
                 <p className="text-sm text-red-500">

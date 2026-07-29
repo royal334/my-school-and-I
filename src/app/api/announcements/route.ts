@@ -277,6 +277,35 @@ export async function POST(request: Request) {
     //   }
     // }
 
+    const isGlobalAdmin = ['super_admin', 'admin'].includes(senderRole);
+
+    if (!isGlobalAdmin) {
+      const { data: senderProfile, error: senderProfileError } = await supabase
+        .from('profiles')
+        .select('faculty_id, department_id')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (senderProfileError) throw senderProfileError;
+
+      if (scope !== 'general' && faculty_id !== senderProfile?.faculty_id) {
+        return NextResponse.json(
+          { error: 'You can only send announcements within your own faculty' },
+          { status: 403 }
+        );
+      }
+
+      if (
+        ['department', 'level'].includes(scope) &&
+        department_id !== senderProfile?.department_id
+      ) {
+        return NextResponse.json(
+          { error: 'You can only send announcements within your own department' },
+          { status: 403 }
+        );
+      }
+    }
+
     const { data: announcement, error } = await supabase
       .from('announcements')
       .insert({

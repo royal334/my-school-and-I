@@ -517,6 +517,7 @@ export default function AnnouncementForm() {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="none">No category</SelectItem>
+                            <SelectItem value="quiz">Quiz</SelectItem>
                             <SelectItem value="exam">Exam</SelectItem>
                             <SelectItem value="lecture">Lecture</SelectItem>
                             <SelectItem value="assignment">Assignment</SelectItem>

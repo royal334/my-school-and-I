@@ -17,12 +17,13 @@ export default async function CreateAnnouncementPage() {
 
   const { data: adminRoleRow, error: adminRoleError } = await supabase
   .from('admin_roles')
-  .select('user_id, id, role')
+  .select('role')
   .eq('user_id', user.id)
   .maybeSingle();
 
 if (adminRoleError) {
   console.log('admin_roles lookup failed:', adminRoleError);
+  throw new Error('Unable to verify announcement permissions');  
   return;
 }
 

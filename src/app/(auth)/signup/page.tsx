@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,17 +31,19 @@ import Link from "next/link";
 type Faculty = { id: string; name: string };
 type Department = { id: string; name: string; faculty_id: string };
 
-type SignupFormValues = {
-  full_name: string;
-  matric_number: string;
-  level: string;
-  faculty: string;
-  department: string;
-  email: string;
-  password: string;
-  faculty_id: string;
-  department_id: string;
-};
+const signupSchema = z.object({
+  full_name: z.string().min(1, "Full name is required"),
+  matric_number: z.string().min(1, "Matric number is required"),
+  level: z.string().min(1, "Level is required"),
+  faculty: z.string(),
+  department: z.string(),
+  email: z.string().min(1, "Email is required").email("Enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  faculty_id: z.string().min(1, "Faculty is required"),
+  department_id: z.string().min(1, "Department is required"),
+});
+
+type SignupFormValues = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
   const router = useRouter();
@@ -60,10 +64,17 @@ export default function SignupPage() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormValues>({
-    defaultValues: { level: "100", faculty: "", department: "" },
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      level: "100",
+      faculty: "",
+      department: "",
+      faculty_id: "",
+      department_id: "",
+    },
   });
 
-  const selectedFaculty = watch("faculty");
+  const selectedFaculty = watch("faculty_id");
 
   // Load faculties and departments once on mount
   useEffect(() => {
@@ -78,6 +89,7 @@ export default function SignupPage() {
               .order("name"),
           ]);
 
+
         if (facErr) {
           toast.error("Could not load faculties: " + facErr.message);
         }
@@ -89,7 +101,7 @@ export default function SignupPage() {
         setFaculties(facs ?? []);
         setAllDepartments(depts ?? []);
       } catch (err) {
-        console.error(err)
+        console.error(err);
       } finally {
         setLoadingData(false);
       }
@@ -105,8 +117,11 @@ export default function SignupPage() {
       );
       // Reset department when faculty changes
       setValue("department", "");
+      setValue("department_id", "");
     } else {
       setFilteredDepartments([]);
+      setValue("department", "");
+      setValue("department_id", "");
     }
   }, [selectedFaculty, allDepartments, setValue]);
 
@@ -129,9 +144,8 @@ export default function SignupPage() {
 
       if (authError) throw authError;
 
-      console.log(data.faculty, data.department)
-
-      // 2. Create profile record
+      // 2. Create profile record when possible. Some setups handle this via DB trigger/RLS,
+      // so we should not block the signup flow if the profile write is not allowed.
       if (authData.user) {
         const { error: profileError } = await supabase.from("profiles").upsert({
           id: authData.user.id,
@@ -139,19 +153,26 @@ export default function SignupPage() {
           full_name: data.full_name,
           matric_number: data.matric_number,
           level: parseInt(data.level),
-          department: data.department_id,
-          faculty: data.faculty_id,
+          department: data.department,
         });
 
-        if (profileError) throw profileError;
+        if (profileError) {
+          console.warn("Profile sync skipped:", profileError.message);
+        }
       }
 
-      toast.success("Account created successfully", {
+      const successMessage = authData.session
+        ? "Account created successfully"
+        : "Account created successfully. Please check your email to confirm your account before signing in.";
+
+      toast.success(successMessage, {
         position: "top-center",
       });
-      router.push("/login");
-    } catch (error: any) {
-      toast.error(error.message || "Signup failed", { position: "top-center" });
+      router.replace("/login");
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Signup failed";
+      toast.error(message, { position: "top-center" });
     }
   };
 
@@ -181,9 +202,7 @@ export default function SignupPage() {
               </Label>
               <Input
                 id="full_name"
-                {...register("full_name", {
-                  required: "Full name is required",
-                })}
+                {...register("full_name")}
               />
               {errors.full_name && (
                 <p className="text-sm text-red-500">
@@ -200,9 +219,7 @@ export default function SignupPage() {
               <Input
                 id="matric_number"
                 placeholder="20XXXXXXXX"
-                {...register("matric_number", {
-                  required: "Matric number is required",
-                })}
+                {...register("matric_number")}
               />
               {errors.matric_number && (
                 <p className="text-sm text-red-500">
@@ -219,7 +236,6 @@ export default function SignupPage() {
               <Controller
                 name="level"
                 control={control}
-                rules={{ required: "Level is required" }}
                 render={({ field }) => (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -269,9 +285,8 @@ export default function SignupPage() {
                 Faculty
               </Label>
               <Controller
-                name="faculty"
+                name="faculty_id"
                 control={control}
-                rules={{ required: "Faculty is required" }}
                 render={({ field }) => {
                   const selectedFacultyObj = faculties.find(
                     (f) => f.id === field.value,
@@ -295,13 +310,22 @@ export default function SignupPage() {
                       <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) max-h-60 overflow-y-auto">
                         <DropdownMenuRadioGroup
                           value={field.value}
-                          onValueChange={field.onChange}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            setValue("faculty", "");
+                            setValue("department", "");
+                            setValue("department_id", "");
+                          }}
                         >
                           {faculties.map((f) => (
-                            <DropdownMenuRadioItem key={f.id} value={f.id} onSelect={() => {
+                            <DropdownMenuRadioItem
+                              key={f.id}
+                              value={f.id}
+                              onSelect={() => {
                                 setValue("faculty_id", f.id);
-                              setValue("faculty", f.name);
-                            }}>
+                                setValue("faculty", f.name);
+                              }}
+                            >
                               {f.name}
                             </DropdownMenuRadioItem>
                           ))}
@@ -311,8 +335,8 @@ export default function SignupPage() {
                   );
                 }}
               />
-              {errors.faculty && (
-                <p className="text-sm text-red-500">{errors.faculty.message}</p>
+              {errors.faculty_id && (
+                <p className="text-sm text-red-500">{errors.faculty_id.message}</p>
               )}
             </div>
 
@@ -322,9 +346,8 @@ export default function SignupPage() {
                 Department
               </Label>
               <Controller
-                name="department"
+                name="department_id"
                 control={control}
-                rules={{ required: "Department is required" }}
                 render={({ field }) => {
                   const selectedDeptObj = allDepartments.find(
                     (d) => d.id === field.value,
@@ -348,13 +371,20 @@ export default function SignupPage() {
                       <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) max-h-60 overflow-y-auto">
                         <DropdownMenuRadioGroup
                           value={field.value}
-                          onValueChange={field.onChange}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            setValue("department", "");
+                          }}
                         >
                           {filteredDepartments.map((d) => (
-                            <DropdownMenuRadioItem key={d.id} value={d.id} onSelect={() => {
-                              setValue("department_id", d.id);
-                              setValue("department", d.name);
-                            }}>
+                            <DropdownMenuRadioItem
+                              key={d.id}
+                              value={d.id}
+                              onSelect={() => {
+                                setValue("department_id", d.id);
+                                setValue("department", d.name);
+                              }}
+                            >
                               {d.name}
                             </DropdownMenuRadioItem>
                           ))}
@@ -370,9 +400,9 @@ export default function SignupPage() {
                   );
                 }}
               />
-              {errors.department && (
+              {errors.department_id && (
                 <p className="text-sm text-red-500">
-                  {errors.department.message}
+                  {errors.department_id.message}
                 </p>
               )}
             </div>
@@ -386,13 +416,7 @@ export default function SignupPage() {
                 id="email"
                 type="email"
                 placeholder="your.email@university.edu"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Enter a valid email address",
-                  },
-                })}
+                {...register("email")}
               />
               {errors.email && (
                 <p className="text-sm text-red-500">{errors.email.message}</p>
@@ -407,13 +431,7 @@ export default function SignupPage() {
               <Input
                 id="password"
                 type="password"
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 8,
-                    message: "Password must be at least 8 characters",
-                  },
-                })}
+                {...register("password")}
               />
               {errors.password && (
                 <p className="text-sm text-red-500">

@@ -77,12 +77,12 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-8 mt-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
             Materials Library
           </h1>
-          <p className="mt-1 text-slate-600 dark:text-slate-400">
+          <p className="mt-1 text-slate-600 dark:text-slate-400 text-sm md:text-base">
             Access lecture notes, past questions, and study materials
           </p>
         </div>

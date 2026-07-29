@@ -24,7 +24,6 @@ export function usePDFCache(
 
           // Cache valid for 50 minutes (signed URL expires in 60)
           if (now - data.timestamp < 50 * 60 * 1000 && data.url) {
-            console.log("✅ Loaded from cache");
             setPdfUrl(data.url);
             setLoading(false);
             return;
@@ -35,7 +34,6 @@ export function usePDFCache(
         }
 
         // 2. Fetch fresh URL
-        console.log("📥 Fetching fresh URL...");
         const url = await fetchUrl();
 
         if (!url) {

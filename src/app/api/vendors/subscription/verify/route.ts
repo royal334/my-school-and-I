@@ -9,7 +9,6 @@ export async function GET(request: Request) {
   const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
   try {
-    console.log('Verifying subscription for reference:', reference);
 
     if (!reference) {
       console.error('No reference provided in search params');
@@ -20,7 +19,6 @@ export async function GET(request: Request) {
 
     // Verify transaction with Paystack using helper
     const verification = await verifyPaystackTransaction(reference);
-    console.log('Paystack verification response status:', verification.status);
 
     if (!verification.status) {
       console.error('Paystack verification failed:', verification.message);
@@ -28,7 +26,6 @@ export async function GET(request: Request) {
     }
 
     const paymentData = verification.data;
-    console.log('Payment status:', paymentData.status);
 
     // Check if payment was successful
     if (paymentData.status !== 'success') {
@@ -54,7 +51,6 @@ export async function GET(request: Request) {
     }
 
     const { vendor_id, tier, user_id } = metadata;
-    console.log('Processing upgrade for vendor:', vendor_id, 'to tier:', tier);
 
     // Calculate subscription period (1 month)
     const now = new Date();
@@ -120,8 +116,6 @@ export async function GET(request: Request) {
         amount: fromKobo(paymentData.amount),
       },
     });
-
-    console.log('Subscription verification successful for vendor:', vendor_id);
 
     // Redirect to success page
     return NextResponse.redirect(

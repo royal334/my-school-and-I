@@ -9,7 +9,6 @@ import {
   Phone,
   Star,
   TrendingUp,
-  TrendingDown,
   Crown,
   Edit,
   BarChart3,
@@ -18,19 +17,42 @@ import {
   AlertCircle,
   Store,
   CheckCircle2,
-  Loader2
+  Loader2,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 
 interface VendorDashboardProps {
-  profile: any;
-  vendor: any;
+  profile: {
+    full_name: string;
+  };
+  vendor: {
+    id?: string;
+    view_count?: number;
+    contact_count?: number;
+    rating_avg?: number;
+    rating_count?: number;
+    is_verified?: boolean;
+    subscription_tier?: string;
+    is_featured?: boolean;
+    is_approved?: boolean;
+    logo_url?: string;
+    business_name: string;
+    vendor_categories?: { icon?: string; name?: string };
+    description?: string;
+    subscription_expires_at?: string;
+    [key: string]: unknown;
+  } | null;
 }
 
 export default function VendorDashboard({ profile, vendor }: VendorDashboardProps) {
-  const [analytics, setAnalytics] = useState<any>(null);
+  const [analytics, setAnalytics] = useState<{
+    summary?: {
+      views?: number;
+      total_contacts?: number;
+    };
+  } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,18 +75,13 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
   }, [vendor?.id]);
 
   const isVerified = vendor?.is_verified || vendor?.subscription_tier === 'featured';
-  
+
   // Use 30-day stats if available, otherwise fallback to lifetime (with a note)
-  const views = analytics ? analytics.summary.views : vendor.view_count;
-  const contacts = analytics ? analytics.summary.total_contacts : vendor.contact_count;
+  const views = analytics?.summary?.views ?? vendor?.view_count ?? 0;
+  const contacts = analytics?.summary?.total_contacts ?? vendor?.contact_count ?? 0;
   const conversionRate = views > 0
     ? ((contacts / views) * 100).toFixed(1)
     : '0.0';
-
-  // Trends (using a simple comparison if we had historical data, but for now we'll just show the 30d total)
-  // In a real scenario, the API would return trend percentages.
-  const viewsTrend = 0; 
-  const contactsTrend = 0;
 
   return (
     <div className="space-y-6">
@@ -72,7 +89,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
       <div>
         <h1 className="text-3xl font-bold">Welcome back, {profile.full_name}!</h1>
         <p className="text-muted-foreground">
-          Here's what's happening with your business in the last 30 days
+          Here&apos;s what&apos;s happening with your business in the last 30 days
         </p>
       </div>
 
@@ -170,7 +187,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               <CardContent>
                 <div className="flex items-baseline gap-2">
                   <div className="text-2xl font-bold">
-                    {vendor.rating_avg.toFixed(1)}
+                    {vendor.rating_avg?.toFixed(1)}
                   </div>
                   <div className="text-sm text-muted-foreground">/ 5.0</div>
                 </div>
@@ -205,18 +222,18 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
           </div>
 
           {/* Main Content Grid */}
-          <div className="grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-6 xl:grid-cols-3">
             {/* Left Column - Vendor Info */}
-            <div className="space-y-6 lg:col-span-2">
+            <div className="space-y-6 xl:col-span-2">
               {/* Vendor Summary Card */}
               <Card>
                 <CardHeader>
                   <CardTitle>Your Listing</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-start gap-4">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
                     {/* Logo */}
-                    <div>
+                    <div className="flex shrink-0 justify-center sm:justify-start">
                       {vendor.logo_url ? (
                         <div className="relative h-20 w-20 overflow-hidden rounded-lg">
                           <Image
@@ -228,14 +245,14 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                         </div>
                       ) : (
                         <div className="flex h-20 w-20 items-center justify-center rounded-lg bg-primary-100 text-xl font-bold text-primary-700">
-                          {vendor.business_name.slice(0, 2).toUpperCase()}
+                          {vendor.business_name?.slice(0, 2).toUpperCase()}
                         </div>
                       )}
                     </div>
 
                     {/* Info */}
                     <div className="flex-1">
-                      <div className="mb-2 flex items-start justify-between">
+                      <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                         <div>
                           <div className="flex items-center gap-1">
                             <h3 className="text-lg font-bold">
@@ -252,7 +269,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                             </p>
                           )}
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
                           {vendor.is_featured && (
                             <Badge className="bg-amber-500">
                               <Crown className="mr-1 h-3 w-3" />
@@ -281,15 +298,15 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                         {vendor.description}
                       </p>
 
-                      <div className="flex gap-2">
-                        <Link href={`/dashboard/vendors/${vendor.id}/edit`}>
-                          <Button variant="outline" size="sm">
+                      <div className="flex flex-col gap-2 sm:flex-row">
+                        <Link href={`/dashboard/vendors/${vendor.id}/edit`} className="w-full sm:w-auto">
+                          <Button variant="outline" size="sm" className="w-full sm:w-auto">
                             <Edit className="mr-2 h-4 w-4" />
                             Edit Listing
                           </Button>
                         </Link>
-                        <Link href={`/dashboard/vendors/${vendor.id}`}>
-                          <Button variant="outline" size="sm">
+                        <Link href={`/dashboard/vendors/${vendor.id}`} className="w-full sm:w-auto">
+                          <Button variant="outline" size="sm" className="w-full sm:w-auto">
                             View Public Page
                           </Button>
                         </Link>
@@ -334,7 +351,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <CardTitle>Your Plan</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="mb-4 flex items-center justify-between">
+                  <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <Badge
                       variant="outline"
                       className="text-lg font-semibold uppercase"
@@ -404,31 +421,31 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               </Card> */}
             </div>
                 {/* Quick Actions */}
-                <div className='lg:col-span-3'>
+                <div className='xl:col-span-3'>
                 <Card>
                   <CardHeader>
                     <CardTitle>Quick Actions</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <Link href="/dashboard/vendors/my-listings">
+                    <Link href="/dashboard/vendors/my-listings" className="block">
                       <Button variant="outline" className="w-full justify-start">
                         <Store className="mr-2 h-4 w-4" />
                         Manage Listing
                       </Button>
                     </Link>
-                    <Link href="/dashboard/vendors/analytics">
+                    <Link href="/dashboard/vendors/analytics" className="block">
                       <Button variant="outline" className="w-full justify-start">
                         <BarChart3 className="mr-2 h-4 w-4" />
                         View Analytics
                       </Button>
                     </Link>
-                    <Link href="/dashboard/notifications">
+                    <Link href="/dashboard/notifications" className="block">
                       <Button variant="outline" className="w-full justify-start">
                         <MessageSquare className="mr-2 h-4 w-4" />
                         Notifications
                       </Button>
                     </Link>
-                    <Link href="/dashboard/settings">
+                    <Link href="/dashboard/settings" className="block">
                       <Button variant="outline" className="w-full justify-start">
                         <Users className="mr-2 h-4 w-4" />
                         Account Settings

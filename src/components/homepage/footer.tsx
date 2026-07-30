@@ -26,7 +26,7 @@ const SOCIAL_ICONS = [
 export function Footer() {
   return (
     <footer className="bg-slate-900">
-      <div className="max-w-[1440px] mx-auto px-6 pt-16 pb-8">
+      <div className="max-w-360 mx-auto px-6 pt-16 pb-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div>

@@ -34,6 +34,7 @@ type Department = { id: string; name: string; faculty_id: string };
 const signupSchema = z.object({
   full_name: z.string().min(1, "Full name is required"),
   matric_number: z.string().min(1, "Matric number is required"),
+  phone_number: z.string().min(1, "Phone number is required"),
   level: z.string().min(1, "Level is required"),
   faculty: z.string(),
   department: z.string(),
@@ -71,6 +72,8 @@ export default function SignupPage() {
       department: "",
       faculty_id: "",
       department_id: "",
+      phone_number: "",
+      matric_number: "",
     },
   });
 
@@ -134,6 +137,7 @@ export default function SignupPage() {
         options: {
           data: {
             full_name: data.full_name,
+            phone_number: data.phone_number,
             matric_number: data.matric_number,
             level: parseInt(data.level),
             department: data.department,
@@ -151,6 +155,7 @@ export default function SignupPage() {
           id: authData.user.id,
           email: data.email,
           full_name: data.full_name,
+          phone_number: data.phone_number,
           matric_number: data.matric_number,
           level: parseInt(data.level),
           department: data.department,
@@ -207,6 +212,23 @@ export default function SignupPage() {
               {errors.full_name && (
                 <p className="text-sm text-red-500">
                   {errors.full_name.message}
+                </p>
+              )}
+            </div>
+
+            {/* Phone Number */}
+            <div className="space-y-2">
+              <Label htmlFor="phone_number" className="dark:text-slate-200">
+                Phone Number
+              </Label>
+              <Input
+                id="phone_number"
+                placeholder="070XXXXXXXX"
+                {...register("phone_number")}
+              />
+              {errors.phone_number && (
+                <p className="text-sm text-red-500">
+                  {errors.phone_number.message}
                 </p>
               )}
             </div>

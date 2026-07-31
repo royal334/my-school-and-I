@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export const metadata = {
-  title: 'Edit Vendor Listing | EngiPortal',
+  title: 'Edit Vendor Listing | UniHub',
   description: 'Update your business information',
 };
 

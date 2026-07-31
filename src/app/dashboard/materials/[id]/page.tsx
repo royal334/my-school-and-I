@@ -182,13 +182,23 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                 </h3>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div>
-                  <span className="text-sm font-medium text-slate-900">
-                    Course Code
-                  </span>
-                  <p className="text-sm text-slate-600">
-                    {material.courses.course_code}
-                  </p>
+                <div className="flex justify-between">
+                  <div>
+                    <span className="text-sm font-medium text-slate-900">
+                      Course Code
+                    </span>
+                    <p className="text-sm text-slate-600">
+                      {material.courses.course_code}
+                    </p>
+                  </div>
+                  <div>
+                    <Button asChild variant="outline" size="sm" className="gap-2">
+                      <a href={`/api/materials/${material.id}/download`} download>
+                        <Download className="h-4 w-4" />
+                        Download
+                      </a>
+                    </Button>
+                  </div>
                 </div>
                 <div>
                   <span className="text-sm font-medium text-slate-900">

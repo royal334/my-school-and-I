@@ -47,7 +47,7 @@ export default function MaterialCard({
         </div>
 
         {/* Title */}
-        <h3 className="line-clamp-2 font-semibold text-slate-900">
+        <h3 className="line-clamp-2 font-semibold text-slate-900 text-xl md:text-2xl">
           {material.title}
         </h3>
 
@@ -88,7 +88,7 @@ export default function MaterialCard({
           )}
         </div>
 
-        {/* Stats */}
+        {/* Stats
         <div className="flex items-center gap-4 text-sm text-slate-600">
           <div className="flex items-center gap-1">
             <Eye className="h-4 w-4" />
@@ -98,7 +98,7 @@ export default function MaterialCard({
             <Download className="h-4 w-4" />
             <span>{material.download_count}</span>
           </div>
-        </div>
+        </div> */}
 
         {/* Upload Date */}
         <div className="flex items-center gap-1 text-xs text-slate-500">

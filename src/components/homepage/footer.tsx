@@ -108,7 +108,6 @@ export function Footer() {
 
         <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500 dark:text-slate-400">
           <p>© 2025 UniHub. All rights reserved.</p>
-          <p>Built with ❤️ by Engineering Students</p>
         </div>
       </div>
     </footer>

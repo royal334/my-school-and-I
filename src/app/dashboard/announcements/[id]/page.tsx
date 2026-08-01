@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ChevronLeft, Bookmark } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import AnnouncementViewTracker from '@/components/announcements/announcement-view-tracker';
 
 export default async function AnnouncementDetailPage({
   params,
@@ -92,6 +93,11 @@ export default async function AnnouncementDetailPage({
 
   return (
     <div className="min-h-screen bg-slate-50 py-8">
+      <AnnouncementViewTracker
+        announcementId={id}
+        announcementTitle={announcement.title}
+        priority={announcement.priority}
+      />
       <div className="max-w-3xl mx-auto">
         {/* Back button */}
         <Link href="/dashboard/announcements">

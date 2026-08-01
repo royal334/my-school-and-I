@@ -7,7 +7,7 @@ import ThemeToggle from "@/components/theme-toggle";
 import { createClient } from "@/utils/supabase/client";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 
-const NAV_LINKS = ["Features", "Pricing", "About", "Contact"];
+const NAV_LINKS = ["Features", "About", "Contact"];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);

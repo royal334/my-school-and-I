@@ -1,5 +1,4 @@
 import { createClient } from "../client";
-import { Database } from "../database.types";
 
 export async function getMaterials({
   level,

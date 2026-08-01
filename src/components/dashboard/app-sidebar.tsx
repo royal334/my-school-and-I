@@ -46,7 +46,6 @@ const baseNavItems = [
   { href: "/dashboard/profile", icon: User, label: "Profile" },
   { href: "/dashboard/vendors", icon: Store, label: "Vendors" },
   { href: "/dashboard/announcements", icon: Bell, label: "Announcements" },
-  { href: "/dashboard/settings", icon: Settings, label: "Settings" },
 ];
 
 export function AppSidebar() {

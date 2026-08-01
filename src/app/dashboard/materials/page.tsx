@@ -7,7 +7,8 @@ import MaterialsContent from "@/components/materials/materials-content";
 import MaterialsFilters from "@/components/materials/materials-filters";
 import { Card } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
-//import UpgradeButton from "@/components/payment/update-button";
+import { redirect } from "next/navigation"
+
 
 export const metadata = {
   title: "Materials Library | UniHub",
@@ -20,6 +21,7 @@ interface PageProps {
     semester?: string;
     type?: string;
     search?: string;
+    saved?: string;
   }>;
 }
 
@@ -33,11 +35,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return (
-      <div className="p-10 text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-lg">
-        Debug: No session found. Please log in.
-      </div>
-    );
+    redirect('/login');
   }
 
   // Get user profile for subscription status
@@ -57,6 +55,8 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
   const type =
     resolvedSearchParams.type !== "all" ? resolvedSearchParams.type : undefined;
   const search = resolvedSearchParams.search;
+  const showSavedOnly = resolvedSearchParams.saved === "true";
+
 
   // Fetch materials using an admin client to bypass RLS, so that locked premium materials
   // are still sent to the UI, where they render as locked cards!
@@ -65,7 +65,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
   );
 
-  const materials = await getMaterials({
+  let materials = await getMaterials({
     level,
     semester,
     type,
@@ -73,6 +73,20 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
     limit: 50,
     supabase: supabaseAdmin, // use admin client
   });
+
+    if (showSavedOnly) {
+    const { data: savedRows } = await supabase
+      .from("material_saves")
+      .select("material_id")
+      .eq("user_id", user.id);
+
+    const savedMaterialIds =
+      savedRows?.map((row: { material_id: string }) => row.material_id) ?? [];
+
+    materials = materials.filter((material:any) =>
+      savedMaterialIds.includes(material.id),
+    );
+  }
 
   return (
     <div className="space-y-6">

@@ -6,8 +6,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Download,
-  Eye,
   Calendar,
   FileText,
   BookOpen,
@@ -18,6 +16,7 @@ import Link from "next/link";
 import { formatFileSize, formatDate } from "@/utils/lib";
 import { MATERIAL_TYPE_LABELS } from "@/utils/constants/constants";
 import PDFViewerWrapper from "@/components/pdf/pdf-viewer-wrapper";
+import MaterialsDownloadButton from "@/components/materials/download-button";
 
 interface PageProps {
   params: Promise<{id: string;}>;
@@ -192,12 +191,7 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                     </p>
                   </div>
                   <div>
-                    <Button asChild variant="outline" size="sm" className="gap-2">
-                      <a href={`/api/materials/${material.id}/download`} download>
-                        <Download className="h-4 w-4" />
-                        Download
-                      </a>
-                    </Button>
+                    <MaterialsDownloadButton material= { material } />
                   </div>
                 </div>
                 <div>

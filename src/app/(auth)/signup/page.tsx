@@ -16,7 +16,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowLeft, ChevronDown } from "lucide-react";
+import { ArrowLeft, ChevronDown, Eye, EyeOff } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -40,8 +40,12 @@ const signupSchema = z.object({
   department: z.string(),
   email: z.string().min(1, "Email is required").email("Enter a valid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
+  confirm_password: z.string().min(1, "Confirm password is required"),
   faculty_id: z.string().min(1, "Faculty is required"),
   department_id: z.string().min(1, "Department is required"),
+}).refine((data) => data.password === data.confirm_password, {
+  message: "Passwords do not match",
+  path: ["confirm_password"],
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -56,6 +60,8 @@ export default function SignupPage() {
     [],
   );
   const [loadingData, setLoadingData] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -446,18 +452,63 @@ export default function SignupPage() {
             </div>
 
             {/* Password */}
-            <div className="space-y-2 mb-4">
+            <div className="space-y-2">
               <Label htmlFor="password" className="dark:text-slate-200">
                 Password
               </Label>
-              <Input
-                id="password"
-                type="password"
-                {...register("password")}
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  className="pr-10"
+                  {...register("password")}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-sm text-red-500">
                   {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            {/* Confirm Password */}
+            <div className="space-y-2 mb-4">
+              <Label htmlFor="confirm_password" className="dark:text-slate-200">
+                Confirm Password
+              </Label>
+              <div className="relative">
+                <Input
+                  id="confirm_password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  className="pr-10"
+                  {...register("confirm_password")}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              {errors.confirm_password && (
+                <p className="text-sm text-red-500">
+                  {errors.confirm_password.message}
                 </p>
               )}
             </div>

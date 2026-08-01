@@ -13,6 +13,8 @@ import {
   Settings,
   Upload,
   LogOut,
+  Store, 
+  Calculator
 } from 'lucide-react';
 import {
   AlertDialog,
@@ -34,12 +36,12 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
   const navItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { href: '/dashboard/materials', icon: BookOpen, label: 'Materials' },
+    { href: '/dashboard/cgpa', icon: Calculator, label: 'CGPA' },
     ...(isSuperAdmin
       ? [{ href: '/dashboard/materials/upload', icon: Upload, label: 'Upload' }]
       : []),
+    { href: '/dashboard/vendors', icon: Store, label: 'Vendors' },
     { href: '/dashboard/announcements', icon: Bell, label: 'Announcements' },
-    { href: '/dashboard/profile', icon: User, label: 'Profile' },
-    { href: '/dashboard/settings', icon: Settings, label: 'Settings' },
   ];
   const pathname = usePathname();
   const router = useRouterNav();

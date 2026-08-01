@@ -3,7 +3,6 @@
 
 import posthog from 'posthog-js';
 import { PostHogProvider as PHProvider } from 'posthog-js/react';
-import { useEffect } from 'react';
 
 if (typeof window !== 'undefined') {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
@@ -29,7 +28,7 @@ if (typeof window !== 'undefined') {
     
     // Persistence
     persistence: 'localStorage+cookie',
-    persistence_name: 'ph_engiportal',
+    persistence_name: 'ph_unihub',
     
     // Session
     token: process.env.NEXT_PUBLIC_POSTHOG_KEY,

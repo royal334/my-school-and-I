@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -10,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   FileText,
-  Download,
   Eye,
   Lock,
   Calendar,
@@ -19,14 +19,38 @@ import {
 import { formatFileSize, formatRelativeTime } from "@/utils/lib/index";
 import { MATERIAL_TYPE_LABELS } from "@/utils/constants/constants";
 import Link from "next/link";
-
+import { usePostHogAnalytics } from "../../hooks/posthog-events";
 import { MaterialCardProps } from "@/utils/types";
+import { POSTHOG_EVENTS } from "@/utils/constants/constants";
+import { Bookmark, Loader2 } from "lucide-react";
 
 export default function MaterialCard({
   material,
   hasActiveSubscription,
+  isSaved,
+  onToggleSave,
 }: MaterialCardProps) {
   const canAccess = !material.is_premium || hasActiveSubscription;
+  const { track } = usePostHogAnalytics();
+
+  const [loading, setLoading] = useState(false);
+
+  async function handleSaveMaterial(materialId: string) {
+    setLoading(true);
+    try {
+      await onToggleSave(materialId);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleViewMaterial = () => {
+    track(POSTHOG_EVENTS.materialsViewed, {
+      material_id: material.id,
+      material_title: material.title,
+      material_type: material.type,
+    });
+  }
 
   return (
     <Card className="flex flex-col transition-shadow hover:shadow-lg">
@@ -36,6 +60,24 @@ export default function MaterialCard({
           <Badge variant="secondary" className="text-xs">
             {MATERIAL_TYPE_LABELS[material.type] || "Other"}
           </Badge>
+          <button
+            onClick={() => handleSaveMaterial(material.id)}
+            className="mt-1 p-2 rounded hover:bg-slate-100 transition"
+            title={
+              isSaved
+                ? 'Unsave'
+                : 'Save'
+            }
+          >
+          {loading ? <Loader2 className="text-blue-500 a"/>  : 
+          (<Bookmark
+            className={`h-5 w-5 ${
+              isSaved
+                ? 'fill-amber-500 text-amber-500'
+                : 'text-slate-400'
+            }`}
+          />)}
+          </button>
           {material.is_premium && !hasActiveSubscription && (
             <div className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1">
               <Lock className="h-3 w-3 text-amber-600" />
@@ -47,7 +89,7 @@ export default function MaterialCard({
         </div>
 
         {/* Title */}
-        <h3 className="line-clamp-2 font-semibold text-slate-900">
+        <h3 className="line-clamp-2 font-semibold text-slate-900 text-xl md:text-2xl">
           {material.title}
         </h3>
 
@@ -88,7 +130,7 @@ export default function MaterialCard({
           )}
         </div>
 
-        {/* Stats */}
+        {/* Stats
         <div className="flex items-center gap-4 text-sm text-slate-600">
           <div className="flex items-center gap-1">
             <Eye className="h-4 w-4" />
@@ -98,7 +140,7 @@ export default function MaterialCard({
             <Download className="h-4 w-4" />
             <span>{material.download_count}</span>
           </div>
-        </div>
+        </div> */}
 
         {/* Upload Date */}
         <div className="flex items-center gap-1 text-xs text-slate-500">
@@ -110,7 +152,7 @@ export default function MaterialCard({
       <CardFooter>
         {canAccess ? (
           <Link href={`/dashboard/materials/${material.id}`} className="w-full">
-            <Button className="w-full">
+            <Button onClick= {handleViewMaterial} className="w-full">
               <Eye className="mr-2 h-4 w-4" />
               View Material
             </Button>

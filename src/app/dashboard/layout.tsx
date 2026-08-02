@@ -11,6 +11,8 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import DashboardToggle  from '@/components/dashboard/dashboard-toggle';
+import { Settings, User } from "lucide-react"
+import Link from "next/link"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 
@@ -53,9 +55,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
       // OR 
       // 2. User has an approved vendor listing AND has toggled off student mode
       const showVendorSidebar = isVendorAccount || (hasVendor && !isStudentToggle);
-
-      //const isVendor = profile?.account_type === 'vendor';
-
     
   return (
     <>
@@ -67,12 +66,19 @@ export default async function Layout({ children }: { children: React.ReactNode }
           (<AppSidebar />)
           }
           <SidebarInset>
-            <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-              <SidebarTrigger className="-ml-1" />
-              <DashboardToggle 
-                hasVendor={hasVendor} 
-                isVendorAccount={isVendorAccount} 
-              />
+            <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
+              <div className="flex gap-4 items-center">
+                <SidebarTrigger className="-ml-1" />
+                <DashboardToggle
+                  hasVendor={hasVendor}
+                  isVendorAccount={isVendorAccount}
+                />
+              </div>
+              <div>
+                <Link href="/dashboard/settings">
+                  <Settings className="h-4.5 w-4.5" aria-label="Settings" aria-hidden="true" />
+                </Link>
+              </div>
             </header>
             <div className="flex flex-1 flex-col gap-4 overflow-x-hidden p-4 pt-0">
               {children}
@@ -85,10 +91,22 @@ export default async function Layout({ children }: { children: React.ReactNode }
       <div className="md:hidden flex flex-col min-h-screen">
         {/* Mobile top header with toggle */}
         <header className="fixed top-0 left-0 right-0 h-16 border-b bg-white dark:bg-slate-950 dark:border-slate-800 z-40 flex items-center px-4 gap-2">
-          <DashboardToggle 
-            hasVendor={hasVendor} 
-            isVendorAccount={isVendorAccount} 
-          />
+              <div className="flex justify-between items-center w-full">
+                <DashboardToggle
+                  hasVendor={hasVendor}
+                  isVendorAccount={isVendorAccount}
+                />
+                <div className="flex gap-4 items-center">
+                  <Link href="/dashboard/profile">
+                    <User className="h-4.5 w-4.5" aria-label="Profile" aria-hidden="true" />
+                  </Link>
+                  <Link href="/dashboard/settings">
+                    <Settings className="h-4.5 w-4.5" aria-label="Settings" aria-hidden="true" />
+                  </Link>
+                </div>
+              </div>
+                
+              
         </header>
 
         {/* Mobile content area with proper spacing */}

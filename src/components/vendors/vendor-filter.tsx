@@ -1,11 +1,14 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
 interface VendorFiltersProps {
   categories: Array<{
@@ -16,23 +19,24 @@ interface VendorFiltersProps {
 }
 
 export default function VendorFilters({ categories }: VendorFiltersProps) {
+  return (
+  <Suspense fallback={null}>
+    <VendorFiltersContent categories={categories} />
+  </Suspense>
+)
+}
+
+function VendorFiltersContent({categories}: VendorFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { track } = usePostHogAnalytics();
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [selectedCategory, setSelectedCategory] = useState(
     searchParams.get("category") || "all",
   );
 
-  // Debounced search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      updateFilters();
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [search, selectedCategory]);
-
-  const updateFilters = () => {
+  const updateFilters = useCallback(() => {
     const params = new URLSearchParams();
 
     if (search) params.set("search", search);
@@ -42,7 +46,21 @@ export default function VendorFilters({ categories }: VendorFiltersProps) {
 
     const queryString = params.toString();
     router.push(`/dashboard/vendors${queryString ? `?${queryString}` : ""}`);
-  };
+  }, [router, search, selectedCategory]);
+
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      updateFilters();
+      if (search.trim()) {
+        track(POSTHOG_EVENTS.vendorSearchPerformed, {
+          search_query: search.trim(),
+          category: selectedCategory,
+        });
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search, selectedCategory, track, updateFilters]);
 
   const clearFilters = () => {
     setSearch("");

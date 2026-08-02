@@ -426,3 +426,20 @@ export const THEME = {
   ERROR: "#ef4444", // Red
   INFO: "#3b82f6", // Blue
 } as const;
+
+
+// POSTHOG EVENTS
+export const POSTHOG_EVENTS = {
+  materialsViewed: "materials_viewed",
+  materialDownloaded: "material_downloaded",
+  semesterAdded: "semester_added",
+  vendorViewed: "vendor_viewed",
+  announcementViewed: "announcement_viewed",
+  materialSearchPerformed: "material_search_performed",
+  vendorSearchPerformed: "vendor_search_performed",
+  announcementSearchPerformed: "announcement_search_performed",
+  contactPhone: "vendor_contacted_phone",
+  contactWhatsApp: "vendor_contacted_whatsapp",
+
+  // materialUploaded: "material_uploaded",
+}

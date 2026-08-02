@@ -53,6 +53,9 @@ import {
   SemesterFormProps,
 } from "@/utils/types";
 
+import { usePostHogAnalytics } from "@/hooks/posthog-events"
+import { POSTHOG_EVENTS } from "@/utils/constants/constants";
+
 export default function SemesterForm({ existingSemester }: SemesterFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -62,6 +65,16 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<
     number | string | null
   >(null);
+
+  const { track } = usePostHogAnalytics()
+
+  const handleSemesterAddition = (semesterData: { level: number; semester: number; session: string }) => {
+    track(POSTHOG_EVENTS.semesterAdded, {
+      level: semesterData.level,
+      semester: semesterData.semester,
+      session: semesterData.session,
+    });
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -148,6 +161,14 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to save semester");
+      }
+
+      if (!existingSemester) {
+        handleSemesterAddition({
+          level: semesterData.level,
+          semester: semesterData.semester,
+          session: semesterData.session,
+        });
       }
 
       toast.success(
@@ -341,7 +362,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-[300px] p-0 z-100">
+                            <PopoverContent className="w-75 p-0 z-100">
                               <Command>
                                 <CommandInput placeholder="Search course..." />
                                 <CommandList>

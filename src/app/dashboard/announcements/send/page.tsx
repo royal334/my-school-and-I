@@ -7,6 +7,7 @@ export const metadata = {
   title: 'Create Announcement',
 };
 
+
 export default async function CreateAnnouncementPage() {
   const supabase = createClient(await cookies());
   const { data: { user } } = await supabase.auth.getUser();
@@ -70,7 +71,8 @@ const canSend = [
             New Announcement
           </h1>
         </div>
-        <AnnouncementForm />
+
+          <AnnouncementForm />
       </div>
     </div>
   );

@@ -51,17 +51,6 @@ export async function POST(request: Request) {
          status: 'reactivated',
        });
    
-     //   // Send notification
-     //   await supabase.from('notifications').insert({
-     //     user_id: user.id,
-     //     type: 'subscription_reactivated',
-     //     title: 'Subscription reactivated',
-     //     message: `Your ${vendor.subscription_tier} subscription will auto-renew on ${new Date(
-     //       vendor.subscription_expires_at
-     //     ).toLocaleDateString()}`,
-     //     metadata: { vendor_id },
-     //   });
-   
        return NextResponse.json({
          success: true,
          message: 'Auto-renewal reactivated',

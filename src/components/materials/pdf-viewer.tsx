@@ -36,8 +36,7 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
   const [error, setError] = useState<string>("");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
-  // For now, we'll use a placeholder
-  // In production, this would be a signed URL from your API
+
   const fileUrl = `/api/materials/view/${materialId}`;
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {

@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-//import { createAdminClient } from "@/utils/supabase/admin";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import VendorCard from "@/components/vendors/vendor-card";
@@ -13,8 +12,6 @@ import { getVendors } from "@/utils/supabase/queries";
 export const metadata = {
   title: "Vendors Marketplace | EngiPortal",
 };
-
-export const dynamic = "force-dynamic";
 
 interface PageProps {
   searchParams: Promise<{
@@ -85,7 +82,8 @@ export default async function VendorsPage({ searchParams }: PageProps) {
       </div>
 
       {/* Filters */}
-      <VendorFilters categories={categories || []} />
+        <VendorFilters categories={categories || []} />
+
 
       {/* Vendors Grid */}
       {!vendors || vendors.length === 0 ? (

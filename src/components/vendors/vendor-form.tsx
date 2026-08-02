@@ -201,7 +201,7 @@ export default function VendorForm({
       toast.success(
         isEdit
           ? "Vendor listing updated!"
-          : "Vendor listing created! Pending admin approval.",
+          : "Vendor listing created!",
       );
       
       if (onSuccess) {

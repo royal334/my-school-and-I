@@ -6,8 +6,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Download,
-  Eye,
   Calendar,
   FileText,
   BookOpen,
@@ -18,6 +16,7 @@ import Link from "next/link";
 import { formatFileSize, formatDate } from "@/utils/lib";
 import { MATERIAL_TYPE_LABELS } from "@/utils/constants/constants";
 import PDFViewerWrapper from "@/components/pdf/pdf-viewer-wrapper";
+import MaterialsDownloadButton from "@/components/materials/download-button";
 
 interface PageProps {
   params: Promise<{id: string;}>;
@@ -182,13 +181,18 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                 </h3>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div>
-                  <span className="text-sm font-medium text-slate-900">
-                    Course Code
-                  </span>
-                  <p className="text-sm text-slate-600">
-                    {material.courses.course_code}
-                  </p>
+                <div className="flex justify-between">
+                  <div>
+                    <span className="text-sm font-medium text-slate-900">
+                      Course Code
+                    </span>
+                    <p className="text-sm text-slate-600">
+                      {material.courses.course_code}
+                    </p>
+                  </div>
+                  <div>
+                    <MaterialsDownloadButton material= { material } />
+                  </div>
                 </div>
                 <div>
                   <span className="text-sm font-medium text-slate-900">

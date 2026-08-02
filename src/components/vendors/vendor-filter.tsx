@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,14 @@ interface VendorFiltersProps {
 }
 
 export default function VendorFilters({ categories }: VendorFiltersProps) {
+  return (
+  <Suspense fallback={null}>
+    <VendorFiltersContent categories={categories} />
+  </Suspense>
+)
+}
+
+function VendorFiltersContent({categories}: VendorFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { track } = usePostHogAnalytics();

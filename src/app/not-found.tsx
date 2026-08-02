@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, ArrowLeft, Home } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default function NotFound() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">

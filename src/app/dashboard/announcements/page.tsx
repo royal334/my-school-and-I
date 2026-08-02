@@ -4,12 +4,14 @@ import { isUserAdmin } from '@/utils/supabase/queries';
 import { cookies } from 'next/headers';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 
 export const metadata = {
   title: 'Announcements',
 };
 
+export const dynamic = 'force-dynamic';
 
 export default async function AnnouncementsPage() {
 
@@ -39,7 +41,9 @@ export default async function AnnouncementsPage() {
             Stay updated with department and university announcements
           </p>
         </div>
-        <AnnouncementFeed />
+        <Suspense fallback={<div className="flex items-center justify-center py-12"><p className="text-sm text-slate-600">Loading announcements...</p></div>}>
+          <AnnouncementFeed />
+        </Suspense>
       </div>
     </div>
   );

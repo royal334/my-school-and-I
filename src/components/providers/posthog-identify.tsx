@@ -23,12 +23,18 @@ export default function PostHogIdentify() {
             .eq('id', user.id)
             .single();
 
+          const { data: roleRow } = await supabase
+            .from("admin_roles")
+            .select("role")
+            .eq("user_id", user.id)
+            .maybeSingle();
+
           // Identify user in PostHog
           posthog.identify(user.id, {
             email: user.email,
             name: profile?.full_name,
             account_type: profile?.account_type,
-            role: profile?.announcement_role,
+            role: roleRow?.role,
             faculty_id: profile?.faculty_id,
             department_id: profile?.department_id,
             level: profile?.level,

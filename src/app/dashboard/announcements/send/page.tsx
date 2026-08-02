@@ -2,10 +2,13 @@ import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import AnnouncementForm from '@/components/announcements/announcement-form';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'Create Announcement',
 };
+
+export const dynamic = 'force-dynamic';
 
 export default async function CreateAnnouncementPage() {
   const supabase = createClient(await cookies());
@@ -70,7 +73,9 @@ const canSend = [
             New Announcement
           </h1>
         </div>
-        <AnnouncementForm />
+        <Suspense fallback={null}>
+          <AnnouncementForm />
+        </Suspense>
       </div>
     </div>
   );

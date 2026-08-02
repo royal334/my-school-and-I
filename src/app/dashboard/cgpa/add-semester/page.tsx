@@ -10,8 +10,6 @@ export const metadata = {
   title: 'Add Semester | UniHub',
 };
 
-export const dynamic = 'force-dynamic';
-
 export default async function AddSemesterPage() {
   const supabase = createClient( await cookies());
 

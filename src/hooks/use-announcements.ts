@@ -46,6 +46,7 @@ export function useAnnouncements() {
   const fetchAnnouncements = useCallback(async () => {
     try {
       setLoading(true);
+      setError('')
       const response = await fetch(
         `/api/announcements?${getAnnouncementParams()}`
       );
@@ -83,8 +84,14 @@ export function useAnnouncements() {
     let cancelled = false;
 
     async function init() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (cancelled || !user) return;
+      const { data, error: authError } = await supabase.auth.getUser();  
+      if (cancelled) return;  
+  
+      if (authError || !data.user) {  
+        setError('Sign in to view announcements.');  
+        setLoading(false);  
+        return;  
+      }
       fetchAnnouncements();
       fetchSavedAnnouncements();
     }

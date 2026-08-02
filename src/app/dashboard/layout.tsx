@@ -76,7 +76,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
               </div>
               <div>
                 <Link href="/dashboard/settings">
-                  <Settings className="h-4.5 w-4.5" />
+                  <Settings className="h-4.5 w-4.5" aria-label="Settings" aria-hidden="true" />
                 </Link>
               </div>
             </header>
@@ -98,10 +98,10 @@ export default async function Layout({ children }: { children: React.ReactNode }
                 />
                 <div className="flex gap-4 items-center">
                   <Link href="/dashboard/profile">
-                    <User className="h-4.5 w-4.5" />
+                    <User className="h-4.5 w-4.5" aria-label="Profile" aria-hidden="true" />
                   </Link>
                   <Link href="/dashboard/settings">
-                    <Settings className="h-4.5 w-4.5" />
+                    <Settings className="h-4.5 w-4.5" aria-label="Settings" aria-hidden="true" />
                   </Link>
                 </div>
               </div>

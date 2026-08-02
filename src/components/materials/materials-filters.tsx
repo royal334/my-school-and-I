@@ -56,14 +56,15 @@ const handleSavedMaterials = () => {
 
   // Debounced search
   useEffect(() => {
-    const debouncedUpdate = debounce(() => {
+    const timer = setTimeout(() => {
       updateFilters();
       if (search.trim()) {
         handleMaterialSearch(search.trim());
       }
     }, 500);
 
-    debouncedUpdate();
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, level, semester, type]);
 
   const updateFilters = () => {

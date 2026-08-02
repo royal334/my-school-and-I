@@ -19,10 +19,16 @@ export async function POST(
 
     const { error } = await supabase
       .from('material_saves')
-      .insert({
-        material_id: id,
-        user_id: user.id,
-      });
+      .upsert(
+        {
+          material_id: id,
+          user_id: user.id,
+        },
+        {
+          onConflict: 'material_id,user_id',
+          ignoreDuplicates: true,
+        }
+      );
 
     const { data: savedRows, error: savedError } = await supabase
       .from("material_saves")
@@ -31,11 +37,15 @@ export async function POST(
 
     if (savedError) throw savedError;
 
-    if (error && error.code !== 'PGRST116') throw error; // Ignore duplicate
+    if (error) throw error;
 
     return NextResponse.json({ success: true, saved: savedRows ?? [] });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    console.error('Failed to save material bookmark:', error);
+    return NextResponse.json(
+      { error: 'Something went wrong. Please try again later.' },
+      { status: 500 }
+    );
   }
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -27,47 +27,18 @@ import { Bookmark, Loader2 } from "lucide-react";
 export default function MaterialCard({
   material,
   hasActiveSubscription,
+  isSaved,
+  onToggleSave,
 }: MaterialCardProps) {
   const canAccess = !material.is_premium || hasActiveSubscription;
   const { track } = usePostHogAnalytics();
 
-  const [savedMaterials, setSavedMaterials] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-  fetchSavedMaterials();
-}, []);
-
-async function fetchSavedMaterials() {
-  try {
-    const response = await fetch("/api/materials/saved");
-    if (!response.ok) return;
-
-    const data = await response.json();
-    setSavedMaterials(
-      new Set(
-        data.saved?.map((s: { material_id: string }) => s.material_id) || []
-      )
-    );
-  } catch (error) {
-    console.error("Failed to fetch saved materials:", error);
-  }
-}
 
   async function handleSaveMaterial(materialId: string) {
     setLoading(true);
     try {
-      const response = await fetch(`/api/materials/${materialId}/bookmark`, {
-        method: savedMaterials.has(materialId) ? "DELETE" : "POST",
-      });
-      if (!response.ok) throw new Error('Failed to save material');
-
-      const data = await response.json();
-      setSavedMaterials(
-        new Set(data.saved?.map((s: any) => s.material_id) || [])
-      );
-    } catch (err: any) {
-      console.error('Save error:', err);
+      await onToggleSave(materialId);
     } finally {
       setLoading(false);
     }
@@ -93,7 +64,7 @@ async function fetchSavedMaterials() {
             onClick={() => handleSaveMaterial(material.id)}
             className="mt-1 p-2 rounded hover:bg-slate-100 transition"
             title={
-              savedMaterials.has(material.id)
+              isSaved
                 ? 'Unsave'
                 : 'Save'
             }
@@ -101,7 +72,7 @@ async function fetchSavedMaterials() {
           {loading ? <Loader2 className="text-blue-500 a"/>  : 
           (<Bookmark
             className={`h-5 w-5 ${
-              savedMaterials.has(material.id)
+              isSaved
                 ? 'fill-amber-500 text-amber-500'
                 : 'text-slate-400'
             }`}

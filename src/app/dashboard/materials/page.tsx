@@ -67,28 +67,27 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
   );
 
-  let materials = await getMaterials({
+  let savedMaterialIds: string[] | undefined;
+
+  if (showSavedOnly) {
+    const { data: savedRows } = await supabase
+      .from("material_saves")
+      .select("material_id")
+      .eq("user_id", user.id);
+
+    savedMaterialIds =
+      savedRows?.map((row: { material_id: string }) => row.material_id) ?? [];
+  }
+
+  const materials = await getMaterials({
     level,
     semester,
     type,
     search,
     limit: 50,
     supabase: supabaseAdmin, // use admin client
+    ids: savedMaterialIds,
   });
-
-    if (showSavedOnly) {
-    const { data: savedRows } = await supabase
-      .from("material_saves")
-      .select("material_id")
-      .eq("user_id", user.id);
-
-    const savedMaterialIds =
-      savedRows?.map((row: { material_id: string }) => row.material_id) ?? [];
-
-    materials = materials.filter((material:any) =>
-      savedMaterialIds.includes(material.id),
-    );
-  }
 
   return (
     <div className="space-y-6">

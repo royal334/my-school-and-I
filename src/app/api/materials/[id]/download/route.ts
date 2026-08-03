@@ -19,7 +19,13 @@ export async function GET(
     }
 
     const { id } = await params;
-    const material = await getMaterialById(id, supabase);
+    let material;
+    try {
+      material = await getMaterialById(id, supabase);
+    } catch (lookupError) {
+      console.error("Material lookup error:", lookupError);
+      return new NextResponse("Not Found", { status: 404 });
+    }
 
     if (!material) {
       return new NextResponse("Not Found", { status: 404 });
@@ -64,16 +70,26 @@ export async function GET(
       return new NextResponse("Failed to download file", { status: 500 });
     }
 
-    const fileName =
+    const rawFileName: string =
       material.file_name || material.title || "download";
+    const asciiFileName =
+      rawFileName.replace(/[^\x20-\x7E]/g, "_").replace(/["\\]/g, "_") ||
+      "download";
 
-    return new NextResponse(response.body, {
-      headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="${fileName}"`,
-        "Content-Length": response.headers.get("content-length") ?? "",
-      },
+    const headers = new Headers({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="${asciiFileName}"; filename*=UTF-8''${encodeURIComponent(
+        rawFileName,
+      )}`,
     });
+
+    const contentLength = response.headers.get("content-length");
+    if (contentLength) {
+      headers.set("Content-Length", contentLength);
+    }
+
+    return new NextResponse(response.body, { headers });
+      
   } catch (error) {
     console.error("Download route error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });

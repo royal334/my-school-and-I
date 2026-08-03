@@ -53,4 +53,6 @@ export interface MaterialsContentProps {
 export interface MaterialCardProps {
   material: Material;
   hasActiveSubscription: boolean;
+  isSaved: boolean;
+  onToggleSave: (materialId: string) => Promise<void> | void;
 }

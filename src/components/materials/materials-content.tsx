@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { MaterialsContentProps } from "@/utils/types";
 import { Upload } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+
+import { MaterialsContentProps } from "@/utils/types";
 
 export default function MaterialsContent({
   materials,
@@ -16,6 +19,55 @@ export default function MaterialsContent({
     profile?.subscription_status === "active" &&
     profile?.subscription_expires_at &&
     new Date(profile.subscription_expires_at) > new Date();
+
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    let active = true;
+
+    async function fetchSavedMaterials() {
+      try {
+        const response = await fetch("/api/materials/saved");
+        if (!response.ok) return;
+
+        const data = await response.json();
+        if (!active) return;
+        setSavedIds(
+          new Set(
+            data.saved?.map((s: { material_id: string }) => s.material_id) || []
+          )
+        );
+      } catch (error) {
+        console.error("Failed to fetch saved materials:", error);
+      }
+    }
+
+    fetchSavedMaterials();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const handleToggleSave = useCallback(
+    async (materialId: string) => {
+      try {
+        const response = await fetch(`/api/materials/${materialId}/bookmark`, {
+          method: savedIds.has(materialId) ? "DELETE" : "POST",
+        });
+        if (!response.ok) throw new Error("Failed to save material");
+
+        const data = await response.json();
+        setSavedIds(
+          new Set(
+            data.saved?.map((s: { material_id: string }) => s.material_id) || []
+          )
+        );
+      } catch (error) {
+        console.error("Save error:", error);
+      }
+    },
+    [savedIds]
+  );
 
   if (materials.length === 0) {
     return (
@@ -49,6 +101,8 @@ export default function MaterialsContent({
           key={material.id}
           material={material}
           hasActiveSubscription={hasActiveSubscription}
+          isSaved={savedIds.has(material.id)}
+          onToggleSave={handleToggleSave}
         />
       ))}
     </div>

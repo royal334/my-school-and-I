@@ -11,8 +11,6 @@ export const metadata = {
   title: 'Announcements',
 };
 
-export const dynamic = 'force-dynamic';
-
 export default async function AnnouncementsPage() {
 
   const supabase = createClient(await cookies());

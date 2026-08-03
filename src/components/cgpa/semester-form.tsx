@@ -381,10 +381,6 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                             `courses.${index}.course_title`,
                                             course.course_title,
                                           );
-                                          setValue(
-                                            `courses.${index}.credit_units`,
-                                            course.credit_units || 0,
-                                          );
                                           setOpenPopoverIndex(null);
                                         }}
                                       >
@@ -558,10 +554,6 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                       setValue(
                                         `courses.${index}.course_title`,
                                         course.course_title,
-                                      );
-                                      setValue(
-                                        `courses.${index}.credit_units`,
-                                        course.credit_units || 0,
                                       );
                                       setOpenPopoverIndex(null);
                                     }}

@@ -61,14 +61,14 @@ export default async function VendorsPage({ searchParams }: PageProps) {
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-3xl font-bold">Vendors Marketplace</h1>
-          <p className="text-slate-600">
+          <p className="text-slate-600 dark:text-slate-400">
             Connect with verified departmental service providers
           </p>
         </div>
         <div className="flex gap-3">
-          <div className="flex items-center gap-2 rounded-lg bg-primary-50 px-4 py-2">
-            <Store className="h-5 w-5 text-primary-600" />
-            <span className="text-sm font-medium text-primary-900">
+          <div className="flex items-center gap-2 rounded-lg bg-primary-50 px-4 py-2 dark:bg-primary-950/30">
+            <Store className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+            <span className="text-sm font-medium text-primary-900 dark:text-primary-200">
               {vendors?.length || 0} vendors
             </span>
           </div>
@@ -88,11 +88,11 @@ export default async function VendorsPage({ searchParams }: PageProps) {
       {/* Vendors Grid */}
       {!vendors || vendors.length === 0 ? (
         <Card className="flex flex-col items-center justify-center p-12 text-center">
-          <div className="rounded-full bg-slate-100 p-4">
-            <Store className="h-8 w-8 text-slate-400" />
+          <div className="rounded-full bg-slate-100 p-4 dark:bg-slate-800">
+            <Store className="h-8 w-8 text-slate-400 dark:text-slate-500" />
           </div>
           <h3 className="mt-4 text-lg font-semibold">No vendors found</h3>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             Try adjusting your filters or be the first to list your business
           </p>
           <Link href={listBusinessHref}>

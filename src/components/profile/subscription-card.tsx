@@ -64,27 +64,27 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <CreditCard className="h-5 w-5 text-amber-600" />
+          <CreditCard className="h-5 w-5 text-amber-600 dark:text-amber-400" />
           <h2 className="text-xl font-semibold">Subscription</h2>
         </div>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           Manage your premium subscription and access
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Current Status */}
-        <div className="flex items-center justify-between rounded-lg border border-slate-200 p-4">
+        <div className="flex items-center justify-between rounded-lg border border-slate-200 p-4 dark:border-slate-800">
           <div>
-            <p className="text-sm font-medium text-slate-700">Current Plan</p>
-            <p className="text-lg font-bold text-slate-900">
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Current Plan</p>
+            <p className="text-lg font-bold text-slate-900 dark:text-slate-100">
               {isActive ? "Premium" : "Free"}
             </p>
           </div>
           <Badge
             className={
               isActive
-                ? "bg-green-100 text-green-700"
-                : "bg-slate-100 text-slate-700"
+                ? "bg-green-100 text-green-700 dark:bg-green-950/50 dark:text-green-400"
+                : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
             }
           >
             {isActive ? (
@@ -103,8 +103,8 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
 
         {/* Expiry Date */}
         {isActive && profile?.subscription_expires_at && (
-          <div className="rounded-lg bg-blue-50 p-4">
-            <div className="flex items-center gap-2 text-sm text-blue-900">
+          <div className="rounded-lg bg-blue-50 p-4 dark:bg-blue-950/30">
+            <div className="flex items-center gap-2 text-sm text-blue-900 dark:text-blue-200">
               <Calendar className="h-4 w-4" />
               <span className="font-medium">
                 Expires on{" "}
@@ -118,7 +118,7 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
                 )}
               </span>
             </div>
-            <p className="mt-1 text-xs text-blue-700">
+            <p className="mt-1 text-xs text-blue-700 dark:text-blue-300">
               {daysRemaining > 0
                 ? `${daysRemaining} days remaining`
                 : "Expires today"}
@@ -128,54 +128,54 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
 
         {/* Features */}
         <div className="space-y-2">
-          <p className="text-sm font-medium text-slate-900">
+          <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
             {isActive ? "Your Premium Features:" : "Upgrade to Premium for:"}
           </p>
           <ul className="space-y-2">
-            <li className="flex items-center gap-2 text-sm text-slate-600">
+            <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
               <div
                 className={`flex h-5 w-5 items-center justify-center rounded-full ${
-                  isActive ? "bg-green-100" : "bg-slate-100"
+                  isActive ? "bg-green-100 dark:bg-green-950/50" : "bg-slate-100 dark:bg-slate-800"
                 }`}
               >
                 <Check
-                  className={`h-3 w-3 ${isActive ? "text-green-600" : "text-slate-400"}`}
+                  className={`h-3 w-3 ${                  isActive ? "text-green-600 dark:text-green-400" : "text-slate-400 dark:text-slate-500"}`}
                 />
               </div>
               Access to all premium materials
             </li>
-            <li className="flex items-center gap-2 text-sm text-slate-600">
+            <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
               <div
                 className={`flex h-5 w-5 items-center justify-center rounded-full ${
-                  isActive ? "bg-green-100" : "bg-slate-100"
+                  isActive ? "bg-green-100 dark:bg-green-950/50" : "bg-slate-100 dark:bg-slate-800"
                 }`}
               >
                 <Check
-                  className={`h-3 w-3 ${isActive ? "text-green-600" : "text-slate-400"}`}
+                  className={`h-3 w-3 ${                  isActive ? "text-green-600 dark:text-green-400" : "text-slate-400 dark:text-slate-500"}`}
                 />
               </div>
               Unlimited downloads
             </li>
-            <li className="flex items-center gap-2 text-sm text-slate-600">
+            <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
               <div
                 className={`flex h-5 w-5 items-center justify-center rounded-full ${
-                  isActive ? "bg-green-100" : "bg-slate-100"
+                  isActive ? "bg-green-100 dark:bg-green-950/50" : "bg-slate-100 dark:bg-slate-800"
                 }`}
               >
                 <Check
-                  className={`h-3 w-3 ${isActive ? "text-green-600" : "text-slate-400"}`}
+                  className={`h-3 w-3 ${                  isActive ? "text-green-600 dark:text-green-400" : "text-slate-400 dark:text-slate-500"}`}
                 />
               </div>
               Priority support
             </li>
-            <li className="flex items-center gap-2 text-sm text-slate-600">
+            <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
               <div
                 className={`flex h-5 w-5 items-center justify-center rounded-full ${
-                  isActive ? "bg-green-100" : "bg-slate-100"
+                  isActive ? "bg-green-100 dark:bg-green-950/50" : "bg-slate-100 dark:bg-slate-800"
                 }`}
               >
                 <Check
-                  className={`h-3 w-3 ${isActive ? "text-green-600" : "text-slate-400"}`}
+                  className={`h-3 w-3 ${                  isActive ? "text-green-600 dark:text-green-400" : "text-slate-400 dark:text-slate-500"}`}
                 />
               </div>
               Early access to new features

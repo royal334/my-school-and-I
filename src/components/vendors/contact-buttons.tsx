@@ -52,7 +52,7 @@ export default function ContactButtons({
         <Button
           onClick={() => handleContact('whatsapp')}
           variant="outline"
-          className="flex-1 bg-green-50 text-green-700 hover:bg-green-100"
+          className="flex-1 bg-green-50 text-green-700 hover:bg-green-100 dark:bg-green-950/40 dark:text-green-400 dark:hover:bg-green-900/40"
         >
           <MessageCircle className="mr-2 h-4 w-4" />
           WhatsApp

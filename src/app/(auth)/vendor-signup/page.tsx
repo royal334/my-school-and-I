@@ -15,14 +15,14 @@ export default async function VendorSignupPage() {
     .order("name");
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4">
+    <div className="min-h-screen bg-slate-50 py-12 px-4 dark:bg-slate-950">
       <div className="mx-auto max-w-2xl">
         <div className="mb-6">
           <Link href="/">
             <Button
               variant="ghost"
               size="sm"
-              className="text-slate-600 hover:text-slate-900 p-0 hover:bg-transparent"
+              className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 p-0 hover:bg-transparent"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home

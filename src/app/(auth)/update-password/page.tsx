@@ -74,26 +74,26 @@ export default function UpdatePasswordPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
         <div className="text-center">
           <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary-200 border-t-primary-600" />
-          <p className="mt-4 text-slate-600">Verifying reset link...</p>
+          <p className="mt-4 text-slate-600 dark:text-slate-400">Verifying reset link...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
+      <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
         <CardHeader>
-          <div className="mx-auto w-fit rounded-full bg-primary-100 p-3">
-            <Lock className="h-6 w-6 text-primary-600" />
+          <div className="mx-auto w-fit rounded-full bg-primary-100 p-3 dark:bg-primary-950/50">
+            <Lock className="h-6 w-6 text-primary-600 dark:text-primary-400" />
           </div>
-          <h1 className="mt-4 text-center text-2xl font-bold text-slate-900">
+          <h1 className="mt-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">
             Set New Password
           </h1>
-          <p className="mt-2 text-center text-slate-600">
+          <p className="mt-2 text-center text-slate-600 dark:text-slate-400">
             Choose a strong password for your UniHub account
           </p>
         </CardHeader>
@@ -128,7 +128,7 @@ export default function UpdatePasswordPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -164,7 +164,7 @@ export default function UpdatePasswordPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                 >
                   {showConfirmPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -181,8 +181,8 @@ export default function UpdatePasswordPage() {
             </div>
 
             {/* Password Requirements */}
-            <div className="rounded-lg bg-slate-50 p-3 text-xs text-slate-600">
-              <p className="font-medium text-slate-900">
+            <div className="rounded-lg bg-slate-50 p-3 text-xs text-slate-600 dark:bg-slate-800/50 dark:text-slate-400">
+              <p className="font-medium text-slate-900 dark:text-slate-200">
                 Password must contain:
               </p>
               <ul className="mt-2 space-y-1">
@@ -190,8 +190,8 @@ export default function UpdatePasswordPage() {
                   <CheckCircle
                     className={`h-3 w-3 ${
                       currentPassword?.length >= 8
-                        ? "text-green-600"
-                        : "text-slate-400"
+                        ? "text-green-600 dark:text-green-400"
+                        : "text-slate-400 dark:text-slate-500"
                     }`}
                   />
                   At least 8 characters
@@ -200,8 +200,8 @@ export default function UpdatePasswordPage() {
                   <CheckCircle
                     className={`h-3 w-3 ${
                       /[A-Z]/.test(currentPassword || "")
-                        ? "text-green-600"
-                        : "text-slate-400"
+                        ? "text-green-600 dark:text-green-400"
+                        : "text-slate-400 dark:text-slate-500"
                     }`}
                   />
                   One uppercase letter
@@ -210,8 +210,8 @@ export default function UpdatePasswordPage() {
                   <CheckCircle
                     className={`h-3 w-3 ${
                       /[a-z]/.test(currentPassword || "")
-                        ? "text-green-600"
-                        : "text-slate-400"
+                        ? "text-green-600 dark:text-green-400"
+                        : "text-slate-400 dark:text-slate-500"
                     }`}
                   />
                   One lowercase letter
@@ -220,8 +220,8 @@ export default function UpdatePasswordPage() {
                   <CheckCircle
                     className={`h-3 w-3 ${
                       /[0-9]/.test(currentPassword || "")
-                        ? "text-green-600"
-                        : "text-slate-400"
+                        ? "text-green-600 dark:text-green-400"
+                        : "text-slate-400 dark:text-slate-500"
                     }`}
                   />
                   One number

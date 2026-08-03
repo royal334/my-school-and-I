@@ -52,23 +52,23 @@ export default async function ProfilePage() {
 
       <div>
         <h1 className="text-3xl font-bold">Profile & Settings</h1>
-        <p className="text-slate-600">
+        <p className="text-slate-600 dark:text-slate-400">
           Manage your account information and preferences
         </p>
       </div>
 
       {/* Role Badge (if admin) */}
       {adminRole && (
-        <Card className="border-primary-200 bg-primary-50">
+        <Card className="border-primary-200 bg-primary-50 dark:border-primary-900/50 dark:bg-primary-950/30">
           <CardContent className="flex items-center gap-3 py-4">
-            <div className="rounded-full bg-primary-100 p-2">
-              <User className="h-5 w-5 text-primary-600" />
+            <div className="rounded-full bg-primary-100 p-2 dark:bg-primary-950/50">
+              <User className="h-5 w-5 text-primary-600 dark:text-primary-400" />
             </div>
             <div>
-              <p className="font-semibold text-primary-900">
+              <p className="font-semibold text-primary-900 dark:text-primary-200">
                 {adminRole.role.replace('_', ' ').toUpperCase()}
               </p>
-              <p className="text-sm text-primary-700">
+              <p className="text-sm text-primary-700 dark:text-primary-300">
                 You have administrative access to this platform
               </p>
             </div>

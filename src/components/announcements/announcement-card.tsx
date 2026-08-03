@@ -32,7 +32,7 @@ export default function AnnouncementCard({
   return (
     <Card
       className={`transition-all hover:shadow-md ${
-        !is_read ? 'border-primary-300 bg-primary-50' : 'border-slate-200 bg-white'
+        !is_read ? 'border-primary-300 bg-primary-50 dark:border-primary-900/50 dark:bg-primary-950/30' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
       }`}
     >
       <CardHeader className="pb-3">
@@ -56,24 +56,24 @@ export default function AnnouncementCard({
               href={`/dashboard/announcements/${announcement.id}`}
               className="block group"
             >
-              <h3 className="text-lg font-semibold text-slate-900 group-hover:text-primary-600 transition line-clamp-2">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition line-clamp-2">
                 {announcement.title}
               </h3>
             </Link>
 
-            <p className="text-sm text-slate-600 mt-1 line-clamp-2">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 line-clamp-2">
               {announcement.content}
             </p>
           </div>
 
           <button
             onClick={() => onSave(announcement.id)}
-            className="mt-1 p-2 rounded hover:bg-slate-100 transition"
+            className="mt-1 p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition"
             title={isSaved ? 'Unsave' : 'Save'}
           >
             <Bookmark
               className={`h-5 w-5 ${
-                isSaved ? 'fill-amber-500 text-amber-500' : 'text-slate-400'
+                isSaved ? 'fill-amber-500 text-amber-500' : 'text-slate-400 dark:text-slate-500'
               }`}
             />
           </button>
@@ -81,13 +81,13 @@ export default function AnnouncementCard({
       </CardHeader>
 
       <CardContent>
-        <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
           <div className="flex items-center justify-between w-full">
             <span className="flex flex-col gap-2">
-              <span className="font-lg text-slate-700">{author.full_name}</span>
+              <span className="font-lg text-slate-700 dark:text-slate-300">{author.full_name}</span>
 
               {roleLabel && (
-                <span className="capitalize font-lg text-slate-700">
+                <span className="capitalize font-lg text-slate-700 dark:text-slate-300">
                   {formatRoleLabel(roleLabel)}
                 </span>
               )}

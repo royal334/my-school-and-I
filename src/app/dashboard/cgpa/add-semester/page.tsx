@@ -34,7 +34,7 @@ export default async function AddSemesterPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl md:text-3xl font-bold">Add Semester Results</h1>
-        <p className="text-slate-600">
+        <p className="text-slate-600 dark:text-slate-400">
           Enter your course grades to calculate your semester GPA
         </p>
       </div>

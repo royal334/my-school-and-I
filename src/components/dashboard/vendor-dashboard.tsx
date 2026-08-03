@@ -135,7 +135,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <CardTitle className="text-sm font-medium text-muted-foreground">
                     Total Views
                   </CardTitle>
-                  <Eye className="h-4 w-4 text-blue-600" />
+                  <Eye className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 </div>
               </CardHeader>
               <CardContent>
@@ -158,7 +158,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <CardTitle className="text-sm font-medium text-muted-foreground">
                     Total Contacts
                   </CardTitle>
-                  <Phone className="h-4 w-4 text-green-600" />
+                  <Phone className="h-4 w-4 text-green-600 dark:text-green-400" />
                 </div>
               </CardHeader>
               <CardContent>
@@ -181,7 +181,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <CardTitle className="text-sm font-medium text-muted-foreground">
                     Average Rating
                   </CardTitle>
-                  <Star className="h-4 w-4 text-amber-600" />
+                  <Star className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                 </div>
               </CardHeader>
               <CardContent>
@@ -203,7 +203,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <CardTitle className="text-sm font-medium text-muted-foreground">
                     Conversion Rate
                   </CardTitle>
-                  <TrendingUp className="h-4 w-4 text-purple-600" />
+                  <TrendingUp className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                 </div>
               </CardHeader>
               <CardContent>
@@ -244,7 +244,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                           />
                         </div>
                       ) : (
-                        <div className="flex h-20 w-20 items-center justify-center rounded-lg bg-primary-100 text-xl font-bold text-primary-700">
+                        <div className="flex h-20 w-20 items-center justify-center rounded-lg bg-primary-100 text-xl font-bold text-primary-700 dark:bg-primary-950/50 dark:text-primary-300">
                           {vendor.business_name?.slice(0, 2).toUpperCase()}
                         </div>
                       )}

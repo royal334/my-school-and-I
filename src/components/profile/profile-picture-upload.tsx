@@ -90,7 +90,7 @@ export default function ProfilePictureUpload({
   return (
     <div className="space-y-4">
       {/* Preview */}
-      <div className="relative h-32 w-32 overflow-hidden rounded-full bg-slate-100">
+      <div className="relative h-32 w-32 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
         {(preview || currentPictureUrl) ? (
           <Image
             src={preview || currentPictureUrl!}
@@ -99,7 +99,7 @@ export default function ProfilePictureUpload({
             className="object-cover"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-4xl font-bold text-slate-400">
+          <div className="flex h-full items-center justify-center text-4xl font-bold text-slate-400 dark:text-slate-500">
             ?
           </div>
         )}
@@ -132,7 +132,7 @@ export default function ProfilePictureUpload({
             </span>
           </Button>
         </label>
-        <p className="mt-2 text-xs text-slate-600">
+        <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
           JPG, PNG or WebP. Max 5MB.
         </p>
       </div>

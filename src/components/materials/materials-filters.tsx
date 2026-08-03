@@ -114,12 +114,12 @@ const handleSavedMaterials = () => {
   return (
     <Card className="p-4">
       <div className="flex items-center gap-2">
-        <Filter className="h-5 w-5 text-slate-600" />
-        <h2 className="font-semibold text-slate-900">Filter Materials</h2>
+        <Filter className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+        <h2 className="font-semibold text-slate-900 dark:text-slate-100">Filter Materials</h2>
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="ml-auto text-sm text-blue-600 hover:text-blue-700"
+            className="ml-auto text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
           >
             Clear all
           </button>
@@ -129,7 +129,7 @@ const handleSavedMaterials = () => {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         {/* Search */}
         <div className="relative lg:col-span-2">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
           <Input
             placeholder="Search materials..."
             value={search}

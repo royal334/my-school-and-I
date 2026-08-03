@@ -117,12 +117,12 @@ export default function CoverImageUpload({
 
   if (!hasAccess) {
     return (
-      <div className="rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center">
-        <Upload className="mx-auto h-12 w-12 text-slate-400" />
-        <h3 className="mt-4 font-semibold text-slate-700">
+      <div className="rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center dark:border-slate-700 dark:bg-slate-800">
+        <Upload className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-500" />
+        <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">
           Cover Image Locked
         </h3>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
           Upgrade to Premium or Featured to add a cover image
         </p>
         <Link href={`/dashboard/vendors/${vendorId}/upgrade`}>
@@ -137,7 +137,7 @@ export default function CoverImageUpload({
   return (
     <div className="space-y-4">
       {/* Preview */}
-      <div className="relative h-48 w-full overflow-hidden rounded-lg border bg-slate-100">
+      <div className="relative h-48 w-full overflow-hidden rounded-lg border bg-slate-100 dark:bg-slate-700">
         {preview || currentCoverUrl ? (
           <>
             <Image
@@ -157,8 +157,8 @@ export default function CoverImageUpload({
         ) : (
           <div className="flex h-full items-center justify-center">
             <div className="text-center">
-              <Upload className="mx-auto h-12 w-12 text-slate-400" />
-              <p className="mt-2 text-sm text-slate-500">
+              <Upload className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-500" />
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
                 Upload cover image
               </p>
             </div>
@@ -193,7 +193,7 @@ export default function CoverImageUpload({
             </span>
           </Button>
         </label>
-        <p className="mt-2 text-xs text-slate-600">
+        <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
           Recommended: 1200x400px. JPG, PNG or WebP. Max 5MB.
         </p>
       </div>

@@ -8,7 +8,8 @@ export async function getVendors(filters: {
   verifiedOnly?: boolean;
   featured_only?: boolean;
   limit?: number;
-  supabaseProp?:any
+  supabaseProp?:any;
+  throwOnError?: boolean;
 }) {
   const supabase =  filters.supabaseProp || createClient()
 
@@ -74,6 +75,7 @@ export async function getVendors(filters: {
   const { data, error } = await query;
 
   if (error) {
+    if (filters.throwOnError) throw error;
     console.error("Get vendors error:", error);
     return [];
   }

@@ -3,6 +3,7 @@ import { createAdminClient } from '@/utils/supabase/admin';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getUserSemesters } from '@/utils/supabase/queries';
+import { getCachedUserContext } from '@/utils/cache';
 import { calculateCGPAFromSemesters } from '@/utils/lib/cgpa-helpers';
 import { StudentDashboard } from '@/components/dashboard';
 import VendorDashboard from '@/components/dashboard/vendor-dashboard';
@@ -23,12 +24,8 @@ export default async function DashboardPage() {
     redirect('/login');
   }
 
-  // Get user profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
+  // Get user profile + role (cached 15 min)
+  const { profile } = await getCachedUserContext(user.id);
 
   // Get user statistics - Use admin client to count ALL approved materials
   // regardless of user's subscription status

@@ -135,18 +135,14 @@ export default function SubmitMaterialPage() {
 
     async function loadFacultiesAndDepartments() {
       try {
-        const [facultyResult, departmentResult] = await Promise.all([
-          supabase.from("faculties").select("id, name"),
-          supabase.from("departments").select("id, name, faculty_id"),
-        ]);
+        const response = await fetch("/api/reference");
+        if (!response.ok) throw new Error("Failed to load faculties/departments");
+        const data = await response.json();
 
         if (cancelled) return;
 
-        if (facultyResult.error) throw facultyResult.error;
-        if (departmentResult.error) throw departmentResult.error;
-
-        setFaculties(facultyResult.data || []);
-        setDepartments(departmentResult.data || []);
+        setFaculties(data.faculties || []);
+        setDepartments(data.departments || []);
       } catch (err) {
         console.error("Failed to load faculties/departments:", err);
       }

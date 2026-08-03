@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { getAllowedScopes } from '@/utils/lib/announcements';
+import { getCachedAnnouncementsFeed, type FeedAnnouncement } from '@/utils/cache';
 
 // GET /api/announcements - Fetch announcements visible to current user
 export async function GET(request: Request) {
@@ -23,43 +24,61 @@ export async function GET(request: Request) {
     const offset = parseInt(searchParams.get('offset') || '0', 10);
     const sort = searchParams.get('sort') || 'recent';
 
-    // Base query - RLS automatically filters to visible announcements
-    let query = supabase
-      .from('announcements')
-      .select('*', { count: 'exact' })
-      .eq('status', 'published');
+    // Pull the user's access token so the cached feed can authenticate as this
+    // user (cookies() cannot be accessed inside the unstable_cache scope).
+    const { data: sessionData } = await supabase.auth.getSession();
+    const accessToken = sessionData.session?.access_token;
 
-    // Apply filters
-    if (type) {
-      query = query.eq('type', type);
-    }
+    let announcements: FeedAnnouncement[] = [];
+    let count = 0;
 
-    if (category) {
-      query = query.eq('category', category);
-    }
-
-    if (priority) {
-      query = query.eq('priority', priority);
-    }
-
-    // Sort
-    if (sort === 'priority') {
-      query = query.order('priority', { ascending: false }).order('created_at', { ascending: false });
-    } else if (sort === 'unread_first') {
-      // This requires a more complex query with left join
-      // For MVP, just use recent
-      query = query.order('created_at', { ascending: false });
+    if (accessToken) {
+      const cached = await getCachedAnnouncementsFeed({
+        token: accessToken,
+        type: type || undefined,
+        category: category || undefined,
+        priority: priority || undefined,
+        limit,
+        offset,
+        sort,
+      });
+      announcements = cached.announcements;
+      count = cached.count;
     } else {
-      // recent (default)
-      query = query.order('created_at', { ascending: false });
+      // Fallback: no session token available - query directly (RLS filters)
+      let query = supabase
+        .from('announcements')
+        .select('*', { count: 'exact' })
+        .eq('status', 'published');
+
+      if (type) {
+        query = query.eq('type', type);
+      }
+
+      if (category) {
+        query = query.eq('category', category);
+      }
+
+      if (priority) {
+        query = query.eq('priority', priority);
+      }
+
+      if (sort === 'priority') {
+        query = query
+          .order('priority', { ascending: false })
+          .order('created_at', { ascending: false });
+      } else {
+        query = query.order('created_at', { ascending: false });
+      }
+
+      query = query.range(offset, offset + limit - 1);
+
+      const { data, error, count: dbCount } = await query;
+      if (error) throw error;
+
+      announcements = (data || []) as FeedAnnouncement[];
+      count = dbCount || 0;
     }
-
-    // Pagination
-    query = query.range(offset, offset + limit - 1);
-
-    const { data: announcements, error, count } = await query;
-
-    if (error) throw error;
 
     // Get read status for these announcements
     let readIds = new Set<string>();
@@ -85,8 +104,8 @@ export async function GET(request: Request) {
 
     const authorIds = Array.from(
       new Set(
-        (announcements || [])
-          .map((a: any) => a.sender_id || a.author_id)
+        announcements
+          .map((a) => a.sender_id || a.author_id)
           .filter(Boolean) as string[]
       )
     );
@@ -100,11 +119,11 @@ export async function GET(request: Request) {
         supabase.from('admin_roles').select('user_id, role').in('user_id', authorIds),
       ]);
 
-      profilesById = new Map((profiles || []).map((profile: any) => [profile.id, profile]));
-      rolesByUserId = new Map((roles || []).map((role: any) => [role.user_id, role.role]));
+      profilesById = new Map((profiles || []).map((profile) => [profile.id, profile]));
+      rolesByUserId = new Map((roles || []).map((role) => [role.user_id, role.role]));
     }
 
-    const result = (announcements || []).map((a: any) => {
+    const result = announcements.map((a) => {
       const authorId = a.sender_id || a.author_id;
       const profile = authorId ? profilesById.get(authorId) : null;
       const role = authorId ? rolesByUserId.get(authorId) : null;

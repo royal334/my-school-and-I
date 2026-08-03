@@ -233,16 +233,11 @@ export default function AnnouncementForm() {
 
   async function loadFacultiesAndDepartments() {
     try {
-      const [facResult, deptResult] = await Promise.all([
-        supabase.from('faculties').select('id, name'),
-        supabase.from('departments').select('id, name, faculty_id'),
-      ]);
-
-      if (facResult.error) throw facResult.error;
-      if (deptResult.error) throw deptResult.error;
-
-      setFaculties(facResult.data || []);
-      setDepartments(deptResult.data || []);
+      const response = await fetch('/api/reference');
+      if (!response.ok) throw new Error('Failed to load faculties/departments');
+      const data = await response.json();
+      setFaculties(data.faculties || []);
+      setDepartments(data.departments || []);
     } catch (err) {
       console.error('Failed to load faculties/departments:', err);
     }

@@ -17,6 +17,7 @@ import { formatFileSize, formatDate } from "@/utils/lib";
 import { MATERIAL_TYPE_LABELS } from "@/utils/constants/constants";
 import PDFViewerWrapper from "@/components/pdf/pdf-viewer-wrapper";
 import MaterialsDownloadButton from "@/components/materials/download-button";
+import MaterialReportMenu from "@/components/materials/material-report-menu";
 
 interface PageProps {
   params: Promise<{id: string;}>;
@@ -74,7 +75,7 @@ export default async function MaterialDetailPage({ params }: PageProps) {
         <div>
           <Card className="h-full">
             <CardHeader>
-              <div className="flex items-start justify-between ">
+              <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-2">
                     <Badge variant="secondary">
@@ -100,6 +101,10 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                     </div>
                   )}
                 </div>
+                <MaterialReportMenu
+                  materialId={material.id}
+                  materialTitle={material.title}
+                />
               </div>
             </CardHeader>
             <CardContent className="space-y-4">

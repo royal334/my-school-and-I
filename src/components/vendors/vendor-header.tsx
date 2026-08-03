@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Edit, BarChart3 } from "lucide-react";
-
+import VendorReportMenu from "./vendor-report-menu";
+import {useVendorFeatures} from "@/hooks/use-vendor-features";
 interface VendorHeaderProps {
   id: string;
   isOwner: boolean;
+  vendor:any
 }
 
-export default function VendorHeader({ id, isOwner }: VendorHeaderProps) {
+export default function VendorHeader({ id, isOwner, vendor }: VendorHeaderProps) {
   return (
     <div className="flex items-center justify-between mt-2">
       <Link href="/dashboard/vendors">
@@ -15,6 +17,13 @@ export default function VendorHeader({ id, isOwner }: VendorHeaderProps) {
           ← Back to Vendors
         </Button>
       </Link>
+
+      {!isOwner && (
+            <VendorReportMenu
+              vendorId={vendor.id}
+              businessName={vendor.business_name}
+            />
+          )}
 
       {isOwner && (
         <div className="flex gap-2">

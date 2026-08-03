@@ -75,7 +75,7 @@ export default async function VendorDetailPage({ params }: PageProps) {
   return (
     <div className="space-y-6">
       <VendorViewTracker vendorId={id} vendorName={vendor.business_name} isOwner={isOwner} />
-      <VendorHeader id={id} isOwner={isOwner} />
+      <VendorHeader id={id} isOwner={isOwner} vendor={vendor} />
 
       {/* Pending Approval Notice */}
       {!vendor.is_approved && isOwner && (
@@ -95,7 +95,7 @@ export default async function VendorDetailPage({ params }: PageProps) {
           <div className="space-y-1">
             <VendorHero 
               vendor={vendor} 
-              isVerified={isVerified} 
+              isVerified={isVerified}
             />
             
             <Card>

@@ -30,7 +30,7 @@ export default function MaterialsContent({
           Try adjusting your filters or search terms
         </p>
         <div className="space-y-4">
-          <p className="mt-2 text-sm text-slate-600">Not seeing what you're looking for?</p>
+          <p className="mt-2 text-sm text-slate-600">Not seeing what you&apos;re  looking for?</p>
           <Link href="/submit-materials" >
             <Button>
               <Upload className="h-4 w-4" />

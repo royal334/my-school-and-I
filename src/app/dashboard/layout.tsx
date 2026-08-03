@@ -96,7 +96,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                   hasVendor={hasVendor}
                   isVendorAccount={isVendorAccount}
                 />
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-4 items-center w-full justify-end ">
                   <Link href="/dashboard/profile">
                     <User className="h-4.5 w-4.5" aria-label="Profile" aria-hidden="true" />
                   </Link>

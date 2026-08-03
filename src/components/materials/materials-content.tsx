@@ -9,7 +9,6 @@ import { MaterialsContentProps } from "@/utils/types";
 import { Upload } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
-import { MaterialsContentProps } from "@/utils/types";
 
 export default function MaterialsContent({
   materials,

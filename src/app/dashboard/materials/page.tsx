@@ -5,10 +5,12 @@ import { cookies } from "next/headers";
 import { getMaterials } from "@/utils/supabase/queries";
 import MaterialsContent from "@/components/materials/materials-content";
 import MaterialsFilters from "@/components/materials/materials-filters";
+import MaterialsMenu from "@/components/materials/materials-menu";
 import { Card } from "@/components/ui/card";
-import { BookOpen } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation"
-
+import Link from "next/link";
+import { Upload } from "lucide-react";
 
 export const metadata = {
   title: "Materials Library | UniHub",
@@ -101,11 +103,16 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-4 rounded-lg bg-blue-50 dark:bg-blue-900/30 px-4 py-2">
-            <BookOpen className="h-7 w-7 text-blue-600 dark:text-blue-400" />
-            <span className="text-sm font-medium text-blue-900 dark:text-blue-100 text-center">
-              {materials.length} materials available
-            </span>
+          <div>
+            <Link href="/submit-materials" className="hidden md:inline-block">
+              <Button>
+                <Upload className="h-4 w-4" />
+                Submit Materials for Review
+              </Button>
+            </Link>
+          </div>
+          <div className="block md:hidden">
+            <MaterialsMenu />
           </div>
         </div>
       </div>

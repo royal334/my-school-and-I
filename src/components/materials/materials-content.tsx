@@ -3,8 +3,10 @@
 import { Card } from "@/components/ui/card";
 import MaterialCard from "./materials-card";
 import { FileX } from "lucide-react";
-
-import { Material, MaterialsContentProps } from "@/utils/types";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { MaterialsContentProps } from "@/utils/types";
+import { Upload } from "lucide-react";
 
 export default function MaterialsContent({
   materials,
@@ -27,6 +29,15 @@ export default function MaterialsContent({
         <p className="mt-2 text-sm text-slate-600">
           Try adjusting your filters or search terms
         </p>
+        <div className="space-y-4">
+          <p className="mt-2 text-sm text-slate-600">Not seeing what you're looking for?</p>
+          <Link href="/submit-materials" >
+            <Button>
+              <Upload className="h-4 w-4" />
+              Submit Materials for Review
+            </Button>
+          </Link>
+        </div>
       </Card>
     );
   }

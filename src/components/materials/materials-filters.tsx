@@ -186,7 +186,7 @@ const handleSavedMaterials = () => {
           className="flex items-center gap-2 justify-center"
         >
           <Bookmark className="h-4 w-4" />
-          <span className="ml-2">Bookmarked Materials</span>
+          <span className="ml-2">Bookmarks</span>
         </Button>
 
 

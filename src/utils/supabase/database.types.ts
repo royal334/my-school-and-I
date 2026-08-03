@@ -183,6 +183,65 @@ export interface Database {
           updated_at?: string;
         };
       };
+      material_submissions: {
+        Row: {
+          id: string;
+          user_id: string;
+          title: string;
+          description: string | null;
+          category: string | null;
+          faculty_id: string | null;
+          department_id: string | null;
+          level: number | null;
+          file_path: string | null;
+          file_name: string | null;
+          file_size: number | null;
+          status: "pending" | "approved" | "rejected" | string;
+          submitted_at: string;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          rejection_reason: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          title: string;
+          description?: string | null;
+          category?: string | null;
+          faculty_id?: string | null;
+          department_id?: string | null;
+          level?: number | null;
+          file_path?: string | null;
+          file_name?: string | null;
+          file_size?: number | null;
+          status?: "pending" | "approved" | "rejected" | string;
+          submitted_at?: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          rejection_reason?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          title?: string;
+          description?: string | null;
+          category?: string | null;
+          faculty_id?: string | null;
+          department_id?: string | null;
+          level?: number | null;
+          file_path?: string | null;
+          file_name?: string | null;
+          file_size?: number | null;
+          status?: "pending" | "approved" | "rejected" | string;
+          submitted_at?: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          rejection_reason?: string | null;
+          created_at?: string;
+        };
+      };
       semesters: {
         Row: {
           id: string;

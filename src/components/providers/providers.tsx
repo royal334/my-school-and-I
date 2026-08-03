@@ -6,9 +6,7 @@ import { Suspense } from "react";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <PostHogProvider>
-      <Suspense>
-        <PostHogPageview/>
-    </Suspense>
+      <Suspense fallback={null}><PostHogPageview/></Suspense>
       <PostHogIdentify/>
         {children}
     </PostHogProvider>

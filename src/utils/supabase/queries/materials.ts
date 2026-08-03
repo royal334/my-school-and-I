@@ -7,6 +7,7 @@ export async function getMaterials({
   search,
   limit = 20,
   offset = 0,
+  ids,
   supabase: supabaseProp,
 }: {
   level?: number;
@@ -16,6 +17,7 @@ export async function getMaterials({
   limit?: number;
   offset?: number;
   supabase?: any;
+  ids?: string[]; // Optional array of material IDs to filter by
 }) {
   const supabase = supabaseProp || createClient();
 
@@ -52,6 +54,10 @@ export async function getMaterials({
 
   if (search) {
     query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+  }
+
+  if (ids && ids.length > 0) {
+    query = query.in("id", ids);
   }
 
   const { data, error } = await query;

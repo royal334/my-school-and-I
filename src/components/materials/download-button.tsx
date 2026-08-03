@@ -1,9 +1,18 @@
+"use client"
 import { Button } from '../ui/button'
 import { Download } from 'lucide-react'
 import { usePostHogAnalytics } from '@/hooks/posthog-events';
 import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
-export default function MaterialsDownloadButton(material:any){
+type Props = {
+  material: {
+    id?: string;
+    title?: string;
+    type?: string;
+  };
+};
+
+export default function MaterialsDownloadButton({ material }: Props) {
 
      const { track } = usePostHogAnalytics()
 
@@ -13,6 +22,10 @@ export default function MaterialsDownloadButton(material:any){
                material_title: material.title,
                material_type: material.type,
     });
+  }
+
+    if (!material.id) {
+    return null;
   }
      return<Button asChild variant="outline" size="sm" className="gap-2" onClick={handleDownloadMaterialEvent}>
           <a href={`/api/materials/${material.id}/download`} download>

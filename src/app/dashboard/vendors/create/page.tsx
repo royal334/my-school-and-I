@@ -55,7 +55,7 @@ export default async function CreateVendorPage() {
 
       <div>
         <h1 className="text-3xl font-bold">List Your Business</h1>
-        <p className="text-slate-600">
+        <p className="text-slate-600 dark:text-slate-400">
           Create a vendor listing to connect with students
         </p>
       </div>

@@ -33,7 +33,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         <div className="flex items-start gap-4">
           {/* Avatar */}
           <Avatar className="h-10 w-10">
-            <AvatarFallback className="bg-primary-100 text-primary-700">
+            <AvatarFallback className="bg-primary-100 text-primary-700 dark:bg-primary-950/50 dark:text-primary-300">
               {initials}
             </AvatarFallback>
           </Avatar>
@@ -45,7 +45,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
                 <h4 className="font-medium">
                   {review.profiles?.full_name || 'Anonymous'}
                 </h4>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   {formatDistanceToNow(new Date(review.created_at), {
                     addSuffix: true,
                   })}
@@ -60,7 +60,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
                     className={`h-4 w-4 ${
                       i < review.rating
                         ? 'fill-amber-400 text-amber-400'
-                        : 'text-slate-300'
+                        : 'text-slate-300 dark:text-slate-700'
                     }`}
                   />
                 ))}
@@ -69,7 +69,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 
             {/* Comment */}
             {review.comment && (
-              <p className="text-sm text-slate-700">{review.comment}</p>
+              <p className="text-sm text-slate-700 dark:text-slate-300">{review.comment}</p>
             )}
           </div>
         </div>

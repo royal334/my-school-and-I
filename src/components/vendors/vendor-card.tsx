@@ -67,7 +67,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
         {/* Logo */}
         <div className="relative -mt-12 mb-4">
           {vendor.logo_url && features.canUploadLogo ? (
-            <div className="relative h-24 w-24 overflow-hidden rounded-lg border-4 border-white shadow-lg">
+            <div className="relative h-24 w-24 overflow-hidden rounded-lg border-4 border-white shadow-lg dark:border-slate-800">
               <Image
                 src={vendor.logo_url}
                 alt={vendor.business_name}
@@ -76,7 +76,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
               />
             </div>
           ) : (
-            <div className="flex h-24 w-24 items-center justify-center rounded-lg border-4 border-white bg-primary-100 text-2xl font-bold text-primary-700 shadow-lg">
+            <div className="flex h-24 w-24 items-center justify-center rounded-lg border-4 border-white bg-primary-100 text-2xl font-bold text-primary-700 shadow-lg dark:bg-primary-950/50 dark:text-primary-300">
               {vendor.business_name.slice(0, 2).toUpperCase()}
             </div>
           )}
@@ -94,13 +94,13 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
 
         {/* Category */}
         {vendor.vendor_categories && (
-          <p className="mb-2 text-sm text-slate-600">
+          <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">
             {vendor.vendor_categories.icon} {vendor.vendor_categories.name}
           </p>
         )}
 
         {/* Description */}
-        <p className="mb-3 text-sm text-slate-600 line-clamp-2">
+        <p className="mb-3 text-sm text-slate-600 line-clamp-2 dark:text-slate-400">
           {vendor.description}
         </p>
 
@@ -127,7 +127,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
                 className={`h-4 w-4 ${
                   i < Math.floor(vendor.rating_avg)
                     ? 'fill-amber-400 text-amber-400'
-                    : 'text-slate-300'
+                    : 'text-slate-300 dark:text-slate-700'
                 }`}
               />
             ))}
@@ -135,14 +135,14 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
           <span className="text-sm font-medium">
             {vendor.rating_avg.toFixed(1)}
           </span>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-slate-500 dark:text-slate-400">
             ({vendor.rating_count})
           </span>
         </div>
 
         {/* Location */}
         {vendor.location && (
-          <div className="mb-4 flex items-center gap-1 text-sm text-slate-600">
+          <div className="mb-4 flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400">
             <MapPin className="h-4 w-4" />
             <span className="line-clamp-1">{vendor.location}</span>
           </div>
@@ -160,7 +160,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
             <Button
               size="sm"
               variant="outline"
-              className="bg-green-50 text-green-700 hover:bg-green-100"
+              className="bg-green-50 text-green-700 hover:bg-green-100 dark:bg-green-950/40 dark:text-green-400 dark:hover:bg-green-900/40"
               onClick={(e) => {
                 e.preventDefault();
                 const number = vendor.whatsapp_number!.replace(/\D/g, '');

@@ -145,7 +145,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
         fallback={
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[...Array(6)].map((_, i) => (
-              <Card key={i} className="h-64 animate-pulse bg-slate-100" />
+              <Card key={i} className="h-64 animate-pulse bg-slate-100 dark:bg-slate-800" />
             ))}
           </div>
         }

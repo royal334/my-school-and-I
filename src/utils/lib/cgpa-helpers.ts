@@ -143,14 +143,14 @@ export function getClassOfDegree(cgpa: number): string {
  */
 export function getGradeColor(grade: string): string {
   const colors: Record<string, string> = {
-    A: "bg-green-100 text-green-700 border-green-200",
-    B: "bg-blue-100 text-blue-700 border-blue-200",
-    C: "bg-yellow-100 text-yellow-700 border-yellow-200",
-    D: "bg-orange-100 text-orange-700 border-orange-200",
-    E: "bg-red-100 text-red-700 border-red-200",
-    F: "bg-red-200 text-red-800 border-red-300",
+    A: "bg-green-100 text-green-700 border-green-200 dark:bg-green-950/50 dark:text-green-400 dark:border-green-900/50",
+    B: "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-950/50 dark:text-blue-400 dark:border-blue-900/50",
+    C: "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-950/50 dark:text-yellow-400 dark:border-yellow-900/50",
+    D: "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950/50 dark:text-orange-400 dark:border-orange-900/50",
+    E: "bg-red-100 text-red-700 border-red-200 dark:bg-red-950/50 dark:text-red-400 dark:border-red-900/50",
+    F: "bg-red-200 text-red-800 border-red-300 dark:bg-red-950/50 dark:text-red-400 dark:border-red-900/50",
   };
-  return colors[grade.toUpperCase()] || "bg-gray-100 text-gray-700";
+  return colors[grade.toUpperCase()] || "bg-gray-100 text-gray-700 dark:bg-gray-950/50 dark:text-gray-400";
 }
 
 /**
@@ -168,10 +168,10 @@ export function getGPAColor(gpa: number): string {
  * Get color for GPA badges
  */
 export function getGPABadgeColor(gpa: number): string {
-  if (gpa >= 4.5) return "bg-green-100 text-green-700 border-green-200";
-  if (gpa >= 3.5) return "bg-blue-100 text-blue-700 border-blue-200";
-  if (gpa >= 2.5) return "bg-yellow-100 text-yellow-700 border-yellow-200";
-  return "bg-red-100 text-red-700 border-red-200";
+  if (gpa >= 4.5) return "bg-green-100 text-green-700 border-green-200 dark:bg-green-950/50 dark:text-green-400 dark:border-green-900/50";
+  if (gpa >= 3.5) return "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-950/50 dark:text-blue-400 dark:border-blue-900/50";
+  if (gpa >= 2.5) return "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-950/50 dark:text-yellow-400 dark:border-yellow-900/50";
+  return "bg-red-100 text-red-700 border-red-200 dark:bg-red-950/50 dark:text-red-400 dark:border-red-900/50";
 }
 
 /**

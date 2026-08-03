@@ -71,17 +71,17 @@ export default function MaterialsContent({
   if (materials.length === 0) {
     return (
       <Card className="flex flex-col items-center justify-center p-12 text-center">
-        <div className="rounded-full bg-slate-100 p-4">
-          <FileX className="h-8 w-8 text-slate-400" />
+        <div className="rounded-full bg-slate-100 dark:bg-slate-800 p-4">
+          <FileX className="h-8 w-8 text-slate-400 dark:text-slate-500" />
         </div>
-        <h3 className="mt-4 text-lg font-semibold text-slate-900">
+        <h3 className="mt-4 text-lg font-semibold text-slate-900 dark:text-slate-100">
           No materials found
         </h3>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
           Try adjusting your filters or search terms
         </p>
         <div className="space-y-4">
-          <p className="mt-2 text-sm text-slate-600">Not seeing what you&apos;re  looking for?</p>
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">Not seeing what you&apos;re  looking for?</p>
           <Link href="/submit-materials" >
             <Button>
               <Upload className="h-4 w-4" />

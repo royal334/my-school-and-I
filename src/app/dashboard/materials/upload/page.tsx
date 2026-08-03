@@ -29,7 +29,7 @@ export default async function UploadMaterialPage() {
   if (!roleData || roleData.role !== "super_admin") {
     return (
       <div className="p-10 space-y-4">
-        <div className="p-6 text-amber-800 bg-amber-50 border border-amber-200 rounded-lg">
+        <div className="p-6 text-amber-800 bg-amber-50 border border-amber-200 rounded-lg dark:text-amber-300 dark:bg-amber-950/30 dark:border-amber-900/50">
           <h2 className="text-lg font-bold">Access Denied</h2>
           <p>
             You are logged in as {user.email}, but you do not have

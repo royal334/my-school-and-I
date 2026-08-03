@@ -62,7 +62,7 @@ export default function MaterialCard({
           </Badge>
           <button
             onClick={() => handleSaveMaterial(material.id)}
-            className="mt-1 p-2 rounded hover:bg-slate-100 transition"
+            className="mt-1 p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition"
             title={
               isSaved
                 ? 'Unsave'
@@ -74,14 +74,14 @@ export default function MaterialCard({
             className={`h-5 w-5 ${
               isSaved
                 ? 'fill-amber-500 text-amber-500'
-                : 'text-slate-400'
+                : 'text-slate-400 dark:text-slate-500'
             }`}
           />)}
           </button>
           {material.is_premium && !hasActiveSubscription && (
-            <div className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1">
-              <Lock className="h-3 w-3 text-amber-600" />
-              <span className="text-xs font-medium text-amber-700">
+            <div className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 dark:bg-amber-950/50">
+              <Lock className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+              <span className="text-xs font-medium text-amber-700 dark:text-amber-300">
                 Premium
               </span>
             </div>
@@ -89,13 +89,13 @@ export default function MaterialCard({
         </div>
 
         {/* Title */}
-        <h3 className="line-clamp-2 font-semibold text-slate-900 text-xl md:text-2xl">
+        <h3 className="line-clamp-2 font-semibold text-slate-900 text-xl md:text-2xl dark:text-slate-100">
           {material.title}
         </h3>
 
         {/* Course Info */}
         {material.courses && (
-          <div className="flex items-center gap-2 text-sm text-slate-600">
+          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
             <BookOpen className="h-4 w-4" />
             <span className="truncate">
               {material.courses.course_code} - {material.courses.course_title}
@@ -108,11 +108,11 @@ export default function MaterialCard({
         {/* Level and Semester */}
         {material.courses && (
           <div className="flex items-center gap-4 text-sm">
-            <div className="flex items-center gap-1 text-slate-600">
+            <div className="flex items-center gap-1 text-slate-600 dark:text-slate-400">
               <span className="font-medium">Level:</span>
               <span>{material.courses.level}</span>
             </div>
-            <div className="flex items-center gap-1 text-slate-600">
+            <div className="flex items-center gap-1 text-slate-600 dark:text-slate-400">
               <span className="font-medium">Sem:</span>
               <span>{material.courses.semester}</span>
             </div>
@@ -120,7 +120,7 @@ export default function MaterialCard({
         )}
 
         {/* File Info */}
-        <div className="flex items-center justify-between text-sm text-slate-600">
+        <div className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-400">
           <div className="flex items-center gap-1">
             <FileText className="h-4 w-4" />
             <span>PDF</span>
@@ -143,7 +143,7 @@ export default function MaterialCard({
         </div> */}
 
         {/* Upload Date */}
-        <div className="flex items-center gap-1 text-xs text-slate-500">
+        <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
           <Calendar className="h-3 w-3" />
           <span>{formatRelativeTime(material.created_at)}</span>
         </div>

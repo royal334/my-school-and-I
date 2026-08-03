@@ -50,15 +50,15 @@ export default async function MyListingsPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">My Listings</h1>
-          <p className="text-slate-600">Manage your vendor listings</p>
+          <p className="text-slate-600 dark:text-slate-400">Manage your vendor listings</p>
         </div>
 
         <Card className="flex flex-col items-center justify-center p-12 text-center">
-          <div className="rounded-full bg-primary-100 p-4">
-            <Plus className="h-8 w-8 text-primary-600" />
+          <div className="rounded-full bg-primary-100 p-4 dark:bg-primary-950/50">
+            <Plus className="h-8 w-8 text-primary-600 dark:text-primary-400" />
           </div>
           <h3 className="mt-4 text-lg font-semibold">No vendor listing yet</h3>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             Create your first vendor listing to start connecting with students
           </p>
           <Link href="/dashboard/vendors/create">
@@ -78,7 +78,7 @@ export default async function MyListingsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">My Listings</h1>
-          <p className="text-slate-600">Manage your vendor listings</p>
+          <p className="text-slate-600 dark:text-slate-400">Manage your vendor listings</p>
         </div>
         <Link href={`/dashboard/vendors/${vendor.id}`}>
           <Button variant="outline">View Public Page</Button>
@@ -87,9 +87,9 @@ export default async function MyListingsPage() {
 
       {/* Pending Approval Notice */}
       {!vendor.is_approved && (
-        <Card className="border-amber-200 bg-amber-50">
+        <Card className="border-amber-200 bg-amber-50 dark:border-amber-900/50 dark:bg-amber-950/30">
           <CardContent className="p-4">
-            <p className="text-sm font-medium text-amber-900">
+            <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
               ⏳ Your listing is pending admin approval. It will be visible to
               students once approved.
             </p>
@@ -102,11 +102,11 @@ export default async function MyListingsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-blue-100 p-3">
-                <Eye className="h-6 w-6 text-blue-600" />
+              <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-950/50">
+                <Eye className="h-6 w-6 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <p className="text-sm text-slate-600">Total Views</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Total Views</p>
                 <p className="text-2xl font-bold">{vendor.view_count}</p>
               </div>
             </div>
@@ -116,11 +116,11 @@ export default async function MyListingsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-green-100 p-3">
-                <Phone className="h-6 w-6 text-green-600" />
+              <div className="rounded-full bg-green-100 p-3 dark:bg-green-950/50">
+                <Phone className="h-6 w-6 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <p className="text-sm text-slate-600">Total Contacts</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Total Contacts</p>
                 <p className="text-2xl font-bold">{vendor.contact_count}</p>
               </div>
             </div>
@@ -130,15 +130,15 @@ export default async function MyListingsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-amber-100 p-3">
-                <Star className="h-6 w-6 text-amber-600" />
+              <div className="rounded-full bg-amber-100 p-3 dark:bg-amber-950/50">
+                <Star className="h-6 w-6 text-amber-600 dark:text-amber-400" />
               </div>
               <div>
-                <p className="text-sm text-slate-600">Rating</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Rating</p>
                 <p className="text-2xl font-bold">
                   {vendor.rating_avg.toFixed(1)} ⭐
                 </p>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   {vendor.rating_count} reviews
                 </p>
               </div>
@@ -149,11 +149,11 @@ export default async function MyListingsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-purple-100 p-3">
-                <TrendingUp className="h-6 w-6 text-purple-600" />
+              <div className="rounded-full bg-purple-100 p-3 dark:bg-purple-950/50">
+                <TrendingUp className="h-6 w-6 text-purple-600 dark:text-purple-400" />
               </div>
               <div>
-                <p className="text-sm text-slate-600">Conversion</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Conversion</p>
                 <p className="text-2xl font-bold">
                   {vendor.view_count > 0
                     ? ((vendor.contact_count / vendor.view_count) * 100).toFixed(1)
@@ -182,7 +182,7 @@ export default async function MyListingsPage() {
                   />
                 </div>
               ) : (
-                <div className="flex h-24 w-24 items-center justify-center rounded-lg bg-primary-100 text-2xl font-bold text-primary-700">
+                <div className="flex h-24 w-24 items-center justify-center rounded-lg bg-primary-100 text-2xl font-bold text-primary-700 dark:bg-primary-950/50 dark:text-primary-300">
                   {vendor.business_name.slice(0, 2).toUpperCase()}
                 </div>
               )}
@@ -199,7 +199,7 @@ export default async function MyListingsPage() {
                     )}
                   </div>
                   {vendor.vendor_categories && (
-                    <p className="text-slate-600">
+                    <p className="text-slate-600 dark:text-slate-400">
                       {vendor.vendor_categories.icon}{' '}
                       {vendor.vendor_categories.name}
                     </p>
@@ -233,7 +233,7 @@ export default async function MyListingsPage() {
                 </div>
               </div>
 
-              <p className="mb-4 text-sm text-slate-600">
+              <p className="mb-4 text-sm text-slate-600 dark:text-slate-400">
                 {vendor.description}
               </p>
 
@@ -247,7 +247,7 @@ export default async function MyListingsPage() {
               </div>
 
               {/* Contact Info */}
-              <div className="space-y-1 text-sm text-slate-600">
+              <div className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
                 <p>📞 {vendor.phone_number}</p>
                 {vendor.whatsapp_number && (
                   <p>💬 {vendor.whatsapp_number}</p>
@@ -265,12 +265,12 @@ export default async function MyListingsPage() {
         <Link href={`/dashboard/vendors/${vendor.id}/edit`}>
           <Card className="cursor-pointer transition-shadow hover:shadow-lg">
             <CardContent className="flex items-center gap-4 p-6">
-              <div className="rounded-full bg-blue-100 p-3">
-                <Edit className="h-6 w-6 text-blue-600" />
+              <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-950/50">
+                <Edit className="h-6 w-6 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
                 <h3 className="font-semibold">Edit Listing</h3>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-600 dark:text-slate-400">
                   Update business information
                 </p>
               </div>
@@ -281,12 +281,12 @@ export default async function MyListingsPage() {
         <Link href={`/dashboard/vendors/${vendor.id}/analytics`}>
           <Card className="cursor-pointer transition-shadow hover:shadow-lg">
             <CardContent className="flex items-center gap-4 p-6">
-              <div className="rounded-full bg-green-100 p-3">
-                <TrendingUp className="h-6 w-6 text-green-600" />
+              <div className="rounded-full bg-green-100 p-3 dark:bg-green-950/50">
+                <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
               </div>
               <div>
                 <h3 className="font-semibold">View Analytics</h3>
-                <p className="text-sm text-slate-600">Track your performance</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Track your performance</p>
               </div>
             </CardContent>
           </Card>
@@ -294,16 +294,16 @@ export default async function MyListingsPage() {
 
         {vendor.subscription_tier === 'basic' && (
           <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
-            <Card className="cursor-pointer border-2 border-amber-200 bg-amber-50 transition-shadow hover:shadow-lg">
+            <Card className="cursor-pointer border-2 border-amber-200 bg-amber-50 transition-shadow hover:shadow-lg dark:border-amber-900/50 dark:bg-amber-950/30">
               <CardContent className="flex items-center gap-4 p-6">
                 <div className="rounded-full bg-amber-500 p-3">
                   <Crown className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-amber-900">
+                  <h3 className="font-semibold text-amber-900 dark:text-amber-100">
                     Upgrade to Premium
                   </h3>
-                  <p className="text-sm text-amber-700">
+                  <p className="text-sm text-amber-700 dark:text-amber-300">
                     Get more visibility
                   </p>
                 </div>

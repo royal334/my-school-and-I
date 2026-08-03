@@ -112,7 +112,7 @@ export default function UpgradeForm({ vendor, preSelectedTier }: UpgradeFormProp
       <Card
         className={`relative flex flex-col transition-all ${
           upgradable ? 'hover:shadow-lg' : 'opacity-80'
-        } ${tierKey === 'featured' ? 'border-amber-200' : 'border-blue-200'}`}
+        } ${tierKey === 'featured' ? 'border-amber-200 dark:border-amber-900/50' : 'border-blue-200 dark:border-blue-900/50'}`}
       >
         {tierKey === 'featured' && (
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -122,27 +122,27 @@ export default function UpgradeForm({ vendor, preSelectedTier }: UpgradeFormProp
 
         <CardHeader>
           <div className="flex items-center gap-2">
-            <div className={`rounded-full p-2 ${tierKey === 'featured' ? 'bg-amber-100' : 'bg-blue-100'}`}>
-              <Icon className={`h-5 w-5 ${tierKey === 'featured' ? 'text-amber-600' : 'text-blue-600'}`} />
+            <div className={`rounded-full p-2 ${tierKey === 'featured' ? 'bg-amber-100 dark:bg-amber-950/50' : 'bg-blue-100 dark:bg-blue-950/50'}`}>
+              <Icon className={`h-5 w-5 ${tierKey === 'featured' ? 'text-amber-600 dark:text-amber-400' : 'text-blue-600 dark:text-blue-400'}`} />
             </div>
             <CardTitle>{tier.name}</CardTitle>
           </div>
-          <p className="text-sm text-slate-600">{tier.description}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{tier.description}</p>
         </CardHeader>
 
         <CardContent className="flex-1 space-y-6">
           <div>
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold">₦{tier.price.toLocaleString()}</span>
-              <span className="text-slate-600">/{tier.period}</span>
+              <span className="text-slate-600 dark:text-slate-400">/{tier.period}</span>
             </div>
           </div>
 
           <div className="space-y-2">
             {tier.features.map((feature, index) => (
               <div key={index} className="flex items-start gap-2">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-green-600" />
-                <span className="text-sm text-slate-700">{feature}</span>
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-green-600 dark:text-green-400" />
+                <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
               </div>
             ))}
           </div>
@@ -181,7 +181,7 @@ export default function UpgradeForm({ vendor, preSelectedTier }: UpgradeFormProp
         {renderTierCard('featured')}
       </div>
 
-      <p className="text-center text-xs text-slate-600">
+      <p className="text-center text-xs text-slate-600 dark:text-slate-400">
         Secure payment powered by Paystack. Your subscription will be active immediately after payment.
       </p>
     </div>

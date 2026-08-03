@@ -87,11 +87,11 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                       </Badge>
                     )}
                   </div>
-                  <h1 className="text-2xl font-bold text-slate-900">
+                  <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                     {material.title}
                   </h1>
                   {material.courses && (
-                    <div className="flex items-center gap-2 text-slate-600">
+                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                       <BookOpen className="h-4 w-4" />
                       <span className="text-sm">
                         {material.courses.course_code} -{" "}
@@ -106,8 +106,8 @@ export default async function MaterialDetailPage({ params }: PageProps) {
               {/* Description */}
               {material.description && (
                 <div>
-                  <h3 className="font-semibold text-slate-900">Description</h3>
-                  <p className="mt-2 text-sm text-slate-600">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">Description</h3>
+                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                     {material.description}
                   </p>
                 </div>
@@ -115,20 +115,20 @@ export default async function MaterialDetailPage({ params }: PageProps) {
               {/* File Info */}
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="flex items-center gap-2 text-sm">
-                  <FileText className="h-4 w-4 text-slate-400" />
+                  <FileText className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                   <div>
-                    <span className="font-medium text-slate-900">
+                    <span className="font-medium text-slate-900 dark:text-slate-100">
                       File Type:
                     </span>
-                    <span className="ml-2 text-slate-600">PDF</span>
+                    <span className="ml-2 text-slate-600 dark:text-slate-400">PDF</span>
                   </div>
                 </div>
                 {material.file_size_bytes && (
                   <div className="flex items-center gap-2 text-sm">
-                    <FileText className="h-4 w-4 text-slate-400" />
+                    <FileText className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                     <div>
-                      <span className="font-medium text-slate-900">Size:</span>
-                      <span className="ml-2 text-slate-600">
+                      <span className="font-medium text-slate-900 dark:text-slate-100">Size:</span>
+                      <span className="ml-2 text-slate-600 dark:text-slate-400">
                         {formatFileSize(material.file_size_bytes)}
                       </span>
                     </div>
@@ -155,12 +155,12 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                     </div> */}
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <Calendar className="h-4 w-4 text-slate-400" />
+                  <Calendar className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                   <div>
-                    <span className="font-medium text-slate-900">
+                    <span className="font-medium text-slate-900 dark:text-slate-100">
                       Uploaded:
                     </span>
-                    <span className="ml-2 text-slate-600">
+                    <span className="ml-2 text-slate-600 dark:text-slate-400">
                       {formatDate(material.created_at)}
                     </span>
                   </div>
@@ -176,17 +176,17 @@ export default async function MaterialDetailPage({ params }: PageProps) {
           {material.courses && (
             <Card>
               <CardHeader>
-                <h3 className="font-semibold text-slate-900">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100">
                   Course Information
                 </h3>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex justify-between">
                   <div>
-                    <span className="text-sm font-medium text-slate-900">
+                    <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
                       Course Code
                     </span>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
                       {material.courses.course_code}
                     </p>
                   </div>
@@ -195,35 +195,35 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                   </div>
                 </div>
                 <div>
-                  <span className="text-sm font-medium text-slate-900">
+                  <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
                     Course Title
                   </span>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
                     {material.courses.course_title}
                   </p>
                 </div>
                 <div className="flex gap-4">
                   <div>
-                    <span className="text-sm font-medium text-slate-900">
+                    <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
                       Level
                     </span>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
                       {material.courses.level}
                     </p>
                   </div>
                   <div>
-                    <span className="text-sm font-medium text-slate-900">
+                    <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
                       Semester
                     </span>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
                       {material.courses.semester}
                     </p>
                   </div>
                   <div>
-                    <span className="text-sm font-medium text-slate-900">
+                    <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
                       Credits
                     </span>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
                       {material.courses.credit_units}
                     </p>
                   </div>
@@ -256,13 +256,13 @@ export default async function MaterialDetailPage({ params }: PageProps) {
         />
       ) : (
         <Card className="p-12 text-center">
-          <div className="mx-auto rounded-full bg-amber-100 p-4 w-fit">
-            <Lock className="h-8 w-8 text-amber-600" />
+          <div className="mx-auto rounded-full bg-amber-100 dark:bg-amber-950/50 p-4 w-fit">
+            <Lock className="h-8 w-8 text-amber-600 dark:text-amber-400" />
           </div>
-          <h3 className="mt-4 text-lg font-semibold text-slate-900">
+          <h3 className="mt-4 text-lg font-semibold text-slate-900 dark:text-slate-100">
             Premium Material
           </h3>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             Subscribe for ₦1000/semester to access this material
           </p>
           <Button className="mt-4">Upgrade to Premium</Button>

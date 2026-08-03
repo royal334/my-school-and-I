@@ -478,12 +478,12 @@ export default function SubmitMaterialPage() {
               {!selectedFile ? (
                 <label
                   htmlFor="file"
-                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:border-slate-700 ${
+                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700/50 ${
                     errors.file ? "border-red-500" : ""
                   }`}
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <Upload className="w-8 h-8 mb-2 text-slate-500" />
+                    <Upload className="w-8 h-8 mb-2 text-slate-500 dark:text-slate-400" />
                     <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
                       <span className="font-semibold">Click to upload</span> or
                       drag and drop
@@ -503,12 +503,12 @@ export default function SubmitMaterialPage() {
               ) : (
                 <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <FileText className="h-8 w-8 text-slate-500" />
+                    <FileText className="h-8 w-8 text-slate-500 dark:text-slate-400" />
                     <div>
                       <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                         {selectedFile.name}
                       </p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
                         {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                       </p>
                     </div>
@@ -550,7 +550,7 @@ export default function SubmitMaterialPage() {
         </form>
       </Card>
 
-      <p className="text-center text-xs text-slate-500 dark:text-slate-500 max-w-xs">
+      <p className="text-center text-xs text-slate-500 dark:text-slate-400 max-w-xs">
         Your submission is sent to our review team for verification before it
         appears on the platform. Thank you for contributing to UniHub.
       </p>

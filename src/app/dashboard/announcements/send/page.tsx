@@ -54,8 +54,8 @@ const canSend = [
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600">Access Denied</h1>
-          <p className="text-slate-600 mt-2">
+          <h1 className="text-2xl font-bold text-red-600 dark:text-red-400">Access Denied</h1>
+          <p className="text-slate-600 dark:text-slate-400 mt-2">
             You do not have permission to create announcements.
           </p>
         </div>
@@ -64,10 +64,10 @@ const canSend = [
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8">
       <div>
         <div className="mb-4">
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
             New Announcement
           </h1>
         </div>

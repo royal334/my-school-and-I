@@ -57,7 +57,7 @@ export default async function CGPAPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-bold">CGPA Calculator</h1>
-          <p className="text-slate-600">
+          <p className="text-slate-600 dark:text-slate-400">
             Track your academic performance and calculate your CGPA
           </p>
         </div>
@@ -88,13 +88,13 @@ export default async function CGPAPage() {
 
         {semestersWithCourses.length === 0 ? (
           <Card className="p-12 text-center">
-            <div className="mx-auto w-fit rounded-full bg-slate-100 p-4">
-              <Calculator className="h-8 w-8 text-slate-400" />
+            <div className="mx-auto w-fit rounded-full bg-slate-100 p-4 dark:bg-slate-800">
+              <Calculator className="h-8 w-8 text-slate-400 dark:text-slate-500" />
             </div>
             <h3 className="mt-4 text-lg font-semibold">
               No semesters added yet
             </h3>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
               Start by adding your first semester results to calculate your CGPA
             </p>
             <Link href="/dashboard/cgpa/add-semester">

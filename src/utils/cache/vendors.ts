@@ -1,10 +1,26 @@
 import { unstable_cache } from 'next/cache';
+import { cookies } from 'next/headers';
 import { createAdminClient } from '@/utils/supabase/admin';
+import { createClient as createServerClient } from '@/utils/supabase/server';
 import { getVendors } from '@/utils/supabase/queries/vendors';
 
 const FEED_REVALIDATE = 60;
 const SEARCH_REVALIDATE = 30;
 const CATEGORIES_REVALIDATE = 3 * 24 * 60 * 60; // 3 days
+const MAX_SEARCH_LENGTH = 80;
+const SEARCH_INVALID_CHARS = /[%,_{}\[\]\(\),\\]/;
+
+function normalizeSearchTerm(search?: string) {
+  if (!search) return undefined;
+
+  const trimmed = search.trim().toLowerCase();
+  if (trimmed.length === 0) return undefined;
+  if (SEARCH_INVALID_CHARS.test(trimmed)) {
+    throw new Error('Search query contains unsupported characters.');
+  }
+
+  return trimmed.length > MAX_SEARCH_LENGTH ? trimmed.slice(0, MAX_SEARCH_LENGTH) : trimmed;
+}
 
 export interface VendorFeedFilters {
   category?: string;
@@ -17,10 +33,14 @@ export interface VendorFeedFilters {
 }
 
 async function fetchVendors(filters: VendorFeedFilters) {
-  // Approved vendors + public category/owner data: safe to read with the
-  // service-role client. Errors propagate so they are not cached.
-  const supabase = createAdminClient();
-  return getVendors({ ...filters, supabaseProp: supabase, throwOnError: true });
+  const normalizedSearch = normalizeSearchTerm(filters.search);
+  const normalizedFilters = { ...filters, search: normalizedSearch };
+
+  const supabase = normalizedSearch
+    ? createServerClient(await cookies())
+    : createAdminClient();
+
+  return getVendors({ ...normalizedFilters, supabaseProp: supabase, throwOnError: true });
 }
 
 /** Cached vendor feed (60s). */
@@ -29,11 +49,14 @@ export const getCachedVendors = unstable_cache(fetchVendors, ['vendors-feed'], {
 });
 
 /** Cached vendor search results (30s). */
-export const getCachedVendorSearch = unstable_cache(
-  fetchVendors,
-  ['vendors-search'],
-  { revalidate: SEARCH_REVALIDATE },
-);
+export const getCachedVendorSearch = (filters: VendorFeedFilters) => {
+  const normalizedSearch = normalizeSearchTerm(filters.search);
+  return unstable_cache(
+    fetchVendors,
+    ['vendors-search', filters.category ?? 'all', normalizedSearch ?? ''],
+    { revalidate: SEARCH_REVALIDATE },
+  )({ ...filters, search: normalizedSearch });
+};
 
 async function fetchVendorCategories() {
   const supabase = createAdminClient();

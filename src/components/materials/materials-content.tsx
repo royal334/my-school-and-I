@@ -82,7 +82,7 @@ export default function MaterialsContent({
         </p>
         <div className="space-y-4">
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">Not seeing what you&apos;re  looking for?</p>
-          <Link href="/submit-materials" >
+          <Link href="/submit-material" >
             <Button>
               <Upload className="h-4 w-4" />
               Submit Materials for Review

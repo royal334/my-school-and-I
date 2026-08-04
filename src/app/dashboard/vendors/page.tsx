@@ -7,7 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Store, Plus, Building,Edit } from "lucide-react";
 import Link from "next/link";
-import { getVendors } from "@/utils/supabase/queries";
+import {
+  getCachedVendors,
+  getCachedVendorSearch,
+  getCachedVendorCategories,
+} from "@/utils/cache";
 
 export const metadata = {
   title: "Vendors Marketplace | EngiPortal",
@@ -41,19 +45,19 @@ export default async function VendorsPage({ searchParams }: PageProps) {
 
   const paramaters = await searchParams;
 
-  //const admin = createAdminClient();
+  // Categories are static reference data - cached for 3 days
+  const categories = await getCachedVendorCategories();
 
-  // Get categories (admin client bypasses RLS)
-  const { data: categories } = await supabase
-    .from("vendor_categories")
-    .select("id, name, icon")
-    .order("name");
-
-  const vendors = await getVendors({
-    category: paramaters.category,
-    search: paramaters.search,
-    supabaseProp:supabase
-  });
+  // Feed cached 60s; searches (30s) get their own faster-revalidating entry
+  const vendors = paramaters.search
+    ? await getCachedVendorSearch({
+        category: paramaters.category,
+        search: paramaters.search,
+      })
+    : await getCachedVendors({
+        category: paramaters.category,
+        search: paramaters.search,
+      });
 
   return (
     <div className="space-y-6 overflow-x-hidden">

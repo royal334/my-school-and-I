@@ -89,27 +89,16 @@ export default function SignupPage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const [{ data: facs, error: facErr }, { data: depts, error: deptErr }] =
-          await Promise.all([
-            supabase.from("faculties").select("id, name").order("name"),
-            supabase
-              .from("departments")
-              .select("id, name, faculty_id")
-              .order("name"),
-          ]);
+        const response = await fetch("/api/reference");
+        if (!response.ok) throw new Error("Failed to load faculties/departments");
+        const data = await response.json();
 
-
-        if (facErr) {
-          toast.error("Could not load faculties: " + facErr.message);
-        }
-
-        if (deptErr) {
-          toast.error("Could not load departments: " + deptErr.message);
-        }
-
-        setFaculties(facs ?? []);
-        setAllDepartments(depts ?? []);
+        setFaculties(data.faculties ?? []);
+        setAllDepartments(data.departments ?? []);
       } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to load faculties";
+        toast.error("Could not load faculties: " + message);
         console.error(err);
       } finally {
         setLoadingData(false);

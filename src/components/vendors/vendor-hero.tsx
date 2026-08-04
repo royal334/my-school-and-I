@@ -66,14 +66,14 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
         </div>
 
         {/* Business Name & Category */}
-        <div className="mb-2 flex items-center gap-2">
-          <h1 className="text-3xl font-bold">
-            {vendor.business_name}
-          </h1>
-          {isVerified && (
-            <CheckCircle2 className="h-6 w-6 fill-blue-500 text-white" />
-          )}
-        </div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-3xl font-bold">
+              {vendor.business_name}
+            </h1>
+            {isVerified && (
+              <CheckCircle2 className="h-6 w-6 fill-blue-500 text-white" />
+            )}
+          </div>
 
         {vendor.vendor_categories && (
           <p className="mb-4 text-lg text-muted-foreground">

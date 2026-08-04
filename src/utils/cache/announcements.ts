@@ -2,7 +2,7 @@ import { unstable_cache } from 'next/cache';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 /**
  * Raw announcement row returned by the cached feed query.
@@ -33,8 +33,7 @@ export interface FeedAnnouncement {
 }
 
 export interface AnnouncementsFeedParams {
-  /** User access token so RLS still scopes the query (cookies are not allowed inside the cache scope). */
-  token: string;
+  userId: string;
   type?: string;
   category?: string;
   priority?: string;
@@ -44,23 +43,36 @@ export interface AnnouncementsFeedParams {
 }
 
 async function fetchAnnouncementsFeed(params: AnnouncementsFeedParams) {
-  // Reuse the anon key + the user's access token so Supabase RLS filters
-  // visibility exactly as it does for the original per-user query.
-  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  const supabase = createClient(supabaseUrl, supabaseServiceKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
     },
-    global: {
-      headers: {
-        Authorization: `Bearer ${params.token}`,
-      },
-    },
   });
+
+  const [{ data: profileData }, { data: roleData }] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('faculty_id, department_id, level')
+      .eq('id', params.userId)
+      .maybeSingle(),
+    supabase
+      .from('admin_roles')
+      .select('role')
+      .eq('user_id', params.userId)
+      .maybeSingle(),
+  ]);
+
+  const visibilityContext = {
+    role: roleData?.role?.toLowerCase() ?? null,
+    facultyId: profileData?.faculty_id ?? null,
+    departmentId: profileData?.department_id ?? null,
+    level: profileData?.level ?? null,
+  };
 
   let query = supabase
     .from('announcements')
-    .select('*', { count: 'exact' })
+    .select('*')
     .eq('status', 'published');
 
   if (params.type) {
@@ -83,24 +95,78 @@ async function fetchAnnouncementsFeed(params: AnnouncementsFeedParams) {
     query = query.order('created_at', { ascending: false });
   }
 
-  query = query.range(params.offset, params.offset + params.limit - 1);
-
-  const { data, error, count } = await query;
+  const { data, error } = await query;
   if (error) throw error;
 
+  const visibleAnnouncements = (data || []).filter((announcement) => {
+    const targetScope = announcement.target_scope as string | undefined;
+
+    if (!targetScope || targetScope === 'general') {
+      return true;
+    }
+
+    if (visibilityContext.role === 'super_admin' || visibilityContext.role === 'admin') {
+      return true;
+    }
+
+    if (targetScope === 'faculty') {
+      return visibilityContext.facultyId && announcement.faculty_id === visibilityContext.facultyId;
+    }
+
+    if (targetScope === 'department') {
+      return visibilityContext.departmentId && announcement.department_id === visibilityContext.departmentId;
+    }
+
+    if (targetScope === 'level') {
+      return visibilityContext.level != null && announcement.level === visibilityContext.level;
+    }
+
+    return false;
+  }) as FeedAnnouncement[];
+
+  const sortedAnnouncements = [...visibleAnnouncements].sort((left, right) => {
+    if (params.sort === 'priority') {
+      const leftPriority = left.priority || '';
+      const rightPriority = right.priority || '';
+      const priorityComparison = rightPriority.localeCompare(leftPriority);
+      if (priorityComparison !== 0) {
+        return priorityComparison;
+      }
+    }
+
+    return new Date(right.created_at).getTime() - new Date(left.created_at).getTime();
+  });
+
+  const pagedAnnouncements = sortedAnnouncements.slice(
+    params.offset,
+    params.offset + params.limit,
+  );
+
   return {
-    announcements: (data || []) as FeedAnnouncement[],
-    count: count || 0,
+    announcements: pagedAnnouncements,
+    count: sortedAnnouncements.length,
   };
 }
 
 /**
- * Cached announcement feed. Revalidates every 60s. Keyed by the full filter
- * object (including the user's token), so each user/filter combination gets
- * its own correctly RLS-scoped entry.
+ * Cached announcement feed. Revalidates every 60s and tags entries so they
+ * can be invalidated alongside other announcement data.
  */
-export const getCachedAnnouncementsFeed = unstable_cache(
-  fetchAnnouncementsFeed,
-  ['announcements-feed'],
-  { revalidate: 60 },
-);
+export const getCachedAnnouncementsFeed = (params: AnnouncementsFeedParams) =>
+  unstable_cache(
+    async (input: AnnouncementsFeedParams) => fetchAnnouncementsFeed(input),
+    [
+      'announcements-feed',
+      params.userId,
+      params.type ?? 'all',
+      params.category ?? 'all',
+      params.priority ?? 'all',
+      String(params.limit),
+      String(params.offset),
+      params.sort,
+    ],
+    {
+      revalidate: 60,
+      tags: [`announcements-feed:${params.userId}`],
+    },
+  )(params);

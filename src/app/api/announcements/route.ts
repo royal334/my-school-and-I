@@ -24,61 +24,17 @@ export async function GET(request: Request) {
     const offset = parseInt(searchParams.get('offset') || '0', 10);
     const sort = searchParams.get('sort') || 'recent';
 
-    // Pull the user's access token so the cached feed can authenticate as this
-    // user (cookies() cannot be accessed inside the unstable_cache scope).
-    const { data: sessionData } = await supabase.auth.getSession();
-    const accessToken = sessionData.session?.access_token;
-
-    let announcements: FeedAnnouncement[] = [];
-    let count = 0;
-
-    if (accessToken) {
-      const cached = await getCachedAnnouncementsFeed({
-        token: accessToken,
-        type: type || undefined,
-        category: category || undefined,
-        priority: priority || undefined,
-        limit,
-        offset,
-        sort,
-      });
-      announcements = cached.announcements;
-      count = cached.count;
-    } else {
-      // Fallback: no session token available - query directly (RLS filters)
-      let query = supabase
-        .from('announcements')
-        .select('*', { count: 'exact' })
-        .eq('status', 'published');
-
-      if (type) {
-        query = query.eq('type', type);
-      }
-
-      if (category) {
-        query = query.eq('category', category);
-      }
-
-      if (priority) {
-        query = query.eq('priority', priority);
-      }
-
-      if (sort === 'priority') {
-        query = query
-          .order('priority', { ascending: false })
-          .order('created_at', { ascending: false });
-      } else {
-        query = query.order('created_at', { ascending: false });
-      }
-
-      query = query.range(offset, offset + limit - 1);
-
-      const { data, error, count: dbCount } = await query;
-      if (error) throw error;
-
-      announcements = (data || []) as FeedAnnouncement[];
-      count = dbCount || 0;
-    }
+    const cached = await getCachedAnnouncementsFeed({
+      userId: user.id,
+      type: type || undefined,
+      category: category || undefined,
+      priority: priority || undefined,
+      limit,
+      offset,
+      sort,
+    });
+    const announcements = cached.announcements;
+    const count = cached.count;
 
     // Get read status for these announcements
     let readIds = new Set<string>();

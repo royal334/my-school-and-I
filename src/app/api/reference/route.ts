@@ -7,9 +7,10 @@ export async function GET() {
     const data = await getCachedFacultiesDepartments();
     return NextResponse.json(data);
   } catch (error: unknown) {
-    const message =
-      error instanceof Error ? error.message : 'Failed to load reference data';
     console.error('Fetch reference data error:', error);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to load reference data' },
+      { status: 500 },
+    );
   }
 }

@@ -2,6 +2,8 @@
 
 import { Phone, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
 export default function ContactButtons({
   vendorId,
@@ -12,7 +14,14 @@ export default function ContactButtons({
   phoneNumber: string;
   whatsappNumber?: string;
 }) {
+  const { track } = usePostHogAnalytics();
+
   const handleContact = async (type: 'phone' | 'whatsapp') => {
+    track(type === 'phone' ? POSTHOG_EVENTS.contactPhone : POSTHOG_EVENTS.contactWhatsApp, {
+      vendor_id: vendorId,
+      contact_method: type,
+    });
+
     // Track contact
     await fetch('/api/vendors/track-event', {
       method: 'POST',
@@ -43,7 +52,7 @@ export default function ContactButtons({
         <Button
           onClick={() => handleContact('whatsapp')}
           variant="outline"
-          className="flex-1 bg-green-50 text-green-700 hover:bg-green-100"
+          className="flex-1 bg-green-50 text-green-700 hover:bg-green-100 dark:bg-green-950/40 dark:text-green-400 dark:hover:bg-green-900/40"
         >
           <MessageCircle className="mr-2 h-4 w-4" />
           WhatsApp

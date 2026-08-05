@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-//import { createAdminClient } from "@/utils/supabase/admin";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import VendorCard from "@/components/vendors/vendor-card";
@@ -8,13 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Store, Plus, Building,Edit } from "lucide-react";
 import Link from "next/link";
-import { getVendors } from "@/utils/supabase/queries";
+import {
+  getCachedVendors,
+  getCachedVendorSearch,
+  getCachedVendorCategories,
+} from "@/utils/cache";
 
 export const metadata = {
   title: "Vendors Marketplace | EngiPortal",
 };
-
-export const dynamic = "force-dynamic";
 
 interface PageProps {
   searchParams: Promise<{
@@ -44,19 +45,19 @@ export default async function VendorsPage({ searchParams }: PageProps) {
 
   const paramaters = await searchParams;
 
-  //const admin = createAdminClient();
+  // Categories are static reference data - cached for 3 days
+  const categories = await getCachedVendorCategories();
 
-  // Get categories (admin client bypasses RLS)
-  const { data: categories } = await supabase
-    .from("vendor_categories")
-    .select("id, name, icon")
-    .order("name");
-
-  const vendors = await getVendors({
-    category: paramaters.category,
-    search: paramaters.search,
-    supabaseProp:supabase
-  });
+  // Feed cached 60s; searches (30s) get their own faster-revalidating entry
+  const vendors = paramaters.search
+    ? await getCachedVendorSearch({
+        category: paramaters.category,
+        search: paramaters.search,
+      })
+    : await getCachedVendors({
+        category: paramaters.category,
+        search: paramaters.search,
+      });
 
   return (
     <div className="space-y-6 overflow-x-hidden">
@@ -64,14 +65,14 @@ export default async function VendorsPage({ searchParams }: PageProps) {
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-3xl font-bold">Vendors Marketplace</h1>
-          <p className="text-slate-600">
+          <p className="text-slate-600 dark:text-slate-400">
             Connect with verified departmental service providers
           </p>
         </div>
         <div className="flex gap-3">
-          <div className="flex items-center gap-2 rounded-lg bg-primary-50 px-4 py-2">
-            <Store className="h-5 w-5 text-primary-600" />
-            <span className="text-sm font-medium text-primary-900">
+          <div className="flex items-center gap-2 rounded-lg bg-primary-50 px-4 py-2 dark:bg-primary-950/30">
+            <Store className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+            <span className="text-sm font-medium text-primary-900 dark:text-primary-200">
               {vendors?.length || 0} vendors
             </span>
           </div>
@@ -85,16 +86,17 @@ export default async function VendorsPage({ searchParams }: PageProps) {
       </div>
 
       {/* Filters */}
-      <VendorFilters categories={categories || []} />
+        <VendorFilters categories={categories || []} />
+
 
       {/* Vendors Grid */}
       {!vendors || vendors.length === 0 ? (
         <Card className="flex flex-col items-center justify-center p-12 text-center">
-          <div className="rounded-full bg-slate-100 p-4">
-            <Store className="h-8 w-8 text-slate-400" />
+          <div className="rounded-full bg-slate-100 p-4 dark:bg-slate-800">
+            <Store className="h-8 w-8 text-slate-400 dark:text-slate-500" />
           </div>
           <h3 className="mt-4 text-lg font-semibold">No vendors found</h3>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             Try adjusting your filters or be the first to list your business
           </p>
           <Link href={listBusinessHref}>

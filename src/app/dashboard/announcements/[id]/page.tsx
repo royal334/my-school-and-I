@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ChevronLeft, Bookmark } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import AnnouncementViewTracker from '@/components/announcements/announcement-view-tracker';
 
 export default async function AnnouncementDetailPage({
   params,
@@ -91,7 +92,12 @@ export default async function AnnouncementDetailPage({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8">
+      <AnnouncementViewTracker
+        announcementId={id}
+        announcementTitle={announcement.title}
+        priority={announcement.priority}
+      />
       <div className="max-w-3xl mx-auto">
         {/* Back button */}
         <Link href="/dashboard/announcements">
@@ -102,7 +108,7 @@ export default async function AnnouncementDetailPage({
         </Link>
 
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-8 space-y-6">
+        <div className="bg-white rounded-lg shadow-sm p-8 space-y-6 dark:bg-slate-900 dark:border-slate-800">
           {/* Badges */}
           <div className="flex flex-wrap gap-2">
             <Badge variant={getPriorityColor(announcement.priority)}>
@@ -113,13 +119,13 @@ export default async function AnnouncementDetailPage({
           </div>
 
           {/* Title */}
-          <h1 className="text-xl md:text-3xl font-bold text-slate-900">
+          <h1 className="text-xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
             {announcement.title}
           </h1>
 
           {/* Meta */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 pb-6 border-b">
-            <span className="font-medium text-slate-900">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400 pb-6 border-b">
+            <span className="font-medium text-slate-900 dark:text-slate-100">
               {author?.full_name}
             </span>
             {authorRoleLabel && (
@@ -139,7 +145,7 @@ export default async function AnnouncementDetailPage({
             {announcement.expires_at && (
               <>
                 <span>•</span>
-                <span className="text-orange-600">
+                <span className="text-orange-600 dark:text-orange-400">
                   Expires{' '}
                   {formatDistanceToNow(new Date(announcement.expires_at))}
                 </span>
@@ -149,14 +155,14 @@ export default async function AnnouncementDetailPage({
 
           {/* Content */}
           <div className="prose max-w-none">
-            <div className="whitespace-pre-wrap text-slate-800 leading-relaxed">
+            <div className="whitespace-pre-wrap text-slate-800 dark:text-slate-200 leading-relaxed">
               {announcement.content}
             </div>
           </div>
 
           {/* Audience info */}
-          <div className="bg-slate-50 p-4 rounded-lg text-sm">
-            <p className="text-slate-600">
+          <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg text-sm">
+            <p className="text-slate-600 dark:text-slate-400">
               <strong>Reaches:</strong>{' '}
               {announcement.target_scope === 'general'
                 ? 'All students'

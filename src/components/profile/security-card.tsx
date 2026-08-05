@@ -98,7 +98,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
           <Lock className="h-5 w-5 text-red-600" />
           <h2 className="text-xl font-semibold">Security</h2>
         </div>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           Manage your password and account security
         </p>
       </CardHeader>
@@ -116,9 +116,9 @@ export default function SecurityCard({ email }: SecurityCardProps) {
         ) : (
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 rounded-lg border border-slate-200 p-4"
+            className="space-y-4 rounded-lg border border-slate-200 p-4 dark:border-slate-800"
           >
-            <h3 className="font-semibold text-slate-900">Change Password</h3>
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100">Change Password</h3>
 
             {/* Current Password */}
             <div className="space-y-2">
@@ -135,8 +135,8 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                   {...register("currentPassword")}
                   className={
                     errors.currentPassword
-                      ? "border-red-500 relative z-50 pointer-events-auto bg-white"
-                      : "relative z-50 pointer-events-auto bg-white"
+                      ? "border-red-500 relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
+                      : "relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
                   }
                 />
                 <button
@@ -147,7 +147,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                       current: !showPasswords.current,
                     })
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
                 >
                   {showPasswords.current ? (
                     <EyeOff className="h-4 w-4" />
@@ -178,8 +178,8 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                   {...register("newPassword")}
                   className={
                     errors.newPassword
-                      ? "border-red-500 relative z-50 pointer-events-auto bg-white"
-                      : "relative z-50 pointer-events-auto bg-white"
+                      ? "border-red-500 relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
+                      : "relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
                   }
                 />
                 <button
@@ -190,7 +190,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                       new: !showPasswords.new,
                     })
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
                 >
                   {showPasswords.new ? (
                     <EyeOff className="h-4 w-4" />
@@ -204,7 +204,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                   {errors.newPassword.message}
                 </p>
               ) : (
-                <p className="text-xs text-slate-500">Minimum 8 characters</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Minimum 8 characters</p>
               )}
             </div>
 
@@ -223,8 +223,8 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                   {...register("confirmPassword")}
                   className={
                     errors.confirmPassword
-                      ? "border-red-500 relative z-50 pointer-events-auto bg-white"
-                      : "relative z-50 pointer-events-auto bg-white"
+                      ? "border-red-500 relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
+                      : "relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
                   }
                 />
                 <button
@@ -235,7 +235,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                       confirm: !showPasswords.confirm,
                     })
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
                 >
                   {showPasswords.confirm ? (
                     <EyeOff className="h-4 w-4" />
@@ -281,10 +281,10 @@ export default function SecurityCard({ email }: SecurityCardProps) {
         </Button>
 
         {/* Account Info */}
-        <div className="rounded-lg bg-slate-50 p-4 text-sm">
-          <p className="font-medium text-slate-900">Account Email</p>
-          <p className="mt-1 text-slate-600">{email}</p>
-          <p className="mt-2 text-xs text-slate-500">
+        <div className="rounded-lg bg-slate-50 p-4 text-sm dark:bg-slate-800/50">
+          <p className="font-medium text-slate-900 dark:text-slate-100">Account Email</p>
+          <p className="mt-1 text-slate-600 dark:text-slate-400">{email}</p>
+          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
             For security reasons, you cannot change your email address. Contact
             support if needed.
           </p>

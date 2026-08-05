@@ -9,10 +9,10 @@ import {
   BookOpen,
   LayoutDashboard,
   Bell,
-  Calculator,
-  Store,
   Upload,
   LogOut,
+  Store, 
+  Calculator
 } from 'lucide-react';
 import {
   AlertDialog,
@@ -34,6 +34,7 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
   const navItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { href: '/dashboard/materials', icon: BookOpen, label: 'Materials' },
+    { href: '/dashboard/cgpa', icon: Calculator, label: 'CGPA' },
     ...(isSuperAdmin
       ? [{ href: '/dashboard/materials/upload', icon: Upload, label: 'Upload' }]
       : []),

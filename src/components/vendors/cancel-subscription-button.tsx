@@ -97,7 +97,7 @@ export default function CancelSubscriptionButton({
                 </>
               ) : (
                 <>
-                  <strong className="text-red-600">
+                  <strong className="text-red-600 dark:text-red-400">
                     Warning: Immediate Cancellation
                   </strong>
                   <br />

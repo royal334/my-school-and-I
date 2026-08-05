@@ -53,6 +53,9 @@ import {
   SemesterFormProps,
 } from "@/utils/types";
 
+import { usePostHogAnalytics } from "@/hooks/posthog-events"
+import { POSTHOG_EVENTS } from "@/utils/constants/constants";
+
 export default function SemesterForm({ existingSemester }: SemesterFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -62,6 +65,16 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<
     number | string | null
   >(null);
+
+  const { track } = usePostHogAnalytics()
+
+  const handleSemesterAddition = (semesterData: { level: number; semester: number; session: string }) => {
+    track(POSTHOG_EVENTS.semesterAdded, {
+      level: semesterData.level,
+      semester: semesterData.semester,
+      session: semesterData.session,
+    });
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -150,6 +163,14 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
         throw new Error(data.error || "Failed to save semester");
       }
 
+      if (!existingSemester) {
+        handleSemesterAddition({
+          level: semesterData.level,
+          semester: semesterData.semester,
+          session: semesterData.session,
+        });
+      }
+
       toast.success(
         existingSemester
           ? "Semester updated successfully!"
@@ -191,7 +212,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger
-                      className={`relative z-50 pointer-events-auto bg-white ${errors.level ? "border-red-500" : ""}`}
+                      className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${errors.level ? "border-red-500" : ""}`}
                     >
                       <SelectValue placeholder="Select level" />
                     </SelectTrigger>
@@ -224,7 +245,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger
-                      className={`relative z-50 pointer-events-auto bg-white ${errors.semester ? "border-red-500" : ""}`}
+                      className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${errors.semester ? "border-red-500" : ""}`}
                     >
                       <SelectValue placeholder="Select semester" />
                     </SelectTrigger>
@@ -254,9 +275,9 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                 id="session"
                 placeholder="e.g., 2024/2025"
                 {...register("session")}
-                className={`relative z-50 pointer-events-auto bg-white ${errors.session ? "border-red-500" : ""}`}
+                className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${errors.session ? "border-red-500" : ""}`}
               />
-              <p className="text-xs text-slate-500">Format: YYYY/YYYY</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Format: YYYY/YYYY</p>
               {errors.session && (
                 <p className="text-xs text-red-500">{errors.session.message}</p>
               )}
@@ -295,30 +316,30 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
               <div className="relative z-100 isolate">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-slate-200">
-                      <th className="pb-2 text-left text-sm font-medium text-slate-700">
+                    <tr className="border-b border-slate-200 dark:border-slate-800">
+                      <th className="pb-2 text-left text-sm font-medium text-slate-700 dark:text-slate-300">
                         Course Code
                       </th>
-                      <th className="pb-2 text-left text-sm font-medium text-slate-700">
+                      <th className="pb-2 text-left text-sm font-medium text-slate-700 dark:text-slate-300">
                         Course Title
                       </th>
-                      <th className="pb-2 text-center text-sm font-medium text-slate-700">
+                      <th className="pb-2 text-center text-sm font-medium text-slate-700 dark:text-slate-300">
                         Units
                       </th>
-                      <th className="pb-2 text-center text-sm font-medium text-slate-700">
+                      <th className="pb-2 text-center text-sm font-medium text-slate-700 dark:text-slate-300">
                         Grade
                       </th>
-                      <th className="pb-2 text-center text-sm font-medium text-slate-700">
+                      <th className="pb-2 text-center text-sm font-medium text-slate-700 dark:text-slate-300">
                         Points
                       </th>
-                      <th className="pb-2 text-center text-sm font-medium text-slate-700">
+                      <th className="pb-2 text-center text-sm font-medium text-slate-700 dark:text-slate-300">
                         Actions
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {fields.map((field, index) => (
-                      <tr key={field.id} className="border-b border-slate-100">
+                      <tr key={field.id} className="border-b border-slate-100 dark:border-slate-800">
                         <td className="py-2">
                           <Popover
                             open={openPopoverIndex === index}
@@ -331,7 +352,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                 variant="outline"
                                 role="combobox"
                                 className={cn(
-                                  "relative z-50 pointer-events-auto w-32 justify-between bg-white px-3 font-normal",
+                                  "relative z-50 pointer-events-auto w-32 justify-between bg-white dark:bg-slate-800 px-3 font-normal",
                                   errors.courses?.[index]?.course_code &&
                                     "border-red-500",
                                 )}
@@ -341,7 +362,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-[300px] p-0 z-100">
+                            <PopoverContent className="w-75 p-0 z-100">
                               <Command>
                                 <CommandInput placeholder="Search course..." />
                                 <CommandList>
@@ -359,10 +380,6 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                           setValue(
                                             `courses.${index}.course_title`,
                                             course.course_title,
-                                          );
-                                          setValue(
-                                            `courses.${index}.credit_units`,
-                                            course.credit_units || 0,
                                           );
                                           setOpenPopoverIndex(null);
                                         }}
@@ -391,7 +408,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                           <Input
                             placeholder="Course name"
                             {...register(`courses.${index}.course_title`)}
-                            className={`relative z-50 pointer-events-auto bg-white ${
+                            className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${
                               errors.courses?.[index]?.course_title
                                 ? "border-red-500"
                                 : ""
@@ -404,7 +421,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                             {...register(`courses.${index}.credit_units`, {
                               valueAsNumber: true,
                             })}
-                            className={`relative z-50 pointer-events-auto w-16 mx-auto text-center bg-white ${
+                            className={`relative z-50 pointer-events-auto w-16 mx-auto text-center bg-white dark:bg-slate-800 ${
                               errors.courses?.[index]?.credit_units
                                 ? "border-red-500"
                                 : ""
@@ -420,7 +437,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                 onValueChange={subField.onChange}
                                 value={subField.value}
                               >
-                                <SelectTrigger className="relative z-50 pointer-events-auto w-20 mx-auto bg-white">
+                                <SelectTrigger className="relative z-50 pointer-events-auto w-20 mx-auto bg-white dark:bg-slate-800">
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -431,7 +448,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                           <span className="font-medium">
                                             {grade}
                                           </span>
-                                          <span className="text-xs text-slate-500">
+                                          <span className="text-xs text-slate-500 dark:text-slate-400">
                                             ({range})
                                           </span>
                                         </div>
@@ -462,7 +479,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                             onClick={() => remove(index)}
                             disabled={fields.length === 1}
                           >
-                            <X className="h-4 w-4 text-red-600" />
+                            <X className="h-4 w-4 text-red-600 dark:text-red-400" />
                           </Button>
                         </td>
                       </tr>
@@ -478,7 +495,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                 <Card key={field.id}>
                   <CardContent className="pt-4 space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-slate-700">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                         Course {index + 1}
                       </span>
                       <Button
@@ -488,7 +505,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                         onClick={() => remove(index)}
                         disabled={fields.length === 1}
                       >
-                        <X className="h-4 w-4 text-red-600" />
+                        <X className="h-4 w-4 text-red-600 dark:text-red-400" />
                       </Button>
                     </div>
 
@@ -509,7 +526,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                             variant="outline"
                             role="combobox"
                             className={cn(
-                              "relative z-50 pointer-events-auto w-full justify-between bg-white px-3 font-normal",
+                              "relative z-50 pointer-events-auto w-full justify-between bg-white dark:bg-slate-800 px-3 font-normal",
                               errors.courses?.[index]?.course_code &&
                                 "border-red-500",
                             )}
@@ -537,10 +554,6 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                       setValue(
                                         `courses.${index}.course_title`,
                                         course.course_title,
-                                      );
-                                      setValue(
-                                        `courses.${index}.credit_units`,
-                                        course.credit_units || 0,
                                       );
                                       setOpenPopoverIndex(null);
                                     }}
@@ -573,7 +586,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                       <Input
                         placeholder="Course name"
                         {...register(`courses.${index}.course_title`)}
-                        className={`relative z-50 pointer-events-auto bg-white ${
+                        className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${
                           errors.courses?.[index]?.course_title
                             ? "border-red-500"
                             : ""
@@ -593,7 +606,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                           {...register(`courses.${index}.credit_units`, {
                             valueAsNumber: true,
                           })}
-                          className={`relative z-50 pointer-events-auto bg-white ${
+                          className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${
                             errors.courses?.[index]?.credit_units
                               ? "border-red-500"
                               : ""
@@ -611,7 +624,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                               onValueChange={subField.onChange}
                               value={subField.value}
                             >
-                              <SelectTrigger className="relative z-50 pointer-events-auto bg-white">
+                              <SelectTrigger className="relative z-50 pointer-events-auto bg-white dark:bg-slate-800">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
@@ -630,7 +643,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t">
-                      <span className="text-sm text-slate-600">
+                      <span className="text-sm text-slate-600 dark:text-slate-400">
                         Grade Points:
                       </span>
                       <Badge
@@ -668,27 +681,27 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
       </Card>
 
       {/* Live GPA Calculator */}
-      <Card className="border-primary-200 bg-primary-50">
+      <Card className="border-primary-200 bg-primary-50 dark:border-primary-900/50 dark:bg-primary-950/30">
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="rounded-full bg-primary-100 p-3">
-                <Calculator className="h-6 w-6 text-primary-600" />
+              <div className="rounded-full bg-primary-100 p-3 dark:bg-primary-950/50">
+                <Calculator className="h-6 w-6 text-primary-600 dark:text-primary-400" />
               </div>
               <div>
-                <h3 className="text-sm font-medium text-primary-900">
+                <h3 className="text-sm font-medium text-primary-900 dark:text-primary-200">
                   Calculated GPA
                 </h3>
-                <p className="text-xs text-primary-700">
+                <p className="text-xs text-primary-700 dark:text-primary-300">
                   Based on {totalUnits} credit units
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-3xl font-bold text-primary-900">
+              <div className="text-3xl font-bold text-primary-900 dark:text-primary-200">
                 {gpa.toFixed(2)}
               </div>
-              <div className="text-xs text-primary-700">out of 5.0</div>
+              <div className="text-xs text-primary-700 dark:text-primary-300">out of 5.0</div>
             </div>
           </div>
         </CardContent>

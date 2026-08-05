@@ -18,6 +18,7 @@ import VendorGallery from "@/components/vendors/vendor-gallery";
 import VendorReviewsSection from "@/components/vendors/vendor-reviews-section";
 import VendorOwnerStats from "@/components/vendors/vendor-owner-stats";
 import { checkSubscriptionActive } from "@/utils/lib/vendor-features";
+import VendorViewTracker from '@/components/vendors/vendor-view-tracker';
 
 interface PageProps {
   params: Promise<{id: string;}>;
@@ -73,7 +74,8 @@ export default async function VendorDetailPage({ params }: PageProps) {
 
   return (
     <div className="space-y-6">
-      <VendorHeader id={id} isOwner={isOwner} />
+      <VendorViewTracker vendorId={id} vendorName={vendor.business_name} isOwner={isOwner} />
+      <VendorHeader id={id} isOwner={isOwner} vendor={vendor} />
 
       {/* Pending Approval Notice */}
       {!vendor.is_approved && isOwner && (
@@ -93,7 +95,7 @@ export default async function VendorDetailPage({ params }: PageProps) {
           <div className="space-y-1">
             <VendorHero 
               vendor={vendor} 
-              isVerified={isVerified} 
+              isVerified={isVerified}
             />
             
             <Card>

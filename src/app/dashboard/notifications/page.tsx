@@ -16,7 +16,7 @@ export default function NotificationsPage() {
             className="w-full h-full"
           >
             {/* Background circle */}
-            <circle cx="120" cy="120" r="110" fill="#eff6ff" />
+            <circle cx="120" cy="120" r="110" fill="#0f172a" />
 
             {/* Echo waves (top) */}
             <path
@@ -120,7 +120,7 @@ export default function NotificationsPage() {
         </div>
 
         {/* Badge */}
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-1.5 text-sm font-semibold text-blue-700">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-1.5 text-sm font-semibold text-blue-700 dark:bg-blue-950/50 dark:text-blue-300">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
@@ -129,10 +129,10 @@ export default function NotificationsPage() {
         </div>
 
         {/* Heading */}
-        <h1 className="text-4xl font-bold text-slate-900 tracking-tight" data-tour="page-notifications">
+        <h1 className="text-4xl font-bold text-slate-900 tracking-tight" dark:text-slate-100 data-tour="page-notifications">
           Notifications
         </h1>
-        <p className="mt-3 text-lg text-slate-500">
+        <p className="mt-3 text-lg text-slate-500 dark:text-slate-400">
           Your personal activity hub. Get real-time alerts for course updates,
           material approvals, vendor interactions, and more.
         </p>
@@ -146,15 +146,15 @@ export default function NotificationsPage() {
           ].map(({ icon, label }) => (
             <div
               key={label}
-              className="flex flex-col items-center gap-2 rounded-xl border border-blue-100 bg-blue-50 p-4"
+              className="flex flex-col items-center gap-2 rounded-xl border border-blue-100 bg-blue-50 p-4 dark:border-blue-900/50 dark:bg-blue-950/30"
             >
               <span className="text-2xl">{icon}</span>
-              <span className="font-medium text-slate-700">{label}</span>
+              <span className="font-medium text-slate-700 dark:text-slate-300">{label}</span>
             </div>
           ))}
         </div>
 
-        <p className="mt-8 text-xs text-slate-400">
+        <p className="mt-8 text-xs text-slate-400 dark:text-slate-500">
           We&apos;re building a smarter way for you to stay updated. Check back soon.
         </p>
       </div>

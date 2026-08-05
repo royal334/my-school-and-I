@@ -126,13 +126,13 @@ export default function ExternalVendorForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <Card>
+        <Card className="dark:bg-slate-900 dark:border-slate-800">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary-100">
-              <Store className="h-8 w-8 text-primary-600" />
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-950/50">
+              <Store className="h-8 w-8 text-primary-600 dark:text-primary-400" />
             </div>
             <CardTitle className="text-2xl">Register Your Business</CardTitle>
-            <p className="text-sm text-slate-600">{subtitle}</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400">{subtitle}</p>
           </CardHeader>
 
           <CardContent className="space-y-6">
@@ -146,7 +146,7 @@ export default function ExternalVendorForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Business Name <span className="text-red-600">*</span>
+                      Business Name <span className="text-red-600 dark:text-red-400">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input placeholder="e.g., Best Print Shop" {...field} />
@@ -178,7 +178,7 @@ export default function ExternalVendorForm({
                   return (
                     <FormItem className="flex flex-col">
                       <FormLabel>
-                        Category <span className="text-red-600">*</span>
+                        Category <span className="text-red-600 dark:text-red-400">*</span>
                       </FormLabel>
                       <Combobox
                         value={field.value}
@@ -224,7 +224,7 @@ export default function ExternalVendorForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Business Phone <span className="text-red-600">*</span>
+                      Business Phone <span className="text-red-600 dark:text-red-400">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -244,7 +244,7 @@ export default function ExternalVendorForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Business Address <span className="text-red-600">*</span>
+                      Business Address <span className="text-red-600 dark:text-red-400">*</span>
                     </FormLabel>
                     <FormControl>
                       <Textarea
@@ -269,7 +269,7 @@ export default function ExternalVendorForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Full Name <span className="text-red-600">*</span>
+                      Full Name <span className="text-red-600 dark:text-red-400">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input placeholder="John Doe" {...field} />
@@ -285,7 +285,7 @@ export default function ExternalVendorForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Email Address <span className="text-red-600">*</span>
+                      Email Address <span className="text-red-600 dark:text-red-400">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -305,7 +305,7 @@ export default function ExternalVendorForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Password <span className="text-red-600">*</span>
+                      Password <span className="text-red-600 dark:text-red-400">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -325,7 +325,7 @@ export default function ExternalVendorForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Confirm Password <span className="text-red-600">*</span>
+                      Confirm Password <span className="text-red-600 dark:text-red-400">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -352,15 +352,15 @@ export default function ExternalVendorForm({
               )}
             </Button>
 
-            <p className="text-center text-xs text-slate-600">
+            <p className="text-center text-xs text-slate-600 dark:text-slate-400">
               By registering, you agree to our Terms of Service and Privacy Policy
             </p>
 
             {showSignInLink && (
               <div className="text-center">
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-600 dark:text-slate-400">
                   Already have an account?{' '}
-                  <Link href={signInHref} className="text-primary-600 hover:underline">
+                  <Link href={signInHref} className="text-primary-600 hover:underline dark:text-primary-400">
                     Sign in
                   </Link>
                 </p>

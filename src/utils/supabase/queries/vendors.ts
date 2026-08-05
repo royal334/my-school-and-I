@@ -8,7 +8,8 @@ export async function getVendors(filters: {
   verifiedOnly?: boolean;
   featured_only?: boolean;
   limit?: number;
-  supabaseProp?:any
+  supabaseProp?:any;
+  throwOnError?: boolean;
 }) {
   const supabase =  filters.supabaseProp || createClient()
 
@@ -74,8 +75,28 @@ export async function getVendors(filters: {
   const { data, error } = await query;
 
   if (error) {
+    if (filters.throwOnError) throw error;
     console.error("Get vendors error:", error);
     return [];
+  }
+
+  let filteredData = [...(data || [])];
+
+  if (filters.search) {
+    const normalizedSearch = filters.search.toLowerCase().trim();
+    filteredData = filteredData.filter((vendor: any) => {
+      const businessName = vendor.business_name?.toLowerCase() || "";
+      const description = vendor.description?.toLowerCase() || "";
+      const servicesText = Array.isArray(vendor.services)
+        ? vendor.services.join(" ").toLowerCase()
+        : "";
+
+      return (
+        businessName.includes(normalizedSearch) ||
+        description.includes(normalizedSearch) ||
+        servicesText.includes(normalizedSearch)
+      );
+    });
   }
 
   // Complex sorting logic to enforce: Featured > Premium > Basic
@@ -85,7 +106,7 @@ export async function getVendors(filters: {
     basic: 3,
   };
 
-  const sortedData = [...(data || [])].sort((a, b) => {
+  const sortedData = filteredData.sort((a: any, b: any) => {
     // 1. Primary Sort: Subscription Tier
     const priorityA = tierPriority[a.subscription_tier] || 4;
     const priorityB = tierPriority[b.subscription_tier] || 4;

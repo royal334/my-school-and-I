@@ -22,6 +22,7 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
   const router = useRouter();
   const features = useVendorFeatures(vendor);
   const effectiveTier = features.tier;
+  console.log('VendorMediaEditor - effectiveTier:', effectiveTier);
 
   const handleRefresh = () => {
     router.refresh();
@@ -33,7 +34,7 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
       <Card>
         <CardHeader>
           <CardTitle>Business Logo</CardTitle>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             {effectiveTier === 'basic'
               ? 'Upgrade to Premium or Featured to add a logo'
               : 'Upload your business logo (square image recommended)'}
@@ -53,7 +54,7 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
       <Card>
         <CardHeader>
           <CardTitle>Cover Image</CardTitle>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             {effectiveTier === 'basic'
               ? 'Upgrade to Premium or Featured to add a cover image'
               : 'Upload a cover image for your vendor page'}
@@ -73,7 +74,7 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
       <Card>
         <CardHeader>
           <CardTitle>Photo Gallery</CardTitle>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             {effectiveTier === 'basic'
               ? 'Upgrade to Premium (5 photos) or Featured (10 photos)'
               : effectiveTier === 'premium'

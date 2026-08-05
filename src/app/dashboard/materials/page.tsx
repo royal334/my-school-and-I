@@ -5,9 +5,12 @@ import { cookies } from "next/headers";
 import { getMaterials } from "@/utils/supabase/queries";
 import MaterialsContent from "@/components/materials/materials-content";
 import MaterialsFilters from "@/components/materials/materials-filters";
+import MaterialsMenu from "@/components/materials/materials-menu";
 import { Card } from "@/components/ui/card";
-import { BookOpen } from "lucide-react";
-//import UpgradeButton from "@/components/payment/update-button";
+import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation"
+import Link from "next/link";
+import { Upload } from "lucide-react";
 
 export const metadata = {
   title: "Materials Library | UniHub",
@@ -20,6 +23,7 @@ interface PageProps {
     semester?: string;
     type?: string;
     search?: string;
+    saved?: string;
   }>;
 }
 
@@ -33,11 +37,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return (
-      <div className="p-10 text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-lg">
-        Debug: No session found. Please log in.
-      </div>
-    );
+    redirect('/login');
   }
 
   // Get user profile for subscription status
@@ -57,6 +57,8 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
   const type =
     resolvedSearchParams.type !== "all" ? resolvedSearchParams.type : undefined;
   const search = resolvedSearchParams.search;
+  const showSavedOnly = resolvedSearchParams.saved === "true";
+
 
   // Fetch materials using an admin client to bypass RLS, so that locked premium materials
   // are still sent to the UI, where they render as locked cards!
@@ -65,6 +67,18 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
   );
 
+  let savedMaterialIds: string[] | undefined;
+
+  if (showSavedOnly) {
+    const { data: savedRows } = await supabase
+      .from("material_saves")
+      .select("material_id")
+      .eq("user_id", user.id);
+
+    savedMaterialIds =
+      savedRows?.map((row: { material_id: string }) => row.material_id) ?? [];
+  }
+
   const materials = await getMaterials({
     level,
     semester,
@@ -72,6 +86,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
     search,
     limit: 50,
     supabase: supabaseAdmin, // use admin client
+    ids: savedMaterialIds,
   });
 
   return (
@@ -79,19 +94,24 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
       {/* Header */}
       <div className="flex items-center justify-between gap-8 mt-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
+          <h1 className="text-xl md:text-3xl font-bold text-slate-900 dark:text-white">
             Materials Library
           </h1>
-          <p className="mt-1 text-slate-600 dark:text-slate-400 text-sm md:text-base">
+          <p className="mt-1 text-slate-600 dark:text-slate-400 text-[12px] md:text-base">
             Access lecture notes, past questions, and study materials
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 px-4 py-2">
-            <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
-              {materials.length} materials available
-            </span>
+          <div>
+            <Link href="/submit-materials" className="hidden md:inline-block">
+              <Button>
+                <Upload className="h-4 w-4" />
+                Submit Materials for Review
+              </Button>
+            </Link>
+          </div>
+          <div className="block md:hidden">
+            <MaterialsMenu />
           </div>
         </div>
       </div>
@@ -125,7 +145,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
         fallback={
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[...Array(6)].map((_, i) => (
-              <Card key={i} className="h-64 animate-pulse bg-slate-100" />
+              <Card key={i} className="h-64 animate-pulse bg-slate-100 dark:bg-slate-800" />
             ))}
           </div>
         }

@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
-
 function VerifyPaymentContent() {
   const router = useRouter();
   const searchParams = useSearchParams();

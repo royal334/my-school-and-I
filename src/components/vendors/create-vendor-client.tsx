@@ -47,9 +47,9 @@ export default function CreateVendorClient({ categories }: CreateVendorClientPro
               <CardTitle>Media Gallery</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-              <Lock className="h-12 w-12 text-slate-300" />
+              <Lock className="h-12 w-12 text-slate-300 dark:text-slate-700" />
               <h3 className="mt-4 font-semibold">Media Locked</h3>
-              <p className="mt-2 text-sm text-slate-600">
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                 Please complete and save your business details first to enable media uploads.
               </p>
             </CardContent>

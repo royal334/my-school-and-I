@@ -56,19 +56,19 @@ export default async function UpgradePage({ params, searchParams }: PageProps) {
       {/* Header */}
       <div className="text-center">
         <h1 className="text-3xl font-bold">Upgrade Your Subscription</h1>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-slate-600 dark:text-slate-400">
           Get more visibility and features for your business
         </p>
       </div>
 
       {/* Current Plan */}
       {vendor.subscription_tier !== 'basic' && (
-        <div className="rounded-lg bg-blue-50 p-4 text-center">
-          <p className="text-sm font-medium text-blue-900">
+        <div className="rounded-lg bg-blue-50 p-4 text-center dark:bg-blue-950/30">
+          <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
             Current Plan: <span className="uppercase">{vendor.subscription_tier}</span>
           </p>
           {vendor.subscription_expires_at && (
-            <p className="text-xs text-blue-700">
+            <p className="text-xs text-blue-700 dark:text-blue-300">
               Expires: {new Date(vendor.subscription_expires_at).toLocaleDateString()}
             </p>
           )}

@@ -141,7 +141,7 @@ export default function UploadForm({ courses }: UploadFormProps) {
       <Card>
         <CardHeader>
           <h2 className="text-xl font-semibold">Upload Material</h2>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             Upload lecture notes, past questions, and other study materials
           </p>
         </CardHeader>
@@ -155,17 +155,17 @@ export default function UploadForm({ courses }: UploadFormProps) {
               <div className="flex items-center justify-center w-full">
                 <label
                   htmlFor="file"
-                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 ${
+                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700/50 ${
                     errors.file ? "border-red-500" : ""
                   }`}
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <Upload className="w-8 h-8 mb-2 text-slate-500" />
-                    <p className="mb-2 text-sm text-slate-500">
+                    <Upload className="w-8 h-8 mb-2 text-slate-500 dark:text-slate-400" />
+                    <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
                       <span className="font-semibold">Click to upload</span> or
                       drag and drop
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
                       PDF only (MAX. {MAX_FILE_SIZE_MB}MB)
                     </p>
                   </div>
@@ -189,14 +189,14 @@ export default function UploadForm({ courses }: UploadFormProps) {
                 </label>
               </div>
             ) : (
-              <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                 <div className="flex items-center gap-3">
-                  <FileText className="h-8 w-8 text-slate-500" />
+                  <FileText className="h-8 w-8 text-slate-500 dark:text-slate-400" />
                   <div>
-                    <p className="text-sm font-medium text-slate-900">
+                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                       {file.name}
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
                       {(file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                   </div>
@@ -218,11 +218,11 @@ export default function UploadForm({ courses }: UploadFormProps) {
             {/* Progress Bar */}
             {uploadProgress > 0 && uploadProgress < 100 && (
               <div className="mt-4 space-y-2">
-                <div className="flex justify-between text-xs font-medium text-slate-600">
+                <div className="flex justify-between text-xs font-medium text-slate-600 dark:text-slate-400">
                   <span>Uploading...</span>
                   <span>{uploadProgress}%</span>
                 </div>
-                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-primary-600 transition-all duration-300"
                     style={{ width: `${uploadProgress}%` }}
@@ -317,7 +317,7 @@ export default function UploadForm({ courses }: UploadFormProps) {
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label htmlFor="premium">Premium Material</Label>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-500 dark:text-slate-400">
                 Require subscription to access this material
               </p>
             </div>

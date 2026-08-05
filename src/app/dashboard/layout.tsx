@@ -57,9 +57,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
       // OR 
       // 2. User has an approved vendor listing AND has toggled off student mode
       const showVendorSidebar = isVendorAccount || (hasVendor && !isStudentToggle);
-
-      //const isVendor = profile?.account_type === 'vendor';
-
     
   return (
     <>

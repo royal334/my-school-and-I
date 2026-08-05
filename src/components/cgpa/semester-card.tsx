@@ -47,7 +47,7 @@ export default function SemesterCard({
               </h3>
               <Badge className={gpaColor}>GPA: {semester.gpa.toFixed(2)}</Badge>
             </div>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               {semester.session} • {semester.total_credit_units} Credit Units
             </p>
           </div>
@@ -67,7 +67,7 @@ export default function SemesterCard({
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="ghost" size="sm">
-                    <Trash2 className="h-4 w-4 text-red-600" />
+                    <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400" />
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -111,23 +111,23 @@ export default function SemesterCard({
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-200">
-                  <th className="pb-2 text-left font-medium text-slate-700">
+                <tr className="border-b border-slate-200 dark:border-slate-800">
+                  <th className="pb-2 text-left font-medium text-slate-700 dark:text-slate-300">
                     Course Code
                   </th>
-                  <th className="pb-2 text-left font-medium text-slate-700">
+                  <th className="pb-2 text-left font-medium text-slate-700 dark:text-slate-300">
                     Course Title
                   </th>
-                  <th className="pb-2 text-center font-medium text-slate-700">
+                  <th className="pb-2 text-center font-medium text-slate-700 dark:text-slate-300">
                     Units
                   </th>
-                  <th className="pb-2 text-center font-medium text-slate-700">
+                  <th className="pb-2 text-center font-medium text-slate-700 dark:text-slate-300">
                     Grade
                   </th>
-                  <th className="pb-2 text-center font-medium text-slate-700">
+                  <th className="pb-2 text-center font-medium text-slate-700 dark:text-slate-300">
                     Points
                   </th>
-                  <th className="pb-2 text-center font-medium text-slate-700">
+                  <th className="pb-2 text-center font-medium text-slate-700 dark:text-slate-300">
                     Actions
                   </th>
                 </tr>
@@ -136,15 +136,15 @@ export default function SemesterCard({
                 {semester.semester_courses.map((course) => (
                   <tr
                     key={course.id}
-                    className="border-b border-slate-100 last:border-0"
+                    className="border-b border-slate-100 dark:border-slate-800 last:border-0"
                   >
-                    <td className="py-2 font-medium text-slate-900">
+                    <td className="py-2 font-medium text-slate-900 dark:text-slate-100">
                       {course.course_code}
                     </td>
-                    <td className="py-2 text-slate-700">
+                    <td className="py-2 text-slate-700 dark:text-slate-300">
                       {course.course_title}
                     </td>
-                    <td className="py-2 text-center text-slate-700">
+                    <td className="py-2 text-center text-slate-700 dark:text-slate-300">
                       {course.credit_units}
                     </td>
                     <td className="py-2 text-center">
@@ -152,7 +152,7 @@ export default function SemesterCard({
                         {course.grade}
                       </Badge>
                     </td>
-                    <td className="py-2 text-center font-medium text-slate-900">
+                    <td className="py-2 text-center font-medium text-slate-900 dark:text-slate-100">
                       {course.grade_point.toFixed(1)}
                     </td>
                     <td className="py-2 text-center">
@@ -161,7 +161,7 @@ export default function SemesterCard({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/50"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -223,17 +223,17 @@ export default function SemesterCard({
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t-2 border-slate-300">
+                <tr className="border-t-2 border-slate-300 dark:border-slate-700">
                   <td
                     colSpan={2}
-                    className="pt-2 text-right font-semibold text-slate-900"
+                    className="pt-2 text-right font-semibold text-slate-900 dark:text-slate-100"
                   >
                     Total:
                   </td>
-                  <td className="pt-2 text-center font-bold text-slate-900">
+                  <td className="pt-2 text-center font-bold text-slate-900 dark:text-slate-100">
                     {semester.total_credit_units}
                   </td>
-                  <td className="pt-2 text-center font-bold text-primary-600">
+                  <td className="pt-2 text-center font-bold text-primary-600 dark:text-primary-400">
                     GPA: {semester.gpa.toFixed(2)}
                   </td>
                   <td></td>

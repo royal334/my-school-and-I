@@ -106,10 +106,10 @@ export default function ProfileForm({
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <User className="h-5 w-5 text-primary-600" />
+          <User className="h-5 w-5 text-primary-600 dark:text-primary-400" />
           <h2 className="text-xl font-semibold">Personal Information</h2>
         </div>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           Update your personal details and contact information
         </p>
       </CardHeader>
@@ -117,7 +117,7 @@ export default function ProfileForm({
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Avatar Section (Future Enhancement) */}
           <div className="flex items-center gap-4">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-100 text-2xl font-bold text-primary-700">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-100 text-2xl font-bold text-primary-700 dark:bg-primary-950/50 dark:text-primary-300">
               {watchFullName
                 ?.split(" ")
                 .map((n: any) => n[0])
@@ -126,10 +126,10 @@ export default function ProfileForm({
                 .slice(0, 2) || "U"}
             </div>
             <div>
-              <p className="font-medium text-slate-900">
+              <p className="font-medium text-slate-900 dark:text-slate-100">
                 {watchFullName || "Your Name"}
               </p>
-              <p className="text-sm text-slate-600">{email}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">{email}</p>
               {/* Future: Add upload button */}
               {/* <Button type="button" variant="outline" size="sm" className="mt-2">
                 <Upload className="mr-2 h-4 w-4" />
@@ -180,7 +180,7 @@ export default function ProfileForm({
                   {errors.phone_number.message}
                 </p>
               ) : (
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Nigerian format: 080XXXXXXXX or +234XXXXXXXXXX
                 </p>
               )}
@@ -196,9 +196,9 @@ export default function ProfileForm({
                 type="email"
                 value={email}
                 disabled
-                className="bg-slate-50 cursor-not-allowed"
+                className="bg-slate-50 dark:bg-slate-800 cursor-not-allowed"
               />
-              <p className="text-xs text-slate-500">Email cannot be changed</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Email cannot be changed</p>
             </div>
 
             {/* Matric Number (Read-only) */}
@@ -208,9 +208,9 @@ export default function ProfileForm({
                 id="matric_number"
                 value={profile?.matric_number || "N/A"}
                 disabled
-                className="bg-slate-50 cursor-not-allowed"
+                className="bg-slate-50 dark:bg-slate-800 cursor-not-allowed"
               />
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Matric number cannot be changed
               </p>
             </div>
@@ -247,7 +247,7 @@ export default function ProfileForm({
             {errors.level ? (
               <p className="text-xs text-red-500">{errors.level.message}</p>
             ) : (
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Update this when you advance to the next level
               </p>
             )}
@@ -268,7 +268,7 @@ export default function ProfileForm({
             {errors.bio ? (
               <p className="text-xs text-red-500">{errors.bio.message}</p>
             ) : (
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {watchBio?.length || 0} / 500 characters
               </p>
             )}

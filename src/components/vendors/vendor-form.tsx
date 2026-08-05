@@ -201,7 +201,7 @@ export default function VendorForm({
       toast.success(
         isEdit
           ? "Vendor listing updated!"
-          : "Vendor listing created! Pending admin approval.",
+          : "Vendor listing created!",
       );
       
       if (onSuccess) {
@@ -262,7 +262,7 @@ export default function VendorForm({
           placeholder="Describe your business and services..."
           rows={4}
         />
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
           {description?.length ?? 0}/20 minimum
         </p>
         {errors.description && (
@@ -290,10 +290,10 @@ export default function VendorForm({
 
           {/* ADD THIS: Warning when at/near limit */}
   {selectedServices.length >= maxServices && !isUnlimited && (
-    <Alert variant="destructive" className="border-amber-300 bg-amber-50 mt-3">
-      <CircleAlert className="h-4 w-4 text-amber-600" />
-      <AlertTitle className="text-amber-900">Service Limit Reached</AlertTitle>
-      <AlertDescription className="text-amber-800">
+    <Alert variant="destructive" className="border-amber-300 bg-amber-50 mt-3 dark:border-amber-900/50 dark:bg-amber-950/30">
+      <CircleAlert className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+      <AlertTitle className="text-amber-900 dark:text-amber-100">Service Limit Reached</AlertTitle>
+      <AlertDescription className="text-amber-800 dark:text-amber-300">
         You've reached your limit of {maxServices} services.
         {features?.tier === 'basic' && (
           <>

@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { getAllowedScopes } from '@/utils/lib/announcements';
+import { getCachedAnnouncementsFeed, type FeedAnnouncement } from '@/utils/cache';
 
 // GET /api/announcements - Fetch announcements visible to current user
 export async function GET(request: Request) {
@@ -23,43 +24,17 @@ export async function GET(request: Request) {
     const offset = parseInt(searchParams.get('offset') || '0', 10);
     const sort = searchParams.get('sort') || 'recent';
 
-    // Base query - RLS automatically filters to visible announcements
-    let query = supabase
-      .from('announcements')
-      .select('*', { count: 'exact' })
-      .eq('status', 'published');
-
-    // Apply filters
-    if (type) {
-      query = query.eq('type', type);
-    }
-
-    if (category) {
-      query = query.eq('category', category);
-    }
-
-    if (priority) {
-      query = query.eq('priority', priority);
-    }
-
-    // Sort
-    if (sort === 'priority') {
-      query = query.order('priority', { ascending: false }).order('created_at', { ascending: false });
-    } else if (sort === 'unread_first') {
-      // This requires a more complex query with left join
-      // For MVP, just use recent
-      query = query.order('created_at', { ascending: false });
-    } else {
-      // recent (default)
-      query = query.order('created_at', { ascending: false });
-    }
-
-    // Pagination
-    query = query.range(offset, offset + limit - 1);
-
-    const { data: announcements, error, count } = await query;
-
-    if (error) throw error;
+    const cached = await getCachedAnnouncementsFeed({
+      userId: user.id,
+      type: type || undefined,
+      category: category || undefined,
+      priority: priority || undefined,
+      limit,
+      offset,
+      sort,
+    });
+    const announcements = cached.announcements;
+    const count = cached.count;
 
     // Get read status for these announcements
     let readIds = new Set<string>();
@@ -85,8 +60,8 @@ export async function GET(request: Request) {
 
     const authorIds = Array.from(
       new Set(
-        (announcements || [])
-          .map((a: any) => a.sender_id || a.author_id)
+        announcements
+          .map((a) => a.sender_id || a.author_id)
           .filter(Boolean) as string[]
       )
     );
@@ -100,11 +75,11 @@ export async function GET(request: Request) {
         supabase.from('admin_roles').select('user_id, role').in('user_id', authorIds),
       ]);
 
-      profilesById = new Map((profiles || []).map((profile: any) => [profile.id, profile]));
-      rolesByUserId = new Map((roles || []).map((role: any) => [role.user_id, role.role]));
+      profilesById = new Map((profiles || []).map((profile) => [profile.id, profile]));
+      rolesByUserId = new Map((roles || []).map((role) => [role.user_id, role.role]));
     }
 
-    const result = (announcements || []).map((a: any) => {
+    const result = announcements.map((a) => {
       const authorId = a.sender_id || a.author_id;
       const profile = authorId ? profilesById.get(authorId) : null;
       const role = authorId ? rolesByUserId.get(authorId) : null;

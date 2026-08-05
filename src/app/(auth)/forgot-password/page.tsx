@@ -60,35 +60,35 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-        <Card className="w-full max-w-md">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
+        <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
           <CardHeader className="text-center">
-            <div className="mx-auto w-fit rounded-full bg-green-100 p-3">
-              <CheckCircle className="h-8 w-8 text-green-600" />
+            <div className="mx-auto w-fit rounded-full bg-green-100 p-3 dark:bg-green-950/50">
+              <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
             </div>
-            <h1 className="mt-4 text-2xl font-bold text-slate-900">
+            <h1 className="mt-4 text-2xl font-bold text-slate-900 dark:text-slate-100">
               Check Your Email
             </h1>
-            <p className="mt-2 text-slate-600">
+            <p className="mt-2 text-slate-600 dark:text-slate-400">
               We've sent password reset instructions to:
             </p>
-            <p className="mt-1 font-medium text-slate-900">{submittedEmail}</p>
+            <p className="mt-1 font-medium text-slate-900 dark:text-slate-100">{submittedEmail}</p>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-900">
+            <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-900 dark:bg-blue-950/30 dark:text-blue-200">
               <p className="font-medium">Next steps:</p>
-              <ol className="mt-2 list-inside list-decimal space-y-1 text-blue-800">
+              <ol className="mt-2 list-inside list-decimal space-y-1 text-blue-800 dark:text-blue-300">
                 <li>Check your email inbox</li>
                 <li>Click the reset link in the email</li>
                 <li>Set your new password</li>
               </ol>
             </div>
 
-            <p className="text-center text-xs text-slate-500">
+            <p className="text-center text-xs text-slate-500 dark:text-slate-400">
               Didn't receive the email? Check your spam folder or{" "}
               <button
                 onClick={() => setSent(false)}
-                className="text-primary-600 hover:text-primary-700 underline"
+                className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline"
               >
                 try again
               </button>
@@ -107,16 +107,16 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
+      <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
         <CardHeader>
-          <div className="mx-auto w-fit rounded-full bg-primary-100 p-3">
-            <Mail className="h-6 w-6 text-primary-600" />
+          <div className="mx-auto w-fit rounded-full bg-primary-100 p-3 dark:bg-primary-950/50">
+            <Mail className="h-6 w-6 text-primary-600 dark:text-primary-400" />
           </div>
-          <h1 className="mt-4 text-center text-2xl font-bold text-slate-900">
+          <h1 className="mt-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">
             Forgot Password?
           </h1>
-          <p className="mt-2 text-center text-slate-600">
+          <p className="mt-2 text-center text-slate-600 dark:text-slate-400">
             No worries! Enter your email and we'll send you instructions to
             reset your password.
           </p>
@@ -141,7 +141,7 @@ export default function ForgotPasswordPage() {
               {errors.email ? (
                 <p className="text-xs text-red-500">{errors.email.message}</p>
               ) : (
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Enter the email you used to sign up
                 </p>
               )}

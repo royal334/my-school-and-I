@@ -36,8 +36,7 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
   const [error, setError] = useState<string>("");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
-  // For now, we'll use a placeholder
-  // In production, this would be a signed URL from your API
+
   const fileUrl = `/api/materials/view/${materialId}`;
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
@@ -70,7 +69,7 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
   return (
     <Card>
       <CardHeader>
-        <h3 className="font-semibold text-slate-900">Document Preview</h3>
+        <h3 className="font-semibold text-slate-900 dark:text-slate-100">Document Preview</h3>
         <div className="flex items-center justify-between">
           {/* Controls */}
           <div className="flex items-center gap-2">
@@ -84,7 +83,7 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
               >
                 <ZoomOut className="h-4 w-4" />
               </Button>
-              <span className="text-sm text-slate-600 w-12 text-center">
+              <span className="text-sm text-slate-600 dark:text-slate-400 w-12 text-center">
                 {Math.round(scale * 100)}%
               </span>
               <Button
@@ -107,7 +106,7 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <span className="text-sm text-slate-600 min-w-[80px] text-center">
+              <span className="text-sm text-slate-600 dark:text-slate-400 min-w-[80px] text-center">
                 {numPages > 0 ? `${pageNumber} / ${numPages}` : "..."}
               </span>
               <Button
@@ -229,7 +228,7 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
 
       <CardContent>
         <div
-          className="flex justify-center overflow-auto bg-slate-100 p-4 rounded-lg cursor-zoom-in hover:bg-slate-200 transition-colors"
+          className="flex justify-center overflow-auto bg-slate-100 dark:bg-slate-800 p-4 rounded-lg cursor-zoom-in hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           onClick={() => setIsDialogOpen(true)}
           title="Click to view full screen"
         >
@@ -240,7 +239,7 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
           )}
 
           {error && (
-            <div className="flex items-center justify-center h-96 text-red-600">
+            <div className="flex items-center justify-center h-96 text-red-600 dark:text-red-400">
               {error}
             </div>
           )}
@@ -261,8 +260,8 @@ export default function PDFViewer({ materialId, fileName }: PDFViewerProps) {
           </Document>
         </div>
 
-        <div className="mt-4 rounded-lg bg-amber-50 p-3">
-          <p className="text-xs text-amber-800">
+        <div className="mt-4 rounded-lg bg-amber-50 dark:bg-amber-950/30 p-3">
+          <p className="text-xs text-amber-800 dark:text-amber-300">
             ⚠️ This document is watermarked with your information. Unauthorized
             sharing is prohibited.
           </p>

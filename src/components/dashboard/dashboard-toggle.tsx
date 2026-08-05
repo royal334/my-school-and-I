@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { GraduationCap, Store } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -18,7 +18,6 @@ export default function DashboardToggle({
   // Initialize state from cookie or default to true
   const [isStudent, setIsStudent] = useState(true);
   const router = useRouter();
-  const pathname = usePathname();
   
   // Determine current view based on path
   //const isVendorView = pathname.includes('/vendors/analytics') || pathname.includes('/subscription') || pathname.includes('/billing');
@@ -62,7 +61,7 @@ export default function DashboardToggle({
         onClick={() => handleToggle(false)}
         className={cn(
           'flex items-center gap-2',
-          isStudent && 'bg-blue-600 shadow-sm text-white'
+          isStudent && 'bg-blue-600 dark:bg-blue-800 shadow-sm text-white'
         )}
       >
         <GraduationCap className="h-4 w-4" />
@@ -75,7 +74,7 @@ export default function DashboardToggle({
         onClick={() => handleToggle(true)}
         className={cn(
           'flex items-center gap-2',
-          !isStudent && 'bg-blue-600 shadow-sm text-white'
+          !isStudent && 'bg-blue-600 dark:bg-blue-800 shadow-sm text-white'
         )}
       >
         <Store className="h-4 w-4" />

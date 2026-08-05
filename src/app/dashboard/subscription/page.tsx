@@ -57,7 +57,7 @@ export default async function SubscriptionPage() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold">Subscription</h1>
-        <p className="text-slate-600">Manage your subscription plan</p>
+        <p className="text-slate-600 dark:text-slate-400">Manage your subscription plan</p>
       </div>
 
       {/* Current Plan */}
@@ -84,12 +84,12 @@ export default async function SubscriptionPage() {
                   {vendor.subscription_tier}
                 </Badge>
                 {isActive && (
-                  <Badge variant="outline" className="text-green-600 border-green-600">
+                  <Badge variant="outline" className="text-green-600 border-green-600 dark:text-green-400 dark:border-green-500">
                     Active
                   </Badge>
                 )}
               </div>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
                 {vendor.subscription_tier === 'basic'
                   ? 'Free plan with basic features'
                   : vendor.subscription_tier === 'premium'
@@ -137,28 +137,28 @@ export default async function SubscriptionPage() {
           </div>
 
           {isActive && (
-            <div className="space-y-3 rounded-lg border bg-slate-50 p-4">
+            <div className="space-y-3 rounded-lg border bg-slate-50 p-4 dark:bg-slate-800/50">
               <div className="flex items-start gap-3">
-                <Calendar className="h-5 w-5 text-slate-600 mt-0.5" />
+                <Calendar className="h-5 w-5 text-slate-600 dark:text-slate-400 mt-0.5" />
                 <div className="flex-1">
                   <p className="text-sm font-medium">Subscription Period</p>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
                     Started: {new Date(vendor.subscription_starts_at!).toLocaleDateString()}
                   </p>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
                     Renews: {new Date(vendor.subscription_expires_at!).toLocaleDateString()}
                   </p>
                 </div>
               </div>
 
               {daysUntilExpiry <= 7 && (
-                <div className="flex items-start gap-3 rounded-lg bg-amber-50 p-3">
-                  <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5" />
+                <div className="flex items-start gap-3 rounded-lg bg-amber-50 p-3 dark:bg-amber-950/30">
+                  <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 dark:text-amber-400" />
                   <div>
-                    <p className="text-sm font-medium text-amber-900">
+                    <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
                       Subscription Expiring Soon
                     </p>
-                    <p className="text-sm text-amber-700">
+                    <p className="text-sm text-amber-700 dark:text-amber-300">
                       Your subscription expires in {daysUntilExpiry} day(s)
                     </p>
                   </div>
@@ -179,7 +179,7 @@ export default async function SubscriptionPage() {
             {/* Basic */}
             <div className="rounded-lg border p-4">
               <h3 className="font-semibold">Basic (Free)</h3>
-              <ul className="mt-2 space-y-1 text-sm text-slate-600">
+              <ul className="mt-2 space-y-1 text-sm text-slate-600 dark:text-slate-400">
                 <li>• Up to 5 services</li>
                 <li>• Basic visibility</li>
                 <li>• Customer reviews</li>
@@ -187,14 +187,14 @@ export default async function SubscriptionPage() {
             </div>
 
             {/* Premium */}
-            <div className="rounded-lg border p-4 border-blue-200 bg-blue-50">
+            <div className="rounded-lg border p-4 border-blue-200 bg-blue-50 dark:border-blue-900/50 dark:bg-blue-950/30">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-blue-900">Premium (₦2,000/month)</h3>
+                <h3 className="font-semibold text-blue-900 dark:text-blue-200">Premium (₦2,000/month)</h3>
                 {vendor.subscription_tier === 'premium' && (
                   <Badge variant="outline">Current</Badge>
                 )}
               </div>
-              <ul className="mt-2 space-y-1 text-sm text-blue-800">
+              <ul className="mt-2 space-y-1 text-sm text-blue-800 dark:text-blue-300">
                 <li>• Logo & cover image</li>
                 <li>• 5 photo gallery</li>
                 <li>• Up to 10 services</li>
@@ -204,16 +204,16 @@ export default async function SubscriptionPage() {
             </div>
 
             {/* Featured */}
-            <div className="rounded-lg border p-4 border-amber-200 bg-amber-50">
+            <div className="rounded-lg border p-4 border-amber-200 bg-amber-50 dark:border-amber-900/50 dark:bg-amber-950/30">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-amber-900">
+                <h3 className="font-semibold text-amber-900 dark:text-amber-100">
                   Featured (₦5,000/month)
                 </h3>
                 {vendor.subscription_tier === 'featured' && (
                   <Badge variant="outline">Current</Badge>
                 )}
               </div>
-              <ul className="mt-2 space-y-1 text-sm text-amber-800">
+              <ul className="mt-2 space-y-1 text-sm text-amber-800 dark:text-amber-300">
                 <li>• Everything in Premium</li>
                 <li>• Verified badge ✓</li>
                 <li>• 10 photo gallery</li>
@@ -240,12 +240,12 @@ export default async function SubscriptionPage() {
                   className="flex items-center justify-between rounded-lg border p-4"
                 >
                   <div className="flex items-start gap-3">
-                    <CreditCard className="h-5 w-5 text-slate-600 mt-0.5" />
+                    <CreditCard className="h-5 w-5 text-slate-600 dark:text-slate-400 mt-0.5" />
                     <div>
                       <p className="font-medium">
                         {item.tier.charAt(0).toUpperCase() + item.tier.slice(1)} Plan
                       </p>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
                         {new Date(item.created_at).toLocaleDateString()}
                       </p>
                     </div>

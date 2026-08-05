@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export function DashboardQuickActions() {
   return (
-    <Card>
+    <Card data-tour="student-actions">
       <CardHeader>
         <h2 className="text-xl font-semibold">Quick Actions</h2>
       </CardHeader>

@@ -37,7 +37,9 @@ export default async function VendorAnalyticsPage() {
       </div>
 
       {/* Analytics Dashboard */}
-      <AnalyticsDashboard vendorId={vendor.id} tier={vendor.subscription_tier} />
+      <div  data-tour="page-analytics">
+        <AnalyticsDashboard vendorId={vendor.id} tier={vendor.subscription_tier} />
+      </div>
     </div>
   );
 }

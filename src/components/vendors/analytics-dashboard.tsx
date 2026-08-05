@@ -422,7 +422,20 @@ export default function AnalyticsDashboard({
       </div>
 
       {/* Conversion Rate Card */}
-      <Card className="border-purple-200 bg-linear-to-br from-purple-50 to-blue-50">
+{ hasBasicTier ? (            
+              <div className="flex h-[400px] flex-col items-center justify-center rounded-lg border-2 border-dashed">
+              <Lock className="h-12 w-12 text-slate-400" />
+              <h3 className="mt-4 font-semibold text-slate-700">
+                Detailed Analytics Locked
+              </h3>
+              <p className="mt-2 text-sm text-slate-600">
+                Upgrade to Premium for daily analytics charts
+              </p>
+              <Link href={`/dashboard/vendors/${vendorId}/upgrade`}>
+                <Button className="mt-4">Upgrade Now</Button>
+              </Link>
+            </div>) : (     
+            <Card className="border-purple-200 bg-linear-to-br from-purple-50 to-blue-50">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -449,7 +462,7 @@ export default function AnalyticsDashboard({
             />
           </div>
         </CardContent>
-      </Card>
+      </Card>)}
 
       {/* Main Chart */}
       <Card>

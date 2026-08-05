@@ -86,7 +86,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div>
+      <div data-tour="vendor-welcome">
         <h1 className="text-3xl font-bold">Welcome back, {profile.full_name}!</h1>
         <p className="text-muted-foreground">
           Here&apos;s what&apos;s happening with your business in the last 30 days
@@ -128,7 +128,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
           )}
 
           {/* Stats Overview */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" data-tour="vendor-stats">
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">

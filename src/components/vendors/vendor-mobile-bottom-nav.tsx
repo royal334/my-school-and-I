@@ -62,7 +62,7 @@ export function VendorMobileBottomNav() {
 
   return (
     <>
-      <nav className="fixed bottom-0 left-0 right-0 border-t bg-white dark:bg-slate-950 dark:border-slate-800 z-50">
+      <nav data-tour="mobile-nav" className="fixed bottom-0 left-0 right-0 border-t bg-white dark:bg-slate-950 dark:border-slate-800 z-50">
         <div className="flex items-center justify-between gap-1 h-16 sm:h-18 max-w-screen-xl mx-auto px-1.5">
           {vendorNavItems.map(({ href, icon: Icon, label }) => (
             <Link

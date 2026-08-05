@@ -66,7 +66,7 @@ export default async function CGPAPage() {
             <FileDown className="mr-2 h-4 w-4" />
             Export
           </Button> */}
-          <Link href="/dashboard/cgpa/add-semester">
+          <Link href="/dashboard/cgpa/add-semester" data-tour="page-cgpa">
             <Button>
               <Plus className="mr-2 h-4 w-4" />
               Add Semester

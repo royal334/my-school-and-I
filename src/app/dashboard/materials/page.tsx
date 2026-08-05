@@ -130,7 +130,9 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
           </div>
         }
       >
-        <MaterialsContent materials={materials} profile={profile} />
+        <div  data-tour="page-materials">
+          <MaterialsContent materials={materials} profile={profile} />
+        </div>
       </Suspense>
     </div>
   );

@@ -61,7 +61,7 @@ export default async function SubscriptionPage() {
       </div>
 
       {/* Current Plan */}
-      <Card>
+      <Card data-tour="page-subscription">
         <CardHeader>
           <CardTitle>Current Plan</CardTitle>
         </CardHeader>

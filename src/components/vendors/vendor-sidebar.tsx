@@ -102,7 +102,7 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden md:block">
+      <div className="hidden md:block" data-tour ="vendor-sidebar">
         <Sidebar>
           <SidebarHeader className="border-b p-4 dark:border-slate-800 bg-white dark:bg-slate-950">
             <Link href="/dashboard" onClick={closeSidebarOnMobile}>

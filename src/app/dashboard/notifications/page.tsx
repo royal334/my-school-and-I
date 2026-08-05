@@ -129,7 +129,7 @@ export default function NotificationsPage() {
         </div>
 
         {/* Heading */}
-        <h1 className="text-4xl font-bold text-slate-900 tracking-tight">
+        <h1 className="text-4xl font-bold text-slate-900 tracking-tight" data-tour="page-notifications">
           Notifications
         </h1>
         <p className="mt-3 text-lg text-slate-500">

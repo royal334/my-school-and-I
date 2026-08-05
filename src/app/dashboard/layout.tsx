@@ -11,15 +11,16 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import DashboardToggle  from '@/components/dashboard/dashboard-toggle';
+import { MobileHeaderMenu } from '@/components/dashboard/mobile-header-menu';
+import { OnboardingTour } from "@/components/tour/onboarding-tour";
+import { TourHelpButton } from "@/components/tour/tour-help-button";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 
       const supabase = createClient(await cookies());
     
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      redirect('/login');
-    }
+
 
       // Get user profile to determine account type
       const { data: profile } = await supabase
@@ -73,6 +74,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                 hasVendor={hasVendor} 
                 isVendorAccount={isVendorAccount} 
               />
+              <TourHelpButton hasVendor={hasVendor} isVendorAccount={isVendorAccount} className="ml-auto size-8" />
             </header>
             <div className="flex flex-1 flex-col gap-4 overflow-x-hidden p-4 pt-0">
               {children}
@@ -89,6 +91,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
             hasVendor={hasVendor} 
             isVendorAccount={isVendorAccount} 
           />
+          <MobileHeaderMenu hasVendor={hasVendor} isVendorAccount={isVendorAccount} />
         </header>
 
         {/* Mobile content area with proper spacing */}
@@ -103,6 +106,12 @@ export default async function Layout({ children }: { children: React.ReactNode }
           <MobileBottomNav isSuperAdmin={isSuperAdmin} />
         )}
       </div>
+
+      <OnboardingTour
+        isVendorView={showVendorSidebar}
+        hasToggle={hasVendor && !isVendorAccount}
+        userId={user.id}
+      />
     </>
   );
 }

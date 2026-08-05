@@ -28,7 +28,7 @@ export default async function AnnouncementsPage() {
       <div>
         <div className="mb-8">
           <div className='flex justify-between items-center gap-8 md:gap-0 mb-2'>
-            <h1 className="text-xl md:text-3xl font-bold text-slate-900">Announcements</h1>
+            <h1 className="text-xl md:text-3xl font-bold text-slate-900" >Announcements</h1>
             {isAdmin && (<Link href="/dashboard/announcements/send">
               <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-semibold transition-colors duration-200 text-sm md:text-base">
                 Send Announcement
@@ -39,7 +39,9 @@ export default async function AnnouncementsPage() {
             Stay updated with department and university announcements
           </p>
         </div>
-        <AnnouncementFeed />
+        <div data-tour="page-announcements">
+          <AnnouncementFeed />
+        </div>
       </div>
     </div>
   );

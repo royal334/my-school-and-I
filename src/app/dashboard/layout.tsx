@@ -21,6 +21,9 @@ export default async function Layout({ children }: { children: React.ReactNode }
     
     const { data: { user } } = await supabase.auth.getUser();
 
+    if(!user){
+      redirect('/login')
+    }
 
       // Get user profile to determine account type
       const { data: profile } = await supabase

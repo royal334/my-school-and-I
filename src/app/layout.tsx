@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   description:
     "Access lecture materials, calculate your CGPA, and connect with student vendors — all in one platform for Nnamdi Azikiwe University engineering students.",
   keywords: [
-    "engineering",
+    "university platform",
     "CGPA calculator",
     "student materials",
     "NAU",
@@ -32,8 +32,18 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "UniHub — Your Complete Academic Companion",
-    description: "The all-in-one platform for engineering students.",
+    description: "The all-in-one platform for university students.",
     type: "website",
+  },
+
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'CampusHub',
+  },
+  formatDetection: {
+    telephone: false,
   },
 };
 

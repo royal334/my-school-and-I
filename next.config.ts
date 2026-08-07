@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
+
 const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
@@ -19,9 +20,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  turbopack: {}
 };
 
-export default withSentryConfig(nextConfig, {
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+});
+
+export default withSentryConfig(withPWA(nextConfig), {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 

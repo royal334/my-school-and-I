@@ -1,5 +1,5 @@
 {
-  "name": "engiportal",
+  "name": "CampusHub",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -25,14 +25,15 @@
     "dotenv": "^17.3.1",
     "lucide-react": "^0.564.0",
     "next": "^16.1.6",
+    "next-pwa": "^5.6.0",
     "next-themes": "^0.4.6",
     "pdf-lib": "^1.17.1",
     "posthog-js": "^1.408.2",
     "radix-ui": "^1.4.3",
     "react": "^19.2.3",
-    "react-joyride": "^3.2.0",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.72.0",
+    "react-joyride": "^3.2.0",
     "react-pdf": "^10.3.0",
     "recharts": "^3.8.1",
     "sonner": "^2.0.7",

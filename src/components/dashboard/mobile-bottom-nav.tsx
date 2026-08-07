@@ -38,7 +38,6 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
     ...(isSuperAdmin
       ? [{ href: '/dashboard/materials/upload', icon: Upload, label: 'Upload' }]
       : []),
-    { href: '/dashboard/cgpa', icon: Calculator, label: 'CGPA' },
     { href: '/dashboard/vendors', icon: Store, label: 'Vendors' },
     { href: '/dashboard/announcements', icon: Bell, label: 'Announcements' },
   ];

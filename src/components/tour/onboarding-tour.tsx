@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   Joyride,
@@ -14,6 +14,8 @@ import { useTourStore } from './tour-store';
 import {
   studentTourSteps,
   vendorTourSteps,
+  studentMobileTourSteps,
+  vendorMobileTourSteps,
   type TourKind,
   type TourStep,
 } from './tour-steps';
@@ -43,6 +45,26 @@ function markTourSeen(tour: TourKind, userId: string) {
   }
 }
 
+/**
+ * Tracks the `md` breakpoint used by the dashboard layout. Updates on resize /
+ * orientation change so the correct step set is always used.
+ */
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 767.98px)').matches,
+  );
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 767.98px)');
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener('change', update);
+    return () => mql.removeEventListener('change', update);
+  }, []);
+
+  return isMobile;
+}
+
 
 
 interface OnboardingTourProps {
@@ -55,6 +77,8 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
   const router = useRouter();
   const pathname = usePathname();
 
+  const [debugLines, setDebugLines] = useState<string[]>([]);
+  const [tick, setTick] = useState(0);
 
   const run = useTourStore((s) => s.run);
   const tour = useTourStore((s) => s.tour);
@@ -68,21 +92,35 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
   const setPending = useTourStore((s) => s.setPending);
   const clearPending = useTourStore((s) => s.clearPending);
 
-  const steps = useMemo<TourStep[]>(
-    () => (tour === 'vendor' ? vendorTourSteps(hasToggle) : studentTourSteps),
-    [tour, hasToggle],
-  );
+  const isMobile = useIsMobile();
+
+  const steps = useMemo<TourStep[]>(() => {
+    if (tour === 'vendor') {
+      return isMobile ? vendorMobileTourSteps() : vendorTourSteps(hasToggle);
+    }
+    return isMobile ? studentMobileTourSteps : studentTourSteps;
+  }, [tour, hasToggle, isMobile]);
 
   const stepsRef = useRef(steps);
   useEffect(() => { stepsRef.current = steps; });
   const pathnameRef = useRef(pathname);
   useEffect(() => { pathnameRef.current = pathname; });
 
+  // Guard against the steps array shrinking when the viewport crosses the
+  // mobile breakpoint while the tour is running.
+  useEffect(() => {
+    if (!run || stepIndex < steps.length) return;
+    setStepIndex(Math.max(0, steps.length - 1));
+  }, [run, stepIndex, steps.length, setStepIndex]);
+
   // Auto-start the appropriate tour on first visit.
   useEffect(() => {
     if (run) return;
     const kind: TourKind = isVendorView ? 'vendor' : 'student';
-    if (hasSeenTour(kind, userId)) return;
+    const forceStart =
+      typeof window !== 'undefined' &&
+      new URLSearchParams(window.location.search).has('tourStart');
+    if (hasSeenTour(kind, userId) && !forceStart) return;
 
     // If the first step points to a different route, start immediately so
     // navigation effect will redirect to the step route. If the first step
@@ -106,7 +144,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
       const resolveTarget = () => {
         try {
           if (typeof target === 'function') {
-            return (target as any)();
+            return (target as () => HTMLElement | null)();
           }
           if (typeof target === 'string') {
             return document.querySelector(target as string);
@@ -123,7 +161,6 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
           start(kind);
           return;
         }
-        // eslint-disable-next-line no-await-in-loop
         await new Promise((r) => setTimeout(r, interval));
       }
 
@@ -181,6 +218,20 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
       if (!run) return;
       const { type, action, index, status } = data;
 
+      const debugOn =
+        typeof window !== 'undefined' &&
+        new URLSearchParams(window.location.search).has('tourDebug');
+
+      if (debugOn) {
+        const lifecycle = (data as { lifecycle?: string }).lifecycle ?? '-';
+        setDebugLines((prev) =>
+          [
+            ...prev,
+            `${new Date().toISOString().slice(11, 23)} ev=${type} act=${action} idx=${index} st=${status} lc=${lifecycle}`,
+          ].slice(-14),
+        );
+      }
+
       if (
         type === EVENTS.TOUR_END &&
         (status === STATUS.FINISHED || status === STATUS.SKIPPED)
@@ -210,8 +261,66 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     [run, tour, userId, setPending, setStepIndex, stop, router],
   );
 
+  const debugOn =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).has('tourDebug');
+
+  useEffect(() => {
+    if (!debugOn) return;
+    const id = window.setInterval(() => setTick((t) => t + 1), 500);
+    return () => window.clearInterval(id);
+  }, [debugOn]);
+
+  const debugData = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+
+    const cur = steps[stepIndex];
+    let targetRect = '-';
+    if (cur?.target) {
+      try {
+        const el =
+          typeof cur.target === 'function'
+            ? (cur.target as () => HTMLElement | null)()
+            : typeof cur.target === 'string'
+              ? document.querySelector(cur.target)
+              : null;
+        if (el) {
+          const r = (el as HTMLElement).getBoundingClientRect();
+          targetRect = `x=${Math.round(r.left)} y=${Math.round(r.top)} w=${Math.round(r.width)} h=${Math.round(r.height)}`;
+        } else {
+          targetRect = 'NOT FOUND';
+        }
+      } catch {
+        targetRect = 'target err';
+      }
+    }
+
+    const floater = document.querySelector<HTMLElement>('.react-joyride__floater');
+    let floaterRect = '-';
+    if (floater) {
+      const r = floater.getBoundingClientRect();
+      const cs = getComputedStyle(floater);
+      floaterRect = `x=${Math.round(r.left)} y=${Math.round(r.top)} w=${Math.round(r.width)} h=${Math.round(r.height)} pos=${cs.position} left=${cs.left} top=${cs.top} op=${cs.opacity} disp=${cs.display}`;
+    }
+
+    return {
+      windowSize: `${window.innerWidth}x${window.innerHeight}`,
+      mobile: isMobile,
+      pathname,
+      run,
+      tour,
+      stepIndex,
+      targetRoute: cur?.route ?? '-',
+      targetRect,
+      floaterRect,
+      overlay: document.querySelector('.react-joyride__overlay') ? 'yes' : 'no',
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [steps, stepIndex, pathname, run, tour, isMobile, debugLines, tick]);
+
   return (
-    <Joyride
+    <>
+      <Joyride
       key={session}
       steps={steps as Step[]}
       run={run}
@@ -246,6 +355,42 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
         spotlightPadding: 10,
         zIndex: 120,
       }}
-    />
+      />
+      {debugOn && debugData && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            zIndex: 9999,
+            width: 440,
+            maxWidth: '100vw',
+            maxHeight: '72vh',
+            overflow: 'auto',
+            background: 'rgba(15,23,42,0.94)',
+            color: '#e2e8f0',
+            fontSize: 10,
+            lineHeight: 1.5,
+            fontFamily: 'monospace',
+            padding: 8,
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-all',
+            pointerEvents: 'auto',
+          }}
+        >
+          <div>win={debugData.windowSize} mobile={String(debugData.mobile)}</div>
+          <div>
+            route={debugData.pathname} run={String(debugData.run)} tour={debugData.tour} idx={debugData.stepIndex}
+          </div>
+          <div>overlay={debugData.overlay}</div>
+          <div>target[{debugData.targetRoute}]: {debugData.targetRect}</div>
+          <div>floater: {debugData.floaterRect}</div>
+          <div>events:</div>
+          {[...debugLines].reverse().map((l, i) => (
+            <div key={i}>{l}</div>
+          ))}
+        </div>
+      )}
+    </>
   );
 }

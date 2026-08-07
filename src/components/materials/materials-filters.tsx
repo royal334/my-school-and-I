@@ -13,8 +13,7 @@ import {
 } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
 import { Search, Filter } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { debounce } from '@/utils/lib/index';
+import { useState, useEffect, useRef } from 'react';
 import { usePostHogAnalytics } from '@/hooks/posthog-events'
 import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
@@ -54,19 +53,6 @@ const handleSavedMaterials = () => {
 };
 
 
-  // Debounced search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      updateFilters();
-      if (search.trim()) {
-        handleMaterialSearch(search.trim());
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, level, semester, type]);
-
   const updateFilters = () => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -97,6 +83,26 @@ const handleSavedMaterials = () => {
     const query = params.toString();
     router.push(`/dashboard/materials${query ? `?${query}` : ''}`);
   };
+
+  // Debounced search
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      updateFilters();
+      if (search.trim()) {
+        handleMaterialSearch(search.trim());
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, level, semester, type]);
 
   const savedActive = searchParams.get("saved") === "true";
   const hasActiveFilters = search || level !== "all" || semester !== "all" || type !== "all" || savedActive;

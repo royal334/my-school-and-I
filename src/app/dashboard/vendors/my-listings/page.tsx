@@ -19,7 +19,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = {
-  title: 'My Listings | EngiPortal',
+  title: 'My Listings | CampusHub',
   description: 'Manage your vendor listings',
 };
 

@@ -14,7 +14,7 @@ import {
 } from "@/utils/cache";
 
 export const metadata = {
-  title: "Vendors Marketplace | EngiPortal",
+  title: "Vendors Marketplace | CampusHub",
 };
 
 interface PageProps {

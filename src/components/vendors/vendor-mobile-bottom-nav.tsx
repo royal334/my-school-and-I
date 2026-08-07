@@ -98,7 +98,7 @@ export function VendorMobileBottomNav() {
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Sign out of EngiPortal?</AlertDialogTitle>
+            <AlertDialogTitle>Sign out of CampusHub?</AlertDialogTitle>
             <AlertDialogDescription>
               You will be signed out of your vendor account and redirected.
             </AlertDialogDescription>

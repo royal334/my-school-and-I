@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  turbopack: {}
 };
 
 const withPWA = require('next-pwa')({
@@ -28,10 +29,7 @@ const withPWA = require('next-pwa')({
   skipWaiting: true,
 });
 
-
-module.exports = withPWA(nextConfig);
-
-export default withSentryConfig(nextConfig, {
+export default withSentryConfig(withPWA(nextConfig), {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 

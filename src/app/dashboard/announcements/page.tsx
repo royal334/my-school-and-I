@@ -39,9 +39,9 @@ export default async function AnnouncementsPage() {
             Stay updated with department and university announcements
           </p>
         </div>
-        <Suspense fallback={<div className="flex items-center justify-center py-12"><p className="text-sm text-slate-600 dark:text-slate-400">Loading announcements...</p></div>}>
+        <div data-tour="page-announcements">
           <AnnouncementFeed />
-        </Suspense>
+        </div>
       </div>
     </div>
   );

@@ -38,14 +38,14 @@ export default async function SettingsPage() {
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold">Settings</h1>
+        <h1 className="text-3xl font-bold" >Settings</h1>
         <p className="text-slate-600 dark:text-slate-400">
           Manage your preferences and customize your experience
         </p>
       </div>
 
       {/* Settings Sections */}
-      <div className="space-y-6">
+      <div className="space-y-6" data-tour="page-settings">
         <AppearanceSettings />
 
         <ComingSoonOverlay>

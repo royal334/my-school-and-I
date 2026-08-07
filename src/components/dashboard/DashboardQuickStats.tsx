@@ -17,7 +17,7 @@ export function DashboardQuickStats({
   dailyDownloadCount,
 }: DashboardQuickStatsProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" data-tour="student-stats">
       <Card className="border-primary-200 bg-primary-50 dark:bg-primary-950/30 dark:border-primary-900/30 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">

@@ -76,18 +76,18 @@ export default async function ProfilePage() {
         </Card>
       )}
 
-      {/* Profile Form */}
-      <ProfileForm 
-        profile={profile} 
-        email={user.email!}
-        userId={user.id}
-      />
-
-      {/* Subscription Status */}
-      {/* <SubscriptionCard profile={profile} /> */}
-
-      {/* Security Settings */}
-      <SecurityCard email={user.email!} />
+      <div data-tour="page-profile">
+        {/* Profile Form */}
+        <ProfileForm
+          profile={profile}
+          email={user.email!}
+          userId={user.id}
+        />
+        {/* Subscription Status */}
+        {/* <SubscriptionCard profile={profile} /> */}
+        {/* Security Settings */}
+        <SecurityCard email={user.email!} />
+      </div>
     </div>
   );
 }

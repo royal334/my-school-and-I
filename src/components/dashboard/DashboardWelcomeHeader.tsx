@@ -6,7 +6,7 @@ export function DashboardWelcomeHeader({
   const firstName = fullName?.split(" ")[0] || "Student";
 
   return (
-    <div className='mt-4'>
+    <div className='mt-4' data-tour="student-welcome">
       <h1 className="text-2xl md:text-3xl font-bold">Welcome back, {firstName}! 👋</h1>
       <p className="text-muted-foreground">
         Here's what's happening in your academic journey

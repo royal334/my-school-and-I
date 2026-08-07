@@ -56,7 +56,7 @@ export async function getMaterials({
     query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
   }
 
-  if (ids && ids.length > 0) {
+  if (ids) {
     query = query.in("id", ids);
   }
 

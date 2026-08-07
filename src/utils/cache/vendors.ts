@@ -5,7 +5,6 @@ import { createClient as createServerClient } from '@/utils/supabase/server';
 import { getVendors } from '@/utils/supabase/queries/vendors';
 
 const FEED_REVALIDATE = 60;
-const SEARCH_REVALIDATE = 30;
 const CATEGORIES_REVALIDATE = 3 * 24 * 60 * 60; // 3 days
 const MAX_SEARCH_LENGTH = 80;
 const SEARCH_INVALID_CHARS = /[%,_{}\[\]\(\),\\]/;
@@ -32,31 +31,40 @@ export interface VendorFeedFilters {
   limit?: number;
 }
 
-async function fetchVendors(filters: VendorFeedFilters) {
+async function fetchVendorFeed(filters: VendorFeedFilters) {
   const normalizedSearch = normalizeSearchTerm(filters.search);
   const normalizedFilters = { ...filters, search: normalizedSearch };
 
-  const supabase = normalizedSearch
-    ? createServerClient(await cookies())
-    : createAdminClient();
-
-  return getVendors({ ...normalizedFilters, supabaseProp: supabase, throwOnError: true });
+  // Approved vendors + public category/owner data: safe to read with the
+  // service-role client. Errors propagate so they are not cached.
+  return getVendors({
+    ...normalizedFilters,
+    supabaseProp: createAdminClient(),
+    throwOnError: true,
+  });
 }
 
 /** Cached vendor feed (60s). */
-export const getCachedVendors = unstable_cache(fetchVendors, ['vendors-feed'], {
+export const getCachedVendors = unstable_cache(fetchVendorFeed, ['vendors-feed'], {
   revalidate: FEED_REVALIDATE,
 });
 
-/** Cached vendor search results (30s). */
-export const getCachedVendorSearch = (filters: VendorFeedFilters) => {
+/**
+ * Vendor search results (fresh, uncached).
+ *
+ * Search runs with the user's authenticated client so RLS applies, which means
+ * it depends on `cookies()` — a dynamic data source that cannot be used inside
+ * an `unstable_cache` scope. It also cannot be shared between users, so it is
+ * deliberately kept out of the cache.
+ */
+export async function getVendorSearch(filters: VendorFeedFilters) {
   const normalizedSearch = normalizeSearchTerm(filters.search);
-  return unstable_cache(
-    fetchVendors,
-    ['vendors-search', filters.category ?? 'all', normalizedSearch ?? ''],
-    { revalidate: SEARCH_REVALIDATE },
-  )({ ...filters, search: normalizedSearch });
-};
+  const normalizedFilters = { ...filters, search: normalizedSearch };
+
+  const supabase = createServerClient(await cookies());
+
+  return getVendors({ ...normalizedFilters, supabaseProp: supabase, throwOnError: true });
+}
 
 async function fetchVendorCategories() {
   const supabase = createAdminClient();

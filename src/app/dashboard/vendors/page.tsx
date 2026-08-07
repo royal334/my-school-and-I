@@ -9,7 +9,7 @@ import { Store, Plus, Building,Edit } from "lucide-react";
 import Link from "next/link";
 import {
   getCachedVendors,
-  getCachedVendorSearch,
+  getVendorSearch,
   getCachedVendorCategories,
 } from "@/utils/cache";
 
@@ -48,9 +48,9 @@ export default async function VendorsPage({ searchParams }: PageProps) {
   // Categories are static reference data - cached for 3 days
   const categories = await getCachedVendorCategories();
 
-  // Feed cached 60s; searches (30s) get their own faster-revalidating entry
+  // Feed cached 60s; searches run fresh with the authenticated client (RLS)
   const vendors = paramaters.search
-    ? await getCachedVendorSearch({
+    ? await getVendorSearch({
         category: paramaters.category,
         search: paramaters.search,
       })
@@ -107,7 +107,7 @@ export default async function VendorsPage({ searchParams }: PageProps) {
           </Link>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-tour="page-vendors">
           {vendors.map((vendor) => (
             <VendorCard key={vendor.id} vendor={vendor} />
           ))}

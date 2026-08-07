@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
+
 const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
@@ -20,6 +21,15 @@ const nextConfig: NextConfig = {
     ],
   },
 };
+
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+});
+
+
+module.exports = withPWA(nextConfig);
 
 export default withSentryConfig(nextConfig, {
   // For all available options, see:

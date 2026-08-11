@@ -53,6 +53,11 @@ const vendorNavigation = [
     href:"/dashboard/notifications",
     icon:MessageSquare,
   },
+  {
+    name: "Settings",
+    href: "/dashboard/settings",
+    icon: Settings,
+  },
 ];
 
 function isNavActive(pathname: string, href: string): boolean {

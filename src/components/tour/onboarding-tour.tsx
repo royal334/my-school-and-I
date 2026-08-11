@@ -18,6 +18,7 @@ import {
   vendorTourSteps,
   studentMobileTourSteps,
   vendorMobileTourSteps,
+  insertNavPromptSteps,
   type TourKind,
   type TourStep,
 } from './tour-steps';
@@ -101,10 +102,16 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
   const isMobile = useIsMobile();
 
   const steps = useMemo<TourStep[]>(() => {
-    if (tour === 'vendor') {
-      return isMobile ? vendorMobileTourSteps() : vendorTourSteps(hasToggle);
-    }
-    return isMobile ? studentMobileTourSteps : studentTourSteps;
+    const base =
+      tour === 'vendor'
+        ? isMobile
+          ? vendorMobileTourSteps()
+          : vendorTourSteps(hasToggle)
+        : isMobile
+          ? studentMobileTourSteps
+          : studentTourSteps;
+    // Guide the user to click the actual menu item for cross-page steps.
+    return insertNavPromptSteps(base, isMobile);
   }, [tour, hasToggle, isMobile]);
 
   const stepsRef = useRef(steps);
@@ -219,13 +226,70 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     if (idx !== -1 && idx !== stepIndex) setStepIndex(idx);
   }, [run, pathname, stepIndex, pendingIndex, setStepIndex]);
 
-  const finishTour = useCallback(() => {
-    if (tour) markTourSeen(tour, userId);
-    stop();
-    if (tourSource === 'auto' && !isInstalled && !hasDismissedInstall()) {
-      if (canInstall || isIOS) setInstallOpen(true);
-    }
-  }, [tour, userId, stop, tourSource, isInstalled, hasDismissedInstall, canInstall, isIOS]);
+  // Advance from a "tap the header menu" prompt step to its "tap the item"
+  // step as soon as the dropdown opens. The item only exists in the DOM while
+  // the menu is open, so opening the menu does not change the route and the
+  // manual-navigation sync above cannot advance the tour.
+  useEffect(() => {
+    if (!run || pendingIndex !== null) return;
+    const current = stepsRef.current[stepIndex];
+    if (!current?.menuOpener) return;
+    const next = stepsRef.current[stepIndex + 1];
+    if (!next?.target) return;
+
+    let cancelled = false;
+    let advanced = false;
+
+    const resolveNext = (): HTMLElement | null => {
+      const target = next.target as unknown;
+      try {
+        if (typeof target === 'function') return (target as () => HTMLElement | null)();
+        if (typeof target === 'string') return document.querySelector(target as string);
+      } catch {
+        return null;
+      }
+      return null;
+    };
+
+    const id = window.setInterval(() => {
+      if (cancelled || advanced) return;
+      const el = resolveNext();
+      if (el && el.offsetParent !== null) {
+        advanced = true;
+        setStepIndex(stepIndex + 1);
+      }
+    }, 250);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(id);
+    };
+  }, [run, stepIndex, pendingIndex, setStepIndex]);
+
+  // When the user taps the highlighted dropdown item, advance off the
+  // navigation-prompt step immediately — the item is unmounted as soon as the
+  // menu closes, leaving the prompt pointing at nothing while the target page
+  // loads. Holding the pending route also stops the manual-navigation sync
+  // from bouncing back to the previous page mid-transition.
+  useEffect(() => {
+    if (!run || pendingIndex !== null) return;
+    const current = stepsRef.current[stepIndex];
+    if (!current?.menuItemRoute) return;
+    const route = current.menuItemRoute;
+
+    const onClickCapture = (event: MouseEvent) => {
+      const node = event.target as Node | null;
+      const link = node instanceof Element ? node.closest(`[href="${route}"]`) : null;
+      if (!link) return;
+      const idx = stepsRef.current.findIndex((s) => s.route === route);
+      if (idx === -1 || idx === stepIndex) return;
+      setPending(route, idx);
+      setStepIndex(idx);
+    };
+
+    document.addEventListener('click', onClickCapture, true);
+    return () => document.removeEventListener('click', onClickCapture, true);
+  }, [run, stepIndex, pendingIndex, setPending, setStepIndex]);
 
   const handleEvent = useCallback(
     (data: EventData) => {
@@ -263,7 +327,17 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
         }
         const nextStep = stepsRef.current[nextIndex];
         if (nextStep.route && nextStep.route !== pathnameRef.current) {
-          setPending(nextStep.route, nextIndex);
+          if (action === ACTIONS.PREV) {
+            // Going back across pages: land on that page's content step,
+            // skipping the navigation-prompt steps on either side.
+            const targetIndex = stepsRef.current.findIndex(
+              (s) => s.route === nextStep.route,
+            );
+            setPending(nextStep.route, targetIndex);
+          } else {
+            // Forward fallback for a route without a clickable menu item.
+            setPending(nextStep.route, nextIndex);
+          }
           router.push(nextStep.route);
         } else {
           setStepIndex(nextIndex);

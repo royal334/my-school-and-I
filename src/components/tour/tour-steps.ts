@@ -1,7 +1,13 @@
 import type { Step } from 'react-joyride';
 
 export type TourKind = 'student' | 'vendor';
-export type TourStep = Step & { route: string };
+type FloatingOptions = { strategy:string; [key: string]: any };
+export type TourStep = Omit<Step, 'floatingOptions'> & {
+  route: string;
+  floatingOptions?: FloatingOptions;
+  menuOpener?: boolean;
+  menuItemRoute?: string;
+};
 
 export function isDesktopView(): boolean {
   return typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
@@ -55,6 +61,162 @@ function mobileStep(step: TourStep): TourStep {
     ...step,
     floatingOptions: { ...step.floatingOptions, strategy: 'fixed' },
   };
+}
+
+const ROUTE_LABELS: Record<string, string> = {
+  '/dashboard': 'Dashboard',
+  '/dashboard/materials': 'Materials',
+  '/dashboard/cgpa': 'CGPA',
+  '/dashboard/profile': 'Profile',
+  '/dashboard/vendors': 'Vendors',
+  '/dashboard/announcements': 'Announcements',
+  '/dashboard/settings': 'Settings',
+  '/dashboard/vendors/analytics': 'Analytics',
+  '/dashboard/subscription': 'Subscription',
+  '/dashboard/notifications': 'Notifications',
+};
+
+function routeLabel(route: string): string {
+  return ROUTE_LABELS[route] ?? route.split('/').filter(Boolean).pop() ?? 'the next section';
+}
+
+/**
+ * Routes whose only mobile navigation link lives in the header dropdown menu
+ * (mobile-header-menu) rather than the bottom bar. They need a two-stage
+ * prompt: open the header menu first, then tap the item.
+ */
+const HEADER_MENU_ROUTES = new Set(['/dashboard/profile', '/dashboard/settings']);
+
+function isHeaderMenuRoute(route: string): boolean {
+  return HEADER_MENU_ROUTES.has(route);
+}
+
+function menuTriggerTarget(): () => HTMLElement | null {
+  return () => {
+    if (typeof window === 'undefined') return null;
+    return document.querySelector<HTMLElement>('[data-tour="mobile-header-menu"]');
+  };
+}
+
+/**
+ * Resolves the dropdown item linking to `route` inside the header menu. The
+ * item only exists in the DOM while the dropdown is open.
+ */
+function menuItemTarget(route: string): () => HTMLElement | null {
+  return () => {
+    if (typeof window === 'undefined') return null;
+    const nodes = document.querySelectorAll<HTMLElement>(`[href="${route}"]`);
+    for (const node of nodes) {
+      if (node.closest('[data-slot="dropdown-menu-content"]')) return node;
+    }
+    return null;
+  };
+}
+
+/**
+ * Resolves the menu item that links to `route` — the sidebar link on desktop
+ * (falling back to any visible link) and the bottom-bar link on mobile. This is
+ * the element the user must click to reach the next tour page.
+ */
+function navLinkTarget(route: string): () => HTMLElement | null {
+  return () => {
+    if (typeof window === 'undefined') return null;
+    const nodes = document.querySelectorAll<HTMLElement>(`[href="${route}"]`);
+    if (isDesktopView()) {
+      for (const node of nodes) {
+        if (node.closest('[data-slot="sidebar"], [data-tour="vendor-sidebar"]')) return node;
+      }
+    } else {
+      for (const node of nodes) {
+        if (node.closest('[data-tour="mobile-nav"]')) return node;
+      }
+      for (const node of nodes) {
+        if (node.offsetParent !== null) return node;
+      }
+    }
+    return nodes[0] ?? null;
+  };
+}
+
+/**
+ * A step that asks the user to click the menu item leading to `next`'s page.
+ * It lives on `sourceRoute` (the page the user is currently on) and only offers
+ * Skip — the tour only advances once the user actually clicks the highlighted
+ * menu item (manual navigation is picked up by OnboardingTour).
+ */
+function buildNavPromptStep(sourceRoute: string, next: TourStep, isMobile: boolean): TourStep {
+  const label = routeLabel(next.route);
+  return {
+    target: navLinkTarget(next.route),
+    title: `Open ${label}`,
+    content: isMobile
+      ? `Tap "${label}" in the bar below to continue.`
+      : `Click "${label}" in the sidebar to continue.`,
+    route: sourceRoute,
+    placement: isMobile ? 'top' : 'right',
+    floatingOptions: isMobile ? { strategy: 'fixed' } : undefined,
+    buttons: ['skip'],
+  };
+}
+
+/**
+ * Two-stage prompt for routes that only exist inside the mobile header
+ * dropdown: first ask the user to open the header menu, then to tap the item.
+ * The tour advances from the first to the second step once the dropdown opens
+ * (see OnboardingTour), and from the second step when the user taps the item
+ * (manual navigation is picked up by OnboardingTour).
+ */
+function buildMenuPromptSteps(sourceRoute: string, next: TourStep, isMobile: boolean): TourStep[] {
+  const label = routeLabel(next.route);
+  const floatingOptions = isMobile ? { strategy: 'fixed' } : undefined;
+  return [
+    {
+      target: menuTriggerTarget(),
+      title: 'Open the menu',
+      content: isMobile
+        ? 'Tap the menu button in the header to continue.'
+        : 'Click the menu button in the header to continue.',
+      route: sourceRoute,
+      placement: 'bottom',
+      floatingOptions,
+      buttons: ['skip'],
+      menuOpener: true,
+    },
+    {
+      target: menuItemTarget(next.route),
+      title: `Open ${label}`,
+      content: isMobile ? `Tap "${label}" in the menu to continue.` : `Click "${label}" in the menu to continue.`,
+      route: sourceRoute,
+      placement: 'bottom',
+      floatingOptions,
+      buttons: ['skip'],
+      menuItemRoute: next.route,
+    },
+  ];
+}
+
+/**
+ * Inserts a navigation-prompt step before every step that lives on a different
+ * page, so the user is guided to click the actual menu item instead of being
+ * auto-navigated. Routes that live in the mobile header dropdown get a
+ * two-stage prompt (open the menu, then tap the item).
+ */
+export function insertNavPromptSteps(steps: TourStep[], isMobile: boolean): TourStep[] {
+  const result: TourStep[] = [];
+  let sourceRoute = steps[0]?.route ?? null;
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    if (i > 0 && sourceRoute && step.route && step.route !== sourceRoute) {
+      if (isMobile && isHeaderMenuRoute(step.route)) {
+        result.push(...buildMenuPromptSteps(sourceRoute, step, isMobile));
+      } else {
+        result.push(buildNavPromptStep(sourceRoute, step, isMobile));
+      }
+    }
+    result.push(step);
+    if (step.route) sourceRoute = step.route;
+  }
+  return result;
 }
 
 export function navTarget(): HTMLElement | null {

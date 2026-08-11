@@ -39,6 +39,7 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
           className="ml-auto size-8"
           title="Menu"
           aria-label="Open menu"
+          data-tour="mobile-header-menu"
         >
           <MoreVertical className="h-4 w-4" />
         </Button>

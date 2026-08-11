@@ -57,7 +57,7 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student')}>
+        <DropdownMenuItem onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student', 'manual')}>
           <RotateCcw />
           Replay Tour
         </DropdownMenuItem>

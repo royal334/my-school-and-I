@@ -11,6 +11,8 @@ import {
   type Step,
 } from 'react-joyride';
 import { useTourStore } from './tour-store';
+import { useInstallPrompt } from '@/hooks/use-install-prompt';
+import { InstallPromptModal } from '@/components/pwa/install-prompt-modal';
 import {
   studentTourSteps,
   vendorTourSteps,
@@ -79,6 +81,9 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
 
   const [debugLines, setDebugLines] = useState<string[]>([]);
   const [tick, setTick] = useState(0);
+  const [installOpen, setInstallOpen] = useState(false);
+
+  const { canInstall, isIOS, isInstalled, hasDismissedInstall } = useInstallPrompt();
 
   const run = useTourStore((s) => s.run);
   const tour = useTourStore((s) => s.tour);
@@ -91,6 +96,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
   const setStepIndex = useTourStore((s) => s.setStepIndex);
   const setPending = useTourStore((s) => s.setPending);
   const clearPending = useTourStore((s) => s.clearPending);
+  const tourSource = useTourStore((s) => s.source);
 
   const isMobile = useIsMobile();
 
@@ -213,6 +219,14 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     if (idx !== -1 && idx !== stepIndex) setStepIndex(idx);
   }, [run, pathname, stepIndex, pendingIndex, setStepIndex]);
 
+  const finishTour = useCallback(() => {
+    if (tour) markTourSeen(tour, userId);
+    stop();
+    if (tourSource === 'auto' && !isInstalled && !hasDismissedInstall()) {
+      if (canInstall || isIOS) setInstallOpen(true);
+    }
+  }, [tour, userId, stop, tourSource, isInstalled, hasDismissedInstall, canInstall, isIOS]);
+
   const handleEvent = useCallback(
     (data: EventData) => {
       if (!run) return;
@@ -236,8 +250,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
         type === EVENTS.TOUR_END &&
         (status === STATUS.FINISHED || status === STATUS.SKIPPED)
       ) {
-        if (tour) markTourSeen(tour, userId);
-        stop();
+        finishTour();
         return;
       }
 
@@ -245,8 +258,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
         const delta = action === ACTIONS.PREV ? -1 : 1;
         const nextIndex = index + delta;
         if (nextIndex < 0 || nextIndex >= stepsRef.current.length) {
-          if (tour) markTourSeen(tour, userId);
-          stop();
+          finishTour();
           return;
         }
         const nextStep = stepsRef.current[nextIndex];
@@ -258,7 +270,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
         }
       }
     },
-    [run, tour, userId, setPending, setStepIndex, stop, router],
+    [run, finishTour, setPending, setStepIndex, router],
   );
 
   const debugOn =
@@ -391,6 +403,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
           ))}
         </div>
       )}
+      <InstallPromptModal open={installOpen} onOpenChange={setInstallOpen} />
     </>
   );
 }

@@ -38,7 +38,7 @@ export function InstallPromptModal({ open, onOpenChange }: InstallPromptModalPro
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent className="sm:max-w-sm z-[130]">
         <div className="flex flex-col items-center gap-3 pt-2 text-center">
           <Image
             src="/icon-192x192.png"

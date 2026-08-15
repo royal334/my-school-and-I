@@ -18,6 +18,7 @@ import {
 import { toast } from "sonner";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { markJustLoggedIn } from "@/components/tour/tour-login-marker";
 
 type LoginFormValues = {
   email: string;
@@ -44,6 +45,7 @@ export default function LoginPage() {
 
       if (error) throw error;
 
+      markJustLoggedIn();
       toast.success("Welcome back!", { position: "top-center" });
       router.push("/dashboard");
       router.refresh();

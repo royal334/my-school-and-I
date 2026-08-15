@@ -11,6 +11,8 @@ import {
   type Step,
 } from 'react-joyride';
 import { useTourStore } from './tour-store';
+import { useInstallPrompt } from '@/hooks/use-install-prompt';
+import { InstallPromptModal } from '@/components/pwa/install-prompt-modal';
 import {
   studentTourSteps,
   vendorTourSteps,
@@ -27,15 +29,6 @@ const STORAGE_DONE = 'done';
 
 function storageKey(tour: TourKind, userId: string) {
   return `${STORAGE_PREFIX}${tour}_${userId}`;
-}
-
-function hasSeenTour(tour: TourKind, userId: string) {
-  if (typeof window === 'undefined') return true;
-  try {
-    return localStorage.getItem(storageKey(tour, userId)) === STORAGE_DONE;
-  } catch {
-    return false;
-  }
 }
 
 function markTourSeen(tour: TourKind, userId: string) {
@@ -80,6 +73,9 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
 
   const [debugLines, setDebugLines] = useState<string[]>([]);
   const [tick, setTick] = useState(0);
+  const [installOpen, setInstallOpen] = useState(false);
+
+  const { canInstall, isIOS, isInstalled, hasDismissedInstall } = useInstallPrompt();
 
   const run = useTourStore((s) => s.run);
   const tour = useTourStore((s) => s.tour);
@@ -92,6 +88,9 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
   const setStepIndex = useTourStore((s) => s.setStepIndex);
   const setPending = useTourStore((s) => s.setPending);
   const clearPending = useTourStore((s) => s.clearPending);
+  const tourSource = useTourStore((s) => s.source);
+
+  const autoStartedRef = useRef(false);
 
   const isMobile = useIsMobile();
 
@@ -120,14 +119,19 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     setStepIndex(Math.max(0, steps.length - 1));
   }, [run, stepIndex, steps.length, setStepIndex]);
 
-  // Auto-start the appropriate tour on first visit.
+  // Auto-start the tour on every login, regardless of prior completion.
+  // `autoStartedRef` ensures the tour only starts once per mount — without it,
+  // the `run` dependency re-triggers this effect as soon as the tour ends and
+  // instantly restarts the tour.
   useEffect(() => {
-    if (run) return;
+    if (run || autoStartedRef.current) return;
     const kind: TourKind = isVendorView ? 'vendor' : 'student';
-    const forceStart =
-      typeof window !== 'undefined' &&
-      new URLSearchParams(window.location.search).has('tourStart');
-    if (hasSeenTour(kind, userId) && !forceStart) return;
+
+    const launch = () => {
+      if (autoStartedRef.current) return;
+      autoStartedRef.current = true;
+      start(kind);
+    };
 
     // If the first step points to a different route, start immediately so
     // navigation effect will redirect to the step route. If the first step
@@ -139,7 +143,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
 
     async function waitForAndStart() {
       if (first?.route && first.route !== pathnameRef.current) {
-        start(kind);
+        launch();
         return;
       }
 
@@ -165,14 +169,14 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
       while (!cancelled && Date.now() < deadline) {
         const el = resolveTarget();
         if (el) {
-          start(kind);
+          launch();
           return;
         }
         await new Promise((r) => setTimeout(r, interval));
       }
 
       // Fallback: start anyway if target never appeared.
-      if (!cancelled) start(kind);
+      if (!cancelled) launch();
     }
 
     waitForAndStart();
@@ -285,6 +289,14 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     return () => document.removeEventListener('click', onClickCapture, true);
   }, [run, stepIndex, pendingIndex, setPending, setStepIndex]);
 
+  const finishTour = useCallback(() => {
+    if (tour) markTourSeen(tour, userId);
+    stop();
+    if (tourSource === 'auto' && !isInstalled && !hasDismissedInstall()) {
+      if (canInstall || isIOS) setInstallOpen(true);
+    }
+  }, [tour, userId, stop, tourSource, isInstalled, hasDismissedInstall, canInstall, isIOS]);
+
   const handleEvent = useCallback(
     (data: EventData) => {
       if (!run) return;
@@ -308,8 +320,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
         type === EVENTS.TOUR_END &&
         (status === STATUS.FINISHED || status === STATUS.SKIPPED)
       ) {
-        if (tour) markTourSeen(tour, userId);
-        stop();
+        finishTour();
         return;
       }
 
@@ -317,8 +328,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
         const delta = action === ACTIONS.PREV ? -1 : 1;
         const nextIndex = index + delta;
         if (nextIndex < 0 || nextIndex >= stepsRef.current.length) {
-          if (tour) markTourSeen(tour, userId);
-          stop();
+          finishTour();
           return;
         }
         const nextStep = stepsRef.current[nextIndex];
@@ -340,7 +350,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
         }
       }
     },
-    [run, tour, userId, setPending, setStepIndex, stop, router],
+    [run, finishTour, setPending, setStepIndex, router],
   );
 
   const debugOn =
@@ -473,6 +483,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
           ))}
         </div>
       )}
+      <InstallPromptModal open={installOpen} onOpenChange={setInstallOpen} />
     </>
   );
 }

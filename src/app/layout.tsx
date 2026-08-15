@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { Toaster } from "sonner";
+import { cookies } from 'next/headers';
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { Providers } from "../components/providers/providers";
 import { Analytics } from "@vercel/analytics/react"
@@ -47,16 +48,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore =  await cookies();
+  const themeCookie = cookieStore.get('theme')?.value;
+  // Apply the exact persisted theme value (when available) so server-render
+  // output matches the client. Avoid applying anything for 'system'.
+  const htmlClass = themeCookie && themeCookie !== 'system' ? themeCookie : undefined;
+  const htmlStyle = themeCookie && themeCookie !== 'system' ? { colorScheme: themeCookie } : undefined;
+
   return (
-    <html lang="en">
+    <html lang="en" className={htmlClass} style={htmlStyle}>
       <body className={`${inter.variable} font-sans antialiased`}>
-        <Providers>{children}</Providers>
-        <Toaster />
+        <Providers>
+          <Toaster />
+          {children}
+        </Providers>
         <Analytics />
         <SpeedInsights />
       </body>

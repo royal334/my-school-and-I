@@ -28,7 +28,7 @@ export function TourHelpButton({ hasVendor, isVendorAccount, className }: TourHe
       variant="ghost"
       size="icon"
       className={className ?? 'size-8'}
-      onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student')}
+      onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student', 'manual')}
       title="Take the dashboard tour"
       aria-label="Take the dashboard tour"
     >

@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { MoreVertical, RotateCcw, Settings, User } from 'lucide-react';
+import { MoreVertical, RotateCcw, Settings, User, LogOut  } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -11,16 +12,46 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import axios from 'axios'
 import { useTourStore } from '@/components/tour/tour-store';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface MobileHeaderMenuProps {
   hasVendor: boolean;
   isVendorAccount: boolean;
 }
 
+
 export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMenuProps) {
   const start = useTourStore((s) => s.start);
   const isVendorViewRef = useRef(false);
+  const router = useRouter();
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+
+    const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      const res = await axios.post('/api/auth/logout');
+      if (res.status === 200) {
+        router.push('/');
+      }
+    } catch {
+      router.push('/login');
+    } finally {
+      setLoggingOut(false);
+      setShowLogoutDialog(false);
+    }
+  };
 
   useEffect(() => {
     const isStudent = document.cookie
@@ -31,38 +62,72 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
   }, [hasVendor, isVendorAccount]);
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="ml-auto size-8"
-          title="Menu"
-          aria-label="Open menu"
-          data-tour="mobile-header-menu"
-        >
-          <MoreVertical className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-44">
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/profile">
-            <User />
-            Profile
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/settings">
-            <Settings />
-            Settings
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student')}>
-          <RotateCcw />
-          Replay Tour
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="ml-auto size-8"
+            title="Menu"
+            aria-label="Open menu"
+            data-tour="mobile-header-menu"
+          >
+            <MoreVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-44">
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/profile">
+              <User />
+              Profile
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/settings">
+              <Settings />
+              Settings
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            {/* Logout Button */}
+          <button
+            onClick={() => setShowLogoutDialog(true)}
+            className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors duration-200 overflow-hidden">
+            <LogOut className='text-red-600 dark:text-red-400'/>
+            <span className="truncate text-center max-w-full">Logout</span>
+          </button>
+      
+            </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student', 'manual')}>
+            <RotateCcw />
+            Replay Tour
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+        <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Log out of UniHub?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You will be signed out of your account and redirected to the login
+              page.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={loggingOut}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600 dark:bg-red-700 dark:hover:bg-red-800"
+            >
+              {loggingOut ? 'Logging out…' : 'Yes, log out'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

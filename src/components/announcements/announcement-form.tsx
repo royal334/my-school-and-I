@@ -28,6 +28,8 @@ import {
   TabsTrigger,
 } from '@/components/ui/tabs';
 import { AlertCircle, CheckCircle2, Users, Loader2 } from 'lucide-react';
+import AnnouncementFormSkeleton from './announcement-form-skeleton';
+import { requestNotificationPermission } from '@/utils/lib/notifications';
 
 interface Faculty {
   id: string;
@@ -138,6 +140,7 @@ export default function AnnouncementForm() {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [success, setSuccess] = useState(false);
   const [activeTab, setActiveTab] = useState('compose');
+
 
   useEffect(() => {
     let cancelled = false;
@@ -305,6 +308,8 @@ export default function AnnouncementForm() {
       return;
     }
 
+      const token = await requestNotificationPermission();
+
     try {
       const payload = {
         title: data.title.trim(),
@@ -319,6 +324,7 @@ export default function AnnouncementForm() {
         expires_at: data.expires_at
           ? new Date(data.expires_at).toISOString()
           : undefined,
+        notification_token: token || undefined,
       };
 
       const response = await fetch('/api/announcements', {
@@ -347,41 +353,7 @@ export default function AnnouncementForm() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-4xl space-y-6">
-        <Card>
-          <CardHeader>
-            <div className="h-6 w-40 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <div className="h-4 w-24 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-              <div className="h-10 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-            </div>
-            <div className="space-y-2">
-              <div className="h-4 w-24 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-              <div className="h-32 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-            </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <div className="h-4 w-24 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-                <div className="h-10 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-              </div>
-              <div className="space-y-2">
-                <div className="h-4 w-24 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-                <div className="h-10 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="h-4 w-28 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-              <div className="h-10 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-            </div>
-            <div className="flex gap-3">
-              <div className="h-10 w-24 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-              <div className="h-10 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <AnnouncementFormSkeleton/>
     );
   }
 

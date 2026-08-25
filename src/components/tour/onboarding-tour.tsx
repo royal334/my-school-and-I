@@ -11,6 +11,7 @@ import {
   type Step,
 } from 'react-joyride';
 import { useTourStore } from './tour-store';
+import { consumeJustLoggedIn } from './tour-login-marker';
 import { useInstallPrompt } from '@/hooks/use-install-prompt';
 import { InstallPromptModal } from '@/components/pwa/install-prompt-modal';
 import {
@@ -119,12 +120,17 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     setStepIndex(Math.max(0, steps.length - 1));
   }, [run, stepIndex, steps.length, setStepIndex]);
 
-  // Auto-start the tour on every login, regardless of prior completion.
-  // `autoStartedRef` ensures the tour only starts once per mount — without it,
-  // the `run` dependency re-triggers this effect as soon as the tour ends and
-  // instantly restarts the tour.
+  // Auto-start the tour only right after a real sign-in, regardless of prior
+  // completion. The login page sets a sessionStorage marker that is consumed
+  // here, so a plain page reload never replays the tour — only a real sign-in
+  // does. `autoStartedRef` ensures the tour only starts once per mount —
+  // without it, the `run` dependency re-triggers this effect as soon as the
+  // tour ends and instantly restarts the tour.
   useEffect(() => {
     if (run || autoStartedRef.current) return;
+
+    if (!consumeJustLoggedIn()) return;
+
     const kind: TourKind = isVendorView ? 'vendor' : 'student';
 
     const launch = () => {

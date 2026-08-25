@@ -1,29 +1,79 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Bell } from 'lucide-react';
+import { toast } from 'sonner';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Bell } from 'lucide-react';
-import { toast } from 'sonner';
+import { requestNotificationPermission } from '@/utils/lib/notifications';
+
+interface Preferences {
+  announcement_notifications: boolean;
+  vendor_notifications: boolean;
+}
+
+const defaults: Preferences = {
+  announcement_notifications: true,
+  vendor_notifications: true,
+};
 
 export default function NotificationSettings() {
-  const [settings, setSettings] = useState({
-    emailNewMaterials: true,
-    emailAnnouncements: true,
-    emailGradeUpdates: false,
-    emailSubscription: true,
-    pushNewMaterials: false,
-    pushAnnouncements: true,
-  });
+  const [preferences, setPreferences] = useState(defaults);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState<string | null>(null);
 
-  const handleToggle = (key: keyof typeof settings) => {
-    setSettings((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-    toast.success('Notification preference updated');
-  };
+  useEffect(() => {
+    fetch('/api/notifications/preferences')
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Failed to load notification preferences');
+        return response.json();
+      })
+      .then((data) => {
+        setPreferences((current) => ({
+          ...current,
+          announcement_notifications:
+            data.preferences.announcement_notifications ?? current.announcement_notifications,
+          vendor_notifications:
+            data.preferences.vendor_notifications ?? current.vendor_notifications,
+        }));
+      })
+      .catch((error) => toast.error(error.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  async function updatePreference(key: keyof Preferences, value: boolean) {
+    const previous = preferences[key];
+    setPreferences((current) => ({ ...current, [key]: value }));
+    setSaving(key);
+
+    try {
+      if (value && key === 'announcement_notifications') {
+        const token = await requestNotificationPermission();
+        if (!token) throw new Error('Notifications were not granted');
+
+        const tokenResponse = await fetch('/api/notifications/register-token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        });
+        if (!tokenResponse.ok) throw new Error('Failed to register this device');
+      }
+
+      const response = await fetch('/api/notifications/preferences', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [key]: value }),
+      });
+      if (!response.ok) throw new Error('Failed to save notification preference');
+      toast.success('Notification preference updated');
+    } catch (error) {
+      setPreferences((current) => ({ ...current, [key]: previous }));
+      toast.error(error instanceof Error ? error.message : 'Failed to update preference');
+    } finally {
+      setSaving(null);
+    }
+  }
 
   return (
     <Card>
@@ -33,110 +83,42 @@ export default function NotificationSettings() {
           <h2 className="text-xl font-semibold">Notifications</h2>
         </div>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          Choose what notifications you want to receive
+          Choose which updates you want to receive
         </p>
       </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Email Notifications */}
-        <div className="space-y-4">
-          <h3 className="font-medium text-slate-900 dark:text-slate-100">
-            Email Notifications
-          </h3>
-
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="email-materials">New Materials</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Get notified when new study materials are uploaded
-                </p>
-              </div>
-              <Switch
-                id="email-materials"
-                checked={settings.emailNewMaterials}
-                onCheckedChange={() => handleToggle('emailNewMaterials')}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="email-announcements">Announcements</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Receive important departmental announcements
-                </p>
-              </div>
-              <Switch
-                id="email-announcements"
-                checked={settings.emailAnnouncements}
-                onCheckedChange={() => handleToggle('emailAnnouncements')}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="email-grades">Grade Updates</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Updates about your CGPA and semester results
-                </p>
-              </div>
-              <Switch
-                id="email-grades"
-                checked={settings.emailGradeUpdates}
-                onCheckedChange={() => handleToggle('emailGradeUpdates')}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="email-subscription">Subscription Updates</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Payment confirmations and subscription reminders
-                </p>
-              </div>
-              <Switch
-                id="email-subscription"
-                checked={settings.emailSubscription}
-                onCheckedChange={() => handleToggle('emailSubscription')}
-              />
-            </div>
+      <CardContent className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="space-y-0.5">
+            <Label htmlFor="push-announcements">Announcements</Label>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Receive academic and departmental announcements
+            </p>
           </div>
+          <Switch
+            id="push-announcements"
+            checked={preferences.announcement_notifications}
+            disabled={loading || saving !== null}
+            onCheckedChange={(value) => {
+              void updatePreference('announcement_notifications', value);
+            }}
+          />
         </div>
 
-        {/* Push Notifications */}
-        <div className="space-y-4">
-          <h3 className="font-medium text-slate-900 dark:text-slate-100">
-            Push Notifications
-          </h3>
-
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="push-materials">New Materials</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Browser notifications for new uploads
-                </p>
-              </div>
-              <Switch
-                id="push-materials"
-                checked={settings.pushNewMaterials}
-                onCheckedChange={() => handleToggle('pushNewMaterials')}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="push-announcements">Announcements</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Instant notifications for urgent updates
-                </p>
-              </div>
-              <Switch
-                id="push-announcements"
-                checked={settings.pushAnnouncements}
-                onCheckedChange={() => handleToggle('pushAnnouncements')}
-              />
-            </div>
+        <div className="flex items-center justify-between">
+          <div className="space-y-0.5">
+            <Label htmlFor="push-vendors">Vendor updates</Label>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Receive updates from approved vendors
+            </p>
           </div>
+          <Switch
+            id="push-vendors"
+            checked={preferences.vendor_notifications}
+            disabled={loading || saving !== null}
+            onCheckedChange={(value) => {
+              void updatePreference('vendor_notifications', value);
+            }}
+          />
         </div>
       </CardContent>
     </Card>

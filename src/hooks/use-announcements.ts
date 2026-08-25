@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import { usePostHogAnalytics } from '@/hooks/posthog-events';
 import { POSTHOG_EVENTS } from '@/utils/constants/constants';
@@ -30,6 +31,9 @@ export function useAnnouncements() {
     searchQuery: '',
     filterMode: 'all',
   });
+
+  const pathname = usePathname();
+  const isFeedPage = pathname === '/dashboard/announcements';
 
   const getAnnouncementParams = useCallback(() => {
     const params = new URLSearchParams({
@@ -81,6 +85,7 @@ export function useAnnouncements() {
   }, []);
 
   useEffect(() => {
+    if (!isFeedPage) return;
     let cancelled = false;
 
     async function init() {
@@ -99,7 +104,7 @@ export function useAnnouncements() {
     init();
 
     return () => { cancelled = true; };
-  }, [fetchAnnouncements, fetchSavedAnnouncements, supabase]);
+  }, [isFeedPage, fetchAnnouncements, fetchSavedAnnouncements, supabase]);
 
   const setType = useCallback((type: AnnouncementType) => {
     setFilters((prev) => ({ ...prev, type }));
@@ -177,7 +182,10 @@ export function useAnnouncements() {
   );
 
   const filteredAnnouncements = useMemo(() => {
-    let result = announcements;
+    const now = Date.now();
+    let result = announcements.filter(
+      (a) => !a.expires_at || new Date(a.expires_at).getTime() > now
+    );
 
     if (filters.filterMode === 'unread') {
       result = result.filter((a) => !a.is_read);

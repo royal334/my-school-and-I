@@ -73,7 +73,9 @@ async function fetchAnnouncementsFeed(params: AnnouncementsFeedParams) {
   let query = supabase
     .from('announcements')
     .select('*')
-    .eq('status', 'published');
+    .eq('status', 'published')
+    .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
+    .order('published_at', { ascending: false });
 
   if (params.type) {
     query = query.eq('type', params.type);
@@ -90,9 +92,9 @@ async function fetchAnnouncementsFeed(params: AnnouncementsFeedParams) {
   if (params.sort === 'priority') {
     query = query
       .order('priority', { ascending: false })
-      .order('created_at', { ascending: false });
+      .order('published_at', { ascending: false});
   } else {
-    query = query.order('created_at', { ascending: false });
+    query = query.order('published_at', { ascending: false });
   }
 
   const { data, error } = await query;
@@ -134,7 +136,9 @@ async function fetchAnnouncementsFeed(params: AnnouncementsFeedParams) {
       }
     }
 
-    return new Date(right.created_at).getTime() - new Date(left.created_at).getTime();
+    const leftTime = new Date(left.published_at ?? left.created_at).getTime();
+    const rightTime = new Date(right.published_at ?? right.created_at).getTime();
+    return leftTime - rightTime;
   });
 
   const pagedAnnouncements = sortedAnnouncements.slice(
@@ -167,6 +171,6 @@ export const getCachedAnnouncementsFeed = (params: AnnouncementsFeedParams) =>
     ],
     {
       revalidate: 60,
-      tags: [`announcements-feed:${params.userId}`],
+      tags: ['announcements-feed', `announcements-feed:${params.userId}`],
     },
   )(params);

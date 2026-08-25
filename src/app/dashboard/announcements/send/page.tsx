@@ -71,7 +71,6 @@ const canSend = [
             New Announcement
           </h1>
         </div>
-
           <AnnouncementForm />
       </div>
     </div>

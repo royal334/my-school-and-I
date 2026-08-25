@@ -7,6 +7,7 @@ import { getCachedUserContext } from '@/utils/cache';
 import { calculateCGPAFromSemesters } from '@/utils/lib/cgpa-helpers';
 import { StudentDashboard } from '@/components/dashboard';
 import VendorDashboard from '@/components/dashboard/vendor-dashboard';
+import  NotificationTest  from '@/components/notificationtest';
 
 export const metadata = {
   title: 'Dashboard | UniHub',
@@ -48,11 +49,13 @@ export default async function DashboardPage() {
   const currentGPA = cgpaResult?.cgpa ?? null;
 
   // Get recent announcements
+  const now = new Date().toISOString();
   const { data: announcements } = await supabase
     .from('announcements')
     .select('id, title, type, created_at')
     .not('published_at', 'is', null)
-    .lte('published_at', new Date().toISOString())
+    .lte('published_at', now)
+    .or(`expires_at.is.null,expires_at.gte.${now}`)
     .order('published_at', { ascending: false })
     .limit(3);
 
@@ -89,13 +92,16 @@ export default async function DashboardPage() {
     }
 
   return (
-    <StudentDashboard
-      profile={profile}
-      materialsCount={materialsCount || 0}
-      vendorsCount={vendorsCount || 0}
-      currentGPA={currentGPA}
-      announcements={announcements || []}
-      hasActiveSubscription={hasActiveSubscription}
-    />
+    <>
+      <NotificationTest />
+      <StudentDashboard
+        profile={profile}
+        materialsCount={materialsCount || 0}
+        vendorsCount={vendorsCount || 0}
+        currentGPA={currentGPA}
+        announcements={announcements || []}
+        hasActiveSubscription={hasActiveSubscription}
+      />
+    </>
   );
 }

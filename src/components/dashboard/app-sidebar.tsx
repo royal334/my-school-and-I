@@ -30,7 +30,7 @@ import {
   LogOut,
   Calculator,
   User,
-  Users,
+  MessageSquare,
   Bell,
   Settings,
   Store,
@@ -45,6 +45,7 @@ const baseNavItems = [
   { href: "/dashboard/cgpa", icon: Calculator, label: "CGPA" },
   { href: "/dashboard/profile", icon: User, label: "Profile" },
   { href: "/dashboard/vendors", icon: Store, label: "Vendors" },
+  { href: "/dashboard/notifications", icon: MessageSquare, label: "Notifications" },
   { href: "/dashboard/announcements", icon: Bell, label: "Announcements" },
   { href: "/dashboard/settings", icon: Settings, label: "Settings" },
 ];

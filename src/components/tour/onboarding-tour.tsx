@@ -11,8 +11,13 @@ import {
   type Step,
 } from 'react-joyride';
 import { useTourStore } from './tour-store';
+import { consumeJustLoggedIn } from './tour-login-marker';
 import { useInstallPrompt } from '@/hooks/use-install-prompt';
 import { InstallPromptModal } from '@/components/pwa/install-prompt-modal';
+import {
+  NotificationPromptModal,
+  shouldShowNotificationPrompt,
+} from '@/components/notifications/notification-prompt-modal';
 import {
   studentTourSteps,
   vendorTourSteps,
@@ -74,6 +79,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
   const [debugLines, setDebugLines] = useState<string[]>([]);
   const [tick, setTick] = useState(0);
   const [installOpen, setInstallOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
 
   const { canInstall, isIOS, isInstalled, hasDismissedInstall } = useInstallPrompt();
 
@@ -119,12 +125,17 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     setStepIndex(Math.max(0, steps.length - 1));
   }, [run, stepIndex, steps.length, setStepIndex]);
 
-  // Auto-start the tour on every login, regardless of prior completion.
-  // `autoStartedRef` ensures the tour only starts once per mount — without it,
-  // the `run` dependency re-triggers this effect as soon as the tour ends and
-  // instantly restarts the tour.
+  // Auto-start the tour only right after a real sign-in, regardless of prior
+  // completion. The login page sets a sessionStorage marker that is consumed
+  // here, so a plain page reload never replays the tour — only a real sign-in
+  // does. `autoStartedRef` ensures the tour only starts once per mount —
+  // without it, the `run` dependency re-triggers this effect as soon as the
+  // tour ends and instantly restarts the tour.
   useEffect(() => {
     if (run || autoStartedRef.current) return;
+
+    if (!consumeJustLoggedIn()) return;
+
     const kind: TourKind = isVendorView ? 'vendor' : 'student';
 
     const launch = () => {
@@ -289,11 +300,25 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     return () => document.removeEventListener('click', onClickCapture, true);
   }, [run, stepIndex, pendingIndex, setPending, setStepIndex]);
 
+  const handleNotificationOpenChange = useCallback(
+    (next: boolean) => {
+      setNotificationOpen(next);
+      if (!next && !isInstalled && !hasDismissedInstall() && (canInstall || isIOS)) {
+        setInstallOpen(true);
+      }
+    },
+    [isInstalled, hasDismissedInstall, canInstall, isIOS],
+  );
+
   const finishTour = useCallback(() => {
     if (tour) markTourSeen(tour, userId);
     stop();
-    if (tourSource === 'auto' && !isInstalled && !hasDismissedInstall()) {
-      if (canInstall || isIOS) setInstallOpen(true);
+    if (tourSource === 'auto') {
+      if (shouldShowNotificationPrompt()) {
+        setNotificationOpen(true);
+      } else if (!isInstalled && !hasDismissedInstall() && (canInstall || isIOS)) {
+        setInstallOpen(true);
+      }
     }
   }, [tour, userId, stop, tourSource, isInstalled, hasDismissedInstall, canInstall, isIOS]);
 
@@ -483,6 +508,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
           ))}
         </div>
       )}
+      <NotificationPromptModal open={notificationOpen} onOpenChange={handleNotificationOpenChange} />
       <InstallPromptModal open={installOpen} onOpenChange={setInstallOpen} />
     </>
   );

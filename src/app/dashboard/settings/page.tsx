@@ -48,9 +48,7 @@ export default async function SettingsPage() {
       <div className="space-y-6" data-tour="page-settings">
         <AppearanceSettings />
 
-        <ComingSoonOverlay>
-          <NotificationSettings />
-        </ComingSoonOverlay>
+        <NotificationSettings />
 
         <ComingSoonOverlay>
           <PrivacySettings />

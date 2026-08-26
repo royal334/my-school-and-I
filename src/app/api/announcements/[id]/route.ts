@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 // =====================================================
 // PATCH /api/announcements/[id]
 // =====================================================
@@ -56,7 +57,10 @@ export async function PATCH(request: Request) {
       .single();
    
        if (error) throw error;
-   
+
+       // Invalidate the cached feed so edits appear immediately.
+       revalidateTag('announcements-feed', { expire: 0 });
+
        // Log activity
        await supabase.from('announcement_activity_logs').insert({
          announcement_id: id,
@@ -134,7 +138,10 @@ export async function DELETE(request: Request) {
          .eq('id', id);
    
        if (error) throw error;
-   
+
+       // Invalidate the cached feed so archived announcements disappear.
+       revalidateTag('announcements-feed', { expire: 0 });
+
        // Log activity
        await supabase.from('announcement_activity_logs').insert({
          announcement_id: id,

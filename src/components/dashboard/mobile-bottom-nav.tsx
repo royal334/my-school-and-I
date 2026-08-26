@@ -1,16 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useRouter as useRouterNav } from 'next/navigation';
-import axios from 'axios';
 import {
   BookOpen,
   LayoutDashboard,
   Bell,
   Upload,
-  LogOut,
+  MessageSquare,
   Store, 
   Calculator
 } from 'lucide-react';
@@ -30,6 +28,7 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
       ? [{ href: '/dashboard/materials/upload', icon: Upload, label: 'Upload' }]
       : []),
     { href: '/dashboard/vendors', icon: Store, label: 'Vendors' },
+    { href: '/dashboard/notifications', icon: MessageSquare, label: 'Notifications' },
     { href: '/dashboard/announcements', icon: Bell, label: 'Announcements' },
   ];
   const pathname = usePathname();

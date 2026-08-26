@@ -23,7 +23,6 @@ export default async function CreateAnnouncementPage() {
   .maybeSingle();
 
 if (adminRoleError) {
-  console.log('admin_roles lookup failed:', adminRoleError);
   throw new Error('Unable to verify announcement permissions');  
   return;
 }
@@ -35,7 +34,6 @@ const { data: profile, error: profileError } = await supabase
   .single();
 
 if (profileError) {
-  console.log('profiles lookup failed:', profileError);
   return;
 }
 
@@ -71,7 +69,6 @@ const canSend = [
             New Announcement
           </h1>
         </div>
-
           <AnnouncementForm />
       </div>
     </div>

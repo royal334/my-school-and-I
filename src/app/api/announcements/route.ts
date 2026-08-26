@@ -1,9 +1,11 @@
-// app/api/announcements/route.ts
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { getAllowedScopes } from '@/utils/lib/announcements';
-import { getCachedAnnouncementsFeed, type FeedAnnouncement } from '@/utils/cache';
+import { revalidateTag } from 'next/cache';
+import { getCachedAnnouncementsFeed } from '@/utils/cache';
+import { sendBulkNotification } from '@/utils/lib/services/notification-service';
+import { registerDeviceToken } from '@/utils/lib/services/notification-service';
+import { createAdminClient } from '@/utils/supabase/admin';
 
 // GET /api/announcements - Fetch announcements visible to current user
 export async function GET(request: Request) {
@@ -48,15 +50,21 @@ export async function GET(request: Request) {
     }
 
     // Count unread
-    const { data: unreads } = await supabase
+    let unreadQuery = supabase
       .from('announcements')
       .select('id', { count: 'exact' })
       .eq('status', 'published')
-      .not(
+      .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`);
+
+    if (readIds.size > 0) {
+      unreadQuery = unreadQuery.not(
         'id',
         'in',
         `(${Array.from(readIds).join(',')})`
       );
+    }
+
+    const { data: unreads } = await unreadQuery;
 
     const authorIds = Array.from(
       new Set(
@@ -105,10 +113,10 @@ export async function GET(request: Request) {
         offset,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Fetch announcements error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch announcements' },
+      { error: error instanceof Error ? error.message : 'Failed to fetch announcements' },
       { status: 500 }
     );
   }
@@ -136,6 +144,7 @@ export async function POST(request: Request) {
       level,
       priority = 'normal',
       expires_at,
+      notification_token,
     } = body;
 
     // Basic validation
@@ -210,47 +219,6 @@ export async function POST(request: Request) {
     }
 
     const senderRole = adminRoleRow?.role || 'student';
-    // const allowedScopes = getAllowedScopes(senderRole);
-
-    // if (!allowedScopes.includes(scope)) {
-    //   return NextResponse.json(
-    //     {
-    //       error:
-    //         'You do not have permission to send announcements to this audience',
-    //     },
-    //     { status: 403 }
-    //   );
-    // }
-
-    // // Create announcement
-    // const isGlobalAdmin = ['super_admin', 'admin'].includes(senderRole);
-
-    // if (!isGlobalAdmin) {
-    //   const { data: senderProfile, error: senderProfileError } = await supabase
-    //     .from('profiles')
-    //     .select('faculty_id, department_id')
-    //     .eq('id', user.id)
-    //     .maybeSingle();
-
-    //   if (senderProfileError) throw senderProfileError;
-
-    //   if (scope !== 'general' && faculty_id !== senderProfile?.faculty_id) {
-    //     return NextResponse.json(
-    //       { error: 'You can only send announcements within your own faculty' },
-    //       { status: 403 }
-    //     );
-    //   }
-
-    //   if (
-    //     ['department', 'level'].includes(scope) &&
-    //     department_id !== senderProfile?.department_id
-    //   ) {
-    //     return NextResponse.json(
-    //       { error: 'You can only send announcements within your own department' },
-    //       { status: 403 }
-    //     );
-    //   }
-    // }
 
     const isGlobalAdmin = ['super_admin', 'admin'].includes(senderRole);
 
@@ -304,6 +272,9 @@ export async function POST(request: Request) {
 
     if (error) throw error;
 
+    // Invalidate the cached feed so new announcements appear immediately.
+    revalidateTag('announcements-feed', { expire: 0 });
+
     // Log activity
     await supabase.from('announcement_activity_logs').insert({
       announcement_id: announcement.id,
@@ -313,18 +284,59 @@ export async function POST(request: Request) {
       ip_address: request.headers.get('x-forwarded-for') || 'unknown',
     });
 
-    // TODO: Send notifications to affected students
-    // await notifyStudents(announcement);
+    const token = typeof notification_token === 'string' ? notification_token.trim() : null;
+
+    if (token) {
+      await registerDeviceToken(user.id, token);
+    }
+
+    const adminClient = createAdminClient();
+    let targetUsersQuery = adminClient.from('profiles').select('id');
+
+    if (announcement.target_scope === 'general') {
+      targetUsersQuery = targetUsersQuery.not('id', 'is', null); // All users
+    } 
+    else if (announcement.target_scope === 'faculty') {
+      targetUsersQuery = targetUsersQuery.eq('faculty_id', announcement.faculty_id);
+    } 
+    else if (announcement.target_scope === 'department') {
+      targetUsersQuery = targetUsersQuery.eq('department_id', announcement.department_id);
+    } 
+    else if (announcement.target_scope === 'level') {
+      targetUsersQuery = targetUsersQuery
+        .eq('department_id', announcement.department_id)
+        .eq('level', announcement.level);
+    }
+
+    const { data: targetUsers } = await targetUsersQuery;
+
+      const userIds = (targetUsers || []).map((u) => u.id);
+
+      const notificationResult = await sendBulkNotification({
+        userIds,
+        type: 'announcement',
+        title: announcement.title,
+        body: announcement.content.substring(0, 100), // Preview
+        data: {
+          announcement_id: announcement.id,
+          deeplink: `/dashboard/announcements/${announcement.id}`,
+        },
+      });
+
+      if (!notificationResult.success) {
+        console.error('Notification send failed:', notificationResult.error);
+      }
 
     return NextResponse.json({
       success: true,
       announcement,
+      notification: notificationResult,
       message: 'Announcement created and published successfully',
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Create announcement error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to create announcement' },
+      { error: error instanceof Error ? error.message : 'Failed to create announcement' },
       { status: 500 }
     );
   }

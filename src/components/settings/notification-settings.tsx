@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Bell } from 'lucide-react';
+import { Bell, BellRing, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { requestNotificationPermission } from '@/utils/lib/notifications';
 
 interface Preferences {
@@ -18,10 +19,19 @@ const defaults: Preferences = {
   vendor_notifications: true,
 };
 
+type PermissionState = 'unsupported' | 'denied' | 'default' | 'granted';
+
+function getPermissionState(): PermissionState {
+  if (typeof window === 'undefined' || !('Notification' in window)) return 'unsupported';
+  return Notification.permission as PermissionState;
+}
+
 export default function NotificationSettings() {
   const [preferences, setPreferences] = useState(defaults);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
+  const [permission, setPermission] = useState<PermissionState>(getPermissionState);
+  const [enabling, setEnabling] = useState(false);
 
   useEffect(() => {
     fetch('/api/notifications/preferences')
@@ -75,6 +85,40 @@ export default function NotificationSettings() {
     }
   }
 
+  async function handleEnableNotifications() {
+    if (enabling) return;
+    setEnabling(true);
+    try {
+      const token = await requestNotificationPermission();
+      if (!token) {
+        toast.error('Notification permission was denied');
+        setPermission(getPermissionState());
+        return;
+      }
+
+      const tokenResponse = await fetch('/api/notifications/register-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+      if (!tokenResponse.ok) throw new Error('Failed to register this device');
+
+      await fetch('/api/notifications/preferences', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ announcement_notifications: true, vendor_notifications: true }),
+      });
+
+      setPreferences({ announcement_notifications: true, vendor_notifications: true });
+      setPermission('granted');
+      toast.success('Notifications enabled');
+    } catch {
+      toast.error('Failed to enable notifications');
+    } finally {
+      setEnabling(false);
+    }
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -87,6 +131,38 @@ export default function NotificationSettings() {
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
+        {permission !== 'unsupported' && permission !== 'granted' && (
+          <div className="flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-950/30">
+            <div className="flex items-center gap-3">
+              <BellRing className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              <div>
+                <p className="text-sm font-medium">Push notifications are off</p>
+                <p className="text-xs text-muted-foreground">
+                  {permission === 'denied'
+                    ? 'Permission was blocked. Please enable them in your browser settings.'
+                    : 'Enable them to receive announcements and updates.'}
+                </p>
+              </div>
+            </div>
+            {permission !== 'denied' && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleEnableNotifications}
+                disabled={enabling}
+              >
+                {enabling ? 'Enabling…' : 'Enable'}
+              </Button>
+            )}
+          </div>
+        )}
+
+        {permission === 'granted' && (
+          <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700 dark:border-green-900/50 dark:bg-green-950/30 dark:text-green-400">
+            <Check className="h-4 w-4" />
+            Push notifications are enabled
+          </div>
+        )}
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <Label htmlFor="push-announcements">Announcements</Label>

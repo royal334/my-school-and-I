@@ -155,8 +155,6 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log(notification_token, "notification token from request body");
-
     const validScopes = ['general', 'faculty', 'department', 'level'];
     if (!validScopes.includes(scope)) {
       return NextResponse.json({ error: 'Invalid scope' }, { status: 400 });

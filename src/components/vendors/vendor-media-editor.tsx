@@ -22,7 +22,6 @@ export default function VendorMediaEditor({ vendor }: VendorMediaEditorProps) {
   const router = useRouter();
   const features = useVendorFeatures(vendor);
   const effectiveTier = features.tier;
-  console.log('VendorMediaEditor - effectiveTier:', effectiveTier);
 
   const handleRefresh = () => {
     router.refresh();

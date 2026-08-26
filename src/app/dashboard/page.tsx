@@ -7,7 +7,7 @@ import { getCachedUserContext } from '@/utils/cache';
 import { calculateCGPAFromSemesters } from '@/utils/lib/cgpa-helpers';
 import { StudentDashboard } from '@/components/dashboard';
 import VendorDashboard from '@/components/dashboard/vendor-dashboard';
-import  NotificationTest  from '@/components/notificationtest';
+import  NotificationTest  from '@/components/notifications/notificationtest';
 
 export const metadata = {
   title: 'Dashboard | UniHub',
@@ -93,7 +93,6 @@ export default async function DashboardPage() {
 
   return (
     <>
-      <NotificationTest />
       <StudentDashboard
         profile={profile}
         materialsCount={materialsCount || 0}

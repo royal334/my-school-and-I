@@ -15,6 +15,10 @@ import { consumeJustLoggedIn } from './tour-login-marker';
 import { useInstallPrompt } from '@/hooks/use-install-prompt';
 import { InstallPromptModal } from '@/components/pwa/install-prompt-modal';
 import {
+  NotificationPromptModal,
+  shouldShowNotificationPrompt,
+} from '@/components/notifications/notification-prompt-modal';
+import {
   studentTourSteps,
   vendorTourSteps,
   studentMobileTourSteps,
@@ -75,6 +79,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
   const [debugLines, setDebugLines] = useState<string[]>([]);
   const [tick, setTick] = useState(0);
   const [installOpen, setInstallOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
 
   const { canInstall, isIOS, isInstalled, hasDismissedInstall } = useInstallPrompt();
 
@@ -295,11 +300,25 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     return () => document.removeEventListener('click', onClickCapture, true);
   }, [run, stepIndex, pendingIndex, setPending, setStepIndex]);
 
+  const handleNotificationOpenChange = useCallback(
+    (next: boolean) => {
+      setNotificationOpen(next);
+      if (!next && !isInstalled && !hasDismissedInstall() && (canInstall || isIOS)) {
+        setInstallOpen(true);
+      }
+    },
+    [isInstalled, hasDismissedInstall, canInstall, isIOS],
+  );
+
   const finishTour = useCallback(() => {
     if (tour) markTourSeen(tour, userId);
     stop();
-    if (tourSource === 'auto' && !isInstalled && !hasDismissedInstall()) {
-      if (canInstall || isIOS) setInstallOpen(true);
+    if (tourSource === 'auto') {
+      if (shouldShowNotificationPrompt()) {
+        setNotificationOpen(true);
+      } else if (!isInstalled && !hasDismissedInstall() && (canInstall || isIOS)) {
+        setInstallOpen(true);
+      }
     }
   }, [tour, userId, stop, tourSource, isInstalled, hasDismissedInstall, canInstall, isIOS]);
 
@@ -489,6 +508,7 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
           ))}
         </div>
       )}
+      <NotificationPromptModal open={notificationOpen} onOpenChange={handleNotificationOpenChange} />
       <InstallPromptModal open={installOpen} onOpenChange={setInstallOpen} />
     </>
   );

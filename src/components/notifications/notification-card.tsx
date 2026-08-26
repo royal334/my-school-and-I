@@ -30,7 +30,7 @@ export default function NotificationCard({ notification, onMarkAsRead }: Notific
           : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
       }`}
     >
-      <CardContent className="p-4">
+      <CardContent className="px-4">
         <div className="flex items-start gap-3">
           <div className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${colorClass}`}>
             <NotificationIcon typeKey={typeKey} className="h-4 w-4" />

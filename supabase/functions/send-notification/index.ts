@@ -136,11 +136,15 @@ Deno.serve(async (req) => {
   try {
     const { token, tokens, title, body, data } = await req.json();
 
-    const deviceTokens: string[] = Array.isArray(tokens)
-      ? tokens
-      : typeof token === "string" && token
-        ? [token]
-        : [];
+    // Support both the legacy single-token payload and the bulk payload.
+    const deviceTokens = Array.from(
+      new Set([
+        ...(typeof token === "string" ? [token] : []),
+        ...(Array.isArray(tokens)
+          ? tokens.filter((value): value is string => typeof value === "string")
+          : []),
+      ].map((value) => value.trim()).filter(Boolean)),
+    );
 
     if (deviceTokens.length === 0) {
       return new Response(

@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { TrendingUp, Award, BookOpen } from "lucide-react";
-import { getClassOfDegree, getGPAColor } from "@/utils/lib/cgpa-helpers";
+import { getClassOfDegree } from "@/utils/lib/cgpa-helpers";
 
 import { CGPASummaryProps } from "@/utils/types";
 
@@ -16,26 +16,26 @@ export default function CGPASummary({
   return (
     <div className="grid gap-4 md:grid-cols-3">
       {/* Current Semester GPA */}
-      <Card className="border-primary-200 bg-primary-50 dark:bg-primary-950/30 dark:border-primary-900/50 transition-all">
+      <Card className="border-[#A8D8C2] bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.1)] dark:border-[rgba(126,200,160,0.2)] transition-all">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
-              Current Semester GPA
+            <span className="text-sm font-medium text-[#3A7260] dark:text-[#7EC8A0]">
+              Current semester GPA
             </span>
-            <TrendingUp className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+            <TrendingUp className="h-5 w-5 text-[#4A8C73] dark:text-[#7EC8A0]" />
           </div>
         </CardHeader>
         <CardContent>
           {currentSemesterGPA !== null ? (
-            <div className="text-3xl font-bold text-primary-900 dark:text-white">
+            <div className="text-3xl font-bold text-[#1A3C34] dark:text-[#E8F5EF]">
               {currentSemesterGPA.toFixed(2)}
-              <span className="text-base font-normal text-primary-600 dark:text-primary-400">
+              <span className="text-base font-normal text-[#4A8C73] dark:text-[#7EC8A0]">
                 {" "}
                 / 5.0
               </span>
             </div>
           ) : (
-            <div className="text-sm text-primary-600 dark:text-primary-400">
+            <div className="text-sm text-[#4A8C73] dark:text-[#7EC8A0]">
               No semester added yet
             </div>
           )}
@@ -43,45 +43,45 @@ export default function CGPASummary({
       </Card>
 
       {/* Cumulative CGPA */}
-      <Card className="border-secondary-200 bg-secondary-50 dark:bg-secondary-950/30 dark:border-secondary-900/50 transition-all">
+      <Card className="border-[#A8D8C2] bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.1)] dark:border-[rgba(126,200,160,0.2)] transition-all">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+            <span className="text-sm font-medium text-[#3A7260] dark:text-[#7EC8A0]">
               Cumulative CGPA
             </span>
-            <Award className="h-5 w-5 text-secondary-600 dark:text-secondary-400" />
+            <Award className="h-5 w-5 text-[#4A8C73] dark:text-[#7EC8A0]" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold text-secondary-900 dark:text-white">
+          <div className="text-3xl font-bold text-[#1A3C34] dark:text-[#E8F5EF]">
             {cumulativeCGPA.toFixed(2)}
-            <span className="text-base font-normal text-secondary-600 dark:text-secondary-400">
+            <span className="text-base font-normal text-[#4A8C73] dark:text-[#7EC8A0]">
               {" "}
               / 5.0
             </span>
           </div>
-          <div className="mt-1 text-xs text-secondary-700 dark:text-secondary-400">
+          <div className="mt-1 text-xs text-[#6B7B75] dark:text-[#A8C8BB]">
             {totalCreditUnits} total credit units
           </div>
         </CardContent>
       </Card>
 
       {/* Class of Degree */}
-      <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-900/50 transition-all">
+      <Card className="border-[#D6E5DF] bg-white dark:bg-[#1A2822] dark:border-[rgba(126,200,160,0.15)] transition-all">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-amber-700 dark:text-amber-300">
-              Class of Degree
+            <span className="text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB]">
+              Class of degree
             </span>
-            <BookOpen className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+            <BookOpen className="h-5 w-5 text-[#E8A020] dark:text-[#E8A020]" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-amber-900 dark:text-white">
-            {cumulativeCGPA > 0 ? classOfDegree : "Not Available"}
+          <div className="text-2xl font-bold text-[#141F1B] dark:text-[#E8F5EF]">
+            {cumulativeCGPA > 0 ? classOfDegree : "Not available"}
           </div>
           {cumulativeCGPA > 0 && (
-            <div className="mt-1 text-xs text-amber-700 dark:text-amber-400">
+            <div className="mt-1 text-xs text-[#6B7B75] dark:text-[#A8C8BB]">
               Based on current CGPA
             </div>
           )}

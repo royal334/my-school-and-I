@@ -94,7 +94,7 @@ export default function UpdatePasswordPage() {
             Set New Password
           </h1>
           <p className="mt-2 text-center text-slate-600 dark:text-slate-400">
-            Choose a strong password for your UniHub account
+            Choose a strong password for your CampusHub account
           </p>
         </CardHeader>
         <CardContent>

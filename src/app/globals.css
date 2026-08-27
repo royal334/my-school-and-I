@@ -5,69 +5,90 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================
-   THEME CONFIGURATION
+   CAMPUSHUB DESIGN SYSTEM — THEME CONFIGURATION
    ============================================ */
 
 @theme {
   /* ------------------------------------------
-     COLOR PALETTE
+     PRIMARY PALETTE — Forest (Deep Green)
+     ------------------------------------------ */
+  --color-primary-50: #E8F5EF;
+  --color-primary-100: #D1EBE1;
+  --color-primary-200: #A8D8C2;
+  --color-primary-300: #7EC8A0;
+  --color-primary-400: #5DAA83;
+  --color-primary-500: #4A8C73;
+  --color-primary-600: #1A3C34;
+  --color-primary-700: #163229;
+  --color-primary-800: #112820;
+  --color-primary-900: #0D1F18;
+  --color-primary-950: #091510;
+
+  /* ------------------------------------------
+     SECONDARY PALETTE — Sage (Medium Green)
+     ------------------------------------------ */
+  --color-secondary-50: #E8F5EF;
+  --color-secondary-100: #D1EBE1;
+  --color-secondary-200: #A8D8C2;
+  --color-secondary-300: #7EC8A0;
+  --color-secondary-400: #5DAA83;
+  --color-secondary-500: #4A8C73;
+  --color-secondary-600: #3A7260;
+  --color-secondary-700: #2D5A4C;
+  --color-secondary-800: #204238;
+  --color-secondary-900: #142A24;
+  --color-secondary-950: #0A1512;
+
+  /* ------------------------------------------
+     ACCENT PALETTE — Gold (Warm)
+     ------------------------------------------ */
+  --color-accent-50: #FFF8EB;
+  --color-accent-100: #FFF0D4;
+  --color-accent-200: #FFE1A8;
+  --color-accent-300: #FFD07A;
+  --color-accent-400: #F0B84D;
+  --color-accent-500: #E8A020;
+  --color-accent-600: #C4850A;
+  --color-accent-700: #9E6A08;
+  --color-accent-800: #785006;
+  --color-accent-900: #523604;
+  --color-accent-950: #2C1D02;
+
+  /* ------------------------------------------
+     SEMANTIC COLORS
      ------------------------------------------ */
 
-  /* Primary - Deep Blue (Academic Authority) */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
-  --color-primary-950: #172554;
+  --color-success: #1A7A52;
+  --color-success-bg: #E8F5EF;
+  --color-success-text: #0D3D28;
 
-  /* Secondary - Muted Green (Success/Growth) */
-  --color-secondary-50: #f0fdf4;
-  --color-secondary-100: #dcfce7;
-  --color-secondary-200: #bbf7d0;
-  --color-secondary-300: #86efac;
-  --color-secondary-400: #4ade80;
-  --color-secondary-500: #22c55e;
-  --color-secondary-600: #16a34a;
-  --color-secondary-700: #15803d;
-  --color-secondary-800: #166534;
-  --color-secondary-900: #14532d;
-  --color-secondary-950: #052e16;
+  --color-error: #C44B2A;
+  --color-error-bg: #FDEAE5;
+  --color-error-text: #7A2E1A;
 
-  /* Accent - Amber (Highlights/Premium) */
-  --color-accent-50: #fffbeb;
-  --color-accent-100: #fef3c7;
-  --color-accent-200: #fde68a;
-  --color-accent-300: #fcd34d;
-  --color-accent-400: #fbbf24;
-  --color-accent-500: #f59e0b;
-  --color-accent-600: #d97706;
-  --color-accent-700: #b45309;
-  --color-accent-800: #92400e;
-  --color-accent-900: #78350f;
-  --color-accent-950: #451a03;
+  --color-warning: #E8A020;
+  --color-warning-bg: #FFF0D4;
+  --color-warning-text: #5A3800;
 
-  /* Semantic Colors */
-  --color-success: #22c55e;
-  --color-success-bg: #dcfce7;
-  --color-success-text: #166534;
+  --color-info: #4A8C73;
+  --color-info-bg: #E8F5EF;
+  --color-info-text: #1A3C34;
 
-  --color-error: #ef4444;
-  --color-error-bg: #fee2e2;
-  --color-error-text: #991b1b;
+  /* ------------------------------------------
+     NEUTRAL PALETTE — Stone / Fog
+     ------------------------------------------ */
 
-  --color-warning: #f59e0b;
-  --color-warning-bg: #fef3c7;
-  --color-warning-text: #92400e;
-
-  --color-info: #3b82f6;
-  --color-info-bg: #dbeafe;
-  --color-info-text: #1e40af;
+  --color-stone-50: #F7FAF9;
+  --color-stone-100: #F0F5F3;
+  --color-stone-200: #E1EBE6;
+  --color-stone-300: #C8D8D0;
+  --color-stone-400: #9AADA8;
+  --color-stone-500: #6B7B75;
+  --color-stone-600: #54635D;
+  --color-stone-700: #3D4A46;
+  --color-stone-800: #283330;
+  --color-stone-900: #141F1B;
+  --color-stone-950: #0A100E;
 
   /* ------------------------------------------
      TYPOGRAPHY
@@ -75,9 +96,9 @@
 
   /* Font Families */
   --font-sans:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
-  --font-display: "Inter", sans-serif;
+  --font-display: "DM Serif Display", Georgia, serif;
 
   /* Font Sizes */
   --font-size-xs: 0.75rem; /* 12px */
@@ -90,19 +111,19 @@
   --font-size-4xl: 2.25rem; /* 36px */
   --font-size-5xl: 3rem; /* 48px */
 
-  /* Font Weights */
+  /* Font Weights — design system uses 400 and 500 only */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
+  --font-weight-semibold: 500;
+  --font-weight-bold: 500;
 
   /* Line Heights */
   --line-height-tight: 1.25;
   --line-height-normal: 1.5;
-  --line-height-relaxed: 1.75;
+  --line-height-relaxed: 1.65;
 
   /* Letter Spacing */
-  --letter-spacing-tight: -0.025em;
+  --letter-spacing-tight: -0.02em;
   --letter-spacing-normal: 0;
   --letter-spacing-wide: 0.025em;
 
@@ -132,18 +153,16 @@
   --radius-full: 9999px;
 
   /* ------------------------------------------
-     SHADOWS
+     SHADOWS — Forest-tinted, never black
      ------------------------------------------ */
 
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg:
-    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl:
-    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 4px rgba(26,60,52,0.08), 0 0 0 0.5px #D6E5DF;
+  --shadow-base: 0 2px 8px rgba(26,60,52,0.10), 0 0 0 0.5px #D6E5DF;
+  --shadow-md: 0 4px 16px rgba(26,60,52,0.12), 0 0 0 0.5px #D6E5DF;
+  --shadow-lg: 0 8px 32px rgba(26,60,52,0.16), 0 0 0 0.5px #D6E5DF;
+  --shadow-xl: 0 12px 48px rgba(26,60,52,0.20), 0 0 0 0.5px #D6E5DF;
+  --shadow-2xl: 0 20px 64px rgba(26,60,52,0.24), 0 0 0 0.5px #D6E5DF;
+  --shadow-inner: inset 0 2px 4px 0 rgba(26,60,52,0.06);
 
   /* ------------------------------------------
      BREAKPOINTS
@@ -167,7 +186,9 @@
   --z-index-popover: 1060;
   --z-index-tooltip: 1070;
 
-  /* Shadcn Functional Mappings */
+  /* ------------------------------------------
+     SHADCN FUNCTIONAL MAPPINGS
+     ------------------------------------------ */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -198,36 +219,37 @@
 
 @layer base {
   :root {
-    --background: #f8fafc; /* slate-50 */
-    --foreground: #020617; /* slate-950 */
-    --card: #ffffff;
-    --card-foreground: #020617;
-    --popover: #ffffff;
-    --popover-foreground: #020617;
-    --primary: #2563eb; /* primary-600 */
-    --primary-foreground: #ffffff;
-    --secondary: #f1f5f9; /* slate-100 */
-    --secondary-foreground: #0f172a; /* slate-900 */
-    --muted: #f1f5f9;
-    --muted-foreground: #64748b; /* slate-500 */
-    --accent: #f1f5f9;
-    --accent-foreground: #0f172a;
-    --destructive: #ef4444; /* red-500 */
-    --destructive-foreground: #ffffff;
-    --border: #e2e8f0; /* slate-200 */
-    --input: #e2e8f0;
-    --ring: #3b82f6; /* primary-500 */
+    /* Shadcn semantic — mapped to CampusHub palette */
+    --background: #F0F5F3;        /* fog */
+    --foreground: #141F1B;        /* ink */
+    --card: #FFFFFF;              /* white */
+    --card-foreground: #141F1B;
+    --popover: #FFFFFF;
+    --popover-foreground: #141F1B;
+    --primary: #1A3C34;           /* forest */
+    --primary-foreground: #E8F5EF; /* mist */
+    --secondary: #E8F5EF;         /* mist */
+    --secondary-foreground: #1A3C34;
+    --muted: #F0F5F3;             /* fog */
+    --muted-foreground: #6B7B75;  /* stone */
+    --accent: #E8F5EF;
+    --accent-foreground: #1A3C34;
+    --destructive: #C44B2A;
+    --destructive-foreground: #FFFFFF;
+    --border: #D6E5DF;
+    --input: #D6E5DF;
+    --ring: #4A8C73;              /* sage */
     --radius: 0.5rem;
 
     /* Sidebar */
-    --sidebar: #ffffff;
-    --sidebar-foreground: #020617;
-    --sidebar-primary: #2563eb;
-    --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: #f1f5f9;
-    --sidebar-accent-foreground: #0f172a;
-    --sidebar-border: #e2e8f0;
-    --sidebar-ring: #3b82f6;
+    --sidebar: #1A3C34;
+    --sidebar-foreground: rgba(232,245,239,0.8);
+    --sidebar-primary: #E8A020;
+    --sidebar-primary-foreground: #1A3C34;
+    --sidebar-accent: rgba(126,200,160,0.25);
+    --sidebar-accent-foreground: #E8F5EF;
+    --sidebar-border: rgba(126,200,160,0.15);
+    --sidebar-ring: #4A8C73;
   }
 
   * {
@@ -241,27 +263,36 @@
   }
 
   body {
-    @apply bg-slate-50 text-slate-900 font-sans antialiased;
+    @apply bg-[#F0F5F3] text-[#141F1B] font-sans antialiased;
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
   }
 
-  /* Typography */
+  /* Typography — CampusHub display/headline styles */
   h1 {
-    @apply text-3xl font-bold tracking-tight lg:text-4xl;
+    font-family: var(--font-display);
+    @apply text-3xl tracking-tight lg:text-4xl;
+    color: #1A3C34;
+    letter-spacing: -0.02em;
   }
 
   h2 {
-    @apply text-2xl font-semibold tracking-tight lg:text-3xl;
+    font-family: var(--font-display);
+    @apply text-2xl tracking-tight lg:text-3xl;
+    color: #1A3C34;
+    letter-spacing: -0.01em;
   }
 
   h3 {
-    @apply text-xl font-semibold tracking-tight lg:text-2xl;
+    font-family: var(--font-display);
+    @apply text-xl tracking-tight lg:text-2xl;
+    color: #1A3C34;
   }
 
   h4 {
-    @apply text-lg font-semibold tracking-tight;
+    @apply text-lg tracking-tight;
+    color: #1A3C34;
   }
 
   p {
@@ -270,7 +301,9 @@
 
   /* Focus States - Accessibility */
   *:focus-visible {
-    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+    @apply outline-none;
+    box-shadow: 0 0 0 3px rgba(74, 140, 115, 0.15);
+    border-color: #4A8C73;
   }
 
   /* Smooth Scrolling */
@@ -280,7 +313,8 @@
 
   /* Selection */
   ::selection {
-    @apply bg-primary-200 text-primary-900;
+    background: #D1EBE1;
+    color: #0D1F18;
   }
 }
 
@@ -296,78 +330,110 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-slate-100;
+    background: #F0F5F3;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-slate-300 rounded-full hover:bg-slate-400;
+    background: #C8D8D0;
+    border-radius: 9999px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #9AADA8;
   }
 
   /* Loading Spinner */
   .spinner {
-    @apply animate-spin rounded-full border-2 border-slate-300 border-t-primary-600;
+    @apply animate-spin rounded-full;
+    border: 2px solid #D6E5DF;
+    border-top-color: #1A3C34;
   }
 
   /* Card Hover Effect */
   .card-hover {
-    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+    @apply transition-all duration-200;
+    box-shadow: 0 1px 4px rgba(26,60,52,0.08), 0 0 0 0.5px #D6E5DF;
+  }
+  .card-hover:hover {
+    box-shadow: 0 8px 32px rgba(26,60,52,0.16), 0 0 0 0.5px #D6E5DF;
+    transform: translateY(-2px);
   }
 
   /* Gradient Text */
   .gradient-text {
-    @apply bg-linear-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent;
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #1A3C34, #4A8C73);
   }
 
   /* Glass Effect */
   .glass {
-    @apply bg-white/80 backdrop-blur-sm;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(4px);
   }
 
-  /* Premium Badge */
+  /* Premium Badge — CampusHub Gold */
   .premium-badge {
-    @apply inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-700;
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium;
+    background: #FFF0D4;
+    color: #5A3800;
   }
 
   /* Status Badges */
   .status-success {
-    @apply bg-green-100 text-green-700;
+    background: #E8F5EF;
+    color: #1A7A52;
   }
 
   .status-warning {
-    @apply bg-amber-100 text-amber-700;
+    background: #FFF0D4;
+    color: #9E6A08;
   }
 
   .status-error {
-    @apply bg-red-100 text-red-700;
+    background: #FDEAE5;
+    color: #C44B2A;
   }
 
   .status-info {
-    @apply bg-blue-100 text-blue-700;
+    background: #E8F5EF;
+    color: #4A8C73;
   }
 
   /* Academic Grade Colors */
   .grade-a {
-    @apply bg-green-50 text-green-700 border-green-200;
+    background: #E8F5EF;
+    color: #1A7A52;
+    border-color: #A8D8C2;
   }
 
   .grade-b {
-    @apply bg-blue-50 text-blue-700 border-blue-200;
+    background: #E8F5EF;
+    color: #4A8C73;
+    border-color: #A8D8C2;
   }
 
   .grade-c {
-    @apply bg-yellow-50 text-yellow-700 border-yellow-200;
+    background: #FFF8EB;
+    color: #9E6A08;
+    border-color: #FFE1A8;
   }
 
   .grade-d {
-    @apply bg-orange-50 text-orange-700 border-orange-200;
+    background: #FFF0D4;
+    color: #C4850A;
+    border-color: #FFD07A;
   }
 
   .grade-e {
-    @apply bg-red-50 text-red-700 border-red-200;
+    background: #FDEAE5;
+    color: #C44B2A;
+    border-color: #F5B8AD;
   }
 
   .grade-f {
-    @apply bg-red-100 text-red-800 border-red-300;
+    background: #FDEAE5;
+    color: #7A2E1A;
+    border-color: #E88A78;
   }
 }
 
@@ -494,6 +560,26 @@
   }
 }
 
+/* Hub Mark pulse animation (loading/empty states) */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes hub-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%       { transform: scale(1.15); opacity: 0.8; }
+  }
+
+  /* Bottom sheet entry */
+  @keyframes sheet-enter {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  /* Page fade-through */
+  @keyframes page-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
+
 /* Animation Utility Classes */
 .animate-accordion-down {
   animation: accordion-down 0.2s ease-out;
@@ -529,7 +615,8 @@
 
 @media print {
   body {
-    @apply bg-white text-black;
+    background: white;
+    color: #141F1B;
   }
 
   .no-print {
@@ -542,75 +629,50 @@
 }
 
 /* ============================================
-   DARK MODE (Future Enhancement)
+   DARK MODE
    ============================================ */
 
-@media (prefers-color-scheme: dark) {
-  /* Dark mode styles can be added here when needed */
-}
-
-/* ============================================
-   REDUCED MOTION (Accessibility)
-   ============================================ */
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Existing @tailwind directives stay at top */
-
-/* Dark Mode Variables */
 @layer base {
-  :root {
-    /* Light mode (default) - already defined */
-  }
-
   .dark {
-    /* Softened Dark Mode Colors */
-    --background: hsl(222 47% 11%);      /* slate-900 */
-    --foreground: hsl(213 31% 91%);      /* slate-200 */
+    /* Surfaces — clear hierarchy from dark → light */
+    --background: #0B1411;
+    --foreground: #E8F5EF;
 
-    --card: hsl(222 47% 13%);           /* Slightly lighter than background */
-    --card-foreground: hsl(213 31% 91%);
+    --card: #15231E;
+    --card-foreground: #E8F5EF;
+    --popover: #15231E;
+    --popover-foreground: #E8F5EF;
 
-    --popover: hsl(222 47% 11%);
-    --popover-foreground: hsl(213 31% 91%);
+    /* Primary lighter sage for contrast on dark */
+    --primary: #7EC8A0;
+    --primary-foreground: #0B1411;
 
-    --primary: hsl(217.2 91.2% 59.8%);
-    --primary-foreground: hsl(222.2 47.4% 11.2%);
+    /* Secondary — mid surface */
+    --secondary: #1A2C25;
+    --secondary-foreground: #D1EBE1;
 
-    --secondary: hsl(217 33% 18%);      /* slate-800 */
-    --secondary-foreground: hsl(213 31% 91%);
+    --muted: #1A2C25;
+    --muted-foreground: #A8C8BB;
 
-    --muted: hsl(217 33% 18%);          /* slate-800 */
-    --muted-foreground: hsl(215 20% 65%); /* slate-400 */
+    --accent: #1A2C25;
+    --accent-foreground: #D1EBE1;
 
-    --accent: hsl(217 33% 18%);
-    --accent-foreground: hsl(213 31% 91%);
+    --destructive: #E8694A;
+    --destructive-foreground: #FFFFFF;
 
-    --destructive: hsl(0 62.8% 30.6%);
-    --destructive-foreground: hsl(210 40% 98%);
+    --border: rgba(126,200,160,0.22);
+    --input: rgba(126,200,160,0.22);
+    --ring: #7EC8A0;
 
-    --border: hsl(217 33% 18%);         /* slate-800 */
-    --input: hsl(217 33% 18%);
-    --ring: hsl(217.2 91.2% 59.8%);
-
-    /* Sidebar */
-    --sidebar: hsl(222 47% 11%);
-    --sidebar-foreground: hsl(213 31% 91%);
-    --sidebar-primary: hsl(217.2 91.2% 59.8%);
-    --sidebar-primary-foreground: hsl(222.2 47.4% 11.2%);
-    --sidebar-accent: hsl(217 33% 18%);
-    --sidebar-accent-foreground: hsl(213 31% 91%);
-    --sidebar-border: hsl(217 33% 18%);
-    --sidebar-ring: hsl(217.2 91.2% 59.8%);
+    /* Sidebar — darkest panel */
+    --sidebar: #091210;
+    --sidebar-foreground: #D1EBE1;
+    --sidebar-primary: #E8A020;
+    --sidebar-primary-foreground: #091210;
+    --sidebar-accent: rgba(126,200,160,0.18);
+    --sidebar-accent-foreground: #E8F5EF;
+    --sidebar-border: rgba(126,200,160,0.18);
+    --sidebar-ring: #7EC8A0;
   }
 }
 
@@ -632,13 +694,21 @@
 }
 
 .dark body {
-  @apply bg-slate-900 text-slate-100;
+  @apply bg-[#0B1411] text-[#E8F5EF];
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4 {
+  color: #E8F5EF;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-track {
-  @apply bg-slate-800;
+  background: #15231E;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-slate-600 hover:bg-slate-500;
+  background: #3D5A4D;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #4A8C73;
 }

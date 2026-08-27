@@ -2,14 +2,13 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useRouter as useRouterNav } from 'next/navigation';
 import {
   BookOpen,
   LayoutDashboard,
   Bell,
   Upload,
   MessageSquare,
-  Store, 
+  Store,
   Calculator
 } from 'lucide-react';
 
@@ -29,12 +28,9 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
       : []),
     { href: '/dashboard/vendors', icon: Store, label: 'Vendors' },
     { href: '/dashboard/notifications', icon: MessageSquare, label: 'Notifications' },
-    { href: '/dashboard/announcements', icon: Bell, label: 'Announcements' },
+    { href: '/dashboard/announcements', icon: Bell, label: 'Alerts' },
   ];
   const pathname = usePathname();
-  const router = useRouterNav();
-
-
 
   const isActive = (href: string) => {
     if (href === '/dashboard') {
@@ -60,10 +56,9 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-
   return (
     <>
-      <nav data-tour="mobile-nav" className="fixed bottom-0 left-0 right-0 border-t bg-white dark:bg-slate-950 dark:border-slate-800 z-50">
+      <nav data-tour="mobile-nav" className="fixed bottom-0 left-0 right-0 border-t border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)] bg-white dark:bg-[#1A2822] z-50" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="flex items-center justify-between gap-1 h-16 sm:h-18 max-w-screen-xl mx-auto px-1.5">
           {navItems.map(({ href, icon: Icon, label }) => (
             <Link
@@ -72,8 +67,8 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
               className={cn(
                 'flex min-w-0 flex-1 flex-col items-center justify-center h-full px-1 py-1.5 gap-0.5 text-[10px] leading-none rounded-md transition-colors duration-200 overflow-hidden',
                 isActive(href)
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-slate-900'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                  ? 'text-[#1A3C34] dark:text-[#7EC8A0] bg-[#E8F5EF] dark:bg-[#1E3028]'
+                  : 'text-[#6B7B75] dark:text-[#A8C8BB] hover:text-[#141F1B] dark:hover:text-[#E8F5EF]'
               )}
             >
               <Icon className="h-4.5 w-4.5 shrink-0" />
@@ -83,10 +78,7 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
         </div>
       </nav>
 
-      {/* Add padding to body to account for fixed bottom nav */}
       <div className="h-16 sm:h-18 md:h-0" />
-
-
     </>
   );
 }

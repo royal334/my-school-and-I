@@ -112,18 +112,18 @@ export default function UpgradeForm({ vendor, preSelectedTier }: UpgradeFormProp
       <Card
         className={`relative flex flex-col transition-all ${
           upgradable ? 'hover:shadow-lg' : 'opacity-80'
-        } ${tierKey === 'featured' ? 'border-amber-200 dark:border-amber-900/50' : 'border-blue-200 dark:border-blue-900/50'}`}
+        } ${tierKey === 'featured' ? 'border-amber-200 dark:border-amber-900/50' : 'border-[#D6E5DF]'}`}
       >
         {tierKey === 'featured' && (
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-            <Badge className="bg-amber-500 text-white">Most Popular</Badge>
+            <Badge className="bg-[#E8A020] text-[#3A2800]">Most Popular</Badge>
           </div>
         )}
 
         <CardHeader>
           <div className="flex items-center gap-2">
-            <div className={`rounded-full p-2 ${tierKey === 'featured' ? 'bg-amber-100 dark:bg-amber-950/50' : 'bg-blue-100 dark:bg-blue-950/50'}`}>
-              <Icon className={`h-5 w-5 ${tierKey === 'featured' ? 'text-amber-600 dark:text-amber-400' : 'text-blue-600 dark:text-blue-400'}`} />
+            <div className={`rounded-full p-2 ${tierKey === 'featured' ? 'bg-amber-100 dark:bg-amber-950/50' : 'bg-[#E8F5EF] dark:bg-[#1A2C25]'}`}>
+              <Icon className={`h-5 w-5 ${tierKey === 'featured' ? 'text-amber-600 dark:text-amber-400' : 'text-[#4A8C73]'}`} />
             </div>
             <CardTitle>{tier.name}</CardTitle>
           </div>

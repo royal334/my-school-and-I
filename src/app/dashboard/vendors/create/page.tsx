@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Create Vendor Listing | UniHub",
+  title: "Create Vendor Listing | CampusHub",
 };
 
 export default async function CreateVendorPage() {
@@ -54,7 +54,7 @@ export default async function CreateVendorPage() {
       </Link>
 
       <div>
-        <h1 className="text-3xl font-bold">List Your Business</h1>
+        <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>List your business</h1>
         <p className="text-slate-600 dark:text-slate-400">
           Create a vendor listing to connect with students
         </p>

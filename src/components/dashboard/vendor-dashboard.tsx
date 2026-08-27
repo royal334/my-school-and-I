@@ -87,22 +87,22 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
     <div className="space-y-6">
       {/* Welcome Section */}
       <div data-tour="vendor-welcome">
-        <h1 className="text-3xl font-bold">Welcome back, {profile.full_name}!</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Welcome back, {profile.full_name}!</h1>
+        <p className="text-[#6B7B75] dark:text-[#A8C8BB]">
           Here&apos;s what&apos;s happening with your business in the last 30 days
         </p>
       </div>
 
       {/* Quick Actions */}
       {!vendor && (
-        <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30">
+        <Card className="border-[#E8F5EF] bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.1)] dark:border-[rgba(126,200,160,0.2)]">
           <CardContent className="flex items-start gap-4 p-6">
-            <AlertCircle className="h-6 w-6 text-blue-600" />
+            <AlertCircle className="h-6 w-6 text-[#4A8C73]" />
             <div className="flex-1">
-              <h3 className="mb-1 font-semibold text-blue-900">
-                Create Your Vendor Listing
+              <h3 className="mb-1 font-medium text-[#1A3C34]">
+                Create your vendor listing
               </h3>
-              <p className="mb-3 text-sm text-blue-800">
+              <p className="mb-3 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
                 Start connecting with thousands of students by listing your business
               </p>
               <Link href="/vendor-signup">
@@ -117,9 +117,9 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
         <>
           {/* Pending Approval Notice */}
           {!vendor.is_approved && (
-            <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-900/30">
+            <Card className="border-[#D6E5DF] bg-[#FFF0D4] dark:bg-[rgba(232,160,32,0.1)] dark:border-[rgba(232,160,32,0.3)]">
               <CardContent className="p-4">
-                <p className="text-sm font-medium text-amber-900">
+                <p className="text-sm font-medium text-[#9E6A08]">
                   ⏳ Your listing is pending admin approval. It will be visible to
                   students once approved.
                 </p>
@@ -135,7 +135,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <CardTitle className="text-sm font-medium text-muted-foreground">
                     Total Views
                   </CardTitle>
-                  <Eye className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <Eye className="h-4 w-4 text-[#4A8C73]" />
                 </div>
               </CardHeader>
               <CardContent>
@@ -158,7 +158,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <CardTitle className="text-sm font-medium text-muted-foreground">
                     Total Contacts
                   </CardTitle>
-                  <Phone className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  <Phone className="h-4 w-4 text-[#1A7A52]" />
                 </div>
               </CardHeader>
               <CardContent>
@@ -181,7 +181,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <CardTitle className="text-sm font-medium text-muted-foreground">
                     Average Rating
                   </CardTitle>
-                  <Star className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                  <Star className="h-4 w-4 text-[#E8A020]" />
                 </div>
               </CardHeader>
               <CardContent>
@@ -203,7 +203,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   <CardTitle className="text-sm font-medium text-muted-foreground">
                     Conversion Rate
                   </CardTitle>
-                  <TrendingUp className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  <TrendingUp className="h-4 w-4 text-[#4A8C73]" />
                 </div>
               </CardHeader>
               <CardContent>
@@ -228,7 +228,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               {/* Vendor Summary Card */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Your Listing</CardTitle>
+                          <CardTitle style={{ fontFamily: "var(--font-display)" }}>Your listing</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -259,7 +259,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                               {vendor.business_name}
                             </h3>
                             {isVerified && (
-                              <CheckCircle2 className="h-4 w-4 fill-blue-500 text-white" />
+                              <CheckCircle2 className="h-4 w-4 fill-[#4A8C73] text-white" />
                             )}
                           </div>
                           {vendor.vendor_categories && (
@@ -271,7 +271,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {vendor.is_featured && (
-                            <Badge className="bg-amber-500">
+                            <Badge className="bg-[#E8A020] text-[#3A2800]">
                               <Crown className="mr-1 h-3 w-3" />
                               Featured
                             </Badge>
@@ -287,7 +287,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                             {vendor.is_approved ? 'Approved' : 'Pending'}
                           </Badge> */}
                           {isVerified && (
-                            <Badge className="bg-blue-500 text-white">
+                            <Badge className="bg-[#1A3C34] text-[#E8F5EF]">
                               Verified
                             </Badge>
                           )}
@@ -348,7 +348,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               {/* Subscription Card */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Your Plan</CardTitle>
+                          <CardTitle style={{ fontFamily: "var(--font-display)" }}>Your plan</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -365,13 +365,13 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
 
                   {vendor.subscription_tier === 'basic' ? (
                     <>
-                      <p className="mb-3 text-sm text-muted-foreground">
+                      <p className="mb-3 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
                         Upgrade to unlock premium features and boost your visibility
                       </p>
                       <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
-                        <Button className="w-full">
+                        <Button className="w-full bg-[#E8A020] hover:bg-[#D4901A] text-[#3A2800]">
                           <Crown className="mr-2 h-4 w-4" />
-                          Upgrade to Premium
+                          Upgrade to premium
                         </Button>
                       </Link>
                     </>
@@ -379,7 +379,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                     <>
                       <div className="mb-3 space-y-2 text-sm">
                         <div className="flex items-center gap-2">
-                          <div className="h-2 w-2 rounded-full bg-green-500" />
+                          <div className="h-2 w-2 rounded-full bg-[#4A8C73]" />
                           <span>Active subscription</span>
                         </div>
                         {vendor.subscription_expires_at && (
@@ -424,31 +424,31 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                 <div className='xl:col-span-3'>
                 <Card>
                   <CardHeader>
-                    <CardTitle>Quick Actions</CardTitle>
+                          <CardTitle style={{ fontFamily: "var(--font-display)" }}>Quick actions</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <Link href="/dashboard/vendors/my-listings" className="block">
-                      <Button variant="outline" className="w-full justify-start">
+                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028]">
                         <Store className="mr-2 h-4 w-4" />
-                        Manage Listing
+                        Manage listing
                       </Button>
                     </Link>
                     <Link href="/dashboard/vendors/analytics" className="block">
-                      <Button variant="outline" className="w-full justify-start">
+                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028]">
                         <BarChart3 className="mr-2 h-4 w-4" />
-                        View Analytics
+                        View analytics
                       </Button>
                     </Link>
                     <Link href="/dashboard/notifications" className="block">
-                      <Button variant="outline" className="w-full justify-start">
+                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028]">
                         <MessageSquare className="mr-2 h-4 w-4" />
                         Notifications
                       </Button>
                     </Link>
                     <Link href="/dashboard/settings" className="block">
-                      <Button variant="outline" className="w-full justify-start">
+                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028]">
                         <Users className="mr-2 h-4 w-4" />
-                        Account Settings
+                        Account settings
                       </Button>
                     </Link>
                   </CardContent>

@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import ComingSoonOverlay from "@/components/settings/coming-soon-overlay";
 
 export const metadata = {
-  title: "Settings | UniHub",
+  title: "Settings | CampusHub",
 };
 
 export default async function SettingsPage() {
@@ -38,7 +38,7 @@ export default async function SettingsPage() {
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold" >Settings</h1>
+        <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Settings</h1>
         <p className="text-slate-600 dark:text-slate-400">
           Manage your preferences and customize your experience
         </p>

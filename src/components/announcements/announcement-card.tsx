@@ -3,14 +3,10 @@
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { Bookmark, ChevronRight, Clock } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import type { Announcement } from './types';
 import {
   formatRoleLabel,
-  getCategoryIcon,
-  getPriorityColor,
 } from './announcement-utils';
 
 interface AnnouncementCardProps {
@@ -18,6 +14,14 @@ interface AnnouncementCardProps {
   isSaved: boolean;
   onSave: (announcementId: string) => void;
   onMarkAsRead: (announcementId: string) => void;
+}
+
+function getPriorityStripe(priority: string) {
+  switch (priority) {
+    case 'urgent': return '#C44B2A';
+    case 'important': return '#E8A020';
+    default: return '#4A8C73';
+  }
 }
 
 export default function AnnouncementCard({
@@ -30,25 +34,33 @@ export default function AnnouncementCard({
   const roleLabel = author.role?.role || sender_role;
 
   return (
-    <Card
-      className={`transition-all hover:shadow-md ${
-        !is_read ? 'border-primary-300 bg-primary-50 dark:border-primary-900/50 dark:bg-primary-950/30' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
+    <div
+      className={`flex border rounded-xl overflow-hidden transition-all hover:shadow-md ${
+        !is_read ? 'border-[#A8D8C2] bg-[#E8F5EF]/50 dark:border-[rgba(126,200,160,0.3)] dark:bg-[rgba(126,200,160,0.05)]' : 'border-[#D6E5DF] bg-white dark:border-[rgba(126,200,160,0.15)] dark:bg-[#1A2822]'
       }`}
     >
-      <CardHeader className="pb-3">
+      {/* Priority stripe */}
+      <div
+        className="w-1 flex-shrink-0"
+        style={{ background: getPriorityStripe(announcement.priority) }}
+      />
+
+      <div className="flex-1 p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <Badge className={getPriorityColor(announcement.priority)}>
-                {announcement.priority.toUpperCase()}
-              </Badge>
+              <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.15)] text-[#4A8C73] dark:text-[#7EC8A0] uppercase" style={{ letterSpacing: "0.06em" }}>
+                {announcement.priority}
+              </span>
               {announcement.category && (
-                <Badge variant="outline">
-                  {getCategoryIcon(announcement.category)} {announcement.category}
-                </Badge>
+                <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1A2C25] text-[#6B7B75] dark:text-[#A8C8BB] border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)]">
+                  {announcement.category}
+                </span>
               )}
               {!is_read && (
-                <Badge className="bg-primary-600 text-white">Unread</Badge>
+                <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#1A3C34] text-[#E8F5EF]">
+                  Unread
+                </span>
               )}
             </div>
 
@@ -56,38 +68,35 @@ export default function AnnouncementCard({
               href={`/dashboard/announcements/${announcement.id}`}
               className="block group"
             >
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition line-clamp-2">
+              <h3 className="text-base font-medium text-[#141F1B] dark:text-[#E8F5EF] group-hover:text-[#4A8C73] dark:group-hover:text-[#7EC8A0] transition line-clamp-2" style={{ fontFamily: "var(--font-display)" }}>
                 {announcement.title}
               </h3>
             </Link>
 
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 line-clamp-2">
+            <p className="text-sm text-[#6B7B75] dark:text-[#A8C8BB] mt-1 line-clamp-2">
               {announcement.content}
             </p>
           </div>
 
           <button
             onClick={() => onSave(announcement.id)}
-            className="mt-1 p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            className="mt-1 p-2 rounded hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028] transition"
             title={isSaved ? 'Unsave' : 'Save'}
           >
             <Bookmark
               className={`h-5 w-5 ${
-                isSaved ? 'fill-amber-500 text-amber-500' : 'text-slate-400 dark:text-slate-500'
+                isSaved ? 'fill-[#E8A020] text-[#E8A020]' : 'text-[#9AADA8]'
               }`}
             />
           </button>
         </div>
-      </CardHeader>
 
-      <CardContent>
-        <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+        <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-[#6B7B75] dark:text-[#A8C8BB] mt-3">
           <div className="flex items-center justify-between w-full">
-            <span className="flex flex-col gap-2">
-              <span className="font-lg text-slate-700 dark:text-slate-300">{author.full_name}</span>
-
+            <span className="flex flex-col gap-1">
+              <span className="font-medium text-[#3D4A46] dark:text-[#C8D8D0]">{author.full_name}</span>
               {roleLabel && (
-                <span className="capitalize font-lg text-slate-700 dark:text-slate-300">
+                <span className="capitalize text-[#6B7B75]">
                   {formatRoleLabel(roleLabel)}
                 </span>
               )}
@@ -108,7 +117,7 @@ export default function AnnouncementCard({
                 variant="outline"
                 onClick={() => onMarkAsRead(announcement.id)}
               >
-                Mark Read
+                Mark read
               </Button>
             )}
 
@@ -119,7 +128,7 @@ export default function AnnouncementCard({
             </Link>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

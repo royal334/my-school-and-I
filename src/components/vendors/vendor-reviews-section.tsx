@@ -18,7 +18,7 @@ export default function VendorReviewsSection({
   return (
     <Card>
       <CardContent className="p-6">
-        <h2 className="mb-4 text-xl font-bold">Customer Reviews</h2>
+        <h2 className="mb-4 text-xl" style={{ fontFamily: "var(--font-display)" }}>Customer reviews</h2>
 
         {/* Review Form (if not owner and haven't reviewed) */}
         {!isOwner && !existingReview && (

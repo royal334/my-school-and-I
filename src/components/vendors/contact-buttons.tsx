@@ -35,7 +35,7 @@ export default function ContactButtons({
     if (type === 'phone') {
       window.location.href = `tel:${phoneNumber}`;
     } else if (type === 'whatsapp' && whatsappNumber) {
-      const message = encodeURIComponent('Hi, I found you on UniHub!');
+      const message = encodeURIComponent('Hi, I found you on CampusHub!');
       const number = whatsappNumber.replace(/\D/g, '');
       window.open(`https://wa.me/234${number.slice(1)}?text=${message}`);
     }

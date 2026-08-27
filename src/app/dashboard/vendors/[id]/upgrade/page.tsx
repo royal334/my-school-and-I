@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export const metadata = {
-  title: 'Upgrade Subscription | UniHub',
+  title: 'Upgrade Subscription | CampusHub',
   description: 'Upgrade your vendor subscription',
 };
 
@@ -55,20 +55,20 @@ export default async function UpgradePage({ params, searchParams }: PageProps) {
 
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold">Upgrade Your Subscription</h1>
-        <p className="mt-2 text-slate-600 dark:text-slate-400">
+        <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Upgrade your subscription</h1>
+        <p className="mt-2 text-[#6B7B75] dark:text-[#A8C8BB]">
           Get more visibility and features for your business
         </p>
       </div>
 
       {/* Current Plan */}
       {vendor.subscription_tier !== 'basic' && (
-        <div className="rounded-lg bg-blue-50 p-4 text-center dark:bg-blue-950/30">
-          <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
-            Current Plan: <span className="uppercase">{vendor.subscription_tier}</span>
+        <div className="rounded-lg bg-[#E8F5EF] dark:bg-[#1A2C25] p-4 text-center">
+          <p className="text-sm font-medium text-[#1A3C34]">
+            Current plan: <span className="uppercase">{vendor.subscription_tier}</span>
           </p>
           {vendor.subscription_expires_at && (
-            <p className="text-xs text-blue-700 dark:text-blue-300">
+            <p className="text-xs text-[#4A8C73]">
               Expires: {new Date(vendor.subscription_expires_at).toLocaleDateString()}
             </p>
           )}

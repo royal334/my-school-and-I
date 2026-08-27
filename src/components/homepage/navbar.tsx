@@ -21,7 +21,6 @@ export function Navbar() {
 
     const supabase = createClient();
 
-    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
@@ -29,7 +28,6 @@ export function Navbar() {
       }
     });
 
-    // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -68,19 +66,20 @@ export function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white dark:bg-slate-950 h-16 flex items-center ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white dark:bg-[#1A2822] h-16 flex items-center ${
         scrolled
-          ? "shadow-sm dark:shadow-none dark:border-b dark:border-slate-800"
-          : "border-b border-slate-200 dark:border-slate-800"
+          ? "shadow-[0_1px_4px_rgba(26,60,52,0.08)] dark:shadow-none dark:border-b dark:border-[rgba(126,200,160,0.15)]"
+          : "border-b border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)]"
       }`}
     >
       <div className="flex items-center justify-between max-w-[1440px] mx-auto px-6 w-full h-full">
         {/* Logo */}
         <a
           href="#"
-          className="text-2xl font-bold tracking-tight text-blue-600 dark:text-blue-500"
+          className="text-2xl font-bold tracking-tight text-[#1A3C34] dark:text-[#E8F5EF]"
+          style={{ fontFamily: "var(--font-display)" }}
         >
-          Uni<span className="text-slate-900 dark:text-white">Hub</span>
+          Campus<span className="text-[#4A8C73] dark:text-[#7EC8A0]">Hub</span>
         </a>
 
         {/* Desktop Links */}
@@ -89,7 +88,7 @@ export function Navbar() {
             <a
               key={l}
               href={`#${l.toLowerCase()}`}
-              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+              className="text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB] hover:text-[#4A8C73] dark:hover:text-[#7EC8A0] transition-colors duration-200"
             >
               {l}
             </a>
@@ -103,12 +102,12 @@ export function Navbar() {
             <div className="flex items-center gap-4">
               <Link
                 href="/dashboard"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB] hover:bg-[#E8F5EF] dark:hover:bg-[#1E3028] transition-all duration-200"
               >
                 Dashboard
               </Link>
               <Link href="/dashboard/profile">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-2 border-white dark:border-slate-800 shadow-sm hover:scale-105 transition-all">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.15)] text-[#4A8C73] dark:text-[#7EC8A0] border-2 border-white dark:border-[#1A2822] shadow-sm hover:scale-105 transition-all">
                   {initials || <User size={20} />}
                 </div>
               </Link>
@@ -117,15 +116,15 @@ export function Navbar() {
             <>
               <Link
                 href="/login"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB] hover:bg-[#E8F5EF] dark:hover:bg-[#1E3028] transition-all duration-200"
               >
-                Sign In
+                Sign in
               </Link>
               <Link
                 href="/signup"
-                className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 shadow-sm transition-all duration-200"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-[#E8F5EF] bg-[#1A3C34] hover:bg-[#141F1B] dark:bg-[#4A8C73] dark:hover:bg-[#1A3C34] shadow-sm transition-all duration-200"
               >
-                Get Started
+                Get started
               </Link>
             </>
           )}
@@ -136,7 +135,7 @@ export function Navbar() {
           <ThemeToggle />
           <button
             onClick={() => setOpen(!open)}
-            className="p-2 rounded-lg text-slate-600 dark:text-slate-300"
+            className="p-2 rounded-lg text-[#6B7B75] dark:text-[#A8C8BB]"
           >
             <Menu size={22} />
           </button>
@@ -145,10 +144,10 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       <div
-        className="md:hidden absolute top-16 left-0 right-0 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 overflow-hidden transition-all duration-300"
+        className="md:hidden absolute top-16 left-0 right-0 bg-white dark:bg-[#1A2822] border-t border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)] overflow-hidden transition-all duration-300"
         style={{
           maxHeight: open ? 320 : 0,
-          boxShadow: open && !scrolled ? "0 8px 20px rgba(0,0,0,0.08)" : "none",
+          boxShadow: open && !scrolled ? "0 8px 20px rgba(26,60,52,0.08)" : "none",
         }}
       >
         <div className="flex flex-col px-6 py-4 gap-4">
@@ -157,52 +156,52 @@ export function Navbar() {
               key={l}
               href={`#${l.toLowerCase()}`}
               onClick={() => setOpen(false)}
-              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+              className="text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB] hover:text-[#4A8C73] dark:hover:text-[#7EC8A0]"
             >
               {l}
             </a>
           ))}
-          <div className="flex flex-col gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <div className="flex flex-col gap-2 pt-2 border-t border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)]">
             {user ? (
               <div className="space-y-3">
-                <div className="flex items-center gap-3 p-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold">
+                <div className="flex items-center gap-3 p-2 rounded-lg bg-[#F0F5F3] dark:bg-[#1E3028] border border-[#E1EBE6] dark:border-[rgba(126,200,160,0.15)]">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.15)] text-[#4A8C73] dark:text-[#7EC8A0] font-bold">
                     {initials || <User size={20} />}
                   </div>
                   <div className="flex-1 overflow-hidden">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
+                    <p className="text-sm font-medium text-[#141F1B] dark:text-[#E8F5EF] truncate">
                       {user.email}
                     </p>
                     <Link
                       href="/dashboard/profile"
                       onClick={() => setOpen(false)}
-                      className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                      className="text-xs text-[#4A8C73] dark:text-[#7EC8A0] hover:underline"
                     >
-                      View Profile
+                      View profile
                     </Link>
                   </div>
                 </div>
                 <Link
                   href="/dashboard"
                   onClick={() => setOpen(false)}
-                  className="block text-sm font-semibold text-center py-2 rounded-lg text-white bg-blue-600"
+                  className="block text-sm font-medium text-center py-2 rounded-lg text-[#E8F5EF] bg-[#1A3C34]"
                 >
-                  Go to Dashboard
+                  Go to dashboard
                 </Link>
               </div>
             ) : (
               <>
                 <Link
                   href="/login"
-                  className="text-sm font-medium text-center py-2 rounded-lg text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800"
+                  className="text-sm font-medium text-center py-2 rounded-lg text-[#6B7B75] dark:text-[#A8C8BB] bg-[#F0F5F3] dark:bg-[#1E3028]"
                 >
-                  Sign In
+                  Sign in
                 </Link>
                 <Link
                   href="/signup"
-                  className="text-sm font-semibold text-center py-2 rounded-lg text-white bg-blue-600"
+                  className="text-sm font-medium text-center py-2 rounded-lg text-[#E8F5EF] bg-[#1A3C34]"
                 >
-                  Get Started
+                  Get started
                 </Link>
               </>
             )}

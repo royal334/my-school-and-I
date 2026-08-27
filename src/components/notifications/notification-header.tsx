@@ -20,10 +20,10 @@ export default function NotificationHeader({
   return (
     <div className="flex items-center justify-between">
       {unreadCount > 0 && (
-        <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 rounded-lg p-3 flex items-center justify-between flex-1 gap-3">
+        <div className="bg-[#E8F5EF] dark:bg-[#1A2C25] border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] rounded-lg p-3 flex items-center justify-between flex-1 gap-3">
           <div className="flex items-center gap-2">
-            <Bell className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            <span className="text-sm font-medium text-blue-900 dark:text-blue-200">
+            <Bell className="h-4 w-4 text-[#4A8C73]" />
+            <span className="text-sm font-medium text-[#1A3C34]">
               {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
             </span>
           </div>

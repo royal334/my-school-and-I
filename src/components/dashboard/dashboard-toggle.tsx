@@ -15,14 +15,9 @@ export default function DashboardToggle({
   hasVendor, 
   isVendorAccount 
 }: DashboardToggleProps) {
-  // Initialize state from cookie or default to true
   const [isStudent, setIsStudent] = useState(true);
   const router = useRouter();
-  
-  // Determine current view based on path
-  //const isVendorView = pathname.includes('/vendors/analytics') || pathname.includes('/subscription') || pathname.includes('/billing');
 
-  // Sync state with cookie on mount
   useEffect(() => {
     const isStudentCookie = document.cookie
       .split('; ')
@@ -35,33 +30,25 @@ export default function DashboardToggle({
   }, []);
 
   const handleToggle = (toVendor: boolean) => {
-    // Set cookie that expires in 3 days (matches user's previous preference)
     document.cookie = `isStudent=${!toVendor}; path=/; max-age=${60 * 60 * 72}`;
     setIsStudent(!toVendor);
-
-    // Always go to dashboard root to show the selected context's main view
     router.push('/dashboard');
-
-    // Refresh the router to update the server-side layout (sidebar and page content)
     router.refresh();
   };
 
-  // Don't show toggle if:
-  // 1. User is external vendor (no student features)
-  // 2. Student doesn't have a vendor listing
   if (isVendorAccount || !hasVendor) {
     return null;
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-lg border bg-slate-50 dark:bg-slate-800 p-1" data-tour="dashboard-toggle">
+    <div className="flex items-center gap-2 rounded-lg border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)] bg-[#F0F5F3] dark:bg-[#1E3028] p-1" data-tour="dashboard-toggle">
       <Button
         variant={!isStudent ? 'ghost' : 'default'}
         size="sm"
         onClick={() => handleToggle(false)}
         className={cn(
           'flex items-center gap-2',
-          isStudent && 'bg-blue-600 dark:bg-blue-800 shadow-sm text-white'
+          isStudent && 'bg-[#1A3C34] dark:bg-[#4A8C73] shadow-sm text-[#E8F5EF]'
         )}
       >
         <GraduationCap className="h-4 w-4" />
@@ -74,7 +61,7 @@ export default function DashboardToggle({
         onClick={() => handleToggle(true)}
         className={cn(
           'flex items-center gap-2',
-          !isStudent && 'bg-blue-600 dark:bg-blue-800 shadow-sm text-white'
+          !isStudent && 'bg-[#1A3C34] dark:bg-[#4A8C73] shadow-sm text-[#E8F5EF]'
         )}
       >
         <Store className="h-4 w-4" />
@@ -82,4 +69,4 @@ export default function DashboardToggle({
       </Button>
     </div>
   );
-  }
+}

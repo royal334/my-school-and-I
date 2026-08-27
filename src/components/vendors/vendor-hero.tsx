@@ -17,7 +17,7 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
   return (
     <Card className="overflow-hidden">
       {/* Cover Image */}
-      <div className="relative h-48 bg-linear-to-r from-primary-500 to-secondary-500">
+      <div className="relative h-48 bg-linear-to-r from-[#1A3C34] to-[#4A8C73]">
         {vendor.cover_image_url && features.canUploadCover ? (
           <Image
             src={vendor.cover_image_url}
@@ -26,22 +26,22 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
             className="object-cover"
           />
         ) : (
-          <div className="absolute inset-0 bg-linear-to-br from-primary-400 to-secondary-500" />
+          <div className="absolute inset-0 bg-linear-to-br from-[#1A3C34] to-[#4A8C73]" />
         )}
 
         {/* Badges */}
         <div className="absolute right-4 top-4 flex gap-2">
           {features.isFeatured && (
-            <Badge className="bg-amber-500 text-white shadow-sm border-none">
+            <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-[#E8A020] text-[#3A2800]">
               <Crown className="mr-1 h-3 w-3" />
               Featured
-            </Badge>
+            </span>
           )}
           {isVerified && (
-            <Badge className="bg-blue-500 text-white shadow-sm border-none">
+            <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-[#1A3C34] text-[#B8D4CC]">
               <Award className="mr-1 h-3 w-3" />
               Verified
-            </Badge>
+            </span>
           )}
         </div>
       </div>
@@ -50,7 +50,7 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
         {/* Logo */}
         <div className="relative -mt-16 mb-4">
           {vendor.logo_url && features.canUploadLogo ? (
-            <div className="relative h-32 w-32 overflow-hidden rounded-lg border-4 border-white shadow-lg bg-white dark:border-slate-800">
+            <div className="relative h-32 w-32 overflow-hidden rounded-lg border-4 border-white shadow-lg bg-white">
               <Image
                 src={vendor.logo_url}
                 alt={vendor.business_name}
@@ -59,7 +59,7 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
               />
             </div>
           ) : (
-            <div className="flex h-32 w-32 items-center justify-center rounded-lg border-4 border-white bg-primary-100 text-3xl font-bold text-primary-700 shadow-lg dark:border-slate-800 dark:bg-primary-950/50">
+            <div className="flex h-32 w-32 items-center justify-center rounded-lg border-4 border-white dark:border-[#1A2822] bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.15)] text-3xl font-bold text-[#3A7260] dark:text-[#7EC8A0] shadow-lg">
               {vendor.business_name.slice(0, 2).toUpperCase()}
             </div>
           )}
@@ -67,11 +67,11 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
 
         {/* Business Name & Category */}
           <div className="flex items-center gap-2">
-            <h1 className="text-3xl font-bold">
+            <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>
               {vendor.business_name}
             </h1>
             {isVerified && (
-              <CheckCircle2 className="h-6 w-6 fill-blue-500 text-white" />
+              <CheckCircle2 className="h-6 w-6 fill-[#4A8C73] text-white" />
             )}
           </div>
 

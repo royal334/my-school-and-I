@@ -1,9 +1,8 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-import { Profile, DashboardProfileSectionProps } from "@/utils/types";
+import { DashboardProfileSectionProps } from "@/utils/types";
 
 export function DashboardProfileSection({
   profile,
@@ -14,36 +13,36 @@ export function DashboardProfileSection({
     <div className="grid gap-4 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <h2 className="text-xl font-semibold">Your Profile</h2>
+          <h2 className="text-xl" style={{ fontFamily: "var(--font-display)" }}>Your profile</h2>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Level</span>
-            <Badge className="bg-primary-100 text-primary-700 dark:bg-primary-950/50 dark:text-primary-400">
+            <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">Level</span>
+            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#E8F5EF] dark:bg-[#1A2C25] text-[#3A7260] dark:text-[#7EC8A0]">
               {profile?.level} Level
-            </Badge>
+            </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Matric Number</span>
-            <span className="text-sm font-medium text-foreground">
+            <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">Matric number</span>
+            <span className="text-sm font-medium text-[#141F1B] dark:text-[#E8F5EF]">
               {profile?.matric_number}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Status</span>
-            <Badge
+            <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">Status</span>
+            <span
               className={
                 hasActiveSubscription
-                  ? "bg-green-100 text-green-700 dark:bg-green-950/50 dark:text-green-400"
-                  : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                  ? "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#E8F5EF] dark:bg-[#1A2C25] text-[#1A7A52] dark:text-[#7EC8A0]"
+                  : "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#F0F5F3] dark:bg-[#1A2C25] text-[#6B7B75] dark:text-[#A8C8BB]"
               }
             >
               {hasActiveSubscription ? "Premium" : "Free"}
-            </Badge>
+            </span>
           </div>
           <Link href="/dashboard/profile">
             <Button variant="outline" className="mt-4 w-full">
-              Edit Profile
+              Edit profile
             </Button>
           </Link>
         </CardContent>
@@ -51,39 +50,39 @@ export function DashboardProfileSection({
 
       <Card>
         <CardHeader>
-          <h2 className="text-xl font-semibold">Getting Started</h2>
+          <h2 className="text-xl" style={{ fontFamily: "var(--font-display)" }}>Getting started</h2>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100 text-xs text-green-700 dark:bg-green-950/50 dark:text-green-400">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] text-xs text-[#1A7A52] dark:text-[#7EC8A0]">
                 ✓
               </div>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
                 Complete your profile
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-100 text-xs text-primary-700 dark:bg-primary-950/50 dark:text-primary-400">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] text-xs text-[#1A7A52] dark:text-[#7EC8A0]">
                 {currentGPA ? "✓" : "1"}
               </div>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
                 Add your first semester
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F0F5F3] dark:bg-[#1A2C25] text-xs text-[#6B7B75] dark:text-[#A8C8BB]">
                 2
               </div>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
                 Browse study materials
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F0F5F3] dark:bg-[#1A2C25] text-xs text-[#6B7B75] dark:text-[#A8C8BB]">
                 3
               </div>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
                 Connect with vendors
               </span>
             </div>

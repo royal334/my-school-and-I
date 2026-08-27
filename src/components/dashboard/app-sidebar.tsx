@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useMemo } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -41,7 +41,7 @@ import { createClient } from "@/utils/supabase/client";
 
 const baseNavItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-  { href: "/dashboard/materials", icon: BookOpen, label: "Materials Library" },
+  { href: "/dashboard/materials", icon: BookOpen, label: "Materials library" },
   { href: "/dashboard/cgpa", icon: Calculator, label: "CGPA" },
   { href: "/dashboard/profile", icon: User, label: "Profile" },
   { href: "/dashboard/vendors", icon: Store, label: "Vendors" },
@@ -52,12 +52,12 @@ const baseNavItems = [
 
 export function AppSidebar() {
   const router = useRouter();
+  const pathname = usePathname();
   const { isMobile, setOpenMobile } = useSidebar();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
-  // Helper to close sidebar on mobile
   const closeSidebarOnMobile = () => {
     if (isMobile) {
       setOpenMobile(false);
@@ -93,11 +93,16 @@ export function AppSidebar() {
         {
           href: "/dashboard/materials/upload",
           icon: Upload,
-          label: "Upload Material",
+          label: "Upload material",
         },
         ...baseNavItems.slice(2),
       ]
     : baseNavItems;
+
+  const isActive = (href: string) => {
+    if (href === "/dashboard") return pathname === "/dashboard";
+    return pathname.startsWith(href);
+  };
 
   const handleLogout = async () => {
     setLoggingOut(true);
@@ -107,7 +112,6 @@ export function AppSidebar() {
         router.push("/");
       }
     } catch {
-      // If the fetch itself throws (e.g. network error) still redirect
       router.push("/login");
     } finally {
       setLoggingOut(false);
@@ -118,49 +122,68 @@ export function AppSidebar() {
   return (
     <>
       <Sidebar>
-        <SidebarHeader className="p-4 border-b dark:border-slate-800 bg-white dark:bg-slate-950">
-          <h2 className="text-xl font-bold text-blue-600 dark:text-blue-500">
-            UniHub
-          </h2>
+        <SidebarHeader className="px-5 py-5 border-b border-[rgba(126,200,160,0.15)] bg-[#1A3C34] dark:bg-[#091210]">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#E8A020] text-[#3A2800] font-bold text-sm" style={{ fontFamily: "var(--font-display)" }}>
+              CH
+            </div>
+            <h2 className="text-lg text-[#E8F5EF]" style={{ fontFamily: "var(--font-display)" }}>
+              CampusHub
+            </h2>
+          </div>
         </SidebarHeader>
 
-        <SidebarContent className="bg-white dark:bg-slate-950">
+        <SidebarContent className="bg-[#1A3C34] dark:bg-[#091210] px-3 py-4">
           <SidebarGroup>
-            <SidebarMenu className="space-y-4">
-              {navItems.map(({ href, icon: Icon, label }) => (
-                <SidebarMenuItem key={href}>
-                  <SidebarMenuButton asChild onClick={closeSidebarOnMobile}>
-                    <Link href={href}>
-                      <Icon className="mr-2 h-4 w-4" />
-                      <span>{label}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+            <SidebarMenu className="space-y-1">
+              {navItems.map(({ href, icon: Icon, label }) => {
+                const active = isActive(href);
+                return (
+                  <SidebarMenuItem key={href}>
+                    <SidebarMenuButton
+                      asChild
+                      onClick={closeSidebarOnMobile}
+                      isActive={active}
+                      className={`relative h-10 px-3 rounded-lg transition-all duration-150 ${
+                        active
+                          ? "bg-[rgba(126,200,160,0.25)] text-[#E8F5EF] font-medium"
+                          : "text-[rgba(232,245,239,0.7)] hover:bg-[rgba(126,200,160,0.12)] hover:text-[#E8F5EF]"
+                      }`}
+                    >
+                      <Link href={href}>
+                        {active && (
+                          <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-full bg-[#E8A020]" />
+                        )}
+                        <Icon className={`h-[18px] w-[18px] ${active ? "text-[#E8A020]" : ""}`} />
+                        <span className="ml-1">{label}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter className="p-4 border-t dark:border-slate-800 bg-white dark:bg-slate-950">
+        <SidebarFooter className="px-3 py-4 border-t border-[rgba(126,200,160,0.15)] bg-[#1A3C34] dark:bg-[#091210]">
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
                 onClick={() => setShowLogoutDialog(true)}
-                className="w-full cursor-pointer text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950/50 dark:hover:text-red-300"
+                className="w-full cursor-pointer h-10 px-3 rounded-lg text-[rgba(196,75,42,0.85)] hover:bg-[rgba(196,75,42,0.1)] hover:text-[#C44B2A] transition-all duration-150"
               >
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Logout</span>
+                <LogOut className="h-[18px] w-[18px]" />
+                <span className="ml-1">Logout</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
 
-      {/* Logout confirmation dialog */}
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Log out of UniHub?</AlertDialogTitle>
+            <AlertDialogTitle>Log out of CampusHub?</AlertDialogTitle>
             <AlertDialogDescription>
               You will be signed out of your account and redirected to the login
               page.
@@ -171,9 +194,9 @@ export function AppSidebar() {
             <AlertDialogAction
               onClick={handleLogout}
               disabled={loggingOut}
-              className="bg-red-600 hover:bg-red-700 focus:ring-red-600 dark:bg-red-700 dark:hover:bg-red-800"
+              className="bg-[#C44B2A] hover:bg-[#A83D22] text-white"
             >
-              {loggingOut ? "Logging out…" : "Yes, log out"}
+              {loggingOut ? "Logging out..." : "Yes, log out"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

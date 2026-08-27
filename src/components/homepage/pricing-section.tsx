@@ -33,11 +33,11 @@ export function PricingSection() {
       <div className="max-w-[1440px] mx-auto px-6">
         <Reveal>
           <div className="text-center mb-14">
-            <p className="text-sm font-semibold uppercase tracking-widest mb-2 text-slate-500 dark:text-slate-400">
+            <p className="text-sm font-semibold uppercase tracking-widest mb-2 text-slate-500">
               Pricing
             </p>
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-slate-900 dark:text-white">
-              Simple, Transparent Pricing
+            <h2 className="text-3xl lg:text-4xl mb-4 text-slate-900" style={{ fontFamily: "var(--font-display)" }}>
+              Simple, transparent pricing
             </h2>
             <p className="text-lg max-w-xl mx-auto text-slate-600 dark:text-slate-300">
               Start free and upgrade when you need more. No surprises.
@@ -54,7 +54,7 @@ export function PricingSection() {
               </span>
               <div className="mb-6">
                 <span className="text-5xl font-bold text-slate-900 dark:text-white">₦0</span>
-                <span className="text-sm ml-2 text-slate-500 dark:text-slate-400">Forever</span>
+                <span className="text-sm ml-2 text-slate-500">Forever</span>
               </div>
               <ul className="space-y-3 mb-8 flex-1">
                 {FREE_FEATURES.map((f) => (
@@ -63,7 +63,7 @@ export function PricingSection() {
                     className={`flex items-center gap-3 text-sm ${f.included ? "text-slate-700 dark:text-slate-200" : "text-slate-400 dark:text-slate-500"}`}
                   >
                     {f.included ? (
-                      <Check size={15} className="text-green-600 shrink-0" />
+                      <Check size={15} className="text-[#4A8C73] shrink-0" />
                     ) : (
                       <X size={15} className="text-slate-300 shrink-0" />
                     )}
@@ -82,13 +82,13 @@ export function PricingSection() {
 
           {/* Premium tier */}
           <Reveal delay={100}>
-            <div className="rounded-2xl p-8 border-2 border-blue-300 bg-blue-50 h-full flex flex-col relative shadow-[0_0_40px_rgba(37,99,235,0.12)] hover:shadow-[0_20px_48px_rgba(37,99,235,0.2)] hover:-translate-y-1 transition-all duration-200 dark:border-blue-700 dark:bg-blue-900/20 dark:shadow-[0_0_40px_rgba(37,99,235,0.2)] dark:hover:shadow-[0_20px_48px_rgba(37,99,235,0.3)]">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5 text-white bg-blue-600 dark:bg-blue-700">
+            <div className="rounded-2xl p-8 border-2 border-[#E8A020] bg-[#FFF0D4] h-full flex flex-col relative shadow-[0_0_40px_rgba(232,160,32,0.12)] hover:shadow-[0_20px_48px_rgba(232,160,32,0.2)] hover:-translate-y-1 transition-all duration-200">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5 text-[#3A2800] bg-[#E8A020]">
                 Most Popular
               </span>
               <div className="mb-6">
-                <span className="text-5xl font-bold text-blue-600 dark:text-blue-500">₦1000</span>
-                <span className="text-sm ml-2 text-slate-500 dark:text-slate-400">
+                <span className="text-5xl font-bold text-[#1A3C34]">₦1000</span>
+                <span className="text-sm ml-2 text-slate-500">
                   Per semester
                 </span>
               </div>
@@ -96,18 +96,18 @@ export function PricingSection() {
                 {PRO_FEATURES.map((f) => (
                   <li
                     key={f.text}
-                    className="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-200"
+                    className="flex items-center gap-3 text-sm text-slate-700"
                   >
-                    <Check size={15} className="text-green-600 shrink-0" />
+                    <Check size={15} className="text-[#4A8C73] shrink-0" />
                     {f.text}
                   </li>
                 ))}
               </ul>
               <Link
                 href="/signup"
-                className="block text-center py-3 rounded-lg font-semibold text-sm text-white bg-blue-600 hover:bg-blue-700 shadow-[0_4px_14px_rgba(37,99,235,0.35)] transition-all duration-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:shadow-[0_4px_14px_rgba(37,99,235,0.4)]"
+                className="block text-center py-3 rounded-lg font-semibold text-sm text-[#3A2800] bg-[#E8A020] hover:bg-[#D4901A] shadow-[0_4px_14px_rgba(232,160,32,0.35)] transition-all duration-200"
               >
-                Upgrade Now →
+                Upgrade now →
               </Link>
             </div>
           </Reveal>

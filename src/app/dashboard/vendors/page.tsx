@@ -64,20 +64,20 @@ export default async function VendorsPage({ searchParams }: PageProps) {
       {/* Header */}
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-3xl font-bold">Vendors Marketplace</h1>
-          <p className="text-slate-600 dark:text-slate-400">
+          <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Vendors marketplace</h1>
+          <p className="text-[#6B7B75] dark:text-[#A8C8BB]">
             Connect with verified departmental service providers
           </p>
         </div>
         <div className="flex gap-3">
-          <div className="flex items-center gap-2 rounded-lg bg-primary-50 px-4 py-2 dark:bg-primary-950/30">
-            <Store className="h-5 w-5 text-primary-600 dark:text-primary-400" />
-            <span className="text-sm font-medium text-primary-900 dark:text-primary-200">
+          <div className="flex items-center gap-2 rounded-lg bg-[#E8F5EF] dark:bg-[#1A2C25] px-4 py-2 border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)]">
+            <Store className="h-5 w-5 text-[#4A8C73] dark:text-[#E8F5EF]" />
+            <span className="text-sm font-medium text-[#1A3C34] dark:text-[#E8F5EF]">
               {vendors?.length || 0} vendors
             </span>
           </div>
           <Link href={listBusinessHref}>
-            <Button>
+            <Button className="bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF]">
               {userVendor ? <Edit className="mr-2 h-4 w-4" /> : <Plus className="mr-2 h-4 w-4" />}
               {listBusinessLabel}
             </Button>
@@ -91,16 +91,16 @@ export default async function VendorsPage({ searchParams }: PageProps) {
 
       {/* Vendors Grid */}
       {!vendors || vendors.length === 0 ? (
-        <Card className="flex flex-col items-center justify-center p-12 text-center">
-          <div className="rounded-full bg-slate-100 p-4 dark:bg-slate-800">
-            <Store className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+        <Card className="flex flex-col items-center justify-center p-12 text-center border-[#D6E5DF]">
+          <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] p-4">
+            <Store className="h-8 w-8 text-[#4A8C73]" />
           </div>
-          <h3 className="mt-4 text-lg font-semibold">No vendors found</h3>
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+          <h3 className="mt-4 text-lg" style={{ fontFamily: "var(--font-display)" }}>No vendors found</h3>
+          <p className="mt-2 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
             Try adjusting your filters or be the first to list your business
           </p>
           <Link href={listBusinessHref}>
-            <Button className="mt-4">
+            <Button className="mt-4 bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF]">
               {userVendor ? <Edit className="mr-2 h-4 w-4" /> : <Plus className="mr-2 h-4 w-4" />}
               {listBusinessLabel}
             </Button>

@@ -13,7 +13,7 @@ import Link from "next/link";
 // import { toast } from 'sonner';
 
 export const metadata = {
-  title: "CGPA Calculator | UniHub",
+  title: "CGPA Calculator | CampusHub",
 };
 
 export default async function CGPAPage() {
@@ -56,7 +56,7 @@ export default async function CGPAPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">CGPA Calculator</h1>
+          <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>CGPA calculator</h1>
           <p className="text-slate-600 dark:text-slate-400">
             Track your academic performance and calculate your CGPA
           </p>
@@ -98,7 +98,7 @@ export default async function CGPAPage() {
               Start by adding your first semester results to calculate your CGPA
             </p>
             <Link href="/dashboard/cgpa/add-semester">
-              <Button className="mt-4 bg-blue-500 cursor-pointer">
+              <Button className="mt-4 bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF] cursor-pointer">
                 <Plus className="mr-2 h-4 w-4" />
                 Add First Semester
               </Button>

@@ -60,24 +60,24 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
-        <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
+      <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] dark:bg-[#0F1A17] p-4">
+        <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="mx-auto w-fit rounded-full bg-green-100 p-3 dark:bg-green-950/50">
-              <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+            <div className="mx-auto w-fit rounded-full bg-[#E8F5EF] p-3 dark:bg-[rgba(126,200,160,0.15)]">
+              <CheckCircle className="h-8 w-8 text-[#4A8C73] dark:text-[#7EC8A0]" />
             </div>
-            <h1 className="mt-4 text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <h1 className="mt-4 text-2xl" style={{ fontFamily: "var(--font-display)" }}>
               Check Your Email
             </h1>
-            <p className="mt-2 text-slate-600 dark:text-slate-400">
+            <p className="mt-2 text-[#6B7B75] dark:text-[#A8C8BB]">
               We've sent password reset instructions to:
             </p>
-            <p className="mt-1 font-medium text-slate-900 dark:text-slate-100">{submittedEmail}</p>
+            <p className="mt-1 font-medium text-[#141F1B] dark:text-[#E8F5EF]">{submittedEmail}</p>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-900 dark:bg-blue-950/30 dark:text-blue-200">
+            <div className="rounded-lg bg-[#E8F5EF] p-4 text-sm text-[#3A7260]">
               <p className="font-medium">Next steps:</p>
-              <ol className="mt-2 list-inside list-decimal space-y-1 text-blue-800 dark:text-blue-300">
+              <ol className="mt-2 list-inside list-decimal space-y-1 text-[#3A7260]">
                 <li>Check your email inbox</li>
                 <li>Click the reset link in the email</li>
                 <li>Set your new password</li>
@@ -107,16 +107,16 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
-      <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
+    <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] p-4">
+      <Card className="w-full max-w-md">
         <CardHeader>
-          <div className="mx-auto w-fit rounded-full bg-primary-100 p-3 dark:bg-primary-950/50">
-            <Mail className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+          <div className="mx-auto w-fit rounded-full bg-[#E8F5EF] p-3 dark:bg-[rgba(126,200,160,0.15)]">
+            <Mail className="h-6 w-6 text-[#1A3C34] dark:text-[#7EC8A0]" />
           </div>
-          <h1 className="mt-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">
-            Forgot Password?
+          <h1 className="mt-4 text-center text-2xl" style={{ fontFamily: "var(--font-display)" }}>
+            Forgot password?
           </h1>
-          <p className="mt-2 text-center text-slate-600 dark:text-slate-400">
+          <p className="mt-2 text-center text-[#6B7B75] dark:text-[#A8C8BB]">
             No worries! Enter your email and we'll send you instructions to
             reset your password.
           </p>
@@ -147,7 +147,7 @@ export default function ForgotPasswordPage() {
               )}
             </div>
 
-            <Button type="submit" disabled={loading} className="w-full">
+            <Button type="submit" disabled={loading} className="w-full bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF]">
               {loading ? (
                 <>
                   <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />

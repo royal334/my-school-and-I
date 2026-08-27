@@ -12,31 +12,30 @@ const TRUST_ITEMS = [
 
 export function CTASection() {
   return (
-    <section className="py-20 lg:py-28 bg-linear-to-br from-blue-600 to-blue-700 dark:from-slate-800 dark:to-slate-900">
+    <section className="py-20 lg:py-28 bg-linear-to-br from-[#1A3C34] to-[#163229] dark:from-[#1A2822] dark:to-[#0F1A17]">
       <div className="max-w-[1440px] mx-auto px-6 text-center">
         <Reveal>
-          <h2 className="text-3xl lg:text-5xl font-bold mb-4 text-white dark:text-white">
-            {" "}
-            Ready to Excel in Your Studies?
+          <h2 className="text-3xl lg:text-5xl mb-4 text-white" style={{ fontFamily: "var(--font-display)" }}>
+            Ready to excel in your studies?
           </h2>
-          <p className="text-lg mb-10 text-blue-200 dark:text-blue-100">
-            Join hundreds of engineering students already using UniHub.
+          <p className="text-lg mb-10 text-[#A8D8C2] dark:text-[#7EC8A0]">
+            Join hundreds of engineering students already using CampusHub.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <Link
               href="/signup"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-semibold text-base bg-white text-blue-600 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 dark:text-blue-600"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-medium text-base bg-[#E8A020] text-[#3A2800] hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200"
             >
-              Create Free Account <ChevronRight size={18} />
+              Create free account <ChevronRight size={18} />
             </Link>
             <a
-              href="mailto:support@unihub.com"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-semibold text-base text-white border border-white/40 hover:bg-white/10 hover:-translate-y-0.5 transition-all duration-200 dark:text-white dark:border-white/50 dark:hover:bg-white/20"
+              href="mailto:support@campushub.com"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-medium text-base text-white border border-white/40 hover:bg-white/10 hover:-translate-y-0.5 transition-all duration-200 dark:border-white/50 dark:hover:bg-white/20"
             >
-              Talk to Us
+              Talk to us
             </a>
           </div>
-          <div className="flex flex-wrap justify-center gap-6 text-sm font-medium text-blue-200 dark:text-blue-100">
+          <div className="flex flex-wrap justify-center gap-6 text-sm font-medium text-[#A8D8C2] dark:text-[#7EC8A0]">
             {TRUST_ITEMS.map((t) => (
               <span key={t}>{t}</span>
             ))}

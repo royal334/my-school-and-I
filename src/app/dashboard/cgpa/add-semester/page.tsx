@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export const metadata = {
-  title: 'Add Semester | UniHub',
+  title: 'Add Semester | CampusHub',
 };
 
 export default async function AddSemesterPage() {
@@ -33,7 +33,7 @@ export default async function AddSemesterPage() {
 
       {/* Header */}
       <div>
-        <h1 className="text-2xl md:text-3xl font-bold">Add Semester Results</h1>
+        <h1 className="text-2xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>Add semester results</h1>
         <p className="text-slate-600 dark:text-slate-400">
           Enter your course grades to calculate your semester GPA
         </p>

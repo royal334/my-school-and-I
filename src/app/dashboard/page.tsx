@@ -7,10 +7,9 @@ import { getCachedUserContext } from '@/utils/cache';
 import { calculateCGPAFromSemesters } from '@/utils/lib/cgpa-helpers';
 import { StudentDashboard } from '@/components/dashboard';
 import VendorDashboard from '@/components/dashboard/vendor-dashboard';
-import  NotificationTest  from '@/components/notifications/notificationtest';
 
 export const metadata = {
-  title: 'Dashboard | UniHub',
+  title: 'Dashboard | CampusHub',
 };
 
 export default async function DashboardPage() {

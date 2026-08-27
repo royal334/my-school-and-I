@@ -125,7 +125,7 @@ const handleSavedMaterials = () => {
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="ml-auto text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            className="ml-auto text-sm text-[#4A8C73] hover:text-[#3A7260]"
           >
             Clear all
           </button>

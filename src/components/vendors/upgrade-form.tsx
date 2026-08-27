@@ -122,7 +122,7 @@ export default function UpgradeForm({ vendor, preSelectedTier }: UpgradeFormProp
 
         <CardHeader>
           <div className="flex items-center gap-2">
-            <div className={`rounded-full p-2 ${tierKey === 'featured' ? 'bg-amber-100 dark:bg-amber-950/50' : 'bg-[#E8F5EF] dark:bg-[#1A2C25]'}`}>
+            <div className={`rounded-full p-2 ${tierKey === 'featured' ? 'bg-amber-100 dark:bg-amber-950/50' : 'bg-[#E8F5EF] dark:bg-[#1E211F]'}`}>
               <Icon className={`h-5 w-5 ${tierKey === 'featured' ? 'text-amber-600 dark:text-amber-400' : 'text-[#4A8C73]'}`} />
             </div>
             <CardTitle>{tier.name}</CardTitle>

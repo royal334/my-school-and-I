@@ -56,14 +56,14 @@ export default async function UpgradePage({ params, searchParams }: PageProps) {
       {/* Header */}
       <div className="text-center">
         <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Upgrade your subscription</h1>
-        <p className="mt-2 text-[#6B7B75] dark:text-[#A8C8BB]">
+        <p className="mt-2 text-[#6B7B75] dark:text-[#9BA19E]">
           Get more visibility and features for your business
         </p>
       </div>
 
       {/* Current Plan */}
       {vendor.subscription_tier !== 'basic' && (
-        <div className="rounded-lg bg-[#E8F5EF] dark:bg-[#1A2C25] p-4 text-center">
+        <div className="rounded-lg bg-[#E8F5EF] dark:bg-[#1E211F] p-4 text-center">
           <p className="text-sm font-medium text-[#1A3C34]">
             Current plan: <span className="uppercase">{vendor.subscription_tier}</span>
           </p>

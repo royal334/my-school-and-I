@@ -66,10 +66,10 @@ export function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white dark:bg-[#1A2822] h-16 flex items-center ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white dark:bg-[#171918] h-16 flex items-center ${
         scrolled
-          ? "shadow-[0_1px_4px_rgba(26,60,52,0.08)] dark:shadow-none dark:border-b dark:border-[rgba(126,200,160,0.15)]"
-          : "border-b border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)]"
+          ? "shadow-[0_1px_4px_rgba(26,60,52,0.08)] dark:shadow-none dark:border-b dark:border-white/10"
+          : "border-b border-[#D6E5DF] dark:border-white/10"
       }`}
     >
       <div className="flex items-center justify-between max-w-[1440px] mx-auto px-6 w-full h-full">
@@ -88,7 +88,7 @@ export function Navbar() {
             <a
               key={l}
               href={`#${l.toLowerCase()}`}
-              className="text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB] hover:text-[#4A8C73] dark:hover:text-[#7EC8A0] transition-colors duration-200"
+              className="text-sm font-medium text-[#6B7B75] dark:text-[#9BA19E] hover:text-[#4A8C73] dark:hover:text-[#7EC8A0] transition-colors duration-200"
             >
               {l}
             </a>
@@ -102,12 +102,12 @@ export function Navbar() {
             <div className="flex items-center gap-4">
               <Link
                 href="/dashboard"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB] hover:bg-[#E8F5EF] dark:hover:bg-[#1E3028] transition-all duration-200"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-[#6B7B75] dark:text-[#9BA19E] hover:bg-[#E8F5EF] dark:hover:bg-[#202320] transition-all duration-200"
               >
                 Dashboard
               </Link>
               <Link href="/dashboard/profile">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.15)] text-[#4A8C73] dark:text-[#7EC8A0] border-2 border-white dark:border-[#1A2822] shadow-sm hover:scale-105 transition-all">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#E8F5EF] dark:bg-white/5 text-[#4A8C73] dark:text-[#7EC8A0] border-2 border-white dark:border-[#262928] shadow-sm hover:scale-105 transition-all">
                   {initials || <User size={20} />}
                 </div>
               </Link>
@@ -116,7 +116,7 @@ export function Navbar() {
             <>
               <Link
                 href="/login"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB] hover:bg-[#E8F5EF] dark:hover:bg-[#1E3028] transition-all duration-200"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-[#6B7B75] dark:text-[#9BA19E] hover:bg-[#E8F5EF] dark:hover:bg-[#202320] transition-all duration-200"
               >
                 Sign in
               </Link>
@@ -135,7 +135,7 @@ export function Navbar() {
           <ThemeToggle />
           <button
             onClick={() => setOpen(!open)}
-            className="p-2 rounded-lg text-[#6B7B75] dark:text-[#A8C8BB]"
+            className="p-2 rounded-lg text-[#6B7B75] dark:text-[#9BA19E]"
           >
             <Menu size={22} />
           </button>
@@ -144,7 +144,7 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       <div
-        className="md:hidden absolute top-16 left-0 right-0 bg-white dark:bg-[#1A2822] border-t border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)] overflow-hidden transition-all duration-300"
+        className="md:hidden absolute top-16 left-0 right-0 bg-white dark:bg-[#171918] border-t border-[#D6E5DF] dark:border-white/10 overflow-hidden transition-all duration-300"
         style={{
           maxHeight: open ? 320 : 0,
           boxShadow: open && !scrolled ? "0 8px 20px rgba(26,60,52,0.08)" : "none",
@@ -156,16 +156,16 @@ export function Navbar() {
               key={l}
               href={`#${l.toLowerCase()}`}
               onClick={() => setOpen(false)}
-              className="text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB] hover:text-[#4A8C73] dark:hover:text-[#7EC8A0]"
+              className="text-sm font-medium text-[#6B7B75] dark:text-[#9BA19E] hover:text-[#4A8C73] dark:hover:text-[#7EC8A0]"
             >
               {l}
             </a>
           ))}
-          <div className="flex flex-col gap-2 pt-2 border-t border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)]">
+          <div className="flex flex-col gap-2 pt-2 border-t border-[#D6E5DF] dark:border-white/10">
             {user ? (
               <div className="space-y-3">
-                <div className="flex items-center gap-3 p-2 rounded-lg bg-[#F0F5F3] dark:bg-[#1E3028] border border-[#E1EBE6] dark:border-[rgba(126,200,160,0.15)]">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.15)] text-[#4A8C73] dark:text-[#7EC8A0] font-bold">
+                <div className="flex items-center gap-3 p-2 rounded-lg bg-[#F0F5F3] dark:bg-[#1E211F] border border-[#E1EBE6] dark:border-white/10">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#E8F5EF] dark:bg-white/5 text-[#4A8C73] dark:text-[#7EC8A0] font-bold">
                     {initials || <User size={20} />}
                   </div>
                   <div className="flex-1 overflow-hidden">
@@ -193,7 +193,7 @@ export function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="text-sm font-medium text-center py-2 rounded-lg text-[#6B7B75] dark:text-[#A8C8BB] bg-[#F0F5F3] dark:bg-[#1E3028]"
+                  className="text-sm font-medium text-center py-2 rounded-lg text-[#6B7B75] dark:text-[#9BA19E] bg-[#F0F5F3] dark:bg-[#1E211F]"
                 >
                   Sign in
                 </Link>

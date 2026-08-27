@@ -187,7 +187,7 @@ export default async function SubscriptionPage() {
             </div>
 
             {/* Premium */}
-            <div className="rounded-lg border p-4 border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] bg-[#E8F5EF] dark:bg-[#1A2C25]">
+            <div className="rounded-lg border p-4 border-[#D6E5DF] dark:border-white/10 bg-[#E8F5EF] dark:bg-[#1E211F]">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h3 className="font-medium text-sm sm:text-base text-[#1A3C34] dark:text-[#E8F5EF]">Premium (₦2,000/month)</h3>
                 {vendor.subscription_tier === 'premium' && (

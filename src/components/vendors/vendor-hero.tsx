@@ -59,7 +59,7 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
               />
             </div>
           ) : (
-            <div className="flex h-32 w-32 items-center justify-center rounded-lg border-4 border-white dark:border-[#1A2822] bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.15)] text-3xl font-bold text-[#3A7260] dark:text-[#7EC8A0] shadow-lg">
+            <div className="flex h-32 w-32 items-center justify-center rounded-lg border-4 border-white dark:border-[#262928] bg-[#E8F5EF] dark:bg-white/5 text-3xl font-bold text-[#3A7260] dark:text-[#7EC8A0] shadow-lg">
               {vendor.business_name.slice(0, 2).toUpperCase()}
             </div>
           )}

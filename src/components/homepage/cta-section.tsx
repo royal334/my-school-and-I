@@ -7,7 +7,6 @@ import { Reveal } from "./reveal";
 const TRUST_ITEMS = [
   "✓ Free to start",
   "✓ No credit card needed",
-  "✓ Cancel anytime",
 ];
 
 export function CTASection() {

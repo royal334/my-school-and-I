@@ -65,12 +65,12 @@ export default async function VendorsPage({ searchParams }: PageProps) {
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Vendors marketplace</h1>
-          <p className="text-[#6B7B75] dark:text-[#A8C8BB]">
+          <p className="text-[#6B7B75] dark:text-[#9BA19E]">
             Connect with verified departmental service providers
           </p>
         </div>
         <div className="flex gap-3">
-          <div className="flex items-center gap-2 rounded-lg bg-[#E8F5EF] dark:bg-[#1A2C25] px-4 py-2 border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)]">
+          <div className="flex items-center gap-2 rounded-lg bg-[#E8F5EF] dark:bg-[#1E211F] px-4 py-2 border border-[#D6E5DF] dark:border-white/10">
             <Store className="h-5 w-5 text-[#4A8C73] dark:text-[#E8F5EF]" />
             <span className="text-sm font-medium text-[#1A3C34] dark:text-[#E8F5EF]">
               {vendors?.length || 0} vendors
@@ -92,11 +92,11 @@ export default async function VendorsPage({ searchParams }: PageProps) {
       {/* Vendors Grid */}
       {!vendors || vendors.length === 0 ? (
         <Card className="flex flex-col items-center justify-center p-12 text-center border-[#D6E5DF]">
-          <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] p-4">
+          <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-4">
             <Store className="h-8 w-8 text-[#4A8C73]" />
           </div>
           <h3 className="mt-4 text-lg" style={{ fontFamily: "var(--font-display)" }}>No vendors found</h3>
-          <p className="mt-2 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+          <p className="mt-2 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
             Try adjusting your filters or be the first to list your business
           </p>
           <Link href={listBusinessHref}>

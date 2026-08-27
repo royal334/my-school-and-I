@@ -54,11 +54,11 @@ function StatCount({
 
 export function SocialProofSection() {
   return (
-    <section className="py-20 lg:py-24 bg-[#F0F5F3] dark:bg-[#0F1A17]">
+    <section className="py-20 lg:py-24 bg-[#F0F5F3] dark:bg-[#0D0F0E]">
       <div className="max-w-[1440px] mx-auto px-6">
         <Reveal>
           <div className="text-center mb-14">
-            <p className="text-sm font-medium uppercase tracking-widest mb-2 text-[#6B7B75] dark:text-[#A8C8BB]" style={{ letterSpacing: "0.08em" }}>
+            <p className="text-sm font-medium uppercase tracking-widest mb-2 text-[#6B7B75] dark:text-[#9BA19E]" style={{ letterSpacing: "0.08em" }}>
               Social proof
             </p>
             <h2 className="text-3xl lg:text-4xl text-[#1A3C34] dark:text-[#E8F5EF]" style={{ fontFamily: "var(--font-display)" }}>
@@ -75,7 +75,7 @@ export function SocialProofSection() {
                 <div>
                   <StatCount target={s.value} suffix={s.suffix} />
                 </div>
-                <p className="text-sm mt-1 font-medium text-[#6B7B75] dark:text-[#A8C8BB]">
+                <p className="text-sm mt-1 font-medium text-[#6B7B75] dark:text-[#9BA19E]">
                   {s.label}
                 </p>
               </div>
@@ -87,13 +87,13 @@ export function SocialProofSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {TESTIMONIALS.map((t, i) => (
             <Reveal key={t.name} delay={i * 100}>
-              <div className="rounded-xl p-6 border border-[#D6E5DF] bg-white hover:-translate-y-1 hover:shadow-lg transition-all duration-200 h-full flex flex-col dark:border-[rgba(126,200,160,0.15)] dark:bg-[#1A2822]">
+              <div className="rounded-xl p-6 border border-[#D6E5DF] bg-white hover:-translate-y-1 hover:shadow-lg transition-all duration-200 h-full flex flex-col dark:border-white/10 dark:bg-[#171918]">
                 <div className="flex gap-0.5 mb-4">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <Star key={s} size={16} fill="#E8A020" color="#E8A020" />
                   ))}
                 </div>
-                <p className="text-sm leading-6 flex-1 mb-5 text-[#6B7B75] dark:text-[#A8C8BB]">
+                <p className="text-sm leading-6 flex-1 mb-5 text-[#6B7B75] dark:text-[#9BA19E]">
                   &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3">
@@ -104,7 +104,7 @@ export function SocialProofSection() {
                     <p className="font-medium text-sm text-[#141F1B] dark:text-[#E8F5EF]">
                       {t.name}
                     </p>
-                    <p className="text-xs text-[#6B7B75] dark:text-[#A8C8BB]">{t.meta}</p>
+                    <p className="text-xs text-[#6B7B75] dark:text-[#9BA19E]">{t.meta}</p>
                   </div>
                 </div>
               </div>

@@ -4,7 +4,7 @@ import { AlertCircle, ArrowLeft, Home } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] p-4 dark:bg-[#0F1A17]">
+    <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] p-4 dark:bg-[#0D0F0E]">
       <div className="text-center">
         <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-[#FDEAE5]">
           <AlertCircle className="h-12 w-12 text-[#C44B2A]" />
@@ -16,7 +16,7 @@ export default function NotFound() {
         <h2 className="mb-4 text-2xl text-[#1A3C34]" style={{ fontFamily: "var(--font-display)" }}>
           Page not found
         </h2>
-        <p className="mb-8 text-[#6B7B75] dark:text-[#A8C8BB] max-w-md mx-auto">
+        <p className="mb-8 text-[#6B7B75] dark:text-[#9BA19E] max-w-md mx-auto">
           Sorry, we couldn&apos;t find the page you&apos;re looking for. The link might be broken, or the page may have been removed.
         </p>
 

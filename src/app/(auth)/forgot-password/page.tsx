@@ -60,16 +60,16 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] dark:bg-[#0F1A17] p-4">
+      <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] dark:bg-[#0D0F0E] p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="mx-auto w-fit rounded-full bg-[#E8F5EF] p-3 dark:bg-[rgba(126,200,160,0.15)]">
+            <div className="mx-auto w-fit rounded-full bg-[#E8F5EF] p-3 dark:bg-white/5">
               <CheckCircle className="h-8 w-8 text-[#4A8C73] dark:text-[#7EC8A0]" />
             </div>
             <h1 className="mt-4 text-2xl" style={{ fontFamily: "var(--font-display)" }}>
               Check Your Email
             </h1>
-            <p className="mt-2 text-[#6B7B75] dark:text-[#A8C8BB]">
+            <p className="mt-2 text-[#6B7B75] dark:text-[#9BA19E]">
               We've sent password reset instructions to:
             </p>
             <p className="mt-1 font-medium text-[#141F1B] dark:text-[#E8F5EF]">{submittedEmail}</p>
@@ -110,13 +110,13 @@ export default function ForgotPasswordPage() {
     <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <div className="mx-auto w-fit rounded-full bg-[#E8F5EF] p-3 dark:bg-[rgba(126,200,160,0.15)]">
+          <div className="mx-auto w-fit rounded-full bg-[#E8F5EF] p-3 dark:bg-white/5">
             <Mail className="h-6 w-6 text-[#1A3C34] dark:text-[#7EC8A0]" />
           </div>
           <h1 className="mt-4 text-center text-2xl" style={{ fontFamily: "var(--font-display)" }}>
             Forgot password?
           </h1>
-          <p className="mt-2 text-center text-[#6B7B75] dark:text-[#A8C8BB]">
+          <p className="mt-2 text-center text-[#6B7B75] dark:text-[#9BA19E]">
             No worries! Enter your email and we'll send you instructions to
             reset your password.
           </p>

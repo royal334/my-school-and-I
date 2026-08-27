@@ -17,7 +17,7 @@ export function DashboardQuickStats({
 }: DashboardQuickStatsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" data-tour="student-stats">
-      <Card className="border-[#A8D8C2] bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.1)] dark:border-[rgba(126,200,160,0.2)] transition-all hover:shadow-md">
+      <Card className="border-[#A8D8C2] bg-[#E8F5EF] dark:bg-white/5 dark:border-white/10 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-[#3A7260] dark:text-[#7EC8A0]">
@@ -39,7 +39,7 @@ export function DashboardQuickStats({
         </CardContent>
       </Card>
 
-      <Card className="border-[#A8D8C2] bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.1)] dark:border-[rgba(126,200,160,0.2)] transition-all hover:shadow-md">
+      <Card className="border-[#A8D8C2] bg-[#E8F5EF] dark:bg-white/5 dark:border-white/10 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-[#3A7260] dark:text-[#7EC8A0]">
@@ -61,10 +61,10 @@ export function DashboardQuickStats({
         </CardContent>
       </Card>
 
-      <Card className="border-[#D6E5DF] bg-white dark:bg-[#1A2822] dark:border-[rgba(126,200,160,0.15)] transition-all hover:shadow-md">
+      <Card className="border-[#D6E5DF] bg-white dark:bg-[#171918] dark:border-white/10 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB]">
+            <span className="text-sm font-medium text-[#6B7B75] dark:text-[#9BA19E]">
               Vendors
             </span>
             <Store className="h-5 w-5 text-[#E8A020] dark:text-[#E8A020]" />
@@ -83,10 +83,10 @@ export function DashboardQuickStats({
         </CardContent>
       </Card>
 
-      <Card className="border-[#D6E5DF] bg-white dark:bg-[#1A2822] dark:border-[rgba(126,200,160,0.15)] transition-all hover:shadow-md">
+      <Card className="border-[#D6E5DF] bg-white dark:bg-[#171918] dark:border-white/10 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB]">
+            <span className="text-sm font-medium text-[#6B7B75] dark:text-[#9BA19E]">
               Suggestions
             </span>
             <MessageSquare className="h-5 w-5 text-[#4A8C73] dark:text-[#7EC8A0]" />

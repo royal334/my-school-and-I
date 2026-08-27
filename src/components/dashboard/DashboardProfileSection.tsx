@@ -17,24 +17,24 @@ export function DashboardProfileSection({
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">Level</span>
-            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#E8F5EF] dark:bg-[#1A2C25] text-[#3A7260] dark:text-[#7EC8A0]">
+            <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">Level</span>
+            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#E8F5EF] dark:bg-[#1E211F] text-[#3A7260] dark:text-[#7EC8A0]">
               {profile?.level} Level
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">Matric number</span>
+            <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">Matric number</span>
             <span className="text-sm font-medium text-[#141F1B] dark:text-[#E8F5EF]">
               {profile?.matric_number}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">Status</span>
+            <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">Status</span>
             <span
               className={
                 hasActiveSubscription
-                  ? "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#E8F5EF] dark:bg-[#1A2C25] text-[#1A7A52] dark:text-[#7EC8A0]"
-                  : "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#F0F5F3] dark:bg-[#1A2C25] text-[#6B7B75] dark:text-[#A8C8BB]"
+                  ? "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#E8F5EF] dark:bg-[#1E211F] text-[#1A7A52] dark:text-[#7EC8A0]"
+                  : "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#F0F5F3] dark:bg-[#1E211F] text-[#6B7B75] dark:text-[#9BA19E]"
               }
             >
               {hasActiveSubscription ? "Premium" : "Free"}
@@ -55,34 +55,34 @@ export function DashboardProfileSection({
         <CardContent className="space-y-3">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] text-xs text-[#1A7A52] dark:text-[#7EC8A0]">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] text-xs text-[#1A7A52] dark:text-[#7EC8A0]">
                 ✓
               </div>
-              <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+              <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">
                 Complete your profile
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] text-xs text-[#1A7A52] dark:text-[#7EC8A0]">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] text-xs text-[#1A7A52] dark:text-[#7EC8A0]">
                 {currentGPA ? "✓" : "1"}
               </div>
-              <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+              <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">
                 Add your first semester
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F0F5F3] dark:bg-[#1A2C25] text-xs text-[#6B7B75] dark:text-[#A8C8BB]">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F0F5F3] dark:bg-[#1E211F] text-xs text-[#6B7B75] dark:text-[#9BA19E]">
                 2
               </div>
-              <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+              <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">
                 Browse study materials
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F0F5F3] dark:bg-[#1A2C25] text-xs text-[#6B7B75] dark:text-[#A8C8BB]">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F0F5F3] dark:bg-[#1E211F] text-xs text-[#6B7B75] dark:text-[#9BA19E]">
                 3
               </div>
-              <span className="text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+              <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">
                 Connect with vendors
               </span>
             </div>

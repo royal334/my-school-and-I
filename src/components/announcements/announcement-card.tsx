@@ -36,7 +36,7 @@ export default function AnnouncementCard({
   return (
     <div
       className={`flex border rounded-xl overflow-hidden transition-all hover:shadow-md ${
-        !is_read ? 'border-[#A8D8C2] bg-[#E8F5EF]/50 dark:border-[rgba(126,200,160,0.3)] dark:bg-[rgba(126,200,160,0.05)]' : 'border-[#D6E5DF] bg-white dark:border-[rgba(126,200,160,0.15)] dark:bg-[#1A2822]'
+        !is_read ? 'border-[#A8D8C2] bg-[#E8F5EF]/50 dark:border-white/15 dark:bg-white/5' : 'border-[#D6E5DF] bg-white dark:border-white/10 dark:bg-[#171918]'
       }`}
     >
       {/* Priority stripe */}
@@ -49,11 +49,11 @@ export default function AnnouncementCard({
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.15)] text-[#4A8C73] dark:text-[#7EC8A0] uppercase" style={{ letterSpacing: "0.06em" }}>
+              <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#E8F5EF] dark:bg-white/5 text-[#4A8C73] dark:text-[#7EC8A0] uppercase" style={{ letterSpacing: "0.06em" }}>
                 {announcement.priority}
               </span>
               {announcement.category && (
-                <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1A2C25] text-[#6B7B75] dark:text-[#A8C8BB] border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)]">
+                <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1E211F] text-[#6B7B75] dark:text-[#9BA19E] border border-[#D6E5DF] dark:border-white/10">
                   {announcement.category}
                 </span>
               )}
@@ -73,14 +73,14 @@ export default function AnnouncementCard({
               </h3>
             </Link>
 
-            <p className="text-sm text-[#6B7B75] dark:text-[#A8C8BB] mt-1 line-clamp-2">
+            <p className="text-sm text-[#6B7B75] dark:text-[#9BA19E] mt-1 line-clamp-2">
               {announcement.content}
             </p>
           </div>
 
           <button
             onClick={() => onSave(announcement.id)}
-            className="mt-1 p-2 rounded hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028] transition"
+            className="mt-1 p-2 rounded hover:bg-[#F0F5F3] dark:hover:bg-[#202320] transition"
             title={isSaved ? 'Unsave' : 'Save'}
           >
             <Bookmark
@@ -91,7 +91,7 @@ export default function AnnouncementCard({
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-[#6B7B75] dark:text-[#A8C8BB] mt-3">
+        <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-[#6B7B75] dark:text-[#9BA19E] mt-3">
           <div className="flex items-center justify-between w-full">
             <span className="flex flex-col gap-1">
               <span className="font-medium text-[#3D4A46] dark:text-[#C8D8D0]">{author.full_name}</span>

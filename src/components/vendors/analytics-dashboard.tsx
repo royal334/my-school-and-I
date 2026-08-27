@@ -283,13 +283,13 @@ export default function AnalyticsDashboard({
 
       {/* No Data Message */}
       {hasNoData && (
-        <Card className="border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] bg-[#E8F5EF] dark:bg-[#1A2C25]">
+        <Card className="border-[#D6E5DF] dark:border-white/10 bg-[#E8F5EF] dark:bg-[#1E211F]">
           <CardContent className="p-6 text-center">
             <Activity className="mx-auto h-12 w-12 text-[#4A8C73]" />
             <h3 className="mt-4" style={{ fontFamily: "var(--font-display)" }}>
               No analytics data yet
             </h3>
-            <p className="mt-2 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+            <p className="mt-2 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
               Start getting views and contacts to see analytics here. Share your
               vendor page to start tracking!
             </p>

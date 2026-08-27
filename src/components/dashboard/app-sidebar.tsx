@@ -122,7 +122,7 @@ export function AppSidebar() {
   return (
     <>
       <Sidebar>
-        <SidebarHeader className="px-5 py-5 border-b border-[rgba(126,200,160,0.15)] bg-[#1A3C34] dark:bg-[#091210]">
+        <SidebarHeader className="px-5 py-5 border-b border-[rgba(126,200,160,0.15)] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C]">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#E8A020] text-[#3A2800] font-bold text-sm" style={{ fontFamily: "var(--font-display)" }}>
               CH
@@ -133,7 +133,7 @@ export function AppSidebar() {
           </div>
         </SidebarHeader>
 
-        <SidebarContent className="bg-[#1A3C34] dark:bg-[#091210] px-3 py-4">
+        <SidebarContent className="bg-[#1A3C34] dark:bg-[#0B0D0C] px-3 py-4">
           <SidebarGroup>
             <SidebarMenu className="space-y-1">
               {navItems.map(({ href, icon: Icon, label }) => {
@@ -165,7 +165,7 @@ export function AppSidebar() {
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter className="px-3 py-4 border-t border-[rgba(126,200,160,0.15)] bg-[#1A3C34] dark:bg-[#091210]">
+        <SidebarFooter className="px-3 py-4 border-t border-[rgba(126,200,160,0.15)] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C]">
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton

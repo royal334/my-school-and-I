@@ -35,7 +35,7 @@ export function HeroSection() {
           {/* Left */}
           <div className="space-y-7">
             <Reveal>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-[#E8F5EF] text-[#4A8C73] dark:bg-[rgba(126,200,160,0.15)] dark:text-[#7EC8A0]">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-[#E8F5EF] text-[#4A8C73] dark:bg-white/5 dark:text-[#7EC8A0]">
                 <Zap size={14} />
                 For university students
               </span>
@@ -55,7 +55,7 @@ export function HeroSection() {
             </Reveal>
 
             <Reveal delay={160}>
-              <p className="text-lg leading-8 max-w-xl text-[#6B7B75] dark:text-[#A8C8BB]">
+              <p className="text-lg leading-8 max-w-xl text-[#6B7B75] dark:text-[#9BA19E]">
                 Access materials, calculate CGPA, connect with vendors — all in
                 one platform designed for students at Nnamdi Azikiwe
                 University.
@@ -71,7 +71,7 @@ export function HeroSection() {
                   Start free <ArrowRight size={18} />
                 </Link>
                 <Link href="/vendor-signup">
-                  <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-base border border-[#C8D8D0] dark:border-[rgba(126,200,160,0.3)] text-[#6B7B75] dark:text-[#A8C8BB] hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028] hover:-translate-y-0.5 transition-all duration-200">
+                  <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-base border border-[#C8D8D0] dark:border-white/15 text-[#6B7B75] dark:text-[#9BA19E] hover:bg-[#F0F5F3] dark:hover:bg-[#202320] hover:-translate-y-0.5 transition-all duration-200">
                     Signup as a non-student vendor <ArrowRight size={18} />
                   </button>
                 </Link>
@@ -84,13 +84,13 @@ export function HeroSection() {
                   {AVATARS.map((initials) => (
                     <div
                       key={initials}
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold border-2 border-white dark:border-[#1A2822] bg-[#E8F5EF] text-[#4A8C73] dark:bg-[rgba(126,200,160,0.2)] dark:text-[#7EC8A0]"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold border-2 border-white dark:border-[#262928] bg-[#E8F5EF] text-[#4A8C73] dark:bg-white/10 dark:text-[#7EC8A0]"
                     >
                       {initials}
                     </div>
                   ))}
                 </div>
-                <p className="text-sm font-medium text-[#6B7B75] dark:text-[#A8C8BB]">
+                <p className="text-sm font-medium text-[#6B7B75] dark:text-[#9BA19E]">
                   <strong className="text-[#141F1B] dark:text-[#E8F5EF]">
                     500+
                   </strong>{" "}
@@ -104,11 +104,11 @@ export function HeroSection() {
           <div className="relative hidden lg:flex items-center justify-center min-h-[480px]">
             {/* Main card */}
             <div
-              className="w-72 rounded-2xl p-5 shadow-lg border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)] bg-white dark:bg-[#1A2822]"
+              className="w-72 rounded-2xl p-5 shadow-lg border border-[#D6E5DF] dark:border-white/10 bg-white dark:bg-[#171918]"
               style={{ animation: "float 3s ease-in-out infinite" }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.15)]">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#E8F5EF] dark:bg-white/5">
                   <BookOpen
                     size={20}
                     className="text-[#4A8C73] dark:text-[#7EC8A0]"
@@ -118,38 +118,38 @@ export function HeroSection() {
                   <p className="font-medium text-sm text-[#141F1B] dark:text-[#E8F5EF]">
                     ENG 301 - Fluid Mechanics
                   </p>
-                  <p className="text-xs text-[#6B7B75] dark:text-[#A8C8BB]">
+                  <p className="text-xs text-[#6B7B75] dark:text-[#9BA19E]">
                     Past questions · 2023
                   </p>
                 </div>
               </div>
-              <div className="h-1.5 rounded-full bg-[#E1EBE6] dark:bg-[#1E3028] mb-1">
+              <div className="h-1.5 rounded-full bg-[#E1EBE6] dark:bg-[#1E211F] mb-1">
                 <div className="h-1.5 rounded-full bg-[#4A8C73] dark:bg-[#7EC8A0] w-[72%]" />
               </div>
-              <p className="text-xs text-[#6B7B75] dark:text-[#A8C8BB]">
+              <p className="text-xs text-[#6B7B75] dark:text-[#9BA19E]">
                 72% downloaded
               </p>
             </div>
 
             {/* CGPA card */}
             <div
-              className="absolute -bottom-6 -left-4 w-56 rounded-2xl p-4 shadow-lg border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)] bg-white dark:bg-[#1A2822]"
+              className="absolute -bottom-6 -left-4 w-56 rounded-2xl p-4 shadow-lg border border-[#D6E5DF] dark:border-white/10 bg-white dark:bg-[#171918]"
               style={{ animation: "float 3s ease-in-out infinite 0.8s" }}
             >
-              <p className="text-xs font-medium mb-2 text-[#6B7B75] dark:text-[#A8C8BB]">
+              <p className="text-xs font-medium mb-2 text-[#6B7B75] dark:text-[#9BA19E]">
                 CGPA calculator
               </p>
               <p className="text-3xl font-bold text-[#4A8C73] dark:text-[#7EC8A0]">
                 4.52
               </p>
-              <p className="text-xs mt-1 text-[#6B7B75] dark:text-[#A8C8BB]">
+              <p className="text-xs mt-1 text-[#6B7B75] dark:text-[#9BA19E]">
                 First Class Honours
               </p>
             </div>
 
             {/* Vendor card */}
             <div
-              className="absolute -top-6 -right-4 w-52 rounded-2xl p-4 shadow-lg border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)] bg-white dark:bg-[#1A2822]"
+              className="absolute -top-6 -right-4 w-52 rounded-2xl p-4 shadow-lg border border-[#D6E5DF] dark:border-white/10 bg-white dark:bg-[#171918]"
               style={{ animation: "float 3s ease-in-out infinite 1.6s" }}
             >
               <div className="flex items-center gap-2 mb-1">

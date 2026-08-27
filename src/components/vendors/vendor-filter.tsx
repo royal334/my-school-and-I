@@ -94,10 +94,10 @@ function VendorFiltersContent({ categories }: VendorFiltersProps) {
             <Button
               variant="outline"
               size="default"
-              className={`shrink-0 border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] ${
+              className={`shrink-0 border-[#D6E5DF] dark:border-white/10 ${
                 selectedCategory !== "all"
-                  ? "bg-[#E8F5EF] dark:bg-[#1A2C25] text-[#1A3C34] dark:text-[#E8F5EF] border-[#4A8C73] dark:border-[#7EC8A0]"
-                  : "text-[#6B7B75] dark:text-[#A8C8BB] hover:bg-[#F0F5F3] dark:hover:bg-[#1A2C25]"
+                  ? "bg-[#E8F5EF] dark:bg-[#1E211F] text-[#1A3C34] dark:text-[#E8F5EF] border-[#4A8C73] dark:border-[#7EC8A0]"
+                  : "text-[#6B7B75] dark:text-[#9BA19E] hover:bg-[#F0F5F3] dark:hover:bg-[#202320]"
               }`}
             >
               <SlidersHorizontal className="mr-2 h-4 w-4" />
@@ -124,8 +124,8 @@ function VendorFiltersContent({ categories }: VendorFiltersProps) {
                 }}
                 className={`flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm transition-colors ${
                   selectedCategory === "all"
-                    ? "bg-[#E8F5EF] dark:bg-[#1A2C25] text-[#1A3C34] dark:text-[#D1EBE1] font-medium"
-                    : "text-[#6B7B75] dark:text-[#A8C8BB] hover:bg-[#F0F5F3] dark:hover:bg-[#1A2C25]"
+                    ? "bg-[#E8F5EF] dark:bg-[#1E211F] text-[#1A3C34] dark:text-[#E1E4E2] font-medium"
+                    : "text-[#6B7B75] dark:text-[#9BA19E] hover:bg-[#F0F5F3] dark:hover:bg-[#202320]"
                 }`}
               >
                 <span className="flex-1 text-left">All categories</span>
@@ -142,8 +142,8 @@ function VendorFiltersContent({ categories }: VendorFiltersProps) {
                   }}
                   className={`flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm transition-colors ${
                     selectedCategory === category.id
-                    ? "bg-[#E8F5EF] dark:bg-[#1A2C25] text-[#1A3C34] dark:text-[#D1EBE1] font-medium"
-                    : "text-[#6B7B75] dark:text-[#A8C8BB] hover:bg-[#F0F5F3] dark:hover:bg-[#1A2C25]"
+                    ? "bg-[#E8F5EF] dark:bg-[#1E211F] text-[#1A3C34] dark:text-[#E1E4E2] font-medium"
+                    : "text-[#6B7B75] dark:text-[#9BA19E] hover:bg-[#F0F5F3] dark:hover:bg-[#202320]"
                 }`}
               >
                 <span className="text-base">{category.icon}</span>
@@ -162,7 +162,7 @@ function VendorFiltersContent({ categories }: VendorFiltersProps) {
             variant="ghost"
             size="sm"
             onClick={clearFilters}
-            className="text-[#6B7B75] dark:text-[#A8C8BB] hover:text-[#1A3C34] dark:hover:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#1A2C25]"
+            className="text-[#6B7B75] dark:text-[#9BA19E] hover:text-[#1A3C34] dark:hover:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#202320]"
           >
             <X className="mr-1 h-4 w-4" />
             Clear
@@ -172,9 +172,9 @@ function VendorFiltersContent({ categories }: VendorFiltersProps) {
 
       {/* Active filter indicator */}
       {activeCategoryName && (
-        <div className="flex items-center gap-2 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+        <div className="flex items-center gap-2 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
           <span>Showing:</span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] px-2.5 py-0.5 text-xs font-medium text-[#1A3C34] dark:text-[#D1EBE1]">
+          <span className="inline-flex items-center gap-1 rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] border border-[#D6E5DF] dark:border-white/10 px-2.5 py-0.5 text-xs font-medium text-[#1A3C34] dark:text-[#E1E4E2]">
             {activeCategoryName.icon} {activeCategoryName.name}
             <button
               onClick={() => setSelectedCategory("all")}

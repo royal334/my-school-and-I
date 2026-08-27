@@ -28,18 +28,18 @@ export function DashboardRecentAnnouncements({
         {announcements.map((announcement) => (
           <div
             key={announcement.id}
-            className="flex items-start gap-3 rounded-lg border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] p-3"
+            className="flex items-start gap-3 rounded-lg border border-[#D6E5DF] dark:border-white/10 p-3"
           >
             <Bell className="h-5 w-5 text-[#4A8C73]" />
             <div className="flex-1">
               <h3 className="text-sm text-[#141F1B] dark:text-[#E8F5EF]">
                 {announcement.title}
               </h3>
-              <p className="text-xs text-[#6B7B75] dark:text-[#A8C8BB]">
+              <p className="text-xs text-[#6B7B75] dark:text-[#9BA19E]">
                 {new Date(announcement.created_at).toLocaleDateString()}
               </p>
             </div>
-            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#E8F5EF] dark:bg-[#1A2C25] text-[#4A8C73] dark:text-[#7EC8A0]">
+            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#E8F5EF] dark:bg-[#1E211F] text-[#4A8C73] dark:text-[#7EC8A0]">
               {announcement.type}
             </span>
           </div>

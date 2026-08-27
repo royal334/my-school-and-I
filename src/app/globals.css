@@ -634,44 +634,44 @@
 
 @layer base {
   .dark {
-    /* Surfaces — clear hierarchy from dark → light */
-    --background: #0B1411;
-    --foreground: #E8F5EF;
+    /* Surfaces — neutral charcoal, brand green reserved for accents/CTAs */
+    --background: #0F1110;
+    --foreground: #ECEEED;
 
-    --card: #15231E;
-    --card-foreground: #E8F5EF;
-    --popover: #15231E;
-    --popover-foreground: #E8F5EF;
+    --card: #171918;
+    --card-foreground: #ECEEED;
+    --popover: #171918;
+    --popover-foreground: #ECEEED;
 
-    /* Primary lighter sage for contrast on dark */
+    /* Primary leaf green — used sparingly (CTAs, active states, brand) */
     --primary: #7EC8A0;
-    --primary-foreground: #0B1411;
+    --primary-foreground: #0F1110;
 
     /* Secondary — mid surface */
-    --secondary: #1A2C25;
-    --secondary-foreground: #D1EBE1;
+    --secondary: #1E211F;
+    --secondary-foreground: #E1E4E2;
 
-    --muted: #1A2C25;
-    --muted-foreground: #A8C8BB;
+    --muted: #1C1F1E;
+    --muted-foreground: #9BA19E;
 
-    --accent: #1A2C25;
-    --accent-foreground: #D1EBE1;
+    --accent: #1E211F;
+    --accent-foreground: #E1E4E2;
 
     --destructive: #E8694A;
     --destructive-foreground: #FFFFFF;
 
-    --border: rgba(126,200,160,0.22);
-    --input: rgba(126,200,160,0.22);
+    --border: rgba(255,255,255,0.08);
+    --input: rgba(255,255,255,0.08);
     --ring: #7EC8A0;
 
     /* Sidebar — darkest panel */
-    --sidebar: #091210;
-    --sidebar-foreground: #D1EBE1;
+    --sidebar: #0B0D0C;
+    --sidebar-foreground: #CFD4D1;
     --sidebar-primary: #E8A020;
-    --sidebar-primary-foreground: #091210;
-    --sidebar-accent: rgba(126,200,160,0.18);
-    --sidebar-accent-foreground: #E8F5EF;
-    --sidebar-border: rgba(126,200,160,0.18);
+    --sidebar-primary-foreground: #0B0D0C;
+    --sidebar-accent: #191C1B;
+    --sidebar-accent-foreground: #ECEEED;
+    --sidebar-border: rgba(255,255,255,0.06);
     --sidebar-ring: #7EC8A0;
   }
 }
@@ -694,21 +694,21 @@
 }
 
 .dark body {
-  @apply bg-[#0B1411] text-[#E8F5EF];
+  @apply bg-[#0F1110] text-[#ECEEED];
 }
 
 .dark h1, .dark h2, .dark h3, .dark h4 {
-  color: #E8F5EF;
+  color: #ECEEED;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-track {
-  background: #15231E;
+  background: #171918;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #3D5A4D;
+  background: #2E3230;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #4A8C73;
+  background: #3A3F3C;
 }

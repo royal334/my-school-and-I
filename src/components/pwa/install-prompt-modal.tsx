@@ -58,11 +58,11 @@ export function InstallPromptModal({ open, onOpenChange }: InstallPromptModalPro
         </div>
 
         {isIOS ? (
-          <div className="rounded-lg border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] bg-[#F0F5F3] dark:bg-[#1A2C25] p-4 text-sm">
+          <div className="rounded-lg border border-[#D6E5DF] dark:border-white/10 bg-[#F0F5F3] dark:bg-[#1E211F] p-4 text-sm">
             <p className="mb-2 flex items-center gap-2 font-medium text-[#141F1B] dark:text-[#E8F5EF]">
               <Share className="h-4 w-4" /> How to add CampusHub to your home screen
             </p>
-            <ol className="space-y-1.5 text-[#6B7B75] dark:text-[#A8C8BB]">
+            <ol className="space-y-1.5 text-[#6B7B75] dark:text-[#9BA19E]">
               <li>
                 1. Tap the <strong className="font-medium text-[#141F1B] dark:text-[#E8F5EF]">Share</strong> button in
                 Safari&apos;s toolbar.
@@ -78,7 +78,7 @@ export function InstallPromptModal({ open, onOpenChange }: InstallPromptModalPro
             </ol>
           </div>
         ) : (
-          <div className="rounded-lg border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] bg-[#F0F5F3] dark:bg-[#1A2C25] p-4 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+          <div className="rounded-lg border border-[#D6E5DF] dark:border-white/10 bg-[#F0F5F3] dark:bg-[#1E211F] p-4 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
             <p className="flex items-start gap-2">
               <Smartphone className="mt-0.5 h-4 w-4 shrink-0" />
               <span>

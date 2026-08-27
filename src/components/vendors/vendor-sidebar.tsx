@@ -102,7 +102,7 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
     <>
       <div className="hidden md:block" data-tour ="vendor-sidebar">
         <Sidebar>
-          <SidebarHeader className="border-b border-[rgba(126,200,160,0.15)] px-5 py-5 bg-[#1A3C34] dark:bg-[#091210]">
+          <SidebarHeader className="border-b border-[rgba(126,200,160,0.15)] dark:border-white/10 px-5 py-5 bg-[#1A3C34] dark:bg-[#0B0D0C]">
             <Link href="/dashboard" onClick={closeSidebarOnMobile}>
               <div className="flex items-center gap-3">
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#E8A020] text-[#3A2800] font-bold text-sm" style={{ fontFamily: "var(--font-display)" }}>
@@ -118,7 +118,7 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
             </Link>
           </SidebarHeader>
 
-          <SidebarContent className="bg-[#1A3C34] dark:bg-[#091210] px-3 py-4">
+          <SidebarContent className="bg-[#1A3C34] dark:bg-[#0B0D0C] px-3 py-4">
             <SidebarGroup>
               <SidebarMenu className="space-y-1">
                 {vendorNavigation.map((item) => {
@@ -152,8 +152,8 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
             </SidebarGroup>
           </SidebarContent>
 
-          <SidebarFooter className="px-3 py-4 border-t border-[rgba(126,200,160,0.15)] bg-[#1A3C34] dark:bg-[#091210]">
-            <div className="mb-3 rounded-lg bg-[rgba(126,200,160,0.12)] p-3 border border-[rgba(126,200,160,0.1)]">
+          <SidebarFooter className="px-3 py-4 border-t border-[rgba(126,200,160,0.15)] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C]">
+            <div className="mb-3 rounded-lg bg-[rgba(126,200,160,0.12)] dark:bg-white/5 p-3 border border-[rgba(126,200,160,0.1)] dark:border-white/10">
               <p className="truncate text-sm font-medium text-[#E8F5EF]">{userName}</p>
               <p className="text-xs text-[rgba(232,245,239,0.5)]">Vendor account</p>
             </div>

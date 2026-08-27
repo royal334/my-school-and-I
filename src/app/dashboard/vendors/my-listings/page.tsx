@@ -50,11 +50,11 @@ export default async function MyListingsPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>My listings</h1>
-          <p className="text-[#6B7B75] dark:text-[#A8C8BB]">Manage your vendor listings</p>
+          <p className="text-[#6B7B75] dark:text-[#9BA19E]">Manage your vendor listings</p>
         </div>
 
         <Card className="flex flex-col items-center justify-center p-12 text-center">
-          <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] p-4">
+          <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-4">
             <Plus className="h-8 w-8 text-[#4A8C73] dark:text-[#7EC8A0]" />
           </div>
           <h3 className="mt-4 text-lg" style={{ fontFamily: "var(--font-display)" }}>No vendor listing yet</h3>
@@ -78,7 +78,7 @@ export default async function MyListingsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>My listings</h1>
-          <p className="text-[#6B7B75] dark:text-[#A8C8BB]">Manage your vendor listings</p>
+          <p className="text-[#6B7B75] dark:text-[#9BA19E]">Manage your vendor listings</p>
         </div>
         <Link href={`/dashboard/vendors/${vendor.id}`}>
           <Button variant="outline">View Public Page</Button>
@@ -102,7 +102,7 @@ export default async function MyListingsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] p-3">
+              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-3">
                 <Eye className="h-6 w-6 text-[#4A8C73] dark:text-[#7EC8A0]" />
               </div>
               <div>
@@ -116,7 +116,7 @@ export default async function MyListingsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] p-3">
+              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-3">
                 <Phone className="h-6 w-6 text-[#1A7A52] dark:text-[#7EC8A0]" />
               </div>
               <div>
@@ -182,7 +182,7 @@ export default async function MyListingsPage() {
                   />
                 </div>
               ) : (
-                <div className="flex h-24 w-24 items-center justify-center rounded-lg bg-[#E8F5EF] dark:bg-[#1A2C25] text-2xl font-bold text-[#3A7260] dark:text-[#7EC8A0]">
+                <div className="flex h-24 w-24 items-center justify-center rounded-lg bg-[#E8F5EF] dark:bg-[#1E211F] text-2xl font-bold text-[#3A7260] dark:text-[#7EC8A0]">
                   {vendor.business_name.slice(0, 2).toUpperCase()}
                 </div>
               )}
@@ -265,7 +265,7 @@ export default async function MyListingsPage() {
         <Link href={`/dashboard/vendors/${vendor.id}/edit`}>
           <Card className="cursor-pointer transition-shadow hover:shadow-lg">
             <CardContent className="flex items-center gap-4 p-6">
-              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] p-3">
+              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-3">
                 <Edit className="h-6 w-6 text-[#4A8C73] dark:text-[#7EC8A0]" />
               </div>
               <div>
@@ -281,7 +281,7 @@ export default async function MyListingsPage() {
         <Link href={`/dashboard/vendors/${vendor.id}/analytics`}>
           <Card className="cursor-pointer transition-shadow hover:shadow-lg">
             <CardContent className="flex items-center gap-4 p-6">
-              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1A2C25] p-3">
+              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-3">
                 <TrendingUp className="h-6 w-6 text-[#4A8C73] dark:text-[#7EC8A0]" />
               </div>
               <div>

@@ -55,23 +55,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] p-4 dark:bg-[#0F1A17] flex-col space-y-6">
+    <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] p-4 dark:bg-[#0D0F0E] flex-col space-y-6">
       <div className="w-full max-w-md">
         <Link href="/">
           <Button
             variant="ghost"
             size="sm"
-            className="text-[#6B7B75] dark:text-[#A8C8BB] hover:text-[#141F1B] dark:hover:text-[#E8F5EF] p-0 hover:bg-transparent"
+            className="text-[#6B7B75] dark:text-[#9BA19E] hover:text-[#141F1B] dark:hover:text-[#E8F5EF] p-0 hover:bg-transparent"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to home
           </Button>
         </Link>
       </div>
-      <Card className="w-full max-w-md dark:bg-[#1A2822] dark:border-[rgba(126,200,160,0.15)]">
+      <Card className="w-full max-w-md dark:bg-[#171918] dark:border-white/10">
         <CardHeader>
           <CardTitle className="dark:text-[#E8F5EF]" style={{ fontFamily: "var(--font-display)" }}>Welcome to CampusHub</CardTitle>
-          <CardDescription className="dark:text-[#A8C8BB]">
+          <CardDescription className="dark:text-[#9BA19E]">
             Sign in to access materials and resources
           </CardDescription>
         </CardHeader>
@@ -149,7 +149,7 @@ export default function LoginPage() {
             >
               {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
-            <p className="text-center text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+            <p className="text-center text-sm text-[#6B7B75] dark:text-[#9BA19E]">
               Don&apos;t have an account?{" "}
               <Link
                 href="/signup"

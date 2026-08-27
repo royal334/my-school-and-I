@@ -53,15 +53,15 @@ export default function MaterialCard({
   }
 
   return (
-    <Card className="flex flex-col transition-shadow hover:shadow-lg border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)]">
+    <Card className="flex flex-col transition-shadow hover:shadow-lg border-[#D6E5DF] dark:border-white/10">
       <CardHeader className="space-y-2">
         <div className="flex items-center justify-between">
-          <div className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1A2C25] text-[#6B7B75] dark:text-[#A8C8BB] border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)]">
+          <div className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1E211F] text-[#6B7B75] dark:text-[#9BA19E] border border-[#D6E5DF] dark:border-white/10">
             {MATERIAL_TYPE_LABELS[material.type] || "Other"}
           </div>
           <button
             onClick={() => handleSaveMaterial(material.id)}
-            className="mt-1 p-2 rounded hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028] transition"
+            className="mt-1 p-2 rounded hover:bg-[#F0F5F3] dark:hover:bg-[#202320] transition"
             title={isSaved ? 'Unsave' : 'Save'}
           >
           {loading ? <Loader2 className="text-[#4A8C73]"/>  : 
@@ -88,7 +88,7 @@ export default function MaterialCard({
         </h3>
 
         {material.courses && (
-          <div className="flex items-center gap-2 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+          <div className="flex items-center gap-2 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
             <BookOpen className="h-4 w-4" />
             <span className="truncate">
               {material.courses.course_code} - {material.courses.course_title}
@@ -100,18 +100,18 @@ export default function MaterialCard({
       <CardContent className="flex-1 space-y-3">
         {material.courses && (
           <div className="flex items-center gap-4 text-sm">
-            <div className="flex items-center gap-1 text-[#6B7B75] dark:text-[#A8C8BB]">
+            <div className="flex items-center gap-1 text-[#6B7B75] dark:text-[#9BA19E]">
               <span className="font-medium">Level:</span>
               <span>{material.courses.level}</span>
             </div>
-            <div className="flex items-center gap-1 text-[#6B7B75] dark:text-[#A8C8BB]">
+            <div className="flex items-center gap-1 text-[#6B7B75] dark:text-[#9BA19E]">
               <span className="font-medium">Sem:</span>
               <span>{material.courses.semester}</span>
             </div>
           </div>
         )}
 
-        <div className="flex items-center justify-between text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+        <div className="flex items-center justify-between text-sm text-[#6B7B75] dark:text-[#9BA19E]">
           <div className="flex items-center gap-1">
             <FileText className="h-4 w-4" />
             <span>PDF</span>

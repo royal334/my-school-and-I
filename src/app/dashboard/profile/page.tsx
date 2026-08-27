@@ -59,7 +59,7 @@ export default async function ProfilePage() {
 
       {/* Role Badge (if admin) */}
       {adminRole && (
-        <Card className="border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] bg-[#E8F5EF] dark:bg-[#1A2C25]">
+        <Card className="border-[#D6E5DF] dark:border-white/10 bg-[#E8F5EF] dark:bg-[#1E211F]">
           <CardContent className="flex items-center gap-3 py-4">
             <div className="rounded-full bg-[#1A3C34] p-2">
               <User className="h-5 w-5 text-[#E8F5EF]" />

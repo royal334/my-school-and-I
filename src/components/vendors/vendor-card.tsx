@@ -18,7 +18,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
   const features = useVendorFeatures(vendor)
 
   return (
-    <Card className="group overflow-hidden transition-all hover:shadow-lg pt-0 border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)]">
+    <Card className="group overflow-hidden transition-all hover:shadow-lg pt-0 border-[#D6E5DF] dark:border-white/10">
       {/* Cover Image */}
       <div className="relative h-32 bg-linear-to-r from-[#1A3C34] to-[#4A8C73]">
         {vendor.cover_image_url && features.canUploadCover ?(
@@ -66,7 +66,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
         {/* Logo */}
         <div className="relative -mt-12 mb-4">
           {vendor.logo_url && features.canUploadLogo ? (
-            <div className="relative h-24 w-24 overflow-hidden rounded-lg border-4 border-white shadow-lg dark:border-[#1A2822]">
+            <div className="relative h-24 w-24 overflow-hidden rounded-lg border-4 border-white shadow-lg dark:border-[#262928]">
               <Image
                 src={vendor.logo_url}
                 alt={vendor.business_name}
@@ -75,7 +75,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
               />
             </div>
           ) : (
-            <div className="flex h-24 w-24 items-center justify-center rounded-lg border-4 border-white bg-[#E8F5EF] text-2xl font-bold text-[#3A7260] shadow-lg dark:border-[#1A2822] dark:bg-[#1A2C25] dark:text-[#7EC8A0]">
+            <div className="flex h-24 w-24 items-center justify-center rounded-lg border-4 border-white bg-[#E8F5EF] text-2xl font-bold text-[#3A7260] shadow-lg dark:border-[#262928] dark:bg-[#1E211F] dark:text-[#7EC8A0]">
               {vendor.business_name.slice(0, 2).toUpperCase()}
             </div>
           )}
@@ -93,25 +93,25 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
 
         {/* Category */}
         {vendor.vendor_categories && (
-          <p className="mb-2 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+          <p className="mb-2 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
             {vendor.vendor_categories.icon} {vendor.vendor_categories.name}
           </p>
         )}
 
         {/* Description */}
-        <p className="mb-3 text-sm text-[#6B7B75] line-clamp-2 dark:text-[#A8C8BB]">
+        <p className="mb-3 text-sm text-[#6B7B75] line-clamp-2 dark:text-[#9BA19E]">
           {vendor.description}
         </p>
 
         {/* Services */}
         <div className="mb-3 flex flex-wrap gap-1">
           {vendor.services.slice(0, 3).map((service :any, index:any) => (
-            <span key={index} className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1A2C25] text-[#6B7B75] dark:text-[#A8C8BB] border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)]">
+            <span key={index} className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1E211F] text-[#6B7B75] dark:text-[#9BA19E] border border-[#D6E5DF] dark:border-white/10">
               {service}
             </span>
           ))}
           {vendor.services.length > 3 && (
-            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1A2C25] text-[#6B7B75] dark:text-[#A8C8BB] border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)]">
+            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1E211F] text-[#6B7B75] dark:text-[#9BA19E] border border-[#D6E5DF] dark:border-white/10">
               +{vendor.services.length - 3} more
             </span>
           )}
@@ -141,7 +141,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
 
         {/* Location */}
         {vendor.location && (
-          <div className="mb-4 flex items-center gap-1 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+          <div className="mb-4 flex items-center gap-1 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
             <MapPin className="h-4 w-4" />
             <span className="line-clamp-1">{vendor.location}</span>
           </div>

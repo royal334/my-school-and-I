@@ -61,7 +61,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
           (<AppSidebar />)
           }
           <SidebarInset>
-            <header className="flex h-16 shrink-0 items-center gap-2 border-b border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] px-4">
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b border-[#D6E5DF] dark:border-white/10 px-4">
               <SidebarTrigger className="-ml-1" />
               <DashboardToggle 
                 hasVendor={hasVendor} 
@@ -79,7 +79,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
       {/* Mobile Layout */}
       <div className="md:hidden flex flex-col min-h-screen">
         {/* Mobile top header with toggle */}
-        <header className="fixed top-0 left-0 right-0 h-16 border-b border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] bg-[#1A3C34] dark:bg-[#091210] z-40 flex items-center px-4 gap-2">
+        <header className="fixed top-0 left-0 right-0 h-16 border-b border-[#D6E5DF] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C] z-40 flex items-center px-4 gap-2">
           <DashboardToggle 
             hasVendor={hasVendor} 
             isVendorAccount={isVendorAccount} 

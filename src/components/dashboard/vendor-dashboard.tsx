@@ -88,21 +88,21 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
       {/* Welcome Section */}
       <div data-tour="vendor-welcome">
         <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Welcome back, {profile.full_name}!</h1>
-        <p className="text-[#6B7B75] dark:text-[#A8C8BB]">
+        <p className="text-[#6B7B75] dark:text-[#9BA19E]">
           Here&apos;s what&apos;s happening with your business in the last 30 days
         </p>
       </div>
 
       {/* Quick Actions */}
       {!vendor && (
-        <Card className="border-[#E8F5EF] bg-[#E8F5EF] dark:bg-[rgba(126,200,160,0.1)] dark:border-[rgba(126,200,160,0.2)]">
+        <Card className="border-[#E8F5EF] bg-[#E8F5EF] dark:bg-white/5 dark:border-white/10">
           <CardContent className="flex items-start gap-4 p-6">
             <AlertCircle className="h-6 w-6 text-[#4A8C73]" />
             <div className="flex-1">
               <h3 className="mb-1 font-medium text-[#1A3C34]">
                 Create your vendor listing
               </h3>
-              <p className="mb-3 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+              <p className="mb-3 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
                 Start connecting with thousands of students by listing your business
               </p>
               <Link href="/vendor-signup">
@@ -365,7 +365,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
 
                   {vendor.subscription_tier === 'basic' ? (
                     <>
-                      <p className="mb-3 text-sm text-[#6B7B75] dark:text-[#A8C8BB]">
+                      <p className="mb-3 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
                         Upgrade to unlock premium features and boost your visibility
                       </p>
                       <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
@@ -428,25 +428,25 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <Link href="/dashboard/vendors/my-listings" className="block">
-                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028]">
+                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-white/10 text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#202320]">
                         <Store className="mr-2 h-4 w-4" />
                         Manage listing
                       </Button>
                     </Link>
                     <Link href="/dashboard/vendors/analytics" className="block">
-                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028]">
+                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-white/10 text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#202320]">
                         <BarChart3 className="mr-2 h-4 w-4" />
                         View analytics
                       </Button>
                     </Link>
                     <Link href="/dashboard/notifications" className="block">
-                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028]">
+                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-white/10 text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#202320]">
                         <MessageSquare className="mr-2 h-4 w-4" />
                         Notifications
                       </Button>
                     </Link>
                     <Link href="/dashboard/settings" className="block">
-                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-[rgba(126,200,160,0.18)] text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#1E3028]">
+                      <Button variant="outline" className="w-full justify-start border-[#D6E5DF] dark:border-white/10 text-[#1A3C34] dark:text-[#E8F5EF] hover:bg-[#F0F5F3] dark:hover:bg-[#202320]">
                         <Users className="mr-2 h-4 w-4" />
                         Account settings
                       </Button>

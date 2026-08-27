@@ -41,7 +41,7 @@ export default function DashboardToggle({
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-lg border border-[#D6E5DF] dark:border-[rgba(126,200,160,0.15)] bg-[#F0F5F3] dark:bg-[#1E3028] p-1" data-tour="dashboard-toggle">
+    <div className="flex items-center gap-2 rounded-lg border border-[#D6E5DF] dark:border-white/10 bg-[#F0F5F3] dark:bg-[#1E211F] p-1" data-tour="dashboard-toggle">
       <Button
         variant={!isStudent ? 'ghost' : 'default'}
         size="sm"

@@ -42,7 +42,7 @@ export function Footer() {
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
-                  className="w-9 h-9 rounded-full flex items-center justify-center bg-[#1A2822] text-[#6B7B75] hover:bg-[#4A8C73] hover:text-white transition-all duration-200 dark:bg-[#1E3028] dark:text-[#A8C8BB] dark:hover:bg-[#4A8C73]"
+                  className="w-9 h-9 rounded-full flex items-center justify-center bg-[#1A2822] text-[#6B7B75] hover:bg-[#4A8C73] hover:text-white transition-all duration-200 dark:bg-[#1E211F] dark:text-[#9BA19E] dark:hover:bg-[#4A8C73]"
                 >
                   {s.icon}
                 </a>

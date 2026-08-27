@@ -259,7 +259,7 @@ export const studentTourSteps: TourStep[] = [
   {
     target: '[data-tour="student-welcome"]',
     content: 'This quick tour will show you around your dashboard. Click Next to begin.',
-    title: 'Welcome to UniHub',
+    title: 'Welcome to CampusHub',
     route: '/dashboard',
     placement: 'bottom',
   },
@@ -406,7 +406,7 @@ export const studentMobileTourSteps: TourStep[] = [
   mobileStep({
     target: visibleTarget('[data-tour="student-welcome"]'),
     content: 'This quick tour will show you around your dashboard. Tap Next to begin.',
-    title: 'Welcome to UniHub',
+    title: 'Welcome to CampusHub',
     route: '/dashboard',
     placement: 'bottom',
   }),

@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 export const metadata = {
-  title: 'Profile & Settings | UniHub',
+  title: 'Profile & Settings | CampusHub',
 };
 
 export default async function ProfilePage() {
@@ -51,7 +51,7 @@ export default async function ProfilePage() {
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold">Profile & Settings</h1>
+        <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Profile & settings</h1>
         <p className="text-slate-600 dark:text-slate-400">
           Manage your account information and preferences
         </p>
@@ -59,16 +59,16 @@ export default async function ProfilePage() {
 
       {/* Role Badge (if admin) */}
       {adminRole && (
-        <Card className="border-primary-200 bg-primary-50 dark:border-primary-900/50 dark:bg-primary-950/30">
+        <Card className="border-[#D6E5DF] dark:border-white/10 bg-[#E8F5EF] dark:bg-[#1E211F]">
           <CardContent className="flex items-center gap-3 py-4">
-            <div className="rounded-full bg-primary-100 p-2 dark:bg-primary-950/50">
-              <User className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+            <div className="rounded-full bg-[#1A3C34] p-2">
+              <User className="h-5 w-5 text-[#E8F5EF]" />
             </div>
             <div>
-              <p className="font-semibold text-primary-900 dark:text-primary-200">
+              <p className="font-medium text-[#1A3C34]">
                 {adminRole.role.replace('_', ' ').toUpperCase()}
               </p>
-              <p className="text-sm text-primary-700 dark:text-primary-300">
+              <p className="text-sm text-[#4A8C73]">
                 You have administrative access to this platform
               </p>
             </div>

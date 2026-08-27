@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export const metadata = {
-  title: 'Edit Vendor Listing | UniHub',
+  title: 'Edit Vendor Listing | CampusHub',
   description: 'Update your business information',
 };
 
@@ -58,7 +58,7 @@ export default async function EditVendorPage({ params }: PageProps) {
 
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Edit Vendor Listing</h1>
+        <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Edit vendor listing</h1>
         <p className="mt-2 text-slate-600 dark:text-slate-400">
           Update your business information and media
         </p>

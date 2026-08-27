@@ -81,7 +81,7 @@ export default function SuggestionPage() {
             <div className="space-y-2">
               <CardTitle className="text-2xl">Feedback Received!</CardTitle>
               <CardDescription className="text-slate-500 dark:text-slate-400">
-                Thank you for helping us improve UniHub. We appreciate your
+                Thank you for helping us improve CampusHub. We appreciate your
                 input!
               </CardDescription>
             </div>
@@ -115,7 +115,7 @@ export default function SuggestionPage() {
             Suggestions & Feedback
           </CardTitle>
           <CardDescription className="text-slate-500 dark:text-slate-400">
-            Tell us how we can make UniHub better for you
+            Tell us how we can make CampusHub better for you
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -173,7 +173,7 @@ export default function SuggestionPage() {
           <CardFooter>
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-all"
+              className="w-full bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF] font-medium transition-all"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -191,7 +191,7 @@ export default function SuggestionPage() {
 
       <p className="text-center text-xs text-slate-500 dark:text-slate-500 max-w-xs">
         Your feedback is directly sent to our management team for review. Thank
-        you for being part of UniHub.
+        you for being part of CampusHub.
       </p>
     </div>
   );

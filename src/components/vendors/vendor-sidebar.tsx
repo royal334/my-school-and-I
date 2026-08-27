@@ -9,7 +9,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
@@ -92,7 +91,7 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
         router.push("/");
       }
     } catch {
-      router.push("/login");
+      router.push("/");
     } finally {
       setLoggingOut(false);
       setShowLogoutDialog(false);
@@ -101,35 +100,49 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
 
   return (
     <>
-      {/* Desktop Sidebar */}
       <div className="hidden md:block" data-tour ="vendor-sidebar">
         <Sidebar>
-          <SidebarHeader className="border-b p-4 dark:border-slate-800 bg-white dark:bg-slate-950">
+          <SidebarHeader className="border-b border-[rgba(126,200,160,0.15)] dark:border-white/10 px-5 py-5 bg-[#1A3C34] dark:bg-[#0B0D0C]">
             <Link href="/dashboard" onClick={closeSidebarOnMobile}>
-              <h1 className="text-xl font-bold text-primary-600 dark:text-primary-500">
-                UniHub
-              </h1>
-              <p className="text-xs text-muted-foreground">Vendor Dashboard</p>
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#E8A020] text-[#3A2800] font-bold text-sm" style={{ fontFamily: "var(--font-display)" }}>
+                  CH
+                </div>
+                <div>
+                  <h1 className="text-lg text-[#E8F5EF]" style={{ fontFamily: "var(--font-display)" }}>
+                    CampusHub
+                  </h1>
+                  <p className="text-xs text-[rgba(232,245,239,0.5)]">Vendor dashboard</p>
+                </div>
+              </div>
             </Link>
           </SidebarHeader>
 
-          <SidebarContent className="bg-white dark:bg-slate-950">
+          <SidebarContent className="bg-[#1A3C34] dark:bg-[#0B0D0C] px-3 py-4">
             <SidebarGroup>
-              <SidebarMenu className="gap-1">
+              <SidebarMenu className="space-y-1">
                 {vendorNavigation.map((item) => {
                   const Icon = item.icon;
                   const active = isNavActive(pathname, item.href);
                   return (
-                    <SidebarMenuItem key={item.name} className="mb-4">
+                    <SidebarMenuItem key={item.name}>
                       <SidebarMenuButton
                         asChild
                         isActive={active}
                         tooltip={item.name}
                         onClick={closeSidebarOnMobile}
+                        className={`relative h-10 px-3 rounded-lg transition-all duration-150 ${
+                          active
+                            ? "bg-[rgba(126,200,160,0.25)] text-[#E8F5EF] font-medium"
+                            : "text-[rgba(232,245,239,0.7)] hover:bg-[rgba(126,200,160,0.12)] hover:text-[#E8F5EF]"
+                        }`}
                       >
                         <Link href={item.href}>
-                          <Icon />
-                          <span>{item.name}</span>
+                          {active && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-full bg-[#E8A020]" />
+                          )}
+                          <Icon className={`h-[18px] w-[18px] ${active ? "text-[#E8A020]" : ""}`} />
+                          <span className="ml-1">{item.name}</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -139,19 +152,19 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
             </SidebarGroup>
           </SidebarContent>
 
-          <SidebarFooter className="border-t p-4 dark:border-slate-800 bg-white dark:bg-slate-950">
-            <div className="mb-3 rounded-lg bg-sidebar-accent p-3">
-              <p className="truncate text-sm font-medium">{userName}</p>
-              <p className="text-xs text-muted-foreground">Vendor Account</p>
+          <SidebarFooter className="px-3 py-4 border-t border-[rgba(126,200,160,0.15)] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C]">
+            <div className="mb-3 rounded-lg bg-[rgba(126,200,160,0.12)] dark:bg-white/5 p-3 border border-[rgba(126,200,160,0.1)] dark:border-white/10">
+              <p className="truncate text-sm font-medium text-[#E8F5EF]">{userName}</p>
+              <p className="text-xs text-[rgba(232,245,239,0.5)]">Vendor account</p>
             </div>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton
                   onClick={() => setShowLogoutDialog(true)}
-                  className="w-full cursor-pointer text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950/50 dark:hover:text-red-300"
+                  className="w-full cursor-pointer h-10 px-3 rounded-lg text-[rgba(196,75,42,0.85)] hover:bg-[rgba(196,75,42,0.1)] hover:text-[#C44B2A] transition-all duration-150"
                 >
-                  <LogOut />
-                  <span>Sign Out</span>
+                  <LogOut className="h-[18px] w-[18px]" />
+                  <span className="ml-1">Sign out</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -159,7 +172,6 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
         </Sidebar>
       </div>
 
-      {/* Mobile Bottom Nav */}
       <div className="md:hidden">
         <VendorMobileBottomNav />
       </div>
@@ -177,7 +189,7 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
             <AlertDialogAction
               onClick={handleLogout}
               disabled={loggingOut}
-              className="bg-red-600 hover:bg-red-700 focus:ring-red-600 dark:bg-red-700 dark:hover:bg-red-800"
+              className="bg-[#C44B2A] hover:bg-[#A83D22] text-white"
             >
               {loggingOut ? "Signing out…" : "Yes, sign out"}
             </AlertDialogAction>
@@ -199,7 +211,7 @@ export function VendorDashboardLayout({
     <SidebarProvider>
       <VendorSidebar userName={userName} />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-[#D6E5DF] px-4">
           <SidebarTrigger className="-ml-1" />
         </header>
         <div className="flex flex-1 flex-col gap-4 overflow-x-hidden p-4 pt-0">

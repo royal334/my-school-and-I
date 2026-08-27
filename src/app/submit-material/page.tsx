@@ -238,7 +238,7 @@ export default function SubmitMaterialPage() {
             <div className="space-y-2">
               <CardTitle className="text-2xl">Material Submitted!</CardTitle>
               <CardDescription className="text-slate-500 dark:text-slate-400">
-                Thank you for contributing to UniHub. Our review team will
+                Thank you for contributing to CampusHub. Our review team will
                 verify your material and add it to the platform if approved.
               </CardDescription>
             </div>
@@ -272,7 +272,7 @@ export default function SubmitMaterialPage() {
             Submit a Material
           </CardTitle>
           <CardDescription className="text-slate-500 dark:text-slate-400">
-            Have study materials that are not on UniHub yet? Submit them
+            Have study materials that are not on CampusHub yet? Submit them
             here for review and they could be shared with the whole community.
           </CardDescription>
         </CardHeader>
@@ -527,7 +527,7 @@ export default function SubmitMaterialPage() {
           <CardFooter>
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-all mt-4"
+              className="w-full bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF] font-medium transition-all mt-4"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -548,7 +548,7 @@ export default function SubmitMaterialPage() {
 
       <p className="text-center text-xs text-slate-500 dark:text-slate-400 max-w-xs">
         Your submission is sent to our review team for verification before it
-        appears on the platform. Thank you for contributing to UniHub.
+        appears on the platform. Thank you for contributing to CampusHub.
       </p>
     </div>
   );

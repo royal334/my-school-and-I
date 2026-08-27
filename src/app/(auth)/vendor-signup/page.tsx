@@ -31,7 +31,7 @@ export default async function VendorSignupPage() {
         </div>
 
         <ExternalVendorForm
-          subtitle="Join UniHub's vendor marketplace and connect with thousands of students"
+          subtitle="Join CampusHub's vendor marketplace and connect with thousands of students"
           showSignInLink
           signInHref="/login"
           categories={categories || []}

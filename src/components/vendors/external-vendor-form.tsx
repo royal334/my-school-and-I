@@ -75,7 +75,7 @@ type ExternalVendorFormProps = {
 };
 
 export default function ExternalVendorForm({
-  subtitle = "Join UniHub's vendor marketplace and connect with thousands of students",
+  subtitle = "Join CampusHub's vendor marketplace and connect with thousands of students",
   showSignInLink = false,
   signInHref = '/login',
   categories = [],

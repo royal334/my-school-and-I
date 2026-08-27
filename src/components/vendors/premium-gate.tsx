@@ -96,12 +96,12 @@ export default function PremiumGate({
         <div className="max-w-sm space-y-4 text-center">
           <div
             className={`mx-auto w-fit rounded-full p-3 ${
-              color === 'amber' ? 'bg-amber-100 dark:bg-amber-950/50' : 'bg-blue-100 dark:bg-blue-950/50'
+              color === 'amber' ? 'bg-amber-100 dark:bg-amber-950/50' : 'bg-[#E8F5EF] dark:bg-[#1E211F]'
             }`}
           >
             <IconComponent
               className={`h-8 w-8 ${
-                color === 'amber' ? 'text-amber-600 dark:text-amber-400' : 'text-blue-600 dark:text-blue-400'
+                color === 'amber' ? 'text-amber-600 dark:text-amber-400' : 'text-[#4A8C73]'
               }`}
             />
           </div>

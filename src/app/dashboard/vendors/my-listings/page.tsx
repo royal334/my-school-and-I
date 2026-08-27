@@ -49,15 +49,15 @@ export default async function MyListingsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">My Listings</h1>
-          <p className="text-slate-600 dark:text-slate-400">Manage your vendor listings</p>
+          <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>My listings</h1>
+          <p className="text-[#6B7B75] dark:text-[#9BA19E]">Manage your vendor listings</p>
         </div>
 
         <Card className="flex flex-col items-center justify-center p-12 text-center">
-          <div className="rounded-full bg-primary-100 p-4 dark:bg-primary-950/50">
-            <Plus className="h-8 w-8 text-primary-600 dark:text-primary-400" />
+          <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-4">
+            <Plus className="h-8 w-8 text-[#4A8C73] dark:text-[#7EC8A0]" />
           </div>
-          <h3 className="mt-4 text-lg font-semibold">No vendor listing yet</h3>
+          <h3 className="mt-4 text-lg" style={{ fontFamily: "var(--font-display)" }}>No vendor listing yet</h3>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             Create your first vendor listing to start connecting with students
           </p>
@@ -77,8 +77,8 @@ export default async function MyListingsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">My Listings</h1>
-          <p className="text-slate-600 dark:text-slate-400">Manage your vendor listings</p>
+          <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>My listings</h1>
+          <p className="text-[#6B7B75] dark:text-[#9BA19E]">Manage your vendor listings</p>
         </div>
         <Link href={`/dashboard/vendors/${vendor.id}`}>
           <Button variant="outline">View Public Page</Button>
@@ -102,8 +102,8 @@ export default async function MyListingsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-950/50">
-                <Eye className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-3">
+                <Eye className="h-6 w-6 text-[#4A8C73] dark:text-[#7EC8A0]" />
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Total Views</p>
@@ -116,8 +116,8 @@ export default async function MyListingsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-green-100 p-3 dark:bg-green-950/50">
-                <Phone className="h-6 w-6 text-green-600 dark:text-green-400" />
+              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-3">
+                <Phone className="h-6 w-6 text-[#1A7A52] dark:text-[#7EC8A0]" />
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Total Contacts</p>
@@ -130,8 +130,8 @@ export default async function MyListingsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-amber-100 p-3 dark:bg-amber-950/50">
-                <Star className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+              <div className="rounded-full bg-[#FFF0D4] dark:bg-[rgba(232,160,32,0.12)] p-3">
+                <Star className="h-6 w-6 text-[#E8A020]" />
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Rating</p>
@@ -182,7 +182,7 @@ export default async function MyListingsPage() {
                   />
                 </div>
               ) : (
-                <div className="flex h-24 w-24 items-center justify-center rounded-lg bg-primary-100 text-2xl font-bold text-primary-700 dark:bg-primary-950/50 dark:text-primary-300">
+                <div className="flex h-24 w-24 items-center justify-center rounded-lg bg-[#E8F5EF] dark:bg-[#1E211F] text-2xl font-bold text-[#3A7260] dark:text-[#7EC8A0]">
                   {vendor.business_name.slice(0, 2).toUpperCase()}
                 </div>
               )}
@@ -193,9 +193,9 @@ export default async function MyListingsPage() {
               <div className="mb-2 flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-1">
-                    <h2 className="text-2xl font-bold">{vendor.business_name}</h2>
+                    <h2 className="text-2xl" style={{ fontFamily: "var(--font-display)" }}>{vendor.business_name}</h2>
                     {isVerified && (
-                      <CheckCircle2 className="h-5 w-5 fill-blue-500 text-white" />
+                      <CheckCircle2 className="h-5 w-5 fill-[#4A8C73] text-white" />
                     )}
                   </div>
                   {vendor.vendor_categories && (
@@ -207,7 +207,7 @@ export default async function MyListingsPage() {
                 </div>
                 <div className="flex gap-2">
                   {vendor.is_featured && (
-                    <Badge className="bg-amber-500">
+                    <Badge className="bg-[#E8A020] text-[#3A2800]">
                       <Crown className="mr-1 h-3 w-3" />
                       Featured
                     </Badge>
@@ -265,8 +265,8 @@ export default async function MyListingsPage() {
         <Link href={`/dashboard/vendors/${vendor.id}/edit`}>
           <Card className="cursor-pointer transition-shadow hover:shadow-lg">
             <CardContent className="flex items-center gap-4 p-6">
-              <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-950/50">
-                <Edit className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-3">
+                <Edit className="h-6 w-6 text-[#4A8C73] dark:text-[#7EC8A0]" />
               </div>
               <div>
                 <h3 className="font-semibold">Edit Listing</h3>
@@ -281,8 +281,8 @@ export default async function MyListingsPage() {
         <Link href={`/dashboard/vendors/${vendor.id}/analytics`}>
           <Card className="cursor-pointer transition-shadow hover:shadow-lg">
             <CardContent className="flex items-center gap-4 p-6">
-              <div className="rounded-full bg-green-100 p-3 dark:bg-green-950/50">
-                <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
+              <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-3">
+                <TrendingUp className="h-6 w-6 text-[#4A8C73] dark:text-[#7EC8A0]" />
               </div>
               <div>
                 <h3 className="font-semibold">View Analytics</h3>

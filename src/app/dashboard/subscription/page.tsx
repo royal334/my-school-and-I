@@ -10,7 +10,7 @@ import CancelSubscriptionButton from '@/components/vendors/cancel-subscription-b
 import ReactivateSubscriptionButton from '@/components/vendors/reactivate-subscription-button';
 
 export const metadata = {
-  title: 'Subscription | UniHub',
+  title: 'Subscription | CampusHub',
   description: 'Manage your subscription',
 };
 
@@ -56,7 +56,7 @@ export default async function SubscriptionPage() {
     <div className="mx-auto max-w-4xl space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Subscription</h1>
+        <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Subscription</h1>
         <p className="text-slate-600 dark:text-slate-400">Manage your subscription plan</p>
       </div>
 
@@ -66,15 +66,15 @@ export default async function SubscriptionPage() {
           <CardTitle>Current Plan</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="flex items-start justify-between">
+          <div className="space-y-4">
             <div className="space-y-1">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Badge
-                  className={`text-lg uppercase ${
+                  className={`text-base sm:text-lg uppercase ${
                     vendor.subscription_tier === 'featured'
                       ? 'bg-amber-500'
                       : vendor.subscription_tier === 'premium'
-                      ? 'bg-blue-500'
+                      ? 'bg-[#4A8C73]'
                       : 'bg-slate-500'
                   }`}
                 >
@@ -99,7 +99,7 @@ export default async function SubscriptionPage() {
             </div>
 
             {isActive ? (
-              <div className='flex gap-3'>
+              <div className='flex flex-wrap gap-3'>
               <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
                 <Button variant="outline">Change Plan</Button>
               </Link>
@@ -128,7 +128,7 @@ export default async function SubscriptionPage() {
             </div>
             ) : (
               <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
-              <Button>
+              <Button className="w-full sm:w-auto">
                 <Crown className="mr-2 h-4 w-4" />
                 Upgrade Plan
               </Button>
@@ -187,14 +187,14 @@ export default async function SubscriptionPage() {
             </div>
 
             {/* Premium */}
-            <div className="rounded-lg border p-4 border-blue-200 bg-blue-50 dark:border-blue-900/50 dark:bg-blue-950/30">
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-blue-900 dark:text-blue-200">Premium (₦2,000/month)</h3>
+            <div className="rounded-lg border p-4 border-[#D6E5DF] dark:border-white/10 bg-[#E8F5EF] dark:bg-[#1E211F]">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="font-medium text-sm sm:text-base text-[#1A3C34] dark:text-[#E8F5EF]">Premium (₦2,000/month)</h3>
                 {vendor.subscription_tier === 'premium' && (
                   <Badge variant="outline">Current</Badge>
                 )}
               </div>
-              <ul className="mt-2 space-y-1 text-sm text-blue-800 dark:text-blue-300">
+              <ul className="mt-2 space-y-1 text-sm text-[#3A7260]">
                 <li>• Logo & cover image</li>
                 <li>• 5 photo gallery</li>
                 <li>• Up to 10 services</li>
@@ -205,8 +205,8 @@ export default async function SubscriptionPage() {
 
             {/* Featured */}
             <div className="rounded-lg border p-4 border-amber-200 bg-amber-50 dark:border-amber-900/50 dark:bg-amber-950/30">
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-amber-900 dark:text-amber-100">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="font-semibold text-sm sm:text-base text-amber-900 dark:text-amber-100">
                   Featured (₦5,000/month)
                 </h3>
                 {vendor.subscription_tier === 'featured' && (
@@ -237,7 +237,7 @@ export default async function SubscriptionPage() {
               {history.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between rounded-lg border p-4"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-lg border p-4"
                 >
                   <div className="flex items-start gap-3">
                     <CreditCard className="h-5 w-5 text-slate-600 dark:text-slate-400 mt-0.5" />

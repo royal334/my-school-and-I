@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   BookOpen,
   Calculator,
-  Download,
   MessageSquare,
   Store,
 } from "lucide-react";
@@ -18,107 +17,88 @@ export function DashboardQuickStats({
 }: DashboardQuickStatsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" data-tour="student-stats">
-      <Card className="border-primary-200 bg-primary-50 dark:bg-primary-950/30 dark:border-primary-900/30 transition-all hover:shadow-md">
+      <Card className="border-[#A8D8C2] bg-[#E8F5EF] dark:bg-white/5 dark:border-white/10 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
+            <span className="text-sm font-medium text-[#3A7260] dark:text-[#7EC8A0]">
               CGPA
             </span>
-            <Calculator className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+            <Calculator className="h-5 w-5 text-[#4A8C73] dark:text-[#7EC8A0]" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-primary-900 dark:text-white">
+          <div className="text-2xl font-bold text-[#1A3C34] dark:text-[#E8F5EF]">
             {currentGPA ? currentGPA.toFixed(2) : "---"}
           </div>
           <Link
             href="/dashboard/cgpa"
-            className="mt-2 inline-block text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+            className="mt-2 inline-block text-xs font-medium text-[#4A8C73] dark:text-[#7EC8A0] hover:text-[#3A7260] dark:hover:text-[#A8D8C2] transition-colors"
           >
             View details →
           </Link>
         </CardContent>
       </Card>
 
-      <Card className="border-secondary-200 bg-secondary-50 dark:bg-secondary-950/30 dark:border-secondary-900/30 transition-all hover:shadow-md">
+      <Card className="border-[#A8D8C2] bg-[#E8F5EF] dark:bg-white/5 dark:border-white/10 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+            <span className="text-sm font-medium text-[#3A7260] dark:text-[#7EC8A0]">
               Materials
             </span>
-            <BookOpen className="h-5 w-5 text-secondary-600 dark:text-secondary-400" />
+            <BookOpen className="h-5 w-5 text-[#4A8C73] dark:text-[#7EC8A0]" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-secondary-900 dark:text-white">
+          <div className="text-2xl font-bold text-[#1A3C34] dark:text-[#E8F5EF]">
             {materialsCount}
           </div>
           <Link
             href="/dashboard/materials"
-            className="mt-2 inline-block text-xs font-medium text-secondary-600 dark:text-secondary-400 hover:text-secondary-700 dark:hover:text-secondary-300 transition-colors"
+            className="mt-2 inline-block text-xs font-medium text-[#4A8C73] dark:text-[#7EC8A0] hover:text-[#3A7260] dark:hover:text-[#A8D8C2] transition-colors"
           >
             Browse library →
           </Link>
         </CardContent>
       </Card>
 
-      {/* <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30 transition-all hover:shadow-md">
+      <Card className="border-[#D6E5DF] bg-white dark:bg-[#171918] dark:border-white/10 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
-              Downloads Today
-            </span>
-            <Download className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-blue-900 dark:text-white">
-            {dailyDownloadCount} / 10
-          </div>
-          <p className="mt-2 text-xs text-blue-600/70 dark:text-blue-400/70 font-medium">
-            Resets daily
-          </p>
-        </CardContent>
-      </Card> */}
-
-      <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-900/30 transition-all hover:shadow-md">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-amber-700 dark:text-amber-300">
+            <span className="text-sm font-medium text-[#6B7B75] dark:text-[#9BA19E]">
               Vendors
             </span>
-            <Store className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+            <Store className="h-5 w-5 text-[#E8A020] dark:text-[#E8A020]" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-amber-900 dark:text-white">
+          <div className="text-2xl font-bold text-[#141F1B] dark:text-[#E8F5EF]">
             {vendorsCount}
           </div>
           <Link
             href="/dashboard/vendors"
-            className="mt-2 inline-block text-xs font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+            className="mt-2 inline-block text-xs font-medium text-[#E8A020] dark:text-[#E8A020] hover:text-[#C4850A] dark:hover:text-[#FFD07A] transition-colors"
           >
             Explore vendors →
           </Link>
         </CardContent>
       </Card>
 
-      <Card className="border-purple-200 bg-purple-50 dark:bg-purple-950/30 dark:border-purple-900/30 transition-all hover:shadow-md">
+      <Card className="border-[#D6E5DF] bg-white dark:bg-[#171918] dark:border-white/10 transition-all hover:shadow-md">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
+            <span className="text-sm font-medium text-[#6B7B75] dark:text-[#9BA19E]">
               Suggestions
             </span>
-            <MessageSquare className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            <MessageSquare className="h-5 w-5 text-[#4A8C73] dark:text-[#7EC8A0]" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-purple-900 dark:text-white">
+          <div className="text-2xl font-bold text-[#141F1B] dark:text-[#E8F5EF]">
             Feedback
           </div>
           <Link
             href="/suggestion-page"
-            className="mt-2 inline-block text-xs font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
+            className="mt-2 inline-block text-xs font-medium text-[#4A8C73] dark:text-[#7EC8A0] hover:text-[#3A7260] dark:hover:text-[#A8D8C2] transition-colors"
           >
             Give feedback →
           </Link>

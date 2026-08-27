@@ -25,7 +25,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
       redirect('/login')
     }
 
-      // Get user profile to determine account type
       const { data: profile } = await supabase
       .from('profiles')
       .select('account_type, full_name, matric_number')
@@ -38,11 +37,9 @@ export default async function Layout({ children }: { children: React.ReactNode }
     .eq('owner_id', user.id)
     .single();
 
-      // Read toggle state from cookie
       const cookieStore = await cookies();
       const isStudentToggle = cookieStore.get('isStudent')?.value !== 'false';
 
-      // Determine which sidebar to show
       const isVendorAccount = profile?.account_type === 'vendor';
       const hasVendor = !!vendor && vendor.is_approved;
       const { data: adminRole } = await supabase
@@ -52,10 +49,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
         .maybeSingle();
       const isSuperAdmin = adminRole?.role === 'super_admin';
       
-      // Switch to vendor sidebar if:
-      // 1. User is purely a vendor account type
-      // OR 
-      // 2. User has an approved vendor listing AND has toggled off student mode
       const showVendorSidebar = isVendorAccount || (hasVendor && !isStudentToggle);
     
   return (
@@ -68,7 +61,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
           (<AppSidebar />)
           }
           <SidebarInset>
-            <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b border-[#D6E5DF] dark:border-white/10 px-4">
               <SidebarTrigger className="-ml-1" />
               <DashboardToggle 
                 hasVendor={hasVendor} 
@@ -86,7 +79,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
       {/* Mobile Layout */}
       <div className="md:hidden flex flex-col min-h-screen">
         {/* Mobile top header with toggle */}
-        <header className="fixed top-0 left-0 right-0 h-16 border-b bg-white dark:bg-slate-950 dark:border-slate-800 z-40 flex items-center px-4 gap-2">
+        <header className="fixed top-0 left-0 right-0 h-16 border-b border-[#D6E5DF] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C] z-40 flex items-center px-4 gap-2">
           <DashboardToggle 
             hasVendor={hasVendor} 
             isVendorAccount={isVendorAccount} 

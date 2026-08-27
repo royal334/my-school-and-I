@@ -30,11 +30,11 @@ export default function PreferencesSettings() {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Sliders className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          <Sliders className="h-5 w-5 text-[#4A8C73]" />
           <h2 className="text-xl font-semibold">Preferences</h2>
         </div>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          Customize your UniHub experience
+          Customize your CampusHub experience
         </p>
       </CardHeader>
       <CardContent className="space-y-6">

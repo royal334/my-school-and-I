@@ -190,7 +190,7 @@ export default function SignupPage() {
         <CardHeader>
           <CardTitle className="dark:text-white">Create Account</CardTitle>
           <CardDescription className="dark:text-slate-400">
-            Join UniHub to access academic resources
+            Join CampusHub to access academic resources
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -506,7 +506,7 @@ export default function SignupPage() {
           <CardFooter className="flex flex-col space-y-4 mt-2">
             <Button
               type="submit"
-              className="w-full bg-primary-600 hover:bg-primary-600/50 dark:bg-blue-700 dark:hover:bg-blue-600"
+              className="w-full bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF]"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Creating account..." : "Sign Up"}
@@ -515,7 +515,7 @@ export default function SignupPage() {
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="text-blue-600 hover:underline dark:text-blue-400"
+                className="text-[#4A8C73] hover:underline"
               >
                 Sign in
               </Link>

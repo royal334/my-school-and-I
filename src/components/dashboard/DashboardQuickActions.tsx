@@ -7,26 +7,26 @@ export function DashboardQuickActions() {
   return (
     <Card data-tour="student-actions">
       <CardHeader>
-        <h2 className="text-xl font-semibold">Quick Actions</h2>
+        <h2 className="text-xl" style={{ fontFamily: "var(--font-display)" }}>Quick actions</h2>
       </CardHeader>
       <CardContent>
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           <Link href="/dashboard/materials">
             <Button variant="outline" className="w-full justify-start">
               <BookOpen className="mr-2 h-4 w-4" />
-              Browse Materials
+              Browse materials
             </Button>
           </Link>
           <Link href="/dashboard/cgpa/add-semester">
             <Button variant="outline" className="w-full justify-start">
               <Calculator className="mr-2 h-4 w-4" />
-              Add Semester
+              Add semester
             </Button>
           </Link>
           <Link href="/dashboard/vendors">
             <Button variant="outline" className="w-full justify-start">
               <Store className="mr-2 h-4 w-4" />
-              Find Vendors
+              Find vendors
             </Button>
           </Link>
           <Link href="/dashboard/announcements">
@@ -40,4 +40,3 @@ export function DashboardQuickActions() {
     </Card>
   );
 }
-

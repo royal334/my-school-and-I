@@ -26,7 +26,7 @@ export default function NotificationCard({ notification, onMarkAsRead }: Notific
     <Card
       className={`transition-all hover:shadow-md cursor-pointer ${
         !notification.is_read
-          ? 'border-blue-200 bg-blue-50 dark:border-blue-900/50 dark:bg-blue-950/30'
+          ? 'border-[#D6E5DF] bg-[#E8F5EF] dark:border-white/10 dark:bg-white/5'
           : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
       }`}
     >
@@ -47,7 +47,7 @@ export default function NotificationCard({ notification, onMarkAsRead }: Notific
               </h3>
 
               {!notification.is_read && (
-                <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-blue-600" />
+                <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#4A8C73]" />
               )}
             </div>
 
@@ -68,7 +68,7 @@ export default function NotificationCard({ notification, onMarkAsRead }: Notific
                       e.stopPropagation();
                       onMarkAsRead(notification.id);
                     }}
-                    className="flex items-center gap-1 text-xs text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="flex items-center gap-1 text-xs text-slate-400 hover:text-[#4A8C73] transition-colors"
                   >
                     <Check className="h-3 w-3" />
                     Mark read

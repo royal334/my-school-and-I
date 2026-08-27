@@ -13,7 +13,7 @@ import Link from "next/link";
 import { Upload } from "lucide-react";
 
 export const metadata = {
-  title: "Materials Library | UniHub",
+  title: "Materials Library | CampusHub",
   description: "Access lecture notes, past questions, and study materials",
 };
 
@@ -97,8 +97,8 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
       {/* Header */}
       <div className="flex items-center justify-between gap-8 mt-4">
         <div>
-          <h1 className="text-xl md:text-3xl font-bold text-slate-900 dark:text-white">
-            Materials Library
+          <h1 className="text-xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
+            Materials library
           </h1>
           <p className="mt-1 text-slate-600 dark:text-slate-400 text-[12px] md:text-base">
             Access lecture notes, past questions, and study materials

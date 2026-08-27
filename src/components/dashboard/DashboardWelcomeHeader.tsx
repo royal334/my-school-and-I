@@ -7,9 +7,9 @@ export function DashboardWelcomeHeader({
 
   return (
     <div className='mt-4' data-tour="student-welcome">
-      <h1 className="text-2xl md:text-3xl font-bold">Welcome back, {firstName}! 👋</h1>
-      <p className="text-muted-foreground">
-        Here's what's happening in your academic journey
+      <h1 className="text-2xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>Welcome back, {firstName}!</h1>
+      <p className="text-[#6B7B75] dark:text-[#9BA19E]">
+        Here&apos;s what&apos;s happening in your academic journey
       </p>
     </div>
   );

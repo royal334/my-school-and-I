@@ -119,7 +119,7 @@ export default async function AnnouncementDetailPage({
           </div>
 
           {/* Title */}
-          <h1 className="text-xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
+          <h1 className="text-xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
             {announcement.title}
           </h1>
 

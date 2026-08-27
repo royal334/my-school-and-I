@@ -5,16 +5,16 @@ import { Reveal } from "./reveal";
 import { useInView, useCountUp } from "../../hooks/hooks";
 
 const STATS = [
-  { label: "Active Students", value: 500, suffix: "+" },
-  { label: "Materials Available", value: 2000, suffix: "+" },
-  { label: "Verified Vendors", value: 50, suffix: "+" },
-  { label: "Student Rating", value: 4.8, suffix: "/5" },
+  { label: "Active students", value: 500, suffix: "+" },
+  { label: "Materials available", value: 2000, suffix: "+" },
+  { label: "Verified vendors", value: 50, suffix: "+" },
+  { label: "Student rating", value: 4.8, suffix: "/5" },
 ];
 
 const TESTIMONIALS = [
   {
     quote:
-      "UniHub saved me hours of searching for past questions. Everything is organized and easy to find!",
+      "CampusHub saved me hours of searching for past questions. Everything is organized and easy to find!",
     name: "Chioma A.",
     meta: "300 Level, Mechanical Engineering",
     initials: "CA",
@@ -45,7 +45,7 @@ function StatCount({
   const { ref, inView } = useInView();
   const count = useCountUp(target, inView);
   return (
-    <span ref={ref} className="text-5xl font-bold text-blue-600 dark:text-blue-500">
+    <span ref={ref} className="text-5xl font-bold text-[#4A8C73] dark:text-[#7EC8A0]">
       {count}
       {suffix}
     </span>
@@ -54,15 +54,15 @@ function StatCount({
 
 export function SocialProofSection() {
   return (
-    <section className="py-20 lg:py-24 bg-slate-50 dark:bg-slate-950">
+    <section className="py-20 lg:py-24 bg-[#F0F5F3] dark:bg-[#0D0F0E]">
       <div className="max-w-[1440px] mx-auto px-6">
         <Reveal>
           <div className="text-center mb-14">
-            <p className="text-sm font-semibold uppercase tracking-widest mb-2 text-slate-500 dark:text-slate-400">
-              Social Proof
+            <p className="text-sm font-medium uppercase tracking-widest mb-2 text-[#6B7B75] dark:text-[#9BA19E]" style={{ letterSpacing: "0.08em" }}>
+              Social proof
             </p>
-            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">
-              Trusted by Engineering Students
+            <h2 className="text-3xl lg:text-4xl text-[#1A3C34] dark:text-[#E8F5EF]" style={{ fontFamily: "var(--font-display)" }}>
+              Trusted by engineering students
             </h2>
           </div>
         </Reveal>
@@ -75,7 +75,7 @@ export function SocialProofSection() {
                 <div>
                   <StatCount target={s.value} suffix={s.suffix} />
                 </div>
-                <p className="text-sm mt-1 font-medium text-slate-600 dark:text-slate-300">
+                <p className="text-sm mt-1 font-medium text-[#6B7B75] dark:text-[#9BA19E]">
                   {s.label}
                 </p>
               </div>
@@ -87,24 +87,24 @@ export function SocialProofSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {TESTIMONIALS.map((t, i) => (
             <Reveal key={t.name} delay={i * 100}>
-              <div className="rounded-xl p-6 border border-slate-200 bg-white hover:-translate-y-1 hover:shadow-xl transition-all duration-200 h-full flex flex-col dark:border-slate-800 dark:bg-slate-900">
+              <div className="rounded-xl p-6 border border-[#D6E5DF] bg-white hover:-translate-y-1 hover:shadow-lg transition-all duration-200 h-full flex flex-col dark:border-white/10 dark:bg-[#171918]">
                 <div className="flex gap-0.5 mb-4">
                   {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} size={16} fill="#f59e0b" color="#f59e0b" />
+                    <Star key={s} size={16} fill="#E8A020" color="#E8A020" />
                   ))}
                 </div>
-                <p className="text-sm leading-6 flex-1 mb-5 text-slate-600 dark:text-slate-300">
+                <p className="text-sm leading-6 flex-1 mb-5 text-[#6B7B75] dark:text-[#9BA19E]">
                   &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shrink-0 bg-blue-600 dark:bg-blue-700">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-[#E8F5EF] shrink-0 bg-[#1A3C34] dark:bg-[#4A8C73]">
                     {t.initials}
                   </div>
                   <div>
-                    <p className="font-semibold text-sm text-slate-900 dark:text-white">
+                    <p className="font-medium text-sm text-[#141F1B] dark:text-[#E8F5EF]">
                       {t.name}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">{t.meta}</p>
+                    <p className="text-xs text-[#6B7B75] dark:text-[#9BA19E]">{t.meta}</p>
                   </div>
                 </div>
               </div>

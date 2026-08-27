@@ -16,10 +16,10 @@ export default async function NotificationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8">
+    <div className="min-h-screen py-8">
       <div>
         <div className="mb-8">
-          <h1 className="text-xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
+          <h1 className="text-xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
             Notifications
           </h1>
           <p className="text-slate-600 dark:text-slate-400 mt-2">

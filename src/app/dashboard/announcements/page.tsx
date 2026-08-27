@@ -28,9 +28,9 @@ export default async function AnnouncementsPage() {
       <div>
         <div className="mb-8">
           <div className='flex justify-between items-center gap-8 md:gap-0 mb-2'>
-            <h1 className="text-xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">Announcements</h1>
+            <h1 className="text-xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>Announcements</h1>
             {isAdmin && (<Link href="/dashboard/announcements/send">
-              <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-semibold transition-colors duration-200 text-sm md:text-base">
+              <button className="bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF] py-2 px-4 rounded-md font-medium transition-colors duration-200 text-sm md:text-base">
                 Send Announcement
               </button>
             </Link>)}

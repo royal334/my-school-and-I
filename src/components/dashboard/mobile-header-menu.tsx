@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { MoreVertical, RotateCcw, Settings, User, LogOut  } from 'lucide-react';
+import { MoreVertical, RotateCcw, Settings, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import axios from 'axios'
+import axios from 'axios';
 import { useTourStore } from '@/components/tour/tour-store';
 import {
   AlertDialog,
@@ -30,7 +30,6 @@ interface MobileHeaderMenuProps {
   isVendorAccount: boolean;
 }
 
-
 export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMenuProps) {
   const start = useTourStore((s) => s.start);
   const isVendorViewRef = useRef(false);
@@ -38,7 +37,7 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
   const [loggingOut, setLoggingOut] = useState(false);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
-    const handleLogout = async () => {
+  const handleLogout = async () => {
     setLoggingOut(true);
     try {
       const res = await axios.post('/api/auth/logout');
@@ -90,27 +89,25 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            {/* Logout Button */}
-          <button
-            onClick={() => setShowLogoutDialog(true)}
-            className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors duration-200 overflow-hidden">
-            <LogOut className='text-red-600 dark:text-red-400'/>
-            <span className="truncate text-center max-w-full">Logout</span>
-          </button>
-      
-            </DropdownMenuItem>
+            <button
+              onClick={() => setShowLogoutDialog(true)}
+              className="flex items-center gap-2 text-[#C44B2A] hover:text-[#A83D22] hover:bg-[#FDEAE5] transition-colors duration-200 overflow-hidden">
+              <LogOut className='text-[#C44B2A]'/>
+              <span className="truncate text-center max-w-full">Logout</span>
+            </button>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student', 'manual')}>
             <RotateCcw />
-            Replay Tour
+            Replay tour
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-        <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+      <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Log out of UniHub?</AlertDialogTitle>
+            <AlertDialogTitle>Log out of CampusHub?</AlertDialogTitle>
             <AlertDialogDescription>
               You will be signed out of your account and redirected to the login
               page.
@@ -121,7 +118,7 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
             <AlertDialogAction
               onClick={handleLogout}
               disabled={loggingOut}
-              className="bg-red-600 hover:bg-red-700 focus:ring-red-600 dark:bg-red-700 dark:hover:bg-red-800"
+              className="bg-[#C44B2A] hover:bg-[#A83D22] text-white"
             >
               {loggingOut ? 'Logging out…' : 'Yes, log out'}
             </AlertDialogAction>

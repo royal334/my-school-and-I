@@ -53,49 +53,42 @@ export default function MaterialCard({
   }
 
   return (
-    <Card className="flex flex-col transition-shadow hover:shadow-lg">
+    <Card className="flex flex-col transition-shadow hover:shadow-lg border-[#D6E5DF] dark:border-white/10">
       <CardHeader className="space-y-2">
-        {/* Type Badge and Premium Lock */}
         <div className="flex items-center justify-between">
-          <Badge variant="secondary" className="text-xs">
+          <div className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1E211F] text-[#6B7B75] dark:text-[#9BA19E] border border-[#D6E5DF] dark:border-white/10">
             {MATERIAL_TYPE_LABELS[material.type] || "Other"}
-          </Badge>
+          </div>
           <button
             onClick={() => handleSaveMaterial(material.id)}
-            className="mt-1 p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-            title={
-              isSaved
-                ? 'Unsave'
-                : 'Save'
-            }
+            className="mt-1 p-2 rounded hover:bg-[#F0F5F3] dark:hover:bg-[#202320] transition"
+            title={isSaved ? 'Unsave' : 'Save'}
           >
-          {loading ? <Loader2 className="text-blue-500 a"/>  : 
+          {loading ? <Loader2 className="text-[#4A8C73]"/>  : 
           (<Bookmark
             className={`h-5 w-5 ${
               isSaved
-                ? 'fill-amber-500 text-amber-500'
-                : 'text-slate-400 dark:text-slate-500'
+                ? 'fill-[#E8A020] text-[#E8A020]'
+                : 'text-[#9AADA8]'
             }`}
           />)}
           </button>
           {material.is_premium && !hasActiveSubscription && (
-            <div className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 dark:bg-amber-950/50">
-              <Lock className="h-3 w-3 text-amber-600 dark:text-amber-400" />
-              <span className="text-xs font-medium text-amber-700 dark:text-amber-300">
+            <div className="flex items-center gap-1 rounded-full bg-[#FFF0D4] px-2 py-1 dark:bg-[rgba(232,160,32,0.15)]">
+              <Lock className="h-3 w-3 text-[#E8A020]" />
+              <span className="text-xs font-medium text-[#9E6A08] dark:text-[#FFD07A]">
                 Premium
               </span>
             </div>
           )}
         </div>
 
-        {/* Title */}
-        <h3 className="line-clamp-2 font-semibold text-slate-900 text-xl md:text-2xl dark:text-slate-100">
+        <h3 className="line-clamp-2 font-medium text-[#141F1B] text-lg dark:text-[#E8F5EF]" style={{ fontFamily: "var(--font-display)" }}>
           {material.title}
         </h3>
 
-        {/* Course Info */}
         {material.courses && (
-          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+          <div className="flex items-center gap-2 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
             <BookOpen className="h-4 w-4" />
             <span className="truncate">
               {material.courses.course_code} - {material.courses.course_title}
@@ -105,22 +98,20 @@ export default function MaterialCard({
       </CardHeader>
 
       <CardContent className="flex-1 space-y-3">
-        {/* Level and Semester */}
         {material.courses && (
           <div className="flex items-center gap-4 text-sm">
-            <div className="flex items-center gap-1 text-slate-600 dark:text-slate-400">
+            <div className="flex items-center gap-1 text-[#6B7B75] dark:text-[#9BA19E]">
               <span className="font-medium">Level:</span>
               <span>{material.courses.level}</span>
             </div>
-            <div className="flex items-center gap-1 text-slate-600 dark:text-slate-400">
+            <div className="flex items-center gap-1 text-[#6B7B75] dark:text-[#9BA19E]">
               <span className="font-medium">Sem:</span>
               <span>{material.courses.semester}</span>
             </div>
           </div>
         )}
 
-        {/* File Info */}
-        <div className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-400">
+        <div className="flex items-center justify-between text-sm text-[#6B7B75] dark:text-[#9BA19E]">
           <div className="flex items-center gap-1">
             <FileText className="h-4 w-4" />
             <span>PDF</span>
@@ -130,20 +121,7 @@ export default function MaterialCard({
           )}
         </div>
 
-        {/* Stats
-        <div className="flex items-center gap-4 text-sm text-slate-600">
-          <div className="flex items-center gap-1">
-            <Eye className="h-4 w-4" />
-            <span>{material.view_count}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Download className="h-4 w-4" />
-            <span>{material.download_count}</span>
-          </div>
-        </div> */}
-
-        {/* Upload Date */}
-        <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
+        <div className="flex items-center gap-1 text-xs text-[#9AADA8]">
           <Calendar className="h-3 w-3" />
           <span>{formatRelativeTime(material.created_at)}</span>
         </div>
@@ -152,15 +130,15 @@ export default function MaterialCard({
       <CardFooter>
         {canAccess ? (
           <Link href={`/dashboard/materials/${material.id}`} className="w-full">
-            <Button onClick= {handleViewMaterial} className="w-full">
+            <Button onClick={handleViewMaterial} className="w-full bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF] dark:bg-[#4A8C73] dark:hover:bg-[#3A7260]">
               <Eye className="mr-2 h-4 w-4" />
-              View Material
+              View material
             </Button>
           </Link>
         ) : (
           <Button variant="outline" className="w-full" disabled>
             <Lock className="mr-2 h-4 w-4" />
-            Subscribe to Access
+            Subscribe to access
           </Button>
         )}
       </CardFooter>

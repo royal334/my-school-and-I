@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Eye,
   Phone,
@@ -24,7 +23,6 @@ import {
   ComposedChart,
   Line,
   Bar,
-  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -285,13 +283,13 @@ export default function AnalyticsDashboard({
 
       {/* No Data Message */}
       {hasNoData && (
-        <Card className="border-blue-200 bg-blue-50 dark:border-blue-900/50 dark:bg-blue-950/30">
+        <Card className="border-[#D6E5DF] dark:border-white/10 bg-[#E8F5EF] dark:bg-[#1E211F]">
           <CardContent className="p-6 text-center">
-            <Activity className="mx-auto h-12 w-12 text-blue-400" />
-            <h3 className="mt-4 font-semibold text-blue-900 dark:text-blue-200">
-              No Analytics Data Yet
+            <Activity className="mx-auto h-12 w-12 text-[#4A8C73]" />
+            <h3 className="mt-4" style={{ fontFamily: "var(--font-display)" }}>
+              No analytics data yet
             </h3>
-            <p className="mt-2 text-sm text-blue-700 dark:text-blue-300">
+            <p className="mt-2 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
               Start getting views and contacts to see analytics here. Share your
               vendor page to start tracking!
             </p>
@@ -308,7 +306,7 @@ export default function AnalyticsDashboard({
               <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">
                 Total Views
               </CardTitle>
-              <Eye className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <Eye className="h-4 w-4 text-[#4A8C73]" />
             </div>
           </CardHeader>
           <CardContent>

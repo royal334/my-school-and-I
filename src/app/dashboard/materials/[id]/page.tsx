@@ -88,7 +88,7 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                       </Badge>
                     )}
                   </div>
-                  <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  <h1 className="text-2xl" style={{ fontFamily: "var(--font-display)" }}>
                     {material.title}
                   </h1>
                   {material.courses && (

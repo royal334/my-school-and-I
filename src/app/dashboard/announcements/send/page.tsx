@@ -65,8 +65,8 @@ const canSend = [
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8">
       <div>
         <div className="mb-4">
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
-            New Announcement
+          <h1 className="text-2xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
+            New announcement
           </h1>
         </div>
           <AnnouncementForm />

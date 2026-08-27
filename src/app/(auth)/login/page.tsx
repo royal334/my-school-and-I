@@ -55,30 +55,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950 flex-col space-y-6">
+    <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] p-4 dark:bg-[#0D0F0E] flex-col space-y-6">
       <div className="w-full max-w-md">
         <Link href="/">
           <Button
             variant="ghost"
             size="sm"
-            className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-0 hover:bg-transparent"
+            className="text-[#6B7B75] dark:text-[#9BA19E] hover:text-[#141F1B] dark:hover:text-[#E8F5EF] p-0 hover:bg-transparent"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
+            Back to home
           </Button>
         </Link>
       </div>
-      <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
+      <Card className="w-full max-w-md dark:bg-[#171918] dark:border-white/10">
         <CardHeader>
-          <CardTitle className="dark:text-white">Welcome to UniHub</CardTitle>
-          <CardDescription className="dark:text-slate-400">
+          <CardTitle className="dark:text-[#E8F5EF]" style={{ fontFamily: "var(--font-display)" }}>Welcome to CampusHub</CardTitle>
+          <CardDescription className="dark:text-[#9BA19E]">
             Sign in to access materials and resources
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="dark:text-slate-200">
+              <Label htmlFor="email" className="dark:text-[#C8D8D0]">
                 Email
               </Label>
               <Input
@@ -94,11 +94,11 @@ export default function LoginPage() {
                 })}
               />
               {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
+                <p className="text-sm text-[#C44B2A]">{errors.email.message}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="dark:text-slate-200">
+              <Label htmlFor="password" className="dark:text-[#C8D8D0]">
                 Password
               </Label>
               <div className="relative">
@@ -117,7 +117,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9AADA8] hover:text-[#6B7B75] dark:hover:text-[#C8D8D0]"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -127,16 +127,16 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-[#C44B2A]">
                   {errors.password.message}
                 </p>
               )}
               <div className="text-right">
                 <Link
                   href="/forgot-password"
-                  className="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                  className="text-sm text-[#4A8C73] hover:underline dark:text-[#7EC8A0]"
                 >
-                  Forgot Password?
+                  Forgot password?
                 </Link>
               </div>
             </div>
@@ -144,16 +144,16 @@ export default function LoginPage() {
           <CardFooter className="flex flex-col space-y-4 mt-4">
             <Button
               type="submit"
-              className="w-full bg-primary-600 hover:bg-primary/50 dark:bg-blue-700 dark:hover:bg-blue-600"
+              className="w-full bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF] dark:bg-[#4A8C73] dark:hover:bg-[#3A7260]"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Signing in..." : "Sign In"}
+              {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
-            <p className="text-center text-sm text-slate-600 dark:text-slate-300">
-              Don't have an account?{" "}
+            <p className="text-center text-sm text-[#6B7B75] dark:text-[#9BA19E]">
+              Don&apos;t have an account?{" "}
               <Link
                 href="/signup"
-                className="text-blue-600 hover:underline dark:text-blue-400"
+                className="text-[#4A8C73] hover:underline dark:text-[#7EC8A0]"
               >
                 Sign up
               </Link>

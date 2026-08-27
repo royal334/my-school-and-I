@@ -103,8 +103,8 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
 
         {/* Expiry Date */}
         {isActive && profile?.subscription_expires_at && (
-          <div className="rounded-lg bg-blue-50 p-4 dark:bg-blue-950/30">
-            <div className="flex items-center gap-2 text-sm text-blue-900 dark:text-blue-200">
+          <div className="rounded-lg bg-[#E8F5EF] dark:bg-[#1E211F] p-4">
+            <div className="flex items-center gap-2 text-sm text-[#1A3C34]">
               <Calendar className="h-4 w-4" />
               <span className="font-medium">
                 Expires on{" "}
@@ -118,7 +118,7 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
                 )}
               </span>
             </div>
-            <p className="mt-1 text-xs text-blue-700 dark:text-blue-300">
+            <p className="mt-1 text-xs text-[#4A8C73]">
               {daysRemaining > 0
                 ? `${daysRemaining} days remaining`
                 : "Expires today"}

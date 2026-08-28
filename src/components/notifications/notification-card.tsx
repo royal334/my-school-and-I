@@ -26,8 +26,8 @@ export default function NotificationCard({ notification, onMarkAsRead }: Notific
     <Card
       className={`transition-all hover:shadow-md cursor-pointer ${
         !notification.is_read
-          ? 'border-[#D6E5DF] bg-[#E8F5EF] dark:border-white/10 dark:bg-white/5'
-          : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
+          ? 'border-[#D6E5DF] bg-[#E8F5EF] dark:border-white/10 dark:bg-[#042b11]'
+          : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-[#171918]'
       }`}
     >
       <CardContent className="px-4">

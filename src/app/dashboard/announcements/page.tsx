@@ -24,7 +24,7 @@ export default async function AnnouncementsPage() {
 
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#171918] py-8">
       <div>
         <div className="mb-8">
           <div className='flex justify-between items-center gap-8 md:gap-0 mb-2'>

@@ -62,7 +62,6 @@ export async function POST(request: Request) {
         business_name,
         business_phone: phone_number,
         business_address: location ?? null,
-        business_verified: false,
         updated_at: new Date().toISOString(),
       })
       .eq("id", user.id);

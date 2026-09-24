@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
+import { ArrowLeft } from 'lucide-react';
 
 interface Submission {
   id: string;
@@ -14,6 +15,7 @@ interface Submission {
   admin_notes: string | null;
   created_at: string;
   matched_unit_id: string | null;
+  matched_unit_status: string | null;
 }
 
 const STATUS_CONFIG: Record<string, { label: string; text: string; bg: string; desc: string }> = {
@@ -82,12 +84,22 @@ function SubmissionCard({ submission }: { submission: Submission }) {
 
         {/* If approved and matched to a unit */}
         {submission.status === 'approved' && submission.matched_unit_id && (
-          <Link
-            href={`/dashboard/accommodation/${submission.matched_unit_id}`}
-            className="mt-3 inline-block min-h-[36px] cursor-pointer rounded bg-[#1A3C34] px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-[#163229] dark:bg-[#7EC8A0] dark:text-[#0F1110] dark:hover:bg-[#A8D8C2]"
-          >
-            View live listing →
-          </Link>
+          submission.matched_unit_status === 'available' ? (
+            <Link
+              href={`/dashboard/accommodation/${submission.matched_unit_id}`}
+              className="mt-3 inline-block min-h-9 cursor-pointer rounded bg-[#1A3C34] px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-[#163229] dark:bg-[#7EC8A0] dark:text-[#0F1110] dark:hover:bg-[#A8D8C2]"
+            >
+              View live listing →
+            </Link>
+          ) : (
+            <p className="mt-3 text-xs leading-relaxed text-[#6B7B75] dark:text-[#9BA19E]">
+              {submission.matched_unit_status === 'rented'
+                ? '🏠 This unit has been rented through CampusHub.'
+                : submission.matched_unit_status
+                  ? 'This listing is being verified and will go live shortly.'
+                  : 'This listing is not live yet.'}
+            </p>
+          )
         )}
       </div>
     </div>
@@ -107,16 +119,21 @@ export default function MySubmissionsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F0F5F3] pb-20 dark:bg-[#0F1110]">
+    <div className="min-h-screen bg-stone-100 pb-20 dark:bg-[#0F1110]">
       {/* Header */}
       <div className="flex items-center justify-between gap-3 bg-[#1A3C34] px-4 py-4">
-        <div>
-          <h1 className="text-xl tracking-[-0.01em] text-white">My submissions</h1>
-          <p className="text-xs text-[#7EC8A0]">Track vacancies you&apos;ve reported</p>
+        <div className="flex items-center gap-2">
+          <Link href="/dashboard/accommodation" className="gap-2 text-white hover:text-[#7EC8A0]">
+            <ArrowLeft className="h-6 w-6" />
+          </Link>
+          <div>
+            <h1 className="text-xl tracking-[-0.01em] text-white">My submissions</h1>
+            <p className="text-xs text-[#7EC8A0]">Track vacancies you&apos;ve reported</p>
+          </div>
         </div>
         <Link
           href="/dashboard/accommodation/submit"
-          className="min-h-[36px] inline-flex items-center rounded bg-[#E8A020] px-3.5 py-2 text-[13px] font-medium text-[#3A2800] transition-colors hover:bg-[#EAA73A]"
+          className="min-h-9 inline-flex items-center rounded bg-[#E8A020] px-3.5 py-2 text-[13px] font-medium text-[#3A2800] transition-colors hover:bg-[#EAA73A]"
         >
           + New
         </Link>
@@ -128,7 +145,7 @@ export default function MySubmissionsPage() {
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
-                className="h-[120px] animate-pulse rounded-md bg-[#E8F5EF] dark:bg-[#1E211F]"
+                className="h-30 animate-pulse rounded-md bg-[#E8F5EF] dark:bg-[#1E211F]"
               />
             ))}
           </div>

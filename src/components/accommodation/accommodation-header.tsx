@@ -13,7 +13,7 @@ export function AccommodationHeader({ hasSubmissions }: { hasSubmissions: boolea
           Verified student housing near campus
         </p>
       </div>
-      <div className="flex flex-col gap-3 md:flex-row">
+      <div className="flex gap-3">
         <Link href="/dashboard/accommodation/submit">
           <Button className="bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF]">
             <Plus className="mr-2 h-4 w-4" />
@@ -21,7 +21,7 @@ export function AccommodationHeader({ hasSubmissions }: { hasSubmissions: boolea
           </Button>
         </Link>
         {hasSubmissions && (
-          <Link href="/dashboard/accommodation/my-submission">
+          <Link href="/dashboard/accommodation/my-submissions">
             <Button className="bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF]">
               <ClipboardList className="mr-2 h-4 w-4" />
               My Submissions

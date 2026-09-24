@@ -133,7 +133,29 @@ export async function GET(request: Request) {
 
     if (error) throw error;
 
-    return NextResponse.json({ submissions: submissions || [] });
+    // Look up matched unit statuses (link only works when unit is 'available')
+    const unitIds = Array.from(
+      new Set((submissions || []).map(s => s.matched_unit_id).filter(Boolean))
+    );
+    let unitStatusById: Record<string, string> = {};
+    if (unitIds.length > 0) {
+      const { data: units } = await supabase
+        .from('accommodation_units')
+        .select('id, availability_status')
+        .in('id', unitIds);
+      unitStatusById = Object.fromEntries(
+        (units || []).map(u => [u.id, u.availability_status])
+      );
+    }
+
+    const result = (submissions || []).map(s => ({
+      ...s,
+      matched_unit_status: s.matched_unit_id
+        ? unitStatusById[s.matched_unit_id] || null
+        : null,
+    }));
+
+    return NextResponse.json({ submissions: result });
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message || 'Failed to fetch submissions' },

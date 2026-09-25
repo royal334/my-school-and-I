@@ -61,8 +61,12 @@ export default async function Layout({ children }: { children: React.ReactNode }
           <SidebarInset className="bg-background">
             <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background/85 px-4 backdrop-blur-xl">
               <SidebarTrigger className="-ml-1" />
-              <DashboardToggle hasVendor={hasVendor} isVendorAccount={isVendorAccount} />
-              <TourHelpButton
+              <DashboardToggle 
+                hasVendor={hasVendor} 
+                isVendorAccount={isVendorAccount}
+                isAdmin={Boolean(adminRole)}
+              />
+                <TourHelpButton
                 hasVendor={hasVendor}
                 isVendorAccount={isVendorAccount}
                 className="ml-auto size-8"
@@ -75,9 +79,15 @@ export default async function Layout({ children }: { children: React.ReactNode }
         </SidebarProvider>
       </div>
 
-      <div className="flex min-h-screen flex-col md:hidden">
-        <header className="fixed inset-x-0 top-0 z-40 flex h-16 items-center gap-2 border-b border-primary-800/30 bg-primary-950 px-4 text-primary-100 shadow-lg">
-          <DashboardToggle hasVendor={hasVendor} isVendorAccount={isVendorAccount} />
+      {/* Mobile Layout */}
+      <div className="md:hidden flex flex-col min-h-screen">
+        {/* Mobile top header with toggle */}
+        <header className="fixed top-0 left-0 right-0 h-16 border-b border-[#D6E5DF] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C] z-40 flex items-center px-4 gap-2">
+          <DashboardToggle 
+            hasVendor={hasVendor} 
+            isVendorAccount={isVendorAccount}
+            isAdmin={Boolean(adminRole)}
+          />
           <MobileHeaderMenu hasVendor={hasVendor} isVendorAccount={isVendorAccount} />
         </header>
 

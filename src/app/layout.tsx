@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { Providers } from "../components/providers/providers";
+import { PageLoader } from "../components/providers/page-loader";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
@@ -53,15 +54,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore =  await cookies();
-  const themeCookie = cookieStore.get('theme')?.value;
-  const htmlClass = themeCookie && themeCookie !== 'system' ? themeCookie : undefined;
-  const htmlStyle = themeCookie && themeCookie !== 'system' ? { colorScheme: themeCookie } : undefined;
-
   return (
     <html lang="en" className={htmlClass} style={htmlStyle}>
       <body className={`${jakarta.variable} font-sans antialiased`}>
         <Providers>
+          <PageLoader />
           <Toaster />
           {children}
         </Providers>

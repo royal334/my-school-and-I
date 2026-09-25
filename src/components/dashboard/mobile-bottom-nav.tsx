@@ -9,9 +9,12 @@ import {
   LayoutDashboard,
   MessageSquare,
   Store,
+  Calculator,
+  House,
   Upload,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+} from 'lucide-react';
+
+import { cn } from '@/lib/utils';
 
 interface MobileBottomNavProps {
   isSuperAdmin?: boolean;
@@ -25,9 +28,10 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
     ...(isSuperAdmin
       ? [{ href: "/dashboard/materials/upload", icon: Upload, label: "Upload" }]
       : []),
-    { href: "/dashboard/vendors", icon: Store, label: "Vendors" },
-    { href: "/dashboard/notifications", icon: MessageSquare, label: "Alerts" },
-    { href: "/dashboard/announcements", icon: Bell, label: "Updates" },
+    {href:"/dashboard/accommodation", icon: House, label: "Accommodation"},
+    { href: '/dashboard/vendors', icon: Store, label: 'Vendors' },
+    { href: '/dashboard/notifications', icon: MessageSquare, label: 'Alerts' },
+    { href: '/dashboard/announcements', icon: Bell, label: 'Updates' },
   ];
   const pathname = usePathname();
 

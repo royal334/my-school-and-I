@@ -32,8 +32,9 @@ import {
   MessageSquare,
   Settings,
   Store,
-  Upload,
+    Upload,
   User,
+  House,
 } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
@@ -44,10 +45,11 @@ const baseNavItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/dashboard/materials", icon: BookOpen, label: "Materials library" },
   { href: "/dashboard/cgpa", icon: Calculator, label: "CGPA" },
-  { href: "/dashboard/profile", icon: User, label: "Profile" },
+  {href:"/dashboard/accommodation", icon: House, label: "Accommodation"},
   { href: "/dashboard/vendors", icon: Store, label: "Vendors" },
   { href: "/dashboard/notifications", icon: MessageSquare, label: "Notifications" },
   { href: "/dashboard/announcements", icon: Bell, label: "Announcements" },
+  { href: "/dashboard/profile", icon: User, label: "Profile" },
   { href: "/dashboard/settings", icon: Settings, label: "Settings" },
 ];
 

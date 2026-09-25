@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Star, Zap, BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen, Star, Zap } from "lucide-react";
 import { Reveal } from "./reveal";
 
 const AVATARS = ["CA", "EO", "MN", "AK", "IB"];
@@ -10,70 +10,66 @@ export function HeroSection() {
   return (
     <section
       id="about"
-      className="relative pt-24 pb-20 lg:pt-36 lg:pb-32 overflow-hidden bg-linear-to-b from-[#F0F5F3] to-white dark:from-[#0F1A17] dark:to-[#1A2822]"
+      className="relative overflow-hidden border-b border-border/60 bg-background pb-20 pt-28 lg:pb-32 lg:pt-36"
     >
-      {/* Dot pattern — forest green */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-35 dark:opacity-10"
+        className="pointer-events-none absolute inset-0 opacity-60 dark:opacity-20"
         style={{
           backgroundImage:
-            "radial-gradient(circle, #4A8C73 1px, transparent 1px)",
+            "radial-gradient(circle, rgba(99,102,241,0.25) 1px, transparent 1px)",
           backgroundSize: "28px 28px",
         }}
+        aria-hidden="true"
       />
-      {/* Glow blob — forest */}
       <div
-        className="absolute right-0 top-0 w-[600px] h-[600px] pointer-events-none opacity-70 dark:opacity-20"
+        className="pointer-events-none absolute -right-40 -top-40 size-[620px] rounded-full opacity-50 blur-3xl dark:opacity-20"
         style={{
           background:
-            "radial-gradient(circle at 70% 30%, #4A8C73 0%, transparent 65%)",
+            "radial-gradient(circle, rgba(79,70,229,0.35) 0%, transparent 68%)",
         }}
+        aria-hidden="true"
       />
 
-      <div className="relative max-w-[1440px] mx-auto px-6">
-        <div className="grid lg:grid-cols-[60%_40%] gap-12 lg:gap-20 items-center">
-          {/* Left */}
+      <div className="relative mx-auto max-w-[1440px] px-6">
+        <div className="grid items-center gap-14 lg:grid-cols-[58%_42%] lg:gap-20">
           <div className="space-y-7">
             <Reveal>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-[#E8F5EF] text-[#4A8C73] dark:bg-white/5 dark:text-[#7EC8A0]">
-                <Zap size={14} />
-                For university students
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50 px-3 py-1.5 text-sm font-semibold text-primary-700 dark:border-primary-800 dark:bg-primary-950 dark:text-primary-300">
+                <Zap size={14} className="text-accent-500" />
+                The digital hub for ambitious students
               </span>
             </Reveal>
 
             <Reveal delay={80}>
-              <h1
-                className="leading-tight tracking-tight text-[#141F1B] dark:text-[#E8F5EF]"
-                style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 5vw, 60px)", letterSpacing: "-0.02em" }}
-              >
-                Your complete
-                <br />
-                <span className="text-[#4A8C73] dark:text-[#7EC8A0]">
-                  academic companion
+              <h1 className="max-w-3xl text-[clamp(2.75rem,6vw,4.75rem)] leading-[1.03] text-foreground">
+                Everything you need to
+                <span className="block text-primary-600 dark:text-primary-300">
+                  move forward.
                 </span>
               </h1>
             </Reveal>
 
             <Reveal delay={160}>
-              <p className="text-lg leading-8 max-w-xl text-[#6B7B75] dark:text-[#9BA19E]">
-                Access materials, calculate CGPA, connect with vendors — all in
-                one platform designed for students at Nnamdi Azikiwe
-                University.
+              <p className="max-w-xl text-lg leading-8 text-muted-foreground">
+                Materials, CGPA tools, trusted vendors, and campus updates in one
+                intelligent space built for how Nigerian students actually live and
+                study.
               </p>
             </Reveal>
 
             <Reveal delay={240}>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3">
                 <Link
                   href="/signup"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-base text-[#E8F5EF] bg-[#1A3C34] hover:bg-[#141F1B] dark:bg-[#4A8C73] dark:hover:bg-[#1A3C34] hover:-translate-y-0.5 shadow-[0_4px_14px_rgba(26,60,52,0.25)] hover:shadow-[0_6px_20px_rgba(26,60,52,0.3)] transition-all duration-200"
+                  className="inline-flex items-center gap-2 rounded-xl bg-accent-500 px-6 py-3 text-base font-semibold text-accent-950 shadow-lg shadow-accent-500/20 transition-all hover:-translate-y-0.5 hover:bg-accent-400 hover:shadow-xl"
                 >
                   Start free <ArrowRight size={18} />
                 </Link>
-                <Link href="/vendor-signup">
-                  <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-base border border-[#C8D8D0] dark:border-white/15 text-[#6B7B75] dark:text-[#9BA19E] hover:bg-[#F0F5F3] dark:hover:bg-[#202320] hover:-translate-y-0.5 transition-all duration-200">
-                    Signup as a non-student vendor <ArrowRight size={18} />
-                  </button>
+                <Link
+                  href="/vendor-signup"
+                  className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-base font-semibold text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary-300 hover:bg-muted"
+                >
+                  List your business <ArrowRight size={18} />
                 </Link>
               </div>
             </Reveal>
@@ -84,92 +80,84 @@ export function HeroSection() {
                   {AVATARS.map((initials) => (
                     <div
                       key={initials}
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold border-2 border-white dark:border-[#262928] bg-[#E8F5EF] text-[#4A8C73] dark:bg-white/10 dark:text-[#7EC8A0]"
+                      className="flex size-9 items-center justify-center rounded-full border-2 border-background bg-primary-100 text-xs font-bold text-primary-700 dark:border-card dark:bg-primary-900 dark:text-primary-200"
                     >
                       {initials}
                     </div>
                   ))}
                 </div>
-                <p className="text-sm font-medium text-[#6B7B75] dark:text-[#9BA19E]">
-                  <strong className="text-[#141F1B] dark:text-[#E8F5EF]">
-                    500+
-                  </strong>{" "}
+                <p className="text-sm font-medium text-muted-foreground">
+                  <strong className="font-bold text-foreground">500+</strong>{" "}
                   students already joined
                 </p>
               </div>
             </Reveal>
           </div>
 
-          {/* Right – floating mock cards */}
-          <div className="relative hidden lg:flex items-center justify-center min-h-[480px]">
-            {/* Main card */}
+          <div className="relative hidden min-h-[480px] items-center justify-center lg:flex">
             <div
-              className="w-72 rounded-2xl p-5 shadow-lg border border-[#D6E5DF] dark:border-white/10 bg-white dark:bg-[#171918]"
+              className="w-72 rounded-2xl border border-border bg-card p-5 shadow-xl dark:shadow-2xl"
               style={{ animation: "float 3s ease-in-out infinite" }}
             >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#E8F5EF] dark:bg-white/5">
-                  <BookOpen
-                    size={20}
-                    className="text-[#4A8C73] dark:text-[#7EC8A0]"
-                  />
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex size-10 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-950">
+                  <BookOpen size={20} className="text-primary-600 dark:text-primary-300" />
                 </div>
                 <div>
-                  <p className="font-medium text-sm text-[#141F1B] dark:text-[#E8F5EF]">
-                    ENG 301 - Fluid Mechanics
+                  <p className="text-sm font-semibold text-foreground">
+                    ENG 301 · Fluid Mechanics
                   </p>
-                  <p className="text-xs text-[#6B7B75] dark:text-[#9BA19E]">
+                  <p className="text-xs text-muted-foreground">
                     Past questions · 2023
                   </p>
                 </div>
               </div>
-              <div className="h-1.5 rounded-full bg-[#E1EBE6] dark:bg-[#1E211F] mb-1">
-                <div className="h-1.5 rounded-full bg-[#4A8C73] dark:bg-[#7EC8A0] w-[72%]" />
+              <div className="mb-1 h-1.5 rounded-full bg-muted">
+                <div className="h-1.5 w-[72%] rounded-full bg-primary-600" />
               </div>
-              <p className="text-xs text-[#6B7B75] dark:text-[#9BA19E]">
-                72% downloaded
-              </p>
+              <p className="text-xs text-muted-foreground">72% downloaded</p>
             </div>
 
-            {/* CGPA card */}
             <div
-              className="absolute -bottom-6 -left-4 w-56 rounded-2xl p-4 shadow-lg border border-[#D6E5DF] dark:border-white/10 bg-white dark:bg-[#171918]"
+              className="absolute -bottom-6 -left-4 w-56 rounded-2xl border border-border bg-card p-4 shadow-xl dark:shadow-2xl"
               style={{ animation: "float 3s ease-in-out infinite 0.8s" }}
             >
-              <p className="text-xs font-medium mb-2 text-[#6B7B75] dark:text-[#9BA19E]">
+              <p className="mb-2 text-xs font-semibold text-muted-foreground">
                 CGPA calculator
               </p>
-              <p className="text-3xl font-bold text-[#4A8C73] dark:text-[#7EC8A0]">
+              <p className="text-3xl font-extrabold tracking-tight text-primary-600 dark:text-primary-300">
                 4.52
               </p>
-              <p className="text-xs mt-1 text-[#6B7B75] dark:text-[#9BA19E]">
+              <p className="mt-1 text-xs text-muted-foreground">
                 First Class Honours
               </p>
             </div>
 
-            {/* Vendor card */}
             <div
-              className="absolute -top-6 -right-4 w-52 rounded-2xl p-4 shadow-lg border border-[#D6E5DF] dark:border-white/10 bg-white dark:bg-[#171918]"
+              className="absolute -right-4 -top-6 w-52 rounded-2xl border border-border bg-card p-4 shadow-xl dark:shadow-2xl"
               style={{ animation: "float 3s ease-in-out infinite 1.6s" }}
             >
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-[#3A2800] bg-[#E8A020]">
+              <div className="mb-1 flex items-center gap-2">
+                <div className="flex size-8 items-center justify-center rounded-full bg-accent-500 text-sm font-extrabold text-accent-950">
                   A
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-[#141F1B] dark:text-[#E8F5EF]">
+                  <p className="text-xs font-semibold text-foreground">
                     Ade Prints
                   </p>
                   <div className="flex gap-0.5">
                     {[1, 2, 3, 4, 5].map((i) => (
-                      <Star key={i} size={10} fill="#E8A020" color="#E8A020" />
+                      <Star
+                        key={i}
+                        size={10}
+                        fill="currentColor"
+                        className="text-accent-500"
+                      />
                     ))}
                   </div>
                 </div>
               </div>
-              <p className="text-xs text-[#4A8C73] dark:text-[#7EC8A0]">
-                ✓ Verified vendor
-              </p>
+              <p className="text-xs font-medium text-success">Verified vendor</p>
             </div>
           </div>
         </div>
@@ -177,7 +165,7 @@ export function HeroSection() {
 
       <style>{`
         @keyframes float {
-          0%, 100% { transform: translateY(0px); }
+          0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-12px); }
         }
       `}</style>

@@ -9,12 +9,12 @@ interface ErrorStateProps {
 
 export default function ErrorState({ message }: ErrorStateProps) {
   return (
-    <Card className="border-red-200 bg-red-50 dark:border-red-900/50 dark:bg-red-950/30">
+    <Card className="border-destructive/40 bg-destructive/10 dark:bg-destructive/15">
       <CardContent className="flex items-center gap-3 pt-6">
-        <AlertCircle className="h-5 w-5 text-red-600" />
+        <AlertCircle className="h-5 w-5 text-destructive" />
         <div>
-          <p className="font-medium text-red-900 dark:text-red-200">Error loading announcements</p>
-          <p className="text-sm text-red-700 dark:text-red-300">{message}</p>
+          <p className="font-medium text-destructive">Error loading announcements</p>
+          <p className="text-sm text-destructive">{message}</p>
         </div>
       </CardContent>
     </Card>

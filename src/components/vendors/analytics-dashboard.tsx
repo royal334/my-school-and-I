@@ -89,7 +89,7 @@ export default function AnalyticsDashboard({
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary-200 border-t-primary-600" />
-          <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">Loading analytics...</p>
+          <p className="mt-4 text-sm text-muted-foreground">Loading analytics...</p>
         </div>
       </div>
     );
@@ -99,7 +99,7 @@ export default function AnalyticsDashboard({
     return (
       <Card>
         <CardContent className="flex h-64 flex-col items-center justify-center">
-          <p className="text-red-600 dark:text-red-400">Error loading analytics: {error}</p>
+          <p className="text-destructive">Error loading analytics: {error}</p>
           <Button onClick={fetchAnalytics} className="mt-4">
             <RefreshCw className="mr-2 h-4 w-4" />
             Retry
@@ -113,7 +113,7 @@ export default function AnalyticsDashboard({
     return (
       <Card>
         <CardContent className="flex h-64 items-center justify-center">
-          <p className="text-slate-600 dark:text-slate-400">No analytics data available</p>
+          <p className="text-muted-foreground">No analytics data available</p>
         </CardContent>
       </Card>
     );
@@ -169,7 +169,7 @@ export default function AnalyticsDashboard({
     {
       name: 'Phone Calls',
       value: summary.phone_contacts || 0,
-      color: '#10b981',
+      color: '#8B5CF6',
     },
     {
       name: 'WhatsApp',
@@ -225,11 +225,11 @@ export default function AnalyticsDashboard({
 
   // Colors for charts
   const COLORS = {
-    views: '#3b82f6',
-    contacts: '#10b981',
-    phone: '#8b5cf6',
+    views: '#4F46E5',
+    contacts: '#F59E0B',
+    phone: '#8B5CF6',
     whatsapp: '#25D366',
-    conversion: '#f59e0b',
+    conversion: '#F59E0B',
   };
 
   return (
@@ -283,13 +283,13 @@ export default function AnalyticsDashboard({
 
       {/* No Data Message */}
       {hasNoData && (
-        <Card className="border-[#D6E5DF] dark:border-white/10 bg-[#E8F5EF] dark:bg-[#1E211F]">
+        <Card className="border-border bg-primary-50 dark:bg-muted">
           <CardContent className="p-6 text-center">
-            <Activity className="mx-auto h-12 w-12 text-[#4A8C73]" />
+            <Activity className="mx-auto h-12 w-12 text-primary-600 dark:text-primary-400" />
             <h3 className="mt-4" style={{ fontFamily: "var(--font-display)" }}>
               No analytics data yet
             </h3>
-            <p className="mt-2 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
+            <p className="mt-2 text-sm text-muted-foreground">
               Start getting views and contacts to see analytics here. Share your
               vendor page to start tracking!
             </p>
@@ -303,10 +303,10 @@ export default function AnalyticsDashboard({
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 Total Views
               </CardTitle>
-              <Eye className="h-4 w-4 text-[#4A8C73]" />
+              <Eye className="h-4 w-4 text-primary-600 dark:text-primary-400" />
             </div>
           </CardHeader>
           <CardContent>
@@ -316,18 +316,18 @@ export default function AnalyticsDashboard({
             <div className="mt-1 flex items-center gap-1 text-xs">
               {viewsTrend > 0 ? (
                 <>
-                  <TrendingUp className="h-3 w-3 text-green-600 dark:text-green-400" />
-                  <span className="text-green-600 dark:text-green-400">
+                  <TrendingUp className="h-3 w-3 text-success" />
+                  <span className="text-success">
                     +{viewsTrend.toFixed(1)}%
                   </span>
                 </>
               ) : (
                 <>
-                  <TrendingDown className="h-3 w-3 text-red-600 dark:text-red-400" />
-                  <span className="text-red-600 dark:text-red-400">{viewsTrend.toFixed(1)}%</span>
+                  <TrendingDown className="h-3 w-3 text-destructive" />
+                  <span className="text-destructive">{viewsTrend.toFixed(1)}%</span>
                 </>
               )}
-              <span className="text-slate-500 dark:text-slate-400">{prevPeriodLabel}</span>
+              <span className="text-muted-foreground">{prevPeriodLabel}</span>
             </div>
           </CardContent>
         </Card>
@@ -336,10 +336,10 @@ export default function AnalyticsDashboard({
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 Total Contacts
               </CardTitle>
-              <Users className="h-4 w-4 text-green-600 dark:text-green-400" />
+              <Users className="h-4 w-4 text-accent-600 dark:text-accent-400" />
             </div>
           </CardHeader>
           <CardContent>
@@ -349,20 +349,20 @@ export default function AnalyticsDashboard({
             <div className="mt-1 flex items-center gap-1 text-xs">
               {contactsTrend > 0 ? (
                 <>
-                  <TrendingUp className="h-3 w-3 text-green-600 dark:text-green-400" />
-                  <span className="text-green-600 dark:text-green-400">
+                  <TrendingUp className="h-3 w-3 text-success" />
+                  <span className="text-success">
                     +{contactsTrend.toFixed(1)}%
                   </span>
                 </>
               ) : (
                 <>
-                  <TrendingDown className="h-3 w-3 text-red-600 dark:text-red-400" />
-                  <span className="text-red-600 dark:text-red-400">
+                  <TrendingDown className="h-3 w-3 text-destructive" />
+                  <span className="text-destructive">
                     {contactsTrend.toFixed(1)}%
                   </span>
                 </>
               )}
-              <span className="text-slate-500 dark:text-slate-400">{prevPeriodLabel}</span>
+              <span className="text-muted-foreground">{prevPeriodLabel}</span>
             </div>
           </CardContent>
         </Card>
@@ -371,17 +371,17 @@ export default function AnalyticsDashboard({
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 Phone Calls
               </CardTitle>
-              <Phone className="h-4 w-4 text-purple-600" />
+              <Phone className="h-4 w-4 text-accent-600" />
             </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {summary.phone_contacts.toLocaleString()}
             </div>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            <p className="mt-1 text-xs text-muted-foreground">
               {summary.total_contacts > 0
                 ? ((summary.phone_contacts / summary.total_contacts) * 100).toFixed(
                     1
@@ -396,17 +396,17 @@ export default function AnalyticsDashboard({
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 WhatsApp
               </CardTitle>
-              <MessageCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+              <MessageCircle className="h-4 w-4 text-success" />
             </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {summary.whatsapp_contacts.toLocaleString()}
             </div>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            <p className="mt-1 text-xs text-muted-foreground">
               {summary.total_contacts > 0
                 ? (
                     (summary.whatsapp_contacts / summary.total_contacts) *
@@ -422,40 +422,40 @@ export default function AnalyticsDashboard({
       {/* Conversion Rate Card */}
 { hasBasicTier ? (            
               <div className="flex h-[400px] flex-col items-center justify-center rounded-lg border-2 border-dashed">
-              <Lock className="h-12 w-12 text-slate-400" />
-              <h3 className="mt-4 font-semibold text-slate-700">
+              <Lock className="h-12 w-12 text-muted-foreground" />
+              <h3 className="mt-4 font-semibold text-foreground">
                 Detailed Analytics Locked
               </h3>
-              <p className="mt-2 text-sm text-slate-600">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Upgrade to Premium for daily analytics charts
               </p>
               <Link href={`/dashboard/vendors/${vendorId}/upgrade`}>
                 <Button className="mt-4">Upgrade Now</Button>
               </Link>
             </div>) : (     
-            <Card className="border-purple-200 bg-linear-to-br from-purple-50 to-blue-50">
+            <Card className="border-accent-200 bg-linear-to-br from-accent-50 to-primary-50">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              <p className="text-sm font-medium text-muted-foreground">
                 Conversion Rate
               </p>
               <div className="mt-2 flex items-baseline gap-2">
-                <span className="text-4xl font-bold text-purple-900 dark:text-purple-200">
+                <span className="text-4xl font-bold text-accent-900 dark:text-accent-200">
                   {summary.conversionRate}%
                 </span>
-                <span className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="text-sm text-muted-foreground">
                   views to contacts
                 </span>
               </div>
             </div>
-            <div className="rounded-full bg-purple-100 p-4 dark:bg-purple-950/50">
-              <Target className="h-8 w-8 text-purple-600" />
+            <div className="rounded-full bg-accent-100 p-4 dark:bg-accent-500/15">
+              <Target className="h-8 w-8 text-accent-600" />
             </div>
           </div>
-          <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+            <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-muted">
             <div
-              className="h-full bg-linear-to-r from-purple-500 to-blue-500"
+              className="h-full bg-linear-to-r from-accent-400 to-primary-500"
               style={{ width: `${Math.min(summary.conversionRate * 10, 100)}%` }}
             />
           </div>
@@ -495,11 +495,11 @@ export default function AnalyticsDashboard({
         <CardContent>
           {hasBasicTier ? (
             <div className="flex h-[400px] flex-col items-center justify-center rounded-lg border-2 border-dashed">
-              <Lock className="h-12 w-12 text-slate-400 dark:text-slate-500" />
-              <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">
+              <Lock className="h-12 w-12 text-muted-foreground" />
+              <h3 className="mt-4 font-semibold text-foreground">
                 Detailed Analytics Locked
               </h3>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Upgrade to Premium for daily analytics charts
               </p>
               <Link href={`/dashboard/vendors/${vendorId}/upgrade`}>
@@ -507,7 +507,7 @@ export default function AnalyticsDashboard({
               </Link>
             </div>
           ) : chartData.length === 0 ? (
-            <div className="flex h-[400px] items-center justify-center text-slate-500 dark:text-slate-400">
+            <div className="flex h-[400px] items-center justify-center text-muted-foreground">
               No data for this period
             </div>
           ) : (
@@ -518,18 +518,18 @@ export default function AnalyticsDashboard({
                   <XAxis 
                     dataKey="date" 
                     tick={{ fontSize: 12 }}
-                    stroke="#64748b"
+                    stroke="var(--muted-foreground)"
                   />
                   <YAxis 
                     yAxisId="left"
                     tick={{ fontSize: 12 }}
-                    stroke="#64748b"
+                    stroke="var(--muted-foreground)"
                   />
                   <YAxis 
                     yAxisId="right" 
                     orientation="right"
                     tick={{ fontSize: 12 }}
-                    stroke="#64748b"
+                    stroke="var(--muted-foreground)"
                   />
                   <Tooltip 
                     contentStyle={{
@@ -660,7 +660,7 @@ export default function AnalyticsDashboard({
             </CardHeader>
             <CardContent>
               {contactTypeData.length === 0 ? (
-                <div className="flex h-[250px] items-center justify-center text-slate-500 dark:text-slate-400">
+                <div className="flex h-[250px] items-center justify-center text-muted-foreground">
                   No contacts yet
                 </div>
               ) : (
@@ -675,7 +675,7 @@ export default function AnalyticsDashboard({
                         `${name}: ${((percent || 0) * 100).toFixed(0)}%`
                       }
                       outerRadius={80}
-                      fill="#8884d8"
+                      fill="#4F46E5"
                       dataKey="value"
                     >
                       {contactTypeData.map((entry, index) => (
@@ -703,8 +703,8 @@ export default function AnalyticsDashboard({
                   <Radar
                     name="Performance"
                     dataKey="value"
-                    stroke="#3b82f6"
-                    fill="#3b82f6"
+                    stroke="#4F46E5"
+                    fill="#4F46E5"
                     fillOpacity={0.6}
                   />
                   <Tooltip />
@@ -723,7 +723,7 @@ export default function AnalyticsDashboard({
           </CardHeader>
           <CardContent>
             {sourceData.length === 0 ? (
-              <div className="flex h-[250px] items-center justify-center text-slate-500">
+              <div className="flex h-[250px] items-center justify-center text-muted-foreground">
                 No traffic data yet
               </div>
             ) : (
@@ -733,7 +733,7 @@ export default function AnalyticsDashboard({
                   <XAxis type="number" />
                   <YAxis type="category" dataKey="name" width={100} />
                   <Tooltip />
-                  <Bar dataKey="value" fill="#3b82f6" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="value" fill="#4F46E5" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             )}

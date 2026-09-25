@@ -31,7 +31,7 @@ export default async function VendorAnalyticsPage() {
       {/* Header */}
       <div>
         <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Analytics</h1>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-muted-foreground">
           Track your vendor's performance and insights
         </p>
       </div>

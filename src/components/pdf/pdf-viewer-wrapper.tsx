@@ -33,11 +33,11 @@ export default function PDFViewerWrapper({
 
   if (error || !pdfUrl) {
     return (
-      <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-red-200 bg-red-50 p-10 text-center">
-        <AlertCircle className="h-8 w-8 text-red-400" />
+      <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-destructive/40 bg-destructive/10 p-10 text-center">
+        <AlertCircle className="h-8 w-8 text-destructive" />
         <div>
-          <p className="font-semibold text-red-700">Failed to load PDF</p>
-          {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+          <p className="font-semibold text-destructive">Failed to load PDF</p>
+          {error && <p className="mt-1 text-sm text-destructive">{error}</p>}
         </div>
       </div>
     );

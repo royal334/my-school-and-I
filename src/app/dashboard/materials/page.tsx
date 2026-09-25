@@ -100,7 +100,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
           <h1 className="text-xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
             Materials library
           </h1>
-          <p className="mt-1 text-slate-600 dark:text-slate-400 text-[12px] md:text-base">
+          <p className="mt-1 text-muted-foreground text-[12px] md:text-base">
             Access lecture notes, past questions, and study materials
           </p>
         </div>
@@ -121,20 +121,20 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
 
       {/* Subscription Status Banner */}
       {/* {profile && profile.subscription_status !== "active" && (
-        <Card className="border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-950/30 p-4">
+        <Card className="border-accent-200 bg-accent-50 dark:border-accent-900 dark:bg-accent-950/30 p-4">
           <div className="flex items-start gap-3">
-            <div className="rounded-full bg-amber-100 dark:bg-amber-900/50 p-2">
-              <BookOpen className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+            <div className="rounded-full bg-accent-100 dark:bg-accent-900/50 p-2">
+              <BookOpen className="h-5 w-5 text-accent-600 dark:text-accent-400" />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-amber-900 dark:text-amber-100">
+              <h3 className="font-semibold text-accent-900 dark:text-accent-100">
                 Limited Access Mode
               </h3>
-              <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">
+              <p className="mt-1 text-sm text-accent-700 dark:text-accent-300">
                 You're viewing free materials only. Subscribe for ₦1000/semester
                 to unlock all premium materials.
               </p>
-                <UpgradeButton className="mt-2 bg-amber-600 dark:bg-amber-700 hover:bg-amber-700 dark:hover:bg-amber-600 transition-colors" />
+                <UpgradeButton className="mt-2 bg-accent-600 dark:bg-accent-700 hover:bg-accent-700 dark:hover:bg-accent-600 transition-colors" />
             </div>
           </div>
         </Card>
@@ -148,7 +148,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
         fallback={
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[...Array(6)].map((_, i) => (
-              <Card key={i} className="h-64 animate-pulse bg-slate-100 dark:bg-slate-800" />
+              <Card key={i} className="h-64 animate-pulse bg-muted" />
             ))}
           </div>
         }

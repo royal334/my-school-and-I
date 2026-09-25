@@ -47,7 +47,7 @@ export default function NotificationTest() {
     <button
       onClick={enableNotifications}
       disabled={status === "loading" || status === "done"}
-      className="text-sm border rounded-md px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50 transition-colors"
+      className="text-sm border border-border rounded-md px-3 py-1.5 hover:bg-muted disabled:opacity-50 transition-colors"
     >
       {status === "loading"
         ? "Enabling..."

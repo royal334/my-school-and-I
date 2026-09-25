@@ -229,15 +229,15 @@ export default function SubmitMaterialPage() {
 
   if (submitted) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
-        <Card className="w-full max-w-md text-center py-12 dark:bg-slate-900 dark:border-slate-800">
+      <div className="flex min-h-screen items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md text-center py-12">
           <CardContent className="space-y-6">
-            <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-              <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-400" />
+            <div className="mx-auto w-16 h-16 bg-success-bg rounded-full flex items-center justify-center">
+              <CheckCircle2 className="w-8 h-8 text-success" />
             </div>
             <div className="space-y-2">
               <CardTitle className="text-2xl">Material Submitted!</CardTitle>
-              <CardDescription className="text-slate-500 dark:text-slate-400">
+              <CardDescription className="text-muted-foreground">
                 Thank you for contributing to CampusHub. Our review team will
                 verify your material and add it to the platform if approved.
               </CardDescription>
@@ -252,13 +252,13 @@ export default function SubmitMaterialPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950 flex-col space-y-6 py-12">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 flex-col space-y-6 py-12">
       <div className="w-full max-w-xl">
         <Link href="/dashboard">
           <Button
             variant="ghost"
             size="sm"
-            className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-0 hover:bg-transparent"
+            className="text-muted-foreground hover:text-foreground p-0 hover:bg-transparent"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Dashboard
@@ -266,12 +266,12 @@ export default function SubmitMaterialPage() {
         </Link>
       </div>
 
-      <Card className="w-full max-w-xl dark:bg-slate-900 dark:border-slate-800 shadow-xl border-slate-200">
+      <Card className="w-full max-w-xl shadow-xl">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold tracking-tight">
             Submit a Material
           </CardTitle>
-          <CardDescription className="text-slate-500 dark:text-slate-400">
+          <CardDescription className="text-muted-foreground">
             Have study materials that are not on CampusHub yet? Submit them
             here for review and they could be shared with the whole community.
           </CardDescription>
@@ -284,11 +284,11 @@ export default function SubmitMaterialPage() {
                 <Input
                   id="course_code"
                   placeholder="e.g., EEE 301"
-                  className="bg-slate-50 dark:bg-slate-800"
+                  className="bg-muted"
                   {...register("course_code")}
                 />
                 {errors.course_code && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-destructive">
                     {errors.course_code.message}
                   </p>
                 )}
@@ -298,11 +298,11 @@ export default function SubmitMaterialPage() {
                 <Input
                   id="course_title"
                   placeholder="e.g., Electrical Power Systems I"
-                  className="bg-slate-50 dark:bg-slate-800"
+                  className="bg-muted"
                   {...register("course_title")}
                 />
                 {errors.course_title && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-destructive">
                     {errors.course_title.message}
                   </p>
                 )}
@@ -323,7 +323,7 @@ export default function SubmitMaterialPage() {
                         setValue("department", "");
                       }}
                     >
-                      <SelectTrigger className="bg-slate-50 dark:bg-slate-800">
+                      <SelectTrigger className="bg-muted">
                         <SelectValue placeholder="Select faculty" />
                       </SelectTrigger>
                       <SelectContent>
@@ -337,7 +337,7 @@ export default function SubmitMaterialPage() {
                   )}
                 />
                 {errors.faculty && (
-                  <p className="text-sm text-red-500">{errors.faculty.message}</p>
+                  <p className="text-sm text-destructive">{errors.faculty.message}</p>
                 )}
               </div>
               <div className="space-y-2">
@@ -351,7 +351,7 @@ export default function SubmitMaterialPage() {
                       onValueChange={field.onChange}
                       disabled={!facultyId}
                     >
-                      <SelectTrigger className="bg-slate-50 dark:bg-slate-800">
+                      <SelectTrigger className="bg-muted">
                         <SelectValue
                           placeholder={facultyId ? "Select department" : "Select faculty first"}
                         />
@@ -370,7 +370,7 @@ export default function SubmitMaterialPage() {
                   )}
                 />
                 {errors.department && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-destructive">
                     {errors.department.message}
                   </p>
                 )}
@@ -388,7 +388,7 @@ export default function SubmitMaterialPage() {
                       value={field.value}
                       onValueChange={field.onChange}
                     >
-                      <SelectTrigger className="bg-slate-50 dark:bg-slate-800">
+                      <SelectTrigger className="bg-muted">
                         <SelectValue placeholder="Select level" />
                       </SelectTrigger>
                       <SelectContent>
@@ -402,7 +402,7 @@ export default function SubmitMaterialPage() {
                   )}
                 />
                 {errors.level && (
-                  <p className="text-sm text-red-500">{errors.level.message}</p>
+                  <p className="text-sm text-destructive">{errors.level.message}</p>
                 )}
               </div>
               <div className="space-y-2">
@@ -415,7 +415,7 @@ export default function SubmitMaterialPage() {
                       value={field.value}
                       onValueChange={field.onChange}
                     >
-                      <SelectTrigger className="bg-slate-50 dark:bg-slate-800">
+                      <SelectTrigger className="bg-muted">
                         <SelectValue placeholder="Select semester" />
                       </SelectTrigger>
                       <SelectContent>
@@ -432,7 +432,7 @@ export default function SubmitMaterialPage() {
                   )}
                 />
                 {errors.semester && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-destructive">
                     {errors.semester.message}
                   </p>
                 )}
@@ -449,7 +449,7 @@ export default function SubmitMaterialPage() {
                     value={field.value}
                     onValueChange={field.onChange}
                   >
-                    <SelectTrigger className="bg-slate-50 dark:bg-slate-800">
+                    <SelectTrigger className="bg-muted">
                       <SelectValue placeholder="Select material type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -463,7 +463,7 @@ export default function SubmitMaterialPage() {
                 )}
               />
               {errors.material_type && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-destructive">
                   {errors.material_type.message}
                 </p>
               )}
@@ -474,17 +474,17 @@ export default function SubmitMaterialPage() {
               {!selectedFile ? (
                 <label
                   htmlFor="file"
-                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700/50 ${
-                    errors.file ? "border-red-500" : ""
+                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-border border-dashed rounded-lg cursor-pointer bg-muted hover:bg-accent/10 hover:border-accent/50 transition-colors ${
+                    errors.file ? "border-destructive" : ""
                   }`}
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <Upload className="w-8 h-8 mb-2 text-slate-500 dark:text-slate-400" />
-                    <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
+                    <Upload className="w-8 h-8 mb-2 text-muted-foreground" />
+                    <p className="mb-2 text-sm text-muted-foreground">
                       <span className="font-semibold">Click to upload</span> or
                       drag and drop
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-muted-foreground">
                       PDF only (MAX {MAX_FILE_SIZE_MB}MB)
                     </p>
                   </div>
@@ -497,14 +497,14 @@ export default function SubmitMaterialPage() {
                   />
                 </label>
               ) : (
-                <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                   <div className="flex items-center gap-3">
-                    <FileText className="h-8 w-8 text-slate-500 dark:text-slate-400" />
+                    <FileText className="h-8 w-8 text-muted-foreground" />
                     <div>
-                      <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                      <p className="text-sm font-medium text-foreground">
                         {selectedFile.name}
                       </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                      <p className="text-xs text-muted-foreground">
                         {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                       </p>
                     </div>
@@ -520,14 +520,14 @@ export default function SubmitMaterialPage() {
                 </div>
               )}
               {errors.file && (
-                <p className="text-sm text-red-500">{errors.file.message?.toString()}</p>
+                <p className="text-sm text-destructive">{errors.file.message?.toString()}</p>
               )}
             </div>
           </CardContent>
           <CardFooter>
             <Button
               type="submit"
-              className="w-full bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF] font-medium transition-all mt-4"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium transition-all mt-4"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -546,7 +546,7 @@ export default function SubmitMaterialPage() {
         </form>
       </Card>
 
-      <p className="text-center text-xs text-slate-500 dark:text-slate-400 max-w-xs">
+      <p className="text-center text-xs text-muted-foreground max-w-xs">
         Your submission is sent to our review team for verification before it
         appears on the platform. Thank you for contributing to CampusHub.
       </p>

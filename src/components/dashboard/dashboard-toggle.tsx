@@ -41,14 +41,14 @@ export default function DashboardToggle({
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-lg border border-[#D6E5DF] dark:border-white/10 bg-[#F0F5F3] dark:bg-[#1E211F] p-1" data-tour="dashboard-toggle">
+    <div className="flex items-center gap-1 rounded-xl border border-border bg-muted p-1 dark:bg-muted" data-tour="dashboard-toggle">
       <Button
         variant={!isStudent ? 'ghost' : 'default'}
         size="sm"
         onClick={() => handleToggle(false)}
         className={cn(
           'flex items-center gap-2',
-          isStudent && 'bg-[#1A3C34] dark:bg-[#4A8C73] shadow-sm text-[#E8F5EF]'
+isStudent && 'bg-primary-600 text-white shadow-sm'
         )}
       >
         <GraduationCap className="h-4 w-4" />
@@ -61,7 +61,7 @@ export default function DashboardToggle({
         onClick={() => handleToggle(true)}
         className={cn(
           'flex items-center gap-2',
-          !isStudent && 'bg-[#1A3C34] dark:bg-[#4A8C73] shadow-sm text-[#E8F5EF]'
+          !isStudent && 'bg-primary-600 text-white shadow-sm'
         )}
       >
         <Store className="h-4 w-4" />

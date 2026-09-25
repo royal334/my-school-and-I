@@ -109,7 +109,7 @@ export default function ProfileForm({
           <User className="h-5 w-5 text-primary-600 dark:text-primary-400" />
           <h2 className="text-xl font-semibold">Personal Information</h2>
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
+        <p className="text-sm text-muted-foreground">
           Update your personal details and contact information
         </p>
       </CardHeader>
@@ -126,10 +126,10 @@ export default function ProfileForm({
                 .slice(0, 2) || "U"}
             </div>
             <div>
-              <p className="font-medium text-slate-900 dark:text-slate-100">
+              <p className="font-medium text-foreground">
                 {watchFullName || "Your Name"}
               </p>
-              <p className="text-sm text-slate-600 dark:text-slate-400">{email}</p>
+              <p className="text-sm text-muted-foreground">{email}</p>
               {/* Future: Add upload button */}
               {/* <Button type="button" variant="outline" size="sm" className="mt-2">
                 <Upload className="mr-2 h-4 w-4" />
@@ -143,18 +143,18 @@ export default function ProfileForm({
             <div className="space-y-2">
               <Label
                 htmlFor="full_name"
-                className={errors.full_name ? "text-red-500" : ""}
+                className={errors.full_name ? "text-destructive" : ""}
               >
-                Full Name <span className="text-red-500">*</span>
+                Full Name <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="full_name"
                 placeholder="John Doe"
                 {...register("full_name")}
-                className={errors.full_name ? "border-red-500" : ""}
+                className={errors.full_name ? "border-destructive" : ""}
               />
               {errors.full_name && (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-destructive">
                   {errors.full_name.message}
                 </p>
               )}
@@ -164,7 +164,7 @@ export default function ProfileForm({
             <div className="space-y-2">
               <Label
                 htmlFor="phone_number"
-                className={errors.phone_number ? "text-red-500" : ""}
+                className={errors.phone_number ? "text-destructive" : ""}
               >
                 Phone Number
               </Label>
@@ -173,14 +173,14 @@ export default function ProfileForm({
                 type="tel"
                 placeholder="08012345678 or +2348012345678"
                 {...register("phone_number")}
-                className={errors.phone_number ? "border-red-500" : ""}
+                className={errors.phone_number ? "border-destructive" : ""}
               />
               {errors.phone_number ? (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-destructive">
                   {errors.phone_number.message}
                 </p>
               ) : (
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-muted-foreground">
                   Nigerian format: 080XXXXXXXX or +234XXXXXXXXXX
                 </p>
               )}
@@ -196,9 +196,9 @@ export default function ProfileForm({
                 type="email"
                 value={email}
                 disabled
-                className="bg-slate-50 dark:bg-slate-800 cursor-not-allowed"
+                className="bg-muted cursor-not-allowed"
               />
-              <p className="text-xs text-slate-500 dark:text-slate-400">Email cannot be changed</p>
+              <p className="text-xs text-muted-foreground">Email cannot be changed</p>
             </div>
 
             {/* Matric Number (Read-only) */}
@@ -208,9 +208,9 @@ export default function ProfileForm({
                 id="matric_number"
                 value={profile?.matric_number || "N/A"}
                 disabled
-                className="bg-slate-50 dark:bg-slate-800 cursor-not-allowed"
+                className="bg-muted cursor-not-allowed"
               />
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 Matric number cannot be changed
               </p>
             </div>
@@ -220,9 +220,9 @@ export default function ProfileForm({
           <div className="space-y-2">
             <Label
               htmlFor="level"
-              className={errors.level ? "text-red-500" : ""}
+              className={errors.level ? "text-destructive" : ""}
             >
-              Current Level <span className="text-red-500">*</span>
+              Current Level <span className="text-destructive">*</span>
             </Label>
             <Controller
               name="level"
@@ -230,7 +230,7 @@ export default function ProfileForm({
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger
-                    className={errors.level ? "border-red-500" : ""}
+                    className={errors.level ? "border-destructive" : ""}
                   >
                     <SelectValue placeholder="Select your current level" />
                   </SelectTrigger>
@@ -245,9 +245,9 @@ export default function ProfileForm({
               )}
             />
             {errors.level ? (
-              <p className="text-xs text-red-500">{errors.level.message}</p>
+              <p className="text-xs text-destructive">{errors.level.message}</p>
             ) : (
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 Update this when you advance to the next level
               </p>
             )}
@@ -255,20 +255,20 @@ export default function ProfileForm({
 
           {/* Bio (Optional) */}
           <div className="space-y-2">
-            <Label htmlFor="bio" className={errors.bio ? "text-red-500" : ""}>
+            <Label htmlFor="bio" className={errors.bio ? "text-destructive" : ""}>
               Bio (Optional)
             </Label>
             <textarea
               id="bio"
               placeholder="Tell us a bit about yourself..."
               {...register("bio")}
-              className={`min-h-[100px] w-full rounded-lg border ${errors.bio ? "border-red-500" : "border-slate-300"} px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100`}
+              className={`min-h-[100px] w-full rounded-lg border ${errors.bio ? "border-destructive" : "border-border"} px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100`}
               maxLength={500}
             />
             {errors.bio ? (
-              <p className="text-xs text-red-500">{errors.bio.message}</p>
+              <p className="text-xs text-destructive">{errors.bio.message}</p>
             ) : (
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 {watchBio?.length || 0} / 500 characters
               </p>
             )}

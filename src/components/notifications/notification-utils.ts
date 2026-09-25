@@ -12,34 +12,34 @@ import type { Notification } from './types';
 const TYPE_CONFIG: Record<string, { icon: LucideIcon; color: string; label: string }> = {
   announcement: {
     icon: Megaphone,
-    color: 'bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400',
+    color: 'bg-info-bg text-info',
     label: 'Announcement',
   },
   vendor: {
     icon: Store,
-    color: 'bg-purple-100 text-purple-600 dark:bg-purple-950/50 dark:text-purple-400',
+    color: 'bg-secondary text-secondary-foreground',
     label: 'Vendor',
   },
   marketplace: {
     icon: ShoppingBag,
-    color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400',
+    color: 'bg-primary-50 text-primary-600 dark:bg-muted dark:text-primary-400',
     label: 'Marketplace',
   },
   accommodation: {
     icon: Home,
-    color: 'bg-orange-100 text-orange-600 dark:bg-orange-950/50 dark:text-orange-400',
+    color: 'bg-warning-bg text-warning',
     label: 'Accommodation',
   },
   platform: {
     icon: Sparkles,
-    color: 'bg-amber-100 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400',
+    color: 'bg-accent-100 text-accent-800 dark:bg-accent-500/15 dark:text-accent-300',
     label: 'Platform',
   },
 };
 
 const DEFAULT_CONFIG = {
   icon: Bell,
-  color: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
+  color: 'bg-muted text-muted-foreground',
   label: 'Notification',
 };
 

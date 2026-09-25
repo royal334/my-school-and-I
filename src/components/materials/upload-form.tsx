@@ -141,7 +141,7 @@ export default function UploadForm({ courses }: UploadFormProps) {
       <Card>
         <CardHeader>
           <h2 className="text-xl font-semibold">Upload Material</h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-muted-foreground">
             Upload lecture notes, past questions, and other study materials
           </p>
         </CardHeader>
@@ -149,23 +149,23 @@ export default function UploadForm({ courses }: UploadFormProps) {
           {/* File Upload */}
           <div className="space-y-2">
             <Label htmlFor="file">
-              PDF File <span className="text-red-500">*</span>
+              PDF File <span className="text-destructive">*</span>
             </Label>
             {!file ? (
               <div className="flex items-center justify-center w-full">
                 <label
                   htmlFor="file"
-                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700/50 ${
-                    errors.file ? "border-red-500" : ""
+                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-border border-dashed rounded-lg cursor-pointer bg-muted hover:bg-muted/70 ${
+                    errors.file ? "border-destructive" : ""
                   }`}
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <Upload className="w-8 h-8 mb-2 text-slate-500 dark:text-slate-400" />
-                    <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
+                    <Upload className="w-8 h-8 mb-2 text-muted-foreground" />
+                    <p className="mb-2 text-sm text-muted-foreground">
                       <span className="font-semibold">Click to upload</span> or
                       drag and drop
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-muted-foreground">
                       PDF only (MAX. {MAX_FILE_SIZE_MB}MB)
                     </p>
                   </div>
@@ -189,14 +189,14 @@ export default function UploadForm({ courses }: UploadFormProps) {
                 </label>
               </div>
             ) : (
-              <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div className="flex items-center gap-3">
-                  <FileText className="h-8 w-8 text-slate-500 dark:text-slate-400" />
+                  <FileText className="h-8 w-8 text-muted-foreground" />
                   <div>
-                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                    <p className="text-sm font-medium text-foreground">
                       {file.name}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-muted-foreground">
                       {(file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                   </div>
@@ -212,17 +212,17 @@ export default function UploadForm({ courses }: UploadFormProps) {
               </div>
             )}
             {errors.file && (
-              <p className="text-sm text-red-500">{errors.file.message}</p>
+              <p className="text-sm text-destructive">{errors.file.message}</p>
             )}
 
             {/* Progress Bar */}
             {uploadProgress > 0 && uploadProgress < 100 && (
               <div className="mt-4 space-y-2">
-                <div className="flex justify-between text-xs font-medium text-slate-600 dark:text-slate-400">
+                <div className="flex justify-between text-xs font-medium text-muted-foreground">
                   <span>Uploading...</span>
                   <span>{uploadProgress}%</span>
                 </div>
-                <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                   <div
                     className="h-full bg-primary-600 transition-all duration-300"
                     style={{ width: `${uploadProgress}%` }}
@@ -235,7 +235,7 @@ export default function UploadForm({ courses }: UploadFormProps) {
           {/* Title */}
           <div className="space-y-2">
             <Label htmlFor="title">
-              Title <span className="text-red-500">*</span>
+              Title <span className="text-destructive">*</span>
             </Label>
             <Input
               id="title"
@@ -243,14 +243,14 @@ export default function UploadForm({ courses }: UploadFormProps) {
               {...register("title", { required: "Title is required" })}
             />
             {errors.title && (
-              <p className="text-sm text-red-500">{errors.title.message}</p>
+              <p className="text-sm text-destructive">{errors.title.message}</p>
             )}
           </div>
 
           {/* Course */}
           <div className="space-y-2">
             <Label htmlFor="courseId">
-              Course <span className="text-red-500">*</span>
+              Course <span className="text-destructive">*</span>
             </Label>
             <Controller
               name="courseId"
@@ -273,14 +273,14 @@ export default function UploadForm({ courses }: UploadFormProps) {
               )}
             />
             {errors.courseId && (
-              <p className="text-sm text-red-500">{errors.courseId.message}</p>
+              <p className="text-sm text-destructive">{errors.courseId.message}</p>
             )}
           </div>
 
           {/* Type */}
           <div className="space-y-2">
             <Label htmlFor="type">
-              Material Type <span className="text-red-500">*</span>
+              Material Type <span className="text-destructive">*</span>
             </Label>
             <Controller
               name="type"
@@ -317,7 +317,7 @@ export default function UploadForm({ courses }: UploadFormProps) {
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label htmlFor="premium">Premium Material</Label>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-sm text-muted-foreground">
                 Require subscription to access this material
               </p>
             </div>

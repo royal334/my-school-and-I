@@ -60,31 +60,31 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] dark:bg-[#0D0F0E] p-4">
+      <div className="flex min-h-screen items-center justify-center bg-muted dark:bg-background p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="mx-auto w-fit rounded-full bg-[#E8F5EF] p-3 dark:bg-white/5">
-              <CheckCircle className="h-8 w-8 text-[#4A8C73] dark:text-[#7EC8A0]" />
+            <div className="mx-auto w-fit rounded-full bg-success-bg p-3 dark:bg-success-bg/20">
+              <CheckCircle className="h-8 w-8 text-success dark:text-success" />
             </div>
             <h1 className="mt-4 text-2xl" style={{ fontFamily: "var(--font-display)" }}>
               Check Your Email
             </h1>
-            <p className="mt-2 text-[#6B7B75] dark:text-[#9BA19E]">
+            <p className="mt-2 text-muted-foreground">
               We've sent password reset instructions to:
             </p>
-            <p className="mt-1 font-medium text-[#141F1B] dark:text-[#E8F5EF]">{submittedEmail}</p>
+            <p className="mt-1 font-medium text-foreground">{submittedEmail}</p>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-lg bg-[#E8F5EF] p-4 text-sm text-[#3A7260]">
+            <div className="rounded-lg bg-success-bg p-4 text-sm text-success-text dark:bg-success-bg/20 dark:text-success-text">
               <p className="font-medium">Next steps:</p>
-              <ol className="mt-2 list-inside list-decimal space-y-1 text-[#3A7260]">
+              <ol className="mt-2 list-inside list-decimal space-y-1 text-success-text dark:text-success-text">
                 <li>Check your email inbox</li>
                 <li>Click the reset link in the email</li>
                 <li>Set your new password</li>
               </ol>
             </div>
 
-            <p className="text-center text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-center text-xs text-muted-foreground">
               Didn't receive the email? Check your spam folder or{" "}
               <button
                 onClick={() => setSent(false)}
@@ -107,16 +107,16 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#F0F5F3] p-4">
+    <div className="flex min-h-screen items-center justify-center bg-muted p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <div className="mx-auto w-fit rounded-full bg-[#E8F5EF] p-3 dark:bg-white/5">
-            <Mail className="h-6 w-6 text-[#1A3C34] dark:text-[#7EC8A0]" />
+          <div className="mx-auto w-fit rounded-full bg-success-bg p-3 dark:bg-success-bg/20">
+            <Mail className="h-6 w-6 text-primary-600 dark:text-primary-300" />
           </div>
           <h1 className="mt-4 text-center text-2xl" style={{ fontFamily: "var(--font-display)" }}>
             Forgot password?
           </h1>
-          <p className="mt-2 text-center text-[#6B7B75] dark:text-[#9BA19E]">
+          <p className="mt-2 text-center text-muted-foreground">
             No worries! Enter your email and we'll send you instructions to
             reset your password.
           </p>
@@ -126,7 +126,7 @@ export default function ForgotPasswordPage() {
             <div className="space-y-2">
               <Label
                 htmlFor="email"
-                className={errors.email ? "text-red-500" : ""}
+                className={errors.email ? "text-destructive" : ""}
               >
                 Email Address
               </Label>
@@ -135,22 +135,22 @@ export default function ForgotPasswordPage() {
                 type="email"
                 placeholder="your.email@university.edu"
                 {...register("email")}
-                className={errors.email ? "border-red-500" : ""}
+                className={errors.email ? "border-destructive" : ""}
                 autoFocus
               />
               {errors.email ? (
-                <p className="text-xs text-red-500">{errors.email.message}</p>
+                <p className="text-xs text-destructive">{errors.email.message}</p>
               ) : (
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-muted-foreground">
                   Enter the email you used to sign up
                 </p>
               )}
             </div>
 
-            <Button type="submit" disabled={loading} className="w-full bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF]">
+            <Button type="submit" disabled={loading} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
               {loading ? (
                 <>
-                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
                   Sending...
                 </>
               ) : (

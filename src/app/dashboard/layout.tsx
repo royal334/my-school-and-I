@@ -10,94 +10,82 @@ import { MobileBottomNav } from "@/components/dashboard/mobile-bottom-nav";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import DashboardToggle  from '@/components/dashboard/dashboard-toggle';
-import { MobileHeaderMenu } from '@/components/dashboard/mobile-header-menu';
+import DashboardToggle from "@/components/dashboard/dashboard-toggle";
+import { MobileHeaderMenu } from "@/components/dashboard/mobile-header-menu";
 import { OnboardingTour } from "@/components/tour/onboarding-tour";
 import { TourHelpButton } from "@/components/tour/tour-help-button";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
+  const supabase = createClient(await cookies());
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-      const supabase = createClient(await cookies());
-    
-    const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    redirect("/login");
+  }
 
-    if(!user){
-      redirect('/login')
-    }
-
-      const { data: profile } = await supabase
-      .from('profiles')
-      .select('account_type, full_name, matric_number')
-      .eq('id', user.id)
-      .single();
-
-    const { data: vendor } = await supabase
-    .from('vendors')
-    .select('id, subscription_tier, is_approved')
-    .eq('owner_id', user.id)
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("account_type, full_name, matric_number")
+    .eq("id", user.id)
     .single();
 
-      const cookieStore = await cookies();
-      const isStudentToggle = cookieStore.get('isStudent')?.value !== 'false';
+  const { data: vendor } = await supabase
+    .from("vendors")
+    .select("id, subscription_tier, is_approved")
+    .eq("owner_id", user.id)
+    .single();
 
-      const isVendorAccount = profile?.account_type === 'vendor';
-      const hasVendor = !!vendor && vendor.is_approved;
-      const { data: adminRole } = await supabase
-        .from('admin_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .maybeSingle();
-      const isSuperAdmin = adminRole?.role === 'super_admin';
-      
-      const showVendorSidebar = isVendorAccount || (hasVendor && !isStudentToggle);
-    
+  const cookieStore = await cookies();
+  const isStudentToggle = cookieStore.get("isStudent")?.value !== "false";
+  const isVendorAccount = profile?.account_type === "vendor";
+  const hasVendor = !!vendor && vendor.is_approved;
+  const { data: adminRole } = await supabase
+    .from("admin_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  const isSuperAdmin = adminRole?.role === "super_admin";
+  const showVendorSidebar = isVendorAccount || (hasVendor && !isStudentToggle);
+
   return (
     <>
-      {/* Desktop Sidebar Layout */}
-      <div className="hidden md:block">
+      <div className="hidden min-h-screen md:block">
         <SidebarProvider>
-          {showVendorSidebar ? 
-          (<VendorSidebar userName={profile?.full_name || 'User'}/>) :
-          (<AppSidebar />)
-          }
-          <SidebarInset>
-            <header className="flex h-16 shrink-0 items-center gap-2 border-b border-[#D6E5DF] dark:border-white/10 px-4">
+          {showVendorSidebar ? (
+            <VendorSidebar userName={profile?.full_name || "User"} />
+          ) : (
+            <AppSidebar />
+          )}
+          <SidebarInset className="bg-background">
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background/85 px-4 backdrop-blur-xl">
               <SidebarTrigger className="-ml-1" />
-              <DashboardToggle 
-                hasVendor={hasVendor} 
-                isVendorAccount={isVendorAccount} 
+              <DashboardToggle hasVendor={hasVendor} isVendorAccount={isVendorAccount} />
+              <TourHelpButton
+                hasVendor={hasVendor}
+                isVendorAccount={isVendorAccount}
+                className="ml-auto size-8"
               />
-              <TourHelpButton hasVendor={hasVendor} isVendorAccount={isVendorAccount} className="ml-auto size-8" />
             </header>
-            <div className="flex flex-1 flex-col gap-4 overflow-x-hidden p-4 pt-0">
+            <div className="flex flex-1 flex-col gap-5 overflow-x-hidden p-4 pt-0 sm:p-6 sm:pt-2">
               {children}
             </div>
           </SidebarInset>
         </SidebarProvider>
       </div>
 
-      {/* Mobile Layout */}
-      <div className="md:hidden flex flex-col min-h-screen">
-        {/* Mobile top header with toggle */}
-        <header className="fixed top-0 left-0 right-0 h-16 border-b border-[#D6E5DF] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C] z-40 flex items-center px-4 gap-2">
-          <DashboardToggle 
-            hasVendor={hasVendor} 
-            isVendorAccount={isVendorAccount} 
-          />
+      <div className="flex min-h-screen flex-col md:hidden">
+        <header className="fixed inset-x-0 top-0 z-40 flex h-16 items-center gap-2 border-b border-primary-800/30 bg-primary-950 px-4 text-primary-100 shadow-lg">
+          <DashboardToggle hasVendor={hasVendor} isVendorAccount={isVendorAccount} />
           <MobileHeaderMenu hasVendor={hasVendor} isVendorAccount={isVendorAccount} />
         </header>
 
-        {/* Mobile content area with proper spacing */}
-        <div className="flex-1 overflow-y-auto pt-16 pb-20 px-4">
+        <main className="flex-1 overflow-y-auto bg-background px-4 pb-20 pt-20">
           {children}
-        </div>
+        </main>
 
-        {/* Mobile bottom navigation */}
-        {showVendorSidebar ? (
-          <VendorMobileBottomNav />
-        ) : (
-          <MobileBottomNav isSuperAdmin={isSuperAdmin} />
-        )}
+        {showVendorSidebar ? <VendorMobileBottomNav /> : <MobileBottomNav isSuperAdmin={isSuperAdmin} />}
       </div>
 
       <OnboardingTour

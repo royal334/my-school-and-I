@@ -227,7 +227,7 @@ export default function VendorForm({
           placeholder="e.g., Tech Print Solutions"
         />
         {errors.business_name && (
-          <p className="mt-1 text-xs text-red-500">
+          <p className="mt-1 text-xs text-destructive">
             {errors.business_name.message}
           </p>
         )}
@@ -245,7 +245,7 @@ export default function VendorForm({
           )}
         />
         {errors.category_id && (
-          <p className="mt-1 text-xs text-red-500">
+          <p className="mt-1 text-xs text-destructive">
             {errors.category_id.message}
           </p>
         )}
@@ -262,11 +262,11 @@ export default function VendorForm({
           placeholder="Describe your business and services..."
           rows={4}
         />
-        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+        <p className="mt-1 text-xs text-muted-foreground">
           {description?.length ?? 0}/20 minimum
         </p>
         {errors.description && (
-          <p className="mt-1 text-xs text-red-500">
+          <p className="mt-1 text-xs text-destructive">
             {errors.description.message}
           </p>
         )}
@@ -290,10 +290,10 @@ export default function VendorForm({
 
           {/* ADD THIS: Warning when at/near limit */}
   {selectedServices.length >= maxServices && !isUnlimited && (
-    <Alert variant="destructive" className="border-amber-300 bg-amber-50 mt-3 dark:border-amber-900/50 dark:bg-amber-950/30">
-      <CircleAlert className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-      <AlertTitle className="text-amber-900 dark:text-amber-100">Service Limit Reached</AlertTitle>
-      <AlertDescription className="text-amber-800 dark:text-amber-300">
+    <Alert variant="destructive" className="border-warning/40 bg-warning-bg mt-3 dark:border-warning/30 dark:bg-warning/10">
+      <CircleAlert className="h-4 w-4 text-warning" />
+      <AlertTitle className="text-warning-text">Service Limit Reached</AlertTitle>
+      <AlertDescription className="text-warning-text">
         You've reached your limit of {maxServices} services.
         {features?.tier === 'basic' && (
           <>
@@ -353,7 +353,7 @@ export default function VendorForm({
           })}
         </div>
         {errors.services && (
-          <p className="mt-1 text-xs text-red-500">{errors.services.message}</p>
+          <p className="mt-1 text-xs text-destructive">{errors.services.message}</p>
         )}
       </div>
 
@@ -372,7 +372,7 @@ export default function VendorForm({
           placeholder="e.g., 08012345678"
         />
         {errors.phone_number && (
-          <p className="mt-1 text-xs text-red-500">
+          <p className="mt-1 text-xs text-destructive">
             {errors.phone_number.message}
           </p>
         )}
@@ -392,7 +392,7 @@ export default function VendorForm({
           placeholder="e.g., 08012345678"
         />
         {errors.whatsapp_number && (
-          <p className="mt-1 text-xs text-red-500">
+          <p className="mt-1 text-xs text-destructive">
             {errors.whatsapp_number.message}
           </p>
         )}

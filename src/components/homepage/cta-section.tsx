@@ -4,39 +4,44 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { Reveal } from "./reveal";
 
-const TRUST_ITEMS = [
-  "✓ Free to start",
-  "✓ No credit card needed",
-];
+const TRUST_ITEMS = ["Free to start", "No credit card needed"];
 
 export function CTASection() {
   return (
-    <section className="py-20 lg:py-28 bg-linear-to-br from-[#1A3C34] to-[#163229] dark:from-[#1A2822] dark:to-[#0F1A17]">
-      <div className="max-w-[1440px] mx-auto px-6 text-center">
+    <section className="relative overflow-hidden bg-primary-950 py-20 lg:py-28">
+      <div
+        className="pointer-events-none absolute -right-20 -top-40 size-[500px] rounded-full bg-primary-500/20 blur-3xl"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[1440px] px-6 text-center">
         <Reveal>
-          <h2 className="text-3xl lg:text-5xl mb-4 text-white" style={{ fontFamily: "var(--font-display)" }}>
-            Ready to excel in your studies?
-          </h2>
-          <p className="text-lg mb-10 text-[#A8D8C2] dark:text-[#7EC8A0]">
-            Join hundreds of engineering students already using CampusHub.
+          <p className="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-primary-300">
+            Your next move starts here
           </p>
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <h2 className="mx-auto mb-4 max-w-3xl text-3xl text-white lg:text-5xl">
+            Make your campus life work smarter.
+          </h2>
+          <p className="mx-auto mb-10 max-w-xl text-lg text-primary-200">
+            Join a community building better habits, better tools, and better
+            ways to get things done.
+          </p>
+          <div className="mb-8 flex flex-wrap justify-center gap-3">
             <Link
               href="/signup"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-medium text-base bg-[#E8A020] text-[#3A2800] hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200"
+              className="inline-flex items-center gap-2 rounded-xl bg-accent-500 px-8 py-3.5 text-base font-bold text-accent-950 shadow-lg shadow-accent-500/20 transition-all hover:-translate-y-0.5 hover:bg-accent-400"
             >
               Create free account <ChevronRight size={18} />
             </Link>
             <a
               href="mailto:support@campushub.com"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-medium text-base text-white border border-white/40 hover:bg-white/10 hover:-translate-y-0.5 transition-all duration-200 dark:border-white/50 dark:hover:bg-white/20"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/25 px-8 py-3.5 text-base font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-white/10"
             >
               Talk to us
             </a>
           </div>
-          <div className="flex flex-wrap justify-center gap-6 text-sm font-medium text-[#A8D8C2] dark:text-[#7EC8A0]">
-            {TRUST_ITEMS.map((t) => (
-              <span key={t}>{t}</span>
+          <div className="flex flex-wrap justify-center gap-6 text-sm font-semibold text-primary-200">
+            {TRUST_ITEMS.map((item) => (
+              <span key={item}>{item}</span>
             ))}
           </div>
         </Reveal>

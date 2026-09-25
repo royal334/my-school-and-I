@@ -26,8 +26,8 @@ export default function NotificationCard({ notification, onMarkAsRead }: Notific
     <Card
       className={`transition-all hover:shadow-md cursor-pointer ${
         !notification.is_read
-          ? 'border-[#D6E5DF] bg-[#E8F5EF] dark:border-white/10 dark:bg-white/5'
-          : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
+          ? 'border-primary-200 bg-primary-50/60 dark:border-border dark:bg-muted'
+          : 'border-border bg-card'
       }`}
     >
       <CardContent className="px-4">
@@ -39,24 +39,22 @@ export default function NotificationCard({ notification, onMarkAsRead }: Notific
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <h3 className={`text-sm font-semibold leading-tight ${
-                !notification.is_read
-                  ? 'text-slate-900 dark:text-slate-100'
-                  : 'text-slate-700 dark:text-slate-300'
+                !notification.is_read ? 'text-foreground' : 'text-muted-foreground'
               }`}>
                 {notification.title}
               </h3>
 
               {!notification.is_read && (
-                <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#4A8C73]" />
+                <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" />
               )}
             </div>
 
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+            <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
               {notification.body}
             </p>
 
             <div className="mt-2 flex items-center justify-between">
-              <span className="text-xs text-slate-400 dark:text-slate-500">
+              <span className="text-xs text-muted-foreground">
                 {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
               </span>
 
@@ -68,7 +66,7 @@ export default function NotificationCard({ notification, onMarkAsRead }: Notific
                       e.stopPropagation();
                       onMarkAsRead(notification.id);
                     }}
-                    className="flex items-center gap-1 text-xs text-slate-400 hover:text-[#4A8C73] transition-colors"
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                   >
                     <Check className="h-3 w-3" />
                     Mark read

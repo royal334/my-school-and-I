@@ -112,37 +112,37 @@ export default function UpgradeForm({ vendor, preSelectedTier }: UpgradeFormProp
       <Card
         className={`relative flex flex-col transition-all ${
           upgradable ? 'hover:shadow-lg' : 'opacity-80'
-        } ${tierKey === 'featured' ? 'border-amber-200 dark:border-amber-900/50' : 'border-[#D6E5DF]'}`}
+        } ${tierKey === 'featured' ? 'border-accent-200 dark:border-accent-900/50' : 'border-border'}`}
       >
         {tierKey === 'featured' && (
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-            <Badge className="bg-[#E8A020] text-[#3A2800]">Most Popular</Badge>
+            <Badge className="bg-accent-500 text-accent-950">Most Popular</Badge>
           </div>
         )}
 
         <CardHeader>
           <div className="flex items-center gap-2">
-            <div className={`rounded-full p-2 ${tierKey === 'featured' ? 'bg-amber-100 dark:bg-amber-950/50' : 'bg-[#E8F5EF] dark:bg-[#1E211F]'}`}>
-              <Icon className={`h-5 w-5 ${tierKey === 'featured' ? 'text-amber-600 dark:text-amber-400' : 'text-[#4A8C73]'}`} />
+            <div className={`rounded-full p-2 ${tierKey === 'featured' ? 'bg-accent-50 dark:bg-accent-500/15' : 'bg-primary-50 dark:bg-muted'}`}>
+              <Icon className={`h-5 w-5 ${tierKey === 'featured' ? 'text-accent-600 dark:text-accent-400' : 'text-primary-600 dark:text-primary-400'}`} />
             </div>
             <CardTitle>{tier.name}</CardTitle>
           </div>
-          <p className="text-sm text-slate-600 dark:text-slate-400">{tier.description}</p>
+          <p className="text-sm text-muted-foreground">{tier.description}</p>
         </CardHeader>
 
         <CardContent className="flex-1 space-y-6">
           <div>
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold">₦{tier.price.toLocaleString()}</span>
-              <span className="text-slate-600 dark:text-slate-400">/{tier.period}</span>
+              <span className="text-muted-foreground">/{tier.period}</span>
             </div>
           </div>
 
           <div className="space-y-2">
             {tier.features.map((feature, index) => (
               <div key={index} className="flex items-start gap-2">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-green-600 dark:text-green-400" />
-                <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-success" />
+                <span className="text-sm text-foreground">{feature}</span>
               </div>
             ))}
           </div>
@@ -153,7 +153,7 @@ export default function UpgradeForm({ vendor, preSelectedTier }: UpgradeFormProp
             onClick={() => handleUpgrade(tierKey)}
             disabled={!!loadingTier || !upgradable}
             className={`w-full ${
-              tierKey === 'featured' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-blue-600 hover:bg-blue-700'
+              tierKey === 'featured' ? 'bg-accent-500 hover:bg-accent-600 text-accent-foreground' : 'bg-primary-600 hover:bg-primary-700'
             }`}
           >
             {isLoading ? (
@@ -181,7 +181,7 @@ export default function UpgradeForm({ vendor, preSelectedTier }: UpgradeFormProp
         {renderTierCard('featured')}
       </div>
 
-      <p className="text-center text-xs text-slate-600 dark:text-slate-400">
+      <p className="text-center text-xs text-muted-foreground">
         Secure payment powered by Paystack. Your subscription will be active immediately after payment.
       </p>
     </div>

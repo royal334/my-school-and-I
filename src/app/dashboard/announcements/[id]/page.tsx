@@ -92,7 +92,7 @@ export default async function AnnouncementDetailPage({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8">
+    <div className="min-h-screen bg-background py-8">
       <AnnouncementViewTracker
         announcementId={id}
         announcementTitle={announcement.title}
@@ -108,7 +108,7 @@ export default async function AnnouncementDetailPage({
         </Link>
 
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-8 space-y-6 dark:bg-slate-900 dark:border-slate-800">
+        <div className="bg-card border-border rounded-lg shadow-sm p-8 space-y-6">
           {/* Badges */}
           <div className="flex flex-wrap gap-2">
             <Badge variant={getPriorityColor(announcement.priority)}>
@@ -124,8 +124,8 @@ export default async function AnnouncementDetailPage({
           </h1>
 
           {/* Meta */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400 pb-6 border-b">
-            <span className="font-medium text-slate-900 dark:text-slate-100">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground pb-6 border-b">
+            <span className="font-medium text-foreground">
               {author?.full_name}
             </span>
             {authorRoleLabel && (
@@ -145,7 +145,7 @@ export default async function AnnouncementDetailPage({
             {announcement.expires_at && (
               <>
                 <span>•</span>
-                <span className="text-orange-600 dark:text-orange-400">
+                <span className="text-warning">
                   Expires{' '}
                   {formatDistanceToNow(new Date(announcement.expires_at))}
                 </span>
@@ -155,14 +155,14 @@ export default async function AnnouncementDetailPage({
 
           {/* Content */}
           <div className="prose max-w-none">
-            <div className="whitespace-pre-wrap text-slate-800 dark:text-slate-200 leading-relaxed">
+            <div className="whitespace-pre-wrap text-foreground leading-relaxed">
               {announcement.content}
             </div>
           </div>
 
           {/* Audience info */}
-          <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg text-sm">
-            <p className="text-slate-600 dark:text-slate-400">
+          <div className="bg-muted p-4 rounded-lg text-sm">
+            <p className="text-muted-foreground">
               <strong>Reaches:</strong>{' '}
               {announcement.target_scope === 'general'
                 ? 'All students'

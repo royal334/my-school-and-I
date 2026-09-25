@@ -22,7 +22,7 @@ export default async function NotificationsPage() {
           <h1 className="text-xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
             Notifications
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-2">
+          <p className="text-muted-foreground mt-2">
             Stay updated with alerts for announcements, vendor updates, and more
           </p>
         </div>

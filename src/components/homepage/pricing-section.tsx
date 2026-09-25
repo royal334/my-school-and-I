@@ -29,17 +29,17 @@ const VALUE_PROPS = [
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-20 lg:py-24 bg-white dark:bg-slate-950">
+    <section id="pricing" className="py-20 lg:py-24 bg-background">
       <div className="max-w-[1440px] mx-auto px-6">
         <Reveal>
           <div className="text-center mb-14">
-            <p className="text-sm font-semibold uppercase tracking-widest mb-2 text-slate-500">
+            <p className="text-sm font-semibold uppercase tracking-widest mb-2 text-muted-foreground">
               Pricing
             </p>
-            <h2 className="text-3xl lg:text-4xl mb-4 text-slate-900" style={{ fontFamily: "var(--font-display)" }}>
+            <h2 className="text-3xl lg:text-4xl mb-4 text-foreground" style={{ fontFamily: "var(--font-display)" }}>
               Simple, transparent pricing
             </h2>
-            <p className="text-lg max-w-xl mx-auto text-slate-600 dark:text-slate-300">
+            <p className="text-lg max-w-xl mx-auto text-muted-foreground">
               Start free and upgrade when you need more. No surprises.
             </p>
           </div>
@@ -48,24 +48,24 @@ export function PricingSection() {
         <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-10">
           {/* Free tier */}
           <Reveal>
-            <div className="rounded-2xl p-8 border border-slate-200 bg-white h-full flex flex-col hover:shadow-xl transition-all duration-200 dark:border-slate-800 dark:bg-slate-900">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5 bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+            <div className="rounded-2xl p-8 border border-border bg-card h-full flex flex-col hover:shadow-xl transition-all duration-200 dark:border-border dark:bg-card">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5 bg-muted text-muted-foreground dark:bg-muted dark:text-muted-foreground">
                 Free
               </span>
               <div className="mb-6">
-                <span className="text-5xl font-bold text-slate-900 dark:text-white">₦0</span>
-                <span className="text-sm ml-2 text-slate-500">Forever</span>
+                <span className="text-5xl font-bold text-foreground">₦0</span>
+                <span className="text-sm ml-2 text-muted-foreground">Forever</span>
               </div>
               <ul className="space-y-3 mb-8 flex-1">
                 {FREE_FEATURES.map((f) => (
                   <li
                     key={f.text}
-                    className={`flex items-center gap-3 text-sm ${f.included ? "text-slate-700 dark:text-slate-200" : "text-slate-400 dark:text-slate-500"}`}
+                    className={`flex items-center gap-3 text-sm ${f.included ? "text-foreground" : "text-muted-foreground"}`}
                   >
                     {f.included ? (
-                      <Check size={15} className="text-[#4A8C73] shrink-0" />
+                      <Check size={15} className="text-success shrink-0" />
                     ) : (
-                      <X size={15} className="text-slate-300 shrink-0" />
+                      <X size={15} className="text-muted-foreground shrink-0" />
                     )}
                     {f.text}
                   </li>
@@ -73,7 +73,7 @@ export function PricingSection() {
               </ul>
               <Link
                 href="/signup"
-                className="block text-center py-3 rounded-lg font-semibold text-sm border border-slate-300 text-slate-700 hover:bg-slate-50 transition-all duration-200 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="block text-center py-3 rounded-lg font-semibold text-sm border border-border text-foreground hover:bg-muted transition-all duration-200 dark:border-border dark:hover:bg-muted"
               >
                 Get Started
               </Link>
@@ -82,13 +82,13 @@ export function PricingSection() {
 
           {/* Premium tier */}
           <Reveal delay={100}>
-            <div className="rounded-2xl p-8 border-2 border-[#E8A020] bg-[#FFF0D4] h-full flex flex-col relative shadow-[0_0_40px_rgba(232,160,32,0.12)] hover:shadow-[0_20px_48px_rgba(232,160,32,0.2)] hover:-translate-y-1 transition-all duration-200">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5 text-[#3A2800] bg-[#E8A020]">
+            <div className="rounded-2xl p-8 border-2 border-accent-500 bg-accent-50 h-full flex flex-col relative shadow-accent-500/10 hover:shadow-accent-500/20 hover:-translate-y-1 transition-all duration-200">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-5 text-accent-950 bg-accent-500">
                 Most Popular
               </span>
               <div className="mb-6">
-                <span className="text-5xl font-bold text-[#1A3C34]">₦1000</span>
-                <span className="text-sm ml-2 text-slate-500">
+                <span className="text-5xl font-bold text-primary-900">₦1000</span>
+                <span className="text-sm ml-2 text-muted-foreground">
                   Per semester
                 </span>
               </div>
@@ -96,16 +96,16 @@ export function PricingSection() {
                 {PRO_FEATURES.map((f) => (
                   <li
                     key={f.text}
-                    className="flex items-center gap-3 text-sm text-slate-700"
+                    className="flex items-center gap-3 text-sm text-foreground"
                   >
-                    <Check size={15} className="text-[#4A8C73] shrink-0" />
+                    <Check size={15} className="text-success shrink-0" />
                     {f.text}
                   </li>
                 ))}
               </ul>
               <Link
                 href="/signup"
-                className="block text-center py-3 rounded-lg font-semibold text-sm text-[#3A2800] bg-[#E8A020] hover:bg-[#D4901A] shadow-[0_4px_14px_rgba(232,160,32,0.35)] transition-all duration-200"
+                className="block text-center py-3 rounded-lg font-semibold text-sm text-accent-950 bg-accent-500 hover:bg-accent-600 shadow-accent-500/30 transition-all duration-200"
               >
                 Upgrade now →
               </Link>
@@ -115,7 +115,7 @@ export function PricingSection() {
 
         {/* Value props */}
         <Reveal>
-          <div className="flex flex-wrap justify-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300">
+          <div className="flex flex-wrap justify-center gap-8 text-sm font-medium text-muted-foreground">
             {VALUE_PROPS.map((v) => (
               <span key={v.text} className="flex items-center gap-2">
                 {v.icon} {v.text}

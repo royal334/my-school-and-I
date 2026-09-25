@@ -95,10 +95,10 @@ export default function SecurityCard({ email }: SecurityCardProps) {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Lock className="h-5 w-5 text-red-600" />
+          <Lock className="h-5 w-5 text-destructive" />
           <h2 className="text-xl font-semibold">Security</h2>
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
+        <p className="text-sm text-muted-foreground">
           Manage your password and account security
         </p>
       </CardHeader>
@@ -116,15 +116,15 @@ export default function SecurityCard({ email }: SecurityCardProps) {
         ) : (
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 rounded-lg border border-slate-200 p-4 dark:border-slate-800"
+            className="space-y-4 rounded-lg border border-border p-4"
           >
-            <h3 className="font-semibold text-slate-900 dark:text-slate-100">Change Password</h3>
+            <h3 className="font-semibold text-foreground">Change Password</h3>
 
             {/* Current Password */}
             <div className="space-y-2">
               <Label
                 htmlFor="current-password"
-                className={errors.currentPassword ? "text-red-500" : ""}
+                className={errors.currentPassword ? "text-destructive" : ""}
               >
                 Current Password
               </Label>
@@ -135,8 +135,8 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                   {...register("currentPassword")}
                   className={
                     errors.currentPassword
-                      ? "border-red-500 relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
-                      : "relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
+                      ? "border-destructive relative z-50 pointer-events-auto bg-card"
+                      : "relative z-50 pointer-events-auto bg-card"
                   }
                 />
                 <button
@@ -147,7 +147,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                       current: !showPasswords.current,
                     })
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
                   {showPasswords.current ? (
                     <EyeOff className="h-4 w-4" />
@@ -157,7 +157,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                 </button>
               </div>
               {errors.currentPassword && (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-destructive">
                   {errors.currentPassword.message}
                 </p>
               )}
@@ -167,7 +167,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
             <div className="space-y-2">
               <Label
                 htmlFor="new-password"
-                className={errors.newPassword ? "text-red-500" : ""}
+                className={errors.newPassword ? "text-destructive" : ""}
               >
                 New Password
               </Label>
@@ -178,8 +178,8 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                   {...register("newPassword")}
                   className={
                     errors.newPassword
-                      ? "border-red-500 relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
-                      : "relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
+                      ? "border-destructive relative z-50 pointer-events-auto bg-card"
+                      : "relative z-50 pointer-events-auto bg-card"
                   }
                 />
                 <button
@@ -190,7 +190,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                       new: !showPasswords.new,
                     })
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
                   {showPasswords.new ? (
                     <EyeOff className="h-4 w-4" />
@@ -200,11 +200,11 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                 </button>
               </div>
               {errors.newPassword ? (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-destructive">
                   {errors.newPassword.message}
                 </p>
               ) : (
-                <p className="text-xs text-slate-500 dark:text-slate-400">Minimum 8 characters</p>
+                <p className="text-xs text-muted-foreground">Minimum 8 characters</p>
               )}
             </div>
 
@@ -212,7 +212,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
             <div className="space-y-2">
               <Label
                 htmlFor="confirm-password"
-                className={errors.confirmPassword ? "text-red-500" : ""}
+                className={errors.confirmPassword ? "text-destructive" : ""}
               >
                 Confirm New Password
               </Label>
@@ -223,8 +223,8 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                   {...register("confirmPassword")}
                   className={
                     errors.confirmPassword
-                      ? "border-red-500 relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
-                      : "relative z-50 pointer-events-auto bg-white dark:bg-slate-800"
+                      ? "border-destructive relative z-50 pointer-events-auto bg-card"
+                      : "relative z-50 pointer-events-auto bg-card"
                   }
                 />
                 <button
@@ -235,7 +235,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                       confirm: !showPasswords.confirm,
                     })
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
                   {showPasswords.confirm ? (
                     <EyeOff className="h-4 w-4" />
@@ -245,7 +245,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-destructive">
                   {errors.confirmPassword.message}
                 </p>
               )}
@@ -273,7 +273,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
         {/* Sign Out */}
         <Button
           variant="outline"
-          className="w-full justify-start border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+          className="w-full justify-start border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
           onClick={handleSignOut}
         >
           <LogOut className="mr-2 h-4 w-4" />
@@ -281,10 +281,10 @@ export default function SecurityCard({ email }: SecurityCardProps) {
         </Button>
 
         {/* Account Info */}
-        <div className="rounded-lg bg-slate-50 p-4 text-sm dark:bg-slate-800/50">
-          <p className="font-medium text-slate-900 dark:text-slate-100">Account Email</p>
-          <p className="mt-1 text-slate-600 dark:text-slate-400">{email}</p>
-          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+        <div className="rounded-lg bg-muted p-4 text-sm">
+          <p className="font-medium text-foreground">Account Email</p>
+          <p className="mt-1 text-muted-foreground">{email}</p>
+          <p className="mt-2 text-xs text-muted-foreground">
             For security reasons, you cannot change your email address. Contact
             support if needed.
           </p>

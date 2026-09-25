@@ -36,14 +36,14 @@ export default function AppearanceSettings() {
           <Palette className="h-5 w-5 text-primary-600 dark:text-primary-400" />
           <h2 className="text-xl font-semibold">Appearance</h2>
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
+        <p className="text-sm text-muted-foreground">
           Customize how CampusHub looks on your device
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label className="text-base font-medium">Theme</Label>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-muted-foreground">
             Select your preferred theme or use system default
           </p>
         </div>
@@ -57,16 +57,16 @@ export default function AppearanceSettings() {
               <button
                 key={themeOption.value}
                 onClick={() => setTheme(themeOption.value)}
-                className={`relative flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                className={`relative flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:bg-muted ${
                   isActive
                     ? 'border-primary-600 bg-primary-50 dark:border-primary-400 dark:bg-primary-950'
-                    : 'border-slate-200 dark:border-slate-700'
+                    : 'border-border'
                 }`}
               >
                 {isActive && (
                   <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary-600 dark:bg-primary-400">
                     <svg
-                      className="h-3 w-3 text-white dark:text-slate-900"
+                      className="h-3 w-3 text-white dark:text-primary-950"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -85,7 +85,7 @@ export default function AppearanceSettings() {
                   className={`h-8 w-8 ${
                     isActive
                       ? 'text-primary-600 dark:text-primary-400'
-                      : 'text-slate-600 dark:text-slate-400'
+                      : 'text-muted-foreground'
                   }`}
                 />
                 <div className="text-center">
@@ -93,12 +93,12 @@ export default function AppearanceSettings() {
                     className={`font-medium ${
                       isActive
                         ? 'text-primary-900 dark:text-primary-100'
-                        : 'text-slate-900 dark:text-slate-100'
+                        : 'text-foreground'
                     }`}
                   >
                     {themeOption.label}
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="text-xs text-muted-foreground">
                     {themeOption.description}
                   </p>
                 </div>

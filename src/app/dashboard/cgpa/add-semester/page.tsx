@@ -34,7 +34,7 @@ export default async function AddSemesterPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>Add semester results</h1>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-muted-foreground">
           Enter your course grades to calculate your semester GPA
         </p>
       </div>

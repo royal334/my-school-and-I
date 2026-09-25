@@ -143,35 +143,35 @@ export function getClassOfDegree(cgpa: number): string {
  */
 export function getGradeColor(grade: string): string {
   const colors: Record<string, string> = {
-    A: "bg-green-100 text-green-700 border-green-200 dark:bg-green-950/50 dark:text-green-400 dark:border-green-900/50",
-    B: "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-950/50 dark:text-blue-400 dark:border-blue-900/50",
-    C: "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-950/50 dark:text-yellow-400 dark:border-yellow-900/50",
-    D: "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950/50 dark:text-orange-400 dark:border-orange-900/50",
-    E: "bg-red-100 text-red-700 border-red-200 dark:bg-red-950/50 dark:text-red-400 dark:border-red-900/50",
-    F: "bg-red-200 text-red-800 border-red-300 dark:bg-red-950/50 dark:text-red-400 dark:border-red-900/50",
+    A: "bg-success-bg text-success-text border-success/40 dark:bg-success/10",
+    B: "bg-info-bg text-info-text border-info/40 dark:bg-info/10",
+    C: "bg-warning-bg text-warning-text border-warning/40 dark:bg-warning/10",
+    D: "bg-accent-50 text-accent-800 border-accent-200 dark:bg-accent-950/30 dark:text-accent-300 dark:border-accent-900/50",
+    E: "bg-destructive/10 text-destructive border-destructive/40",
+    F: "bg-destructive/10 text-destructive border-destructive/40",
   };
-  return colors[grade.toUpperCase()] || "bg-gray-100 text-gray-700 dark:bg-gray-950/50 dark:text-gray-400";
+  return colors[grade.toUpperCase()] || "bg-muted text-muted-foreground border-border";
 }
 
 /**
  * Get color for CGPA/GPA text
  */
 export function getGPAColor(gpa: number): string {
-  if (gpa >= 4.5) return "text-green-600";
-  if (gpa >= 3.5) return "text-blue-600";
-  if (gpa >= 2.5) return "text-yellow-600";
-  if (gpa >= 1.5) return "text-orange-600";
-  return "text-red-600";
+  if (gpa >= 4.5) return "text-success";
+  if (gpa >= 3.5) return "text-info";
+  if (gpa >= 2.5) return "text-warning-text";
+  if (gpa >= 1.5) return "text-accent-600";
+  return "text-destructive";
 }
 
 /**
  * Get color for GPA badges
  */
 export function getGPABadgeColor(gpa: number): string {
-  if (gpa >= 4.5) return "bg-green-100 text-green-700 border-green-200 dark:bg-green-950/50 dark:text-green-400 dark:border-green-900/50";
-  if (gpa >= 3.5) return "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-950/50 dark:text-blue-400 dark:border-blue-900/50";
-  if (gpa >= 2.5) return "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-950/50 dark:text-yellow-400 dark:border-yellow-900/50";
-  return "bg-red-100 text-red-700 border-red-200 dark:bg-red-950/50 dark:text-red-400 dark:border-red-900/50";
+  if (gpa >= 4.5) return "bg-success-bg text-success-text border-success/40 dark:bg-success/10";
+  if (gpa >= 3.5) return "bg-info-bg text-info-text border-info/40 dark:bg-info/10";
+  if (gpa >= 2.5) return "bg-warning-bg text-warning-text border-warning/40 dark:bg-warning/10";
+  return "bg-destructive/10 text-destructive border-destructive/40";
 }
 
 /**

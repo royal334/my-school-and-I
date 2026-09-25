@@ -456,14 +456,14 @@ export function randomColor(): string {
  */
 export function getGradeColor(grade: string): string {
   const colors: Record<string, string> = {
-    A: 'text-green-600 bg-green-50',
-    B: 'text-blue-600 bg-blue-50',
-    C: 'text-yellow-600 bg-yellow-50',
-    D: 'text-orange-600 bg-orange-50',
-    E: 'text-red-600 bg-red-50',
-    F: 'text-red-700 bg-red-100',
+    A: 'text-success bg-success-bg',
+    B: 'text-info bg-info-bg',
+    C: 'text-warning-text bg-warning-bg',
+    D: 'text-accent-800 bg-accent-50',
+    E: 'text-destructive bg-destructive/10',
+    F: 'text-destructive bg-destructive/10',
   };
-  return colors[grade.toUpperCase()] || 'text-gray-600 bg-gray-50';
+  return colors[grade.toUpperCase()] || 'text-muted-foreground bg-muted';
 }
 
 // ============================================================

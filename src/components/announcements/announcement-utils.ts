@@ -18,11 +18,11 @@ const PRIORITY_ORDER: Record<Announcement['priority'], number> = {
 export function getPriorityColor(priority: string) {
   switch (priority) {
     case 'urgent':
-      return 'bg-[#FDEAE5] text-[#C44B2A] border-[#E88A78]';
+      return 'bg-destructive/10 text-destructive border-destructive/30';
     case 'important':
-      return 'bg-[#FFF0D4] text-[#9E6A08] border-[#FFD07A]';
+      return 'bg-warning-bg text-warning-text border-warning/30';
     default:
-      return 'bg-[#E8F5EF] text-[#3A7260] border-[#A8D8C2]';
+      return 'bg-primary-50 text-primary-700 border-primary-200';
   }
 }
 

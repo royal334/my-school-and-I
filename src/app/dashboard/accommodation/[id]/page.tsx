@@ -42,14 +42,14 @@ export default function AccommodationDetailPage() {
     return <ListingNotFound />;
   }
 
-  const images = (listing.media || []).filter(m => m.file_type === 'image');
+  const media = listing.media || [];
 
   return (
     <div style={{ background: 'var(--surface-page, #F0F5F3)', minHeight: '100vh', paddingBottom: 80 }}>
       <DetailHeader name={listing.property.name} onBack={() => router.back()} />
 
       {/* Image gallery */}
-      <ImageGallery images={images} name={listing.property.name} />
+      <ImageGallery media={media} name={listing.property.name} />
 
       <div style={{ padding: '16px' }}>
         {/* Title section */}

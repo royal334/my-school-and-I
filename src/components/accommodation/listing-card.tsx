@@ -12,12 +12,24 @@ export function ListingCard({ listing }: { listing: Listing }) {
       <div className="group h-full overflow-hidden rounded-xl border border-[#D6E5DF] bg-card text-card-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-[#4A8C73]/40 hover:shadow-md dark:border-white/10 dark:hover:border-[#7EC8A0]/40">
         {/* Image */}
         <div className="relative flex h-40 items-center justify-center overflow-hidden bg-[#E8F5EF] dark:bg-[#1E211F]">
-          {listing.cover_image ? (
-            <img
-              src={listing.cover_image.file_path}
-              alt={listing.property.name}
-              className="h-full w-full object-cover"
-            />
+          {listing.cover_image?.url ? (
+              listing.cover_image.file_type === 'video' ? (
+                <video
+                  src={listing.cover_image.url}
+                  aria-label={listing.property.name}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <img
+                  src={listing.cover_image.url}
+                  alt={listing.property.name}
+                  className="h-full w-full object-cover"
+                />
+              )
           ) : (
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
               <rect x="3" y="9" width="18" height="13" rx="2" stroke="#4A8C73" strokeWidth="1.5" />
@@ -41,10 +53,10 @@ export function ListingCard({ listing }: { listing: Listing }) {
             </div>
           )}
 
-          {/* Property name */}
+          {/* Property name
           <h3 className="text-base leading-tight tracking-tight">
             {listing.property.name}
-          </h3>
+          </h3> */}
 
           {/* Location */}
           <p className="mt-1 mb-2.5 text-xs text-[#6B7B75] dark:text-[#9BA19E]">

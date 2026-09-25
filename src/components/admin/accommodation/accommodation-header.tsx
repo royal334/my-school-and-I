@@ -26,7 +26,7 @@ export function AccommodationHeader({
           <p className="mt-0.5 text-xs text-primary-300">Operations dashboard</p>
         </div>
         <Link
-          href="/dashboard/admin/accommodation/properties/new"
+          href="/dashboard/accommodation/submit"
           className="rounded-lg bg-accent-500 px-3.5 py-2 text-[13px] font-medium text-[#3A2800] no-underline"
         >
           + New property

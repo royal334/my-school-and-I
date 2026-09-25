@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { withAccommodationMediaUrls } from '@/utils/lib/accommodation-media';
 
 async function isAdmin(supabase: any, userId: string) {
   const { data } = await supabase
@@ -74,8 +75,10 @@ export async function GET(
       .select('*')
       .eq('submission_id', id);
 
+    const mediaWithUrls = await withAccommodationMediaUrls(supabase, media || []);
+
     return NextResponse.json({
-      lead: { ...lead, submitter, matched_property, matched_unit, media: media || [] },
+      lead: { ...lead, submitter, matched_property, matched_unit, media: mediaWithUrls },
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -131,6 +134,18 @@ export async function PATCH(
       .single();
 
     if (error) throw error;
+
+    if (action === 'link_property' && matched_unit_id) {
+      const { error: mediaError } = await supabase
+        .from('accommodation_media')
+        .update({
+          unit_id: matched_unit_id,
+          media_source: 'verified',
+        })
+        .eq('submission_id', id);
+
+      if (mediaError) throw mediaError;
+    }
 
     // Notify the student who submitted
     const { sendNotification } = await import('@/utils/lib/services/notification-service');

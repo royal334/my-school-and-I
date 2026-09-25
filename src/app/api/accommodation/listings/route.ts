@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { withAccommodationMediaUrls } from '@/utils/lib/accommodation-media';
 
 export async function GET(request: Request) {
   try {
@@ -92,12 +93,13 @@ export async function GET(request: Request) {
     if (unitIds.length > 0) {
       const { data: media } = await supabase
         .from('accommodation_media')
-        .select('unit_id, file_path, file_name')
+        .select('unit_id, file_path, file_name, file_type, is_cover')
         .in('unit_id', unitIds)
         .eq('media_source', 'verified')
         .eq('is_cover', true);
 
-      (media || []).forEach((m: any) => {
+      const mediaWithUrls = await withAccommodationMediaUrls(supabase, media || []);
+      mediaWithUrls.forEach((m: any) => {
         mediaByUnitId[m.unit_id] = m;
       });
     }

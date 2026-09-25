@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { withAccommodationMediaUrls } from '@/utils/lib/accommodation-media';
 
 export async function GET(
   request: Request,
@@ -48,10 +49,12 @@ export async function GET(
       .limit(1)
       .single();
 
+    const mediaWithUrls = await withAccommodationMediaUrls(supabase, media || []);
+
     return NextResponse.json({
       listing: {
         ...unit,
-        media: media || [],
+        media: mediaWithUrls,
         verification: verification || null,
       },
     });

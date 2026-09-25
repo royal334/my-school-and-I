@@ -74,6 +74,7 @@ export interface LeadSubmitter {
 export interface LeadMedia {
   id: string;
   file_path: string;
+  url?: string | null;
   file_type: string;
 }
 

@@ -9,6 +9,7 @@ export interface Property {
 export interface MediaItem {
   id: string;
   file_path: string;
+  url?: string | null;
   file_type: string;
   is_cover: boolean;
 }
@@ -41,7 +42,7 @@ export interface Listing {
   toilet_bathroom?: string;
   facilities_notes?: string;
   property: Property;
-  cover_image?: { file_path: string } | null;
+  cover_image?: { file_path: string; url?: string | null; file_type?: string } | null;
   media?: MediaItem[];
   verification?: Verification | null;
 }

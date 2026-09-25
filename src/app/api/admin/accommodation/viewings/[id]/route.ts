@@ -88,7 +88,7 @@ export async function PATCH(
       scheduled: {
         title: 'Viewing confirmed!',
         body: scheduled_date
-          ? `Your viewing has been scheduled. Check the app for details.`
+          ? `Your viewing has been scheduled for ${new Date(scheduled_date).toLocaleString()}. Contact on this number 08109660505. Please be on time. ${admin_notes ? `Note from admin: ${admin_notes}` : ''}`
           : `Your viewing request has been confirmed.`,
       },
       cancelled: {

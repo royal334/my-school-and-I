@@ -17,7 +17,7 @@ export function LeadDetailView({ lead: initialLead }: { lead: LeadDetail }) {
   const router = useRouter();
   const [lead, setLead] = useState<LeadDetail>(initialLead);
 
-  const images = (lead.media || []).filter(m => m.file_type === 'image');
+  const media = lead.media || [];
 
   return (
     <div className="min-h-screen bg-[#F0F5F3] pb-20 dark:bg-background">
@@ -92,7 +92,7 @@ export function LeadDetailView({ lead: initialLead }: { lead: LeadDetail }) {
           )}
         </Card>
 
-        <MediaGallery images={images} />
+        <MediaGallery media={media} />
 
         {(lead.matched_property || lead.matched_unit) && (
           <Card className="border-success/20 bg-success/5">

@@ -447,10 +447,10 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
       onEvent={handleEvent}
       styles={{
         tooltip: { borderRadius: 14, padding: '18px 20px' },
-        tooltipTitle: { fontSize: 17, fontWeight: 700 },
+        tooltipTitle: { fontSize: 17, fontWeight: 700, color:'#15231E'  },
         tooltipContent: { fontSize: 14, lineHeight: 1.55 },
         buttonPrimary: {
-          backgroundColor: '#2563eb',
+          backgroundColor: '#171918',
           borderRadius: 8,
           fontSize: 14,
           fontWeight: 600,

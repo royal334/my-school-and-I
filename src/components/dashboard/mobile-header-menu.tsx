@@ -72,7 +72,7 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
             aria-label="Open menu"
             data-tour="mobile-header-menu"
           >
-            <MoreVertical className="h-4 w-4" />
+            <MoreVertical className="h-4 w-4 text-white" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-44">

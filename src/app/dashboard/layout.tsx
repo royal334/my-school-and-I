@@ -65,7 +65,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
               <SidebarTrigger className="-ml-1" />
               <DashboardToggle 
                 hasVendor={hasVendor} 
-                isVendorAccount={isVendorAccount} 
+                isVendorAccount={isVendorAccount}
+                isAdmin={Boolean(adminRole)}
               />
               <TourHelpButton hasVendor={hasVendor} isVendorAccount={isVendorAccount} className="ml-auto size-8" />
             </header>
@@ -82,7 +83,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
         <header className="fixed top-0 left-0 right-0 h-16 border-b border-[#D6E5DF] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C] z-40 flex items-center px-4 gap-2">
           <DashboardToggle 
             hasVendor={hasVendor} 
-            isVendorAccount={isVendorAccount} 
+            isVendorAccount={isVendorAccount}
+            isAdmin={Boolean(adminRole)}
           />
           <MobileHeaderMenu hasVendor={hasVendor} isVendorAccount={isVendorAccount} />
         </header>

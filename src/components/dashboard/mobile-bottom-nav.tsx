@@ -9,6 +9,7 @@ import {
   Upload,
   MessageSquare,
   Store,
+  House,
   Calculator
 } from 'lucide-react';
 
@@ -26,9 +27,10 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
     ...(isSuperAdmin
       ? [{ href: '/dashboard/materials/upload', icon: Upload, label: 'Upload' }]
       : []),
+    {href:"/dashboard/accommodation", icon: House, label: "Accommodation"},
     { href: '/dashboard/vendors', icon: Store, label: 'Vendors' },
     { href: '/dashboard/notifications', icon: MessageSquare, label: 'Notifications' },
-    { href: '/dashboard/announcements', icon: Bell, label: 'Alerts' },
+    { href: '/dashboard/announcements', icon: Bell, label: 'Announcements' },
   ];
   const pathname = usePathname();
 

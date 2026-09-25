@@ -69,6 +69,8 @@ const ROUTE_LABELS: Record<string, string> = {
   '/dashboard/cgpa': 'CGPA',
   '/dashboard/profile': 'Profile',
   '/dashboard/vendors': 'Vendors',
+  '/dashboard/accommodation': 'Accommodation',
+  '/dashboard/accommodation/my-submissions': 'My Submissions',
   '/dashboard/announcements': 'Announcements',
   '/dashboard/settings': 'Settings',
   '/dashboard/vendors/analytics': 'Analytics',
@@ -86,6 +88,24 @@ function routeLabel(route: string): string {
  * prompt: open the header menu first, then tap the item.
  */
 const HEADER_MENU_ROUTES = new Set(['/dashboard/profile', '/dashboard/settings']);
+
+/**
+ * Alerts left the mobile bottom bar and now live in the header bell, so on
+ * mobile the notifications route is reached by tapping the bell rather than a
+ * bar item.
+ */
+const BELL_ROUTE = '/dashboard/notifications';
+
+function bellTarget(): () => HTMLElement | null {
+  return () => {
+    if (typeof window === 'undefined') return null;
+    return document.querySelector<HTMLElement>('[data-tour="notification-bell"]');
+  };
+}
+
+function isBellRoute(route: string): boolean {
+  return route === BELL_ROUTE;
+}
 
 function isHeaderMenuRoute(route: string): boolean {
   return HEADER_MENU_ROUTES.has(route);
@@ -144,16 +164,24 @@ function navLinkTarget(route: string): () => HTMLElement | null {
  * Skip — the tour only advances once the user actually clicks the highlighted
  * menu item (manual navigation is picked up by OnboardingTour).
  */
-function buildNavPromptStep(sourceRoute: string, next: TourStep, isMobile: boolean): TourStep {
+function buildNavPromptStep(
+  sourceRoute: string,
+  next: TourStep,
+  isMobile: boolean,
+  target?: () => HTMLElement | null,
+): TourStep {
   const label = routeLabel(next.route);
+  const viaBell = isMobile && isBellRoute(next.route);
   return {
-    target: navLinkTarget(next.route),
-    title: `Open ${label}`,
-    content: isMobile
-      ? `Tap "${label}" in the bar below to continue.`
-      : `Click "${label}" in the sidebar to continue.`,
+    target: target ?? navLinkTarget(next.route),
+    title: viaBell ? 'Your alerts live in the bell' : `Open ${label}`,
+    content: viaBell
+      ? 'Tap the bell in the header to continue. A dot on it means you have unread notifications.'
+      : isMobile
+        ? `Tap "${label}" in the bar below to continue.`
+        : `Click "${label}" in the sidebar to continue.`,
     route: sourceRoute,
-    placement: isMobile ? 'top' : 'right',
+    placement: viaBell ? 'bottom' : isMobile ? 'top' : 'right',
     floatingOptions: isMobile ? { strategy: 'fixed' } : undefined,
     buttons: ['skip'],
   };
@@ -209,6 +237,8 @@ export function insertNavPromptSteps(steps: TourStep[], isMobile: boolean): Tour
     if (i > 0 && sourceRoute && step.route && step.route !== sourceRoute) {
       if (isMobile && isHeaderMenuRoute(step.route)) {
         result.push(...buildMenuPromptSteps(sourceRoute, step, isMobile));
+      } else if (isMobile && isBellRoute(step.route)) {
+        result.push(buildNavPromptStep(sourceRoute, step, isMobile, bellTarget()));
       } else {
         result.push(buildNavPromptStep(sourceRoute, step, isMobile));
       }
@@ -299,6 +329,13 @@ export const studentTourSteps: TourStep[] = [
     placement: 'bottom',
   },
   {
+    target: pageTarget('[data-tour="page-accommodation"]'),
+    content: 'Browse verified student housing near campus. Spotted a vacancy? Submit it and follow its verification under My Submissions.',
+    title: 'Accommodation',
+    route: '/dashboard/accommodation',
+    placement: 'top',
+  },
+  {
     target: pageTarget('[data-tour="page-profile"]'),
     content: 'Update your personal details, manage your matric number, and view your subscription status.',
     title: 'Your Profile',
@@ -378,29 +415,30 @@ export function vendorTourSteps(includeToggle: boolean): TourStep[] {
       route: '/dashboard/subscription',
       placement: 'bottom',
     },
-    {
-      target: pageTarget('[data-tour="page-notifications"]'),
-      content: 'Get alerts for inquiries and activity related to your business.',
-      title: 'Notifications',
-      route: '/dashboard/notifications',
-      placement: 'bottom',
-    },
-    {
-      target: pageTarget('[data-tour="page-settings"]'),
-      content: 'Customize your appearance and manage your account.',
-      title: 'Settings',
-      route: '/dashboard/settings',
-      placement: 'bottom',
-    },
+  {
+    target: pageTarget('[data-tour="page-notifications"]'),
+    content: 'Get alerts for inquiries and activity related to your business. A dot on the header bell flags anything unread.',
+    title: 'Notifications',
+    route: '/dashboard/notifications',
+    placement: 'bottom',
+  },
+  {
+    target: pageTarget('[data-tour="page-settings"]'),
+    content: 'Customize your appearance and manage your account.',
+    title: 'Settings',
+    route: '/dashboard/settings',
+    placement: 'bottom',
+  },
   );
 
   return steps;
 }
 
 /**
- * Short mobile tour (5 steps max). The bottom bar replaces the sidebar, so the
- * navigation step targets the fixed bottom nav instead. Page steps stay compact
- * and keep the tooltip below the highlight so it stays inside the viewport.
+ * Mobile tour. The bottom bar replaces the sidebar, so the navigation step
+ * targets the fixed bottom nav, and the header bell (which replaced the bar's
+ * Alerts tab) gets its own step. Page steps stay compact and keep the tooltip
+ * below the highlight so it stays inside the viewport.
  */
 export const studentMobileTourSteps: TourStep[] = [
   mobileStep({
@@ -412,10 +450,17 @@ export const studentMobileTourSteps: TourStep[] = [
   }),
   mobileStep({
     target: navTarget,
-    content: 'Use this bar to jump between your Dashboard, Materials, CGPA, Vendors, and Announcements.',
+    content: 'Use this bar to jump between your Dashboard, Materials, CGPA, Accommodation, Vendors, and Announcements.',
     title: 'Navigate anywhere',
     route: '/dashboard',
     placement: 'top',
+  }),
+  mobileStep({
+    target: bellTarget(),
+    content: 'Alerts now live in this bell, next to the menu. A dot on it means you have unread notifications.',
+    title: 'Your alert bell',
+    route: '/dashboard',
+    placement: 'bottom',
   }),
   mobileStep({
     target: pageTarget('[data-tour="page-materials"]'),
@@ -432,10 +477,10 @@ export const studentMobileTourSteps: TourStep[] = [
     placement: 'bottom',
   }),
   mobileStep({
-    target: pageTarget('[data-tour="page-announcements"]'),
-    content: 'Stay updated with the latest news and announcements from your institution.',
-    title: 'Announcements',
-    route: '/dashboard/announcements',
+    target: pageTarget('[data-tour="page-accommodation"]'),
+    content: 'Browse verified student housing near campus. Spotted a vacancy? Submit it and follow its verification under My Submissions.',
+    title: 'Accommodation',
+    route: '/dashboard/accommodation',
     placement: 'bottom',
   }),
   mobileStep({
@@ -443,6 +488,13 @@ export const studentMobileTourSteps: TourStep[] = [
     content: 'Connect with verified service providers on campus — from food to fashion.',
     title: 'Vendors Marketplace',
     route: '/dashboard/vendors',
+    placement: 'bottom',
+  }),
+  mobileStep({
+    target: pageTarget('[data-tour="page-announcements"]'),
+    content: 'Stay updated with the latest news and announcements from your institution.',
+    title: 'Announcements',
+    route: '/dashboard/announcements',
     placement: 'bottom',
   }),
   mobileStep({
@@ -465,10 +517,17 @@ export function vendorMobileTourSteps(): TourStep[] {
     }),
     mobileStep({
       target: navTarget,
-      content: 'Use this bar to access analytics, subscription, notifications, and settings.',
+      content: 'Use this bar to access analytics, subscription, and settings. Your alerts live in the bell in the header.',
       title: 'Vendor navigation',
       route: '/dashboard',
       placement: 'top',
+    }),
+    mobileStep({
+      target: bellTarget(),
+      content: 'Tap the bell to see inquiries and activity alerts. A dot on it means something is unread.',
+      title: 'Your alert bell',
+      route: '/dashboard',
+      placement: 'bottom',
     }),
     mobileStep({
       target: pageTarget('[data-tour="page-analytics"]'),

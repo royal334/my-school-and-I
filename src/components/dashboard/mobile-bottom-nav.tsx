@@ -3,13 +3,11 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
-  Bell,
   BookOpen,
   Calculator,
   LayoutDashboard,
-  MessageSquare,
+  Megaphone,
   Store,
-  Calculator,
   House,
   Upload,
 } from 'lucide-react';
@@ -30,8 +28,7 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
       : []),
     {href:"/dashboard/accommodation", icon: House, label: "Accommodation"},
     { href: '/dashboard/vendors', icon: Store, label: 'Vendors' },
-    { href: '/dashboard/notifications', icon: MessageSquare, label: 'Alerts' },
-    { href: '/dashboard/announcements', icon: Bell, label: 'Updates' },
+    { href: '/dashboard/announcements', icon: Megaphone, label: 'Updates' },
   ];
   const pathname = usePathname();
 

@@ -6,7 +6,6 @@ import {
   BarChart3,
   Crown,
   LayoutDashboard,
-  MessageSquare,
   Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -15,7 +14,6 @@ const vendorNavItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Home" },
   { href: "/dashboard/vendors/analytics", icon: BarChart3, label: "Analytics" },
   { href: "/dashboard/subscription", icon: Crown, label: "Plan" },
-  { href: "/dashboard/notifications", icon: MessageSquare, label: "Alerts" },
   { href: "/dashboard/settings", icon: Settings, label: "Settings" },
 ];
 

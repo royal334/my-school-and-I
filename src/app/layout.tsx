@@ -55,7 +55,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={htmlClass} style={htmlStyle}>
+    <html>
       <body className={`${jakarta.variable} font-sans antialiased`}>
         <Providers>
           <PageLoader />

@@ -82,7 +82,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
       {/* Mobile Layout */}
       <div className="md:hidden flex flex-col min-h-screen">
         {/* Mobile top header with toggle */}
-        <header className="fixed top-0 left-0 right-0 h-16 border-b border-[#D6E5DF] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C] z-40 flex items-center px-4 gap-2">
+        <header className="fixed top-0 left-0 right-0 h-16 border-b border-white/10 bg-primary-950 z-40 flex items-center px-4 gap-2">
           <DashboardToggle 
             hasVendor={hasVendor} 
             isVendorAccount={isVendorAccount}

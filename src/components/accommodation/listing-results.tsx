@@ -31,12 +31,12 @@ export function ListingResults({
 
   if (listings.length === 0) {
     return (
-      <Card className="flex flex-col items-center justify-center p-12 text-center border-[#D6E5DF] dark:border-white/10">
-        <div className="rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] p-4">
-          <House className="h-8 w-8 text-[#4A8C73] dark:text-[#7EC8A0]" />
+      <Card className="flex flex-col items-center justify-center p-12 text-center border-border">
+        <div className="rounded-full bg-primary-50 p-4 dark:bg-primary-950/50">
+          <House className="h-8 w-8 text-primary" />
         </div>
         <h3 className="mt-4 text-lg">No accommodation found</h3>
-        <p className="mt-2 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
+        <p className="mt-2 text-sm text-muted-foreground">
           {hasActiveFilters
             ? 'Try adjusting your filters to see more results'
             : 'Know of a vacant accommodation near campus? Be the first to submit it'}
@@ -44,14 +44,14 @@ export function ListingResults({
         {hasActiveFilters ? (
           <Button
             variant="outline"
-            className="mt-4 border-[#D6E5DF] dark:border-white/10"
+            className="mt-4"
             onClick={onClearFilters}
           >
             Clear filters
           </Button>
         ) : (
           <Link href="/dashboard/accommodation/submit">
-            <Button className="mt-4 bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF]">
+            <Button className="mt-4">
               <Plus className="mr-2 h-4 w-4" />
               Submit accommodation
             </Button>

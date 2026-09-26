@@ -17,7 +17,7 @@ export function TriToggle({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-[13px] font-medium text-[#1A3C34] dark:text-[#E1E4E2]">{label}</p>
+      <p className="text-[13px] font-medium text-foreground">{label}</p>
       <div className="flex gap-2">
         {OPTIONS.map(({ label: l, val }) => {
           const active = value === val;
@@ -29,8 +29,8 @@ export function TriToggle({
               className={[
                 'min-h-[44px] flex-1 cursor-pointer rounded border py-[9px] text-[13px] transition-all duration-150 motion-reduce:transition-none',
                 active
-                  ? 'border-[#4A8C73] bg-[#4A8C73] font-medium text-white'
-                  : 'border-[#C8E8DA] bg-white text-[#1A3C34] hover:border-[#4A8C73]/50 dark:border-white/10 dark:bg-[#1C1F1E] dark:text-[#E1E4E2]',
+                  ? 'border-primary bg-primary font-medium text-primary-foreground'
+                  : 'border-input bg-card text-foreground hover:border-primary/50',
               ].join(' ')}
             >
               {l}

@@ -45,11 +45,11 @@ export default function AccommodationDetailPage() {
   const media = listing.media || [];
 
   return (
-    <div style={{ background: 'var(--surface-page, #F0F5F3)', minHeight: '100vh', paddingBottom: 80 }}>
-      <DetailHeader name={listing.property.name} onBack={() => router.back()} />
+    <div style={{ background: 'var(--background)', minHeight: '100vh', paddingBottom: 80 }}>
+      <DetailHeader name={listing.room_type} onBack={() => router.back()} />
 
       {/* Image gallery */}
-      <ImageGallery media={media} name={listing.property.name} />
+      <ImageGallery media={media} name={listing.room_type} />
 
       <div style={{ padding: '16px' }}>
         {/* Title section */}
@@ -57,7 +57,7 @@ export default function AccommodationDetailPage() {
 
         {/* Verification checklist */}
         {listing.verification && (
-          <div style={{ marginBottom: 12 }}>
+          <div style={{ marginBottom: 12 }} >
             <VerifiedChecklist verification={listing.verification} />
           </div>
         )}
@@ -71,7 +71,7 @@ export default function AccommodationDetailPage() {
         {/* Disclaimer */}
         <p style={{
           fontSize: 11,
-          color: 'var(--text-muted, #9AADA8)',
+          color: 'var(--muted-foreground)',
           textAlign: 'center',
           marginTop: 16,
           lineHeight: 1.6,

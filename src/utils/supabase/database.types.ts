@@ -18,7 +18,7 @@ export interface Database {
       profiles: {
         Row: {
           id: string;
-          matric_number: string;
+          matric_number: string | null;
           full_name: string;
           email: string;
           department: string;
@@ -35,7 +35,7 @@ export interface Database {
         };
         Insert: {
           id: string;
-          matric_number: string;
+          matric_number: string | null;
           full_name: string;
           email: string;
           department?: string;
@@ -52,7 +52,7 @@ export interface Database {
         };
         Update: {
           id?: string;
-          matric_number?: string;
+          matric_number?: string | null;
           full_name?: string;
           email?: string;
           department?: string;

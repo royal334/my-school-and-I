@@ -6,7 +6,7 @@ export function SubmitStepBar({ current, total }: { current: number; total: numb
           key={i}
           className={[
             'h-[3px] flex-1 rounded-full transition-[background] duration-200',
-            i <= current ? 'bg-[#7EC8A0]' : 'bg-[#E8F5EF] dark:bg-[#1E211F]',
+            i <= current ? 'bg-primary' : 'bg-muted',
           ].join(' ')}
         />
       ))}

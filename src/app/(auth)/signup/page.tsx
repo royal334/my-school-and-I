@@ -9,6 +9,7 @@ import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,22 +32,38 @@ import Link from "next/link";
 type Faculty = { id: string; name: string };
 type Department = { id: string; name: string; faculty_id: string };
 
-const signupSchema = z.object({
-  full_name: z.string().min(1, "Full name is required"),
-  matric_number: z.string().min(1, "Matric number is required"),
-  phone_number: z.string().min(1, "Phone number is required"),
-  level: z.string().min(1, "Level is required"),
-  faculty: z.string(),
-  department: z.string(),
-  email: z.string().min(1, "Email is required").email("Enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  confirm_password: z.string().min(1, "Confirm password is required"),
-  faculty_id: z.string().min(1, "Faculty is required"),
-  department_id: z.string().min(1, "Department is required"),
-}).refine((data) => data.password === data.confirm_password, {
-  message: "Passwords do not match",
-  path: ["confirm_password"],
-});
+const signupSchema = z
+  .object({
+    full_name: z.string().min(1, "Full name is required"),
+    is_new_student: z.boolean(),
+    matric_number: z.string(),
+    phone_number: z.string().min(1, "Phone number is required"),
+    level: z.string().min(1, "Level is required"),
+    faculty: z.string(),
+    department: z.string(),
+    email: z.string().min(1, "Email is required").email("Enter a valid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirm_password: z.string().min(1, "Confirm password is required"),
+    faculty_id: z.string().min(1, "Faculty is required"),
+    department_id: z.string().min(1, "Department is required"),
+  })
+  .superRefine((data, ctx) => {
+    if (!data.is_new_student && !data.matric_number.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Matric number is required",
+        path: ["matric_number"],
+      });
+    }
+
+    if (data.password !== data.confirm_password) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Passwords do not match",
+        path: ["confirm_password"],
+      });
+    }
+  });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
@@ -69,6 +86,7 @@ export default function SignupPage() {
     control,
     watch,
     setValue,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -80,10 +98,12 @@ export default function SignupPage() {
       department_id: "",
       phone_number: "",
       matric_number: "",
+      is_new_student: false,
     },
   });
 
   const selectedFaculty = watch("faculty_id");
+  const isNewStudent = watch("is_new_student");
 
   // Load faculties and departments once on mount
   useEffect(() => {
@@ -124,6 +144,10 @@ export default function SignupPage() {
   }, [selectedFaculty, allDepartments, setValue]);
 
   const onSubmit = async (data: SignupFormValues) => {
+    const matricNumber = data.is_new_student
+      ? null
+      : data.matric_number.trim();
+
     try {
       // 1. Sign up user with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -133,7 +157,8 @@ export default function SignupPage() {
           data: {
             full_name: data.full_name,
             phone_number: data.phone_number,
-            matric_number: data.matric_number,
+            matric_number: matricNumber,
+            is_new_student: data.is_new_student,
             level: parseInt(data.level),
             department: data.department,
             faculty: data.faculty,
@@ -151,7 +176,7 @@ export default function SignupPage() {
           email: data.email,
           full_name: data.full_name,
           phone_number: data.phone_number,
-          matric_number: data.matric_number,
+          matric_number: matricNumber,
           level: parseInt(data.level),
           department: data.department,
         });
@@ -229,20 +254,55 @@ export default function SignupPage() {
             </div>
 
             {/* Matric Number */}
-            <div className="space-y-2">
-              <Label htmlFor="matric_number" className="dark:text-foreground">
-                Matric Number
-              </Label>
-              <Input
-                id="matric_number"
-                placeholder="20XXXXXXXX"
-                {...register("matric_number")}
+            {!isNewStudent && (
+              <div className="space-y-2">
+                <Label htmlFor="matric_number" className="dark:text-foreground">
+                  Matric Number
+                </Label>
+                <Input
+                  id="matric_number"
+                  placeholder="20XXXXXXXX"
+                  {...register("matric_number")}
+                />
+                {errors.matric_number && (
+                  <p className="text-sm text-destructive">
+                    {errors.matric_number.message}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* New student — matric number not yet issued */}
+            <div className="flex items-start gap-3 rounded-lg border border-border bg-muted/50 p-3">
+              <Controller
+                name="is_new_student"
+                control={control}
+                render={({ field }) => (
+                  <Switch
+                    id="is_new_student"
+                    checked={field.value}
+                    onCheckedChange={(checked) => {
+                      field.onChange(checked);
+                      if (checked) setValue("matric_number", "");
+                      clearErrors("matric_number");
+                    }}
+                    className="mt-0.5"
+                  />
+                )}
               />
-              {errors.matric_number && (
-                <p className="text-sm text-destructive">
-                  {errors.matric_number.message}
+              <div className="space-y-1">
+                <Label
+                  htmlFor="is_new_student"
+                  className="cursor-pointer text-sm font-medium"
+                >
+                  I&apos;m a new student
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  {isNewStudent
+                    ? "No problem — we’ll leave the matric number empty. Add it later from your profile once it is issued."
+                    : "No matric number yet? Switch this on and we’ll skip the field for now."}
                 </p>
-              )}
+              </div>
             </div>
 
             {/* Level */}

@@ -10,16 +10,16 @@ function FacilityRow({ label, value, detail }: { label: string; value: boolean |
       alignItems: 'center',
       justifyContent: 'space-between',
       padding: '10px 0',
-      borderBottom: '0.5px solid #D6E5DF',
+      borderBottom: '1px solid var(--border)',
     }}>
-      <span style={{ fontSize: 14, color: 'var(--text-primary, #141F1B)' }}>{label}</span>
+      <span style={{ fontSize: 14, color: 'var(--foreground)' }}>{label}</span>
       <span style={{
         fontSize: 13,
         fontWeight: 500,
-        color: isActive ? 'var(--color-success, #1A7A52)' : 'var(--text-secondary, #6B7B75)',
+        color: isActive ? 'var(--primary)' : 'var(--muted-foreground)',
       }}>
         {isBoolean ? (value ? 'Yes' : 'No') : value}
-        {detail && <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}> ({detail})</span>}
+        {detail && <span style={{ fontSize: 11, color: 'var(--muted-foreground)' }}> ({detail})</span>}
       </span>
     </div>
   );
@@ -28,8 +28,8 @@ function FacilityRow({ label, value, detail }: { label: string; value: boolean |
 export function FacilityList({ listing }: { listing: Listing }) {
   return (
     <div style={{
-      background: 'var(--surface-card, #FFFFFF)',
-      border: '0.5px solid #D6E5DF',
+      background: 'var(--card)',
+      border: '1px solid var(--border)',
       borderRadius: 'var(--radius-md, 12px)',
       padding: 16,
       marginBottom: 12,
@@ -39,7 +39,7 @@ export function FacilityList({ listing }: { listing: Listing }) {
         fontWeight: 500,
         letterSpacing: '0.08em',
         textTransform: 'uppercase',
-        color: 'var(--color-sage, #4A8C73)',
+        color: 'var(--primary)',
         marginBottom: 4,
       }}>
         Facilities
@@ -53,7 +53,7 @@ export function FacilityList({ listing }: { listing: Listing }) {
         <FacilityRow label="Toilet/Bathroom" value={listing.toilet_bathroom} />
       )}
       {listing.facilities_notes && (
-        <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 10, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 13, color: 'var(--muted-foreground)', marginTop: 10, lineHeight: 1.6 }}>
           {listing.facilities_notes}
         </p>
       )}

@@ -6,7 +6,7 @@ interface DetailHeaderProps {
 export function DetailHeader({ name, onBack }: DetailHeaderProps) {
   return (
     <div style={{
-      background: 'var(--color-forest, #1A3C34)',
+      background: 'var(--primary-950)',
       padding: '16px',
       display: 'flex',
       alignItems: 'center',
@@ -17,7 +17,7 @@ export function DetailHeader({ name, onBack }: DetailHeaderProps) {
         style={{
           background: 'none',
           border: 'none',
-          color: 'var(--color-leaf, #7EC8A0)',
+          color: 'var(--color-primary-300)',
           fontSize: 20,
           cursor: 'pointer',
           padding: 4,

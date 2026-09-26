@@ -10,7 +10,7 @@ export function FacilitiesStep() {
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="text-[13px] leading-relaxed text-[#6B7B75] dark:text-[#9BA19E]">
+      <p className="text-[13px] leading-relaxed text-muted-foreground">
         Share what you know about the facilities. It&apos;s fine if you&apos;re not sure — our team will verify.
       </p>
 

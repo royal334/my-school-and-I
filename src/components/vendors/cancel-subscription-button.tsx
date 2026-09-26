@@ -74,7 +74,7 @@ export default function CancelSubscriptionButton({
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-amber-600" />
+              <AlertTriangle className="h-5 w-5 text-warning" />
               Confirm Cancellation
             </DialogTitle>
             <DialogDescription>
@@ -97,7 +97,7 @@ export default function CancelSubscriptionButton({
                 </>
               ) : (
                 <>
-                  <strong className="text-red-600 dark:text-red-400">
+                  <strong className="text-destructive">
                     Warning: Immediate Cancellation
                   </strong>
                   <br />

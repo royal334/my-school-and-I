@@ -30,7 +30,7 @@ export default function NotificationFilters({
       <CardContent className="space-y-4">
         <div className="flex gap-2">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400 dark:text-slate-500" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search notifications..."
               value={searchQuery}

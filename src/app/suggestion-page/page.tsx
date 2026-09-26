@@ -72,15 +72,15 @@ export default function SuggestionPage() {
 
   if (submitted) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
-        <Card className="w-full max-w-md text-center py-12 dark:bg-slate-900 dark:border-slate-800">
+      <div className="flex min-h-screen items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md text-center py-12">
           <CardContent className="space-y-6">
-            <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-              <MessageSquare className="w-8 h-8 text-green-600 dark:text-green-400" />
+            <div className="mx-auto w-16 h-16 bg-success-bg rounded-full flex items-center justify-center">
+              <MessageSquare className="w-8 h-8 text-success" />
             </div>
             <div className="space-y-2">
               <CardTitle className="text-2xl">Feedback Received!</CardTitle>
-              <CardDescription className="text-slate-500 dark:text-slate-400">
+              <CardDescription className="text-muted-foreground">
                 Thank you for helping us improve CampusHub. We appreciate your
                 input!
               </CardDescription>
@@ -95,13 +95,13 @@ export default function SuggestionPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950 flex-col space-y-6 py-12">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 flex-col space-y-6 py-12">
       <div className="w-full max-w-md">
         <Link href="/dashboard">
           <Button
             variant="ghost"
             size="sm"
-            className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-0 hover:bg-transparent"
+            className="text-muted-foreground hover:text-foreground p-0 hover:bg-transparent"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Dashboard
@@ -109,12 +109,12 @@ export default function SuggestionPage() {
         </Link>
       </div>
 
-      <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800 shadow-xl border-slate-200">
+      <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold tracking-tight">
             Suggestions & Feedback
           </CardTitle>
-          <CardDescription className="text-slate-500 dark:text-slate-400">
+          <CardDescription className="text-muted-foreground">
             Tell us how we can make CampusHub better for you
           </CardDescription>
         </CardHeader>
@@ -127,7 +127,7 @@ export default function SuggestionPage() {
                   id="name"
                   name="name"
                   placeholder="Your name"
-                  className="bg-slate-50 dark:bg-slate-800"
+                  className="bg-muted"
                 />
               </div>
               <div className="space-y-2">
@@ -137,7 +137,7 @@ export default function SuggestionPage() {
                   name="email"
                   type="email"
                   placeholder="your@email.com"
-                  className="bg-slate-50 dark:bg-slate-800"
+                  className="bg-muted"
                 />
               </div>
             </div>
@@ -148,7 +148,7 @@ export default function SuggestionPage() {
                 name="subject"
                 placeholder="What is this about?"
                 required
-                className="bg-slate-50 dark:bg-slate-800"
+                className="bg-muted"
               />
             </div>
             <div className="space-y-2">
@@ -158,7 +158,7 @@ export default function SuggestionPage() {
                 name="message"
                 placeholder="Describe your suggestion or feedback in detail..."
                 required
-                className="min-h-[150px] bg-slate-50 dark:bg-slate-800 resize-none"
+                className="min-h-[150px] bg-muted resize-none"
               />
             </div>
 
@@ -173,7 +173,7 @@ export default function SuggestionPage() {
           <CardFooter>
             <Button
               type="submit"
-              className="w-full bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF] font-medium transition-all"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium transition-all"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -189,7 +189,7 @@ export default function SuggestionPage() {
         </form>
       </Card>
 
-      <p className="text-center text-xs text-slate-500 dark:text-slate-500 max-w-xs">
+      <p className="text-center text-xs text-muted-foreground max-w-xs">
         Your feedback is directly sent to our management team for review. Thank
         you for being part of CampusHub.
       </p>

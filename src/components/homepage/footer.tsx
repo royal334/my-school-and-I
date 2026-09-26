@@ -1,6 +1,7 @@
 "use client";
 
-import { Twitter, Instagram, MessageCircle } from "lucide-react";
+import { Instagram, MessageCircle, Twitter } from "lucide-react";
+import { CampusHubLogo } from "@/components/brand/logo";
 
 const PRODUCT_LINKS = [
   "Features",
@@ -9,6 +10,7 @@ const PRODUCT_LINKS = [
   "CGPA calculator",
   "Vendors",
 ];
+
 const SUPPORT_LINKS = [
   "Help center",
   "Contact us",
@@ -18,87 +20,81 @@ const SUPPORT_LINKS = [
 ];
 
 const SOCIAL_ICONS = [
-  { icon: <Twitter size={18} />, href: "#", label: "Twitter" },
-  { icon: <Instagram size={18} />, href: "#", label: "Instagram" },
-  { icon: <MessageCircle size={18} />, href: "#", label: "WhatsApp" },
+  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: MessageCircle, href: "#", label: "WhatsApp" },
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-[#141F1B]">
-      <div className="max-w-360 mx-auto px-6 pt-16 pb-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          {/* Brand */}
+    <footer className="bg-primary-950 text-primary-100">
+      <div className="mx-auto max-w-[1440px] px-6 pb-8 pt-16">
+        <div className="mb-12 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="text-2xl font-bold mb-3 text-white" style={{ fontFamily: "var(--font-display)" }}>
-              Campus<span className="text-[#7EC8A0]">Hub</span>
+            <CampusHubLogo className="mb-4" inverted />
+            <p className="mb-6 max-w-xs text-sm leading-6 text-primary-200/75">
+              The digital hub for ambitious Nigerian university students.
             </p>
-            <p className="text-sm mb-6 leading-6 text-[#8AADA4]">
-              Your complete academic companion for engineering students.
-            </p>
-            <div className="flex gap-4">
-              {SOCIAL_ICONS.map((s) => (
+            <div className="flex gap-3">
+              {SOCIAL_ICONS.map(({ icon: Icon, href, label }) => (
                 <a
-                  key={s.label}
-                  href={s.href}
-                  aria-label={s.label}
-                  className="w-9 h-9 rounded-full flex items-center justify-center bg-[#1A2822] text-[#6B7B75] hover:bg-[#4A8C73] hover:text-white transition-all duration-200 dark:bg-[#1E211F] dark:text-[#9BA19E] dark:hover:bg-[#4A8C73]"
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-primary-200 transition-colors hover:bg-primary-600 hover:text-white"
                 >
-                  {s.icon}
+                  <Icon size={17} />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Product */}
           <div>
-            <p className="text-xs font-medium uppercase tracking-widest mb-4 text-white" style={{ letterSpacing: "0.08em" }}>
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-white">
               Product
             </p>
             <ul className="space-y-3">
-              {PRODUCT_LINKS.map((l) => (
-                <li key={l}>
+              {PRODUCT_LINKS.map((link) => (
+                <li key={link}>
                   <a
                     href="#"
-                    className="text-sm text-[#8AADA4] hover:text-white transition-colors duration-200"
+                    className="text-sm text-primary-200/75 transition-colors hover:text-white"
                   >
-                    {l}
+                    {link}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Support */}
           <div>
-            <p className="text-xs font-medium uppercase tracking-widest mb-4 text-white" style={{ letterSpacing: "0.08em" }}>
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-white">
               Support
             </p>
             <ul className="space-y-3">
-              {SUPPORT_LINKS.map((l) => (
-                <li key={l}>
+              {SUPPORT_LINKS.map((link) => (
+                <li key={link}>
                   <a
                     href="#"
-                    className="text-sm text-[#8AADA4] hover:text-white transition-colors duration-200"
+                    className="text-sm text-primary-200/75 transition-colors hover:text-white"
                   >
-                    {l}
+                    {link}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* University */}
           <div>
-            <p className="text-xs font-medium uppercase tracking-widest mb-4 text-white" style={{ letterSpacing: "0.08em" }}>
-              University
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-white">
+              CampusHub
             </p>
-            <div className="space-y-2 text-sm text-[#8AADA4]">
+            <div className="space-y-2 text-sm text-primary-200/75">
               <p>Nnamdi Azikiwe University</p>
               <p>Faculty of Engineering</p>
               <a
                 href="mailto:support@campushub.com"
-                className="block hover:text-[#7EC8A0] transition-colors duration-200"
+                className="block transition-colors hover:text-accent-300"
               >
                 support@campushub.com
               </a>
@@ -106,8 +102,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-[#283330] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#6B7B75]">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm text-primary-200/60 sm:flex-row">
           <p>© 2025 CampusHub. All rights reserved.</p>
+          <p>Built for the next generation.</p>
         </div>
       </div>
     </footer>

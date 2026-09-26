@@ -138,11 +138,11 @@ export const ANNOUNCEMENT_TYPE_LABELS: Record<string, string> = {
 };
 
 export const ANNOUNCEMENT_TYPE_COLORS: Record<string, string> = {
-  general: "bg-[#E8F5EF] text-[#3A7260]",
-  urgent: "bg-[#FDEAE5] text-[#C44B2A]",
-  academic: "bg-[#E8F5EF] text-[#4A8C73]",
-  event: "bg-[#FFF0D4] text-[#9E6A08]",
-  maintenance: "bg-[#FFF0D4] text-[#E8A020]",
+  general: "bg-primary-50 text-primary-700",
+  urgent: "bg-destructive/10 text-destructive",
+  academic: "bg-primary-50 text-primary-600",
+  event: "bg-accent-50 text-accent-600",
+  maintenance: "bg-warning-bg text-warning-text",
 };
 
 // ============================================================
@@ -418,13 +418,13 @@ export const CACHE_KEYS = {
 // ============================================================
 
 export const THEME = {
-  PRIMARY: "#1A3C34", // Forest
-  SECONDARY: "#4A8C73", // Sage
-  ACCENT: "#E8A020", // Gold
-  SUCCESS: "#1A7A52",
-  WARNING: "#E8A020",
-  ERROR: "#C44B2A",
-  INFO: "#4A8C73",
+  PRIMARY: "#4F46E5", // Indigo
+  SECONDARY: "#4338CA", // Deep Indigo
+  ACCENT: "#F59E0B", // Amber
+  SUCCESS: "#15803D",
+  WARNING: "#F59E0B",
+  ERROR: "#DC2626",
+  INFO: "#2563EB",
 } as const;
 
 

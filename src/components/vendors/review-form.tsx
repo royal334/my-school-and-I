@@ -72,8 +72,8 @@ export default function ReviewForm({
               <Star
                 className={`h-8 w-8 ${
                   star <= (hoveredRating || rating)
-                    ? 'fill-amber-400 text-amber-400'
-                    : 'text-slate-300 dark:text-slate-700'
+                    ? 'fill-accent-400 text-accent-400'
+                    : 'text-muted-foreground'
                 }`}
               />
             </button>
@@ -91,7 +91,7 @@ export default function ReviewForm({
           rows={4}
           maxLength={500}
         />
-        <p className="text-xs text-slate-500 mt-1 dark:text-slate-400">
+        <p className="text-xs text-muted-foreground mt-1">
           {comment.length}/500
         </p>
       </div>

@@ -18,9 +18,9 @@ interface AnnouncementCardProps {
 
 function getPriorityStripe(priority: string) {
   switch (priority) {
-    case 'urgent': return '#C44B2A';
-    case 'important': return '#E8A020';
-    default: return '#4A8C73';
+    case 'urgent': return '#DC2626';
+    case 'important': return '#F59E0B';
+    default: return '#4F46E5';
   }
 }
 
@@ -36,7 +36,7 @@ export default function AnnouncementCard({
   return (
     <div
       className={`flex border rounded-xl overflow-hidden transition-all hover:shadow-md ${
-        !is_read ? 'border-[#A8D8C2] bg-[#E8F5EF]/50 dark:border-white/15 dark:bg-white/5' : 'border-[#D6E5DF] bg-white dark:border-white/10 dark:bg-[#171918]'
+        !is_read ? 'border-primary-200 bg-primary-50/60 dark:border-border dark:bg-muted' : 'border-border bg-card'
       }`}
     >
       {/* Priority stripe */}
@@ -49,16 +49,16 @@ export default function AnnouncementCard({
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#E8F5EF] dark:bg-white/5 text-[#4A8C73] dark:text-[#7EC8A0] uppercase" style={{ letterSpacing: "0.06em" }}>
+              <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-primary-50 dark:bg-muted text-primary-700 dark:text-primary-300 uppercase" style={{ letterSpacing: "0.06em" }}>
                 {announcement.priority}
               </span>
               {announcement.category && (
-                <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#F0F5F3] dark:bg-[#1E211F] text-[#6B7B75] dark:text-[#9BA19E] border border-[#D6E5DF] dark:border-white/10">
+                <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-muted text-muted-foreground border border-border">
                   {announcement.category}
                 </span>
               )}
               {!is_read && (
-                <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#1A3C34] text-[#E8F5EF]">
+                <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-primary text-primary-foreground">
                   Unread
                 </span>
               )}
@@ -68,35 +68,35 @@ export default function AnnouncementCard({
               href={`/dashboard/announcements/${announcement.id}`}
               className="block group"
             >
-              <h3 className="text-base font-medium text-[#141F1B] dark:text-[#E8F5EF] group-hover:text-[#4A8C73] dark:group-hover:text-[#7EC8A0] transition line-clamp-2" style={{ fontFamily: "var(--font-display)" }}>
+              <h3 className="text-base font-medium text-foreground group-hover:text-primary-600 dark:group-hover:text-primary-400 transition line-clamp-2" style={{ fontFamily: "var(--font-display)" }}>
                 {announcement.title}
               </h3>
             </Link>
 
-            <p className="text-sm text-[#6B7B75] dark:text-[#9BA19E] mt-1 line-clamp-2">
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
               {announcement.content}
             </p>
           </div>
 
           <button
             onClick={() => onSave(announcement.id)}
-            className="mt-1 p-2 rounded hover:bg-[#F0F5F3] dark:hover:bg-[#202320] transition"
+            className="mt-1 p-2 rounded hover:bg-muted dark:hover:bg-accent transition"
             title={isSaved ? 'Unsave' : 'Save'}
           >
             <Bookmark
               className={`h-5 w-5 ${
-                isSaved ? 'fill-[#E8A020] text-[#E8A020]' : 'text-[#9AADA8]'
+                isSaved ? 'fill-accent-500 text-accent-500' : 'text-muted-foreground'
               }`}
             />
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-[#6B7B75] dark:text-[#9BA19E] mt-3">
+        <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-muted-foreground mt-3">
           <div className="flex items-center justify-between w-full">
             <span className="flex flex-col gap-1">
-              <span className="font-medium text-[#3D4A46] dark:text-[#C8D8D0]">{author.full_name}</span>
+              <span className="font-medium text-foreground">{author.full_name}</span>
               {roleLabel && (
-                <span className="capitalize text-[#6B7B75]">
+                <span className="capitalize text-muted-foreground">
                   {formatRoleLabel(roleLabel)}
                 </span>
               )}

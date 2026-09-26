@@ -53,7 +53,7 @@ function VerifyPaymentContent() {
   }, [reference, router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardContent className="pt-6">
           <div className="text-center">
@@ -63,7 +63,7 @@ function VerifyPaymentContent() {
                 <h2 className="mt-4 text-xl font-semibold">
                   Verifying Payment...
                 </h2>
-                <p className="mt-2 text-slate-600">
+                <p className="mt-2 text-muted-foreground">
                   Please wait while we confirm your payment
                 </p>
               </>
@@ -71,14 +71,14 @@ function VerifyPaymentContent() {
 
             {status === "success" && (
               <>
-                <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
-                  <CheckCircle className="h-16 w-16 text-green-600" />
+                <div className="mx-auto w-fit rounded-full bg-success-bg p-4">
+                  <CheckCircle className="h-16 w-16 text-success" />
                 </div>
-                <h2 className="mt-4 text-xl font-semibold text-green-900">
+                <h2 className="mt-4 text-xl font-semibold text-success-text">
                   Payment Successful!
                 </h2>
-                <p className="mt-2 text-slate-600">{message}</p>
-                <p className="mt-4 text-sm text-slate-500">
+                <p className="mt-2 text-muted-foreground">{message}</p>
+                <p className="mt-4 text-sm text-muted-foreground">
                   Redirecting to dashboard...
                 </p>
               </>
@@ -86,13 +86,13 @@ function VerifyPaymentContent() {
 
             {status === "failed" && (
               <>
-                <div className="mx-auto w-fit rounded-full bg-red-100 p-4">
-                  <XCircle className="h-16 w-16 text-red-600" />
+                <div className="mx-auto w-fit rounded-full bg-destructive/10 p-4">
+                  <XCircle className="h-16 w-16 text-destructive" />
                 </div>
-                <h2 className="mt-4 text-xl font-semibold text-red-900">
+                <h2 className="mt-4 text-xl font-semibold text-destructive">
                   Payment Failed
                 </h2>
-                <p className="mt-2 text-slate-600">{message}</p>
+                <p className="mt-2 text-muted-foreground">{message}</p>
                 <div className="mt-6 space-y-2">
                   <Link href="/dashboard/profile">
                     <Button className="w-full">Try Again</Button>
@@ -116,7 +116,7 @@ export default function VerifyPaymentPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
           <Card className="w-full max-w-md">
             <CardContent className="pt-6">
               <div className="text-center">

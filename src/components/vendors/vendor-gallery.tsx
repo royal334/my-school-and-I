@@ -15,7 +15,7 @@ export default function VendorGallery({ images, businessName }: VendorGalleryPro
         {images.map((url: string, index: number) => (
           <div
             key={index}
-            className="relative aspect-square overflow-hidden rounded-lg border bg-slate-100 dark:border-slate-800 dark:bg-slate-900 transition-all hover:opacity-90"
+            className="relative aspect-square overflow-hidden rounded-lg border bg-muted border-border transition-all hover:opacity-90"
           >
             <Image
               src={url}

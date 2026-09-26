@@ -116,10 +116,10 @@ export default function LogoUpload({
 
   if (!hasAccess) {
     return (
-      <div className="rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center dark:border-slate-700 dark:bg-slate-800">
-        <Upload className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-500" />
-        <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">Logo Locked</h3>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+      <div className="rounded-lg border-2 border-dashed border-border bg-muted p-8 text-center">
+        <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
+        <h3 className="mt-4 font-semibold text-foreground">Logo Locked</h3>
+        <p className="mt-2 text-sm text-muted-foreground">
           Upgrade to Premium or Featured to add a business logo
         </p>
         <Link href={`/dashboard/vendors/${vendorId}/upgrade`}>
@@ -134,7 +134,7 @@ export default function LogoUpload({
   return (
     <div className="space-y-4">
       {/* Preview */}
-      <div className="relative h-32 w-32 overflow-hidden rounded-lg border bg-white dark:border-slate-800 dark:bg-slate-900">
+      <div className="relative h-32 w-32 overflow-hidden rounded-lg border bg-card dark:border-border">
         {preview || currentLogoUrl ? (
           <>
             <Image
@@ -146,14 +146,14 @@ export default function LogoUpload({
             {/* Remove button */}
             <button
               onClick={handleRemove}
-              className="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white hover:bg-red-600 shadow-sm"
+              className="absolute right-1 top-1 rounded-full bg-destructive p-1 text-white hover:bg-destructive/90 shadow-sm"
               title="Remove logo"
             >
               <X className="h-3 w-3" />
             </button>
           </>
         ) : (
-          <div className="flex h-full items-center justify-center text-2xl font-bold text-slate-400 dark:text-slate-500">
+          <div className="flex h-full items-center justify-center text-2xl font-bold text-muted-foreground">
             LOGO
           </div>
         )}
@@ -186,7 +186,7 @@ export default function LogoUpload({
             </span>
           </Button>
         </label>
-        <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
+        <p className="mt-2 text-xs text-muted-foreground">
           Square image recommended. Max 5MB.
         </p>
       </div>

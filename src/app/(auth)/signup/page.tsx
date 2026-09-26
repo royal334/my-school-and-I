@@ -177,19 +177,19 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950 flex-col space-y-6 py-12">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 dark:bg-background flex-col space-y-6 py-12">
       <div className="w-full max-w-md">
         <Link href="/">
-          <Button variant="ghost" size="sm" className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-0 hover:bg-transparent">
+          <Button variant="ghost" size="sm" className="text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-foreground p-0 hover:bg-transparent">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Home
           </Button>
         </Link>
       </div>
-      <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
+      <Card className="w-full max-w-md dark:bg-card dark:border-border">
         <CardHeader>
-          <CardTitle className="dark:text-white">Create Account</CardTitle>
-          <CardDescription className="dark:text-slate-400">
+          <CardTitle className="text-foreground">Create Account</CardTitle>
+          <CardDescription className="dark:text-muted-foreground">
             Join CampusHub to access academic resources
           </CardDescription>
         </CardHeader>
@@ -197,7 +197,7 @@ export default function SignupPage() {
           <CardContent className="space-y-4">
             {/* Full Name */}
             <div className="space-y-2">
-              <Label htmlFor="full_name" className="dark:text-slate-200">
+              <Label htmlFor="full_name" className="dark:text-foreground">
                 Full Name
               </Label>
               <Input
@@ -205,7 +205,7 @@ export default function SignupPage() {
                 {...register("full_name")}
               />
               {errors.full_name && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-destructive">
                   {errors.full_name.message}
                 </p>
               )}
@@ -213,7 +213,7 @@ export default function SignupPage() {
 
             {/* Phone Number */}
             <div className="space-y-2">
-              <Label htmlFor="phone_number" className="dark:text-slate-200">
+              <Label htmlFor="phone_number" className="dark:text-foreground">
                 Phone Number
               </Label>
               <Input
@@ -222,7 +222,7 @@ export default function SignupPage() {
                 {...register("phone_number")}
               />
               {errors.phone_number && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-destructive">
                   {errors.phone_number.message}
                 </p>
               )}
@@ -230,7 +230,7 @@ export default function SignupPage() {
 
             {/* Matric Number */}
             <div className="space-y-2">
-              <Label htmlFor="matric_number" className="dark:text-slate-200">
+              <Label htmlFor="matric_number" className="dark:text-foreground">
                 Matric Number
               </Label>
               <Input
@@ -239,7 +239,7 @@ export default function SignupPage() {
                 {...register("matric_number")}
               />
               {errors.matric_number && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-destructive">
                   {errors.matric_number.message}
                 </p>
               )}
@@ -247,7 +247,7 @@ export default function SignupPage() {
 
             {/* Level */}
             <div className="space-y-2">
-              <Label htmlFor="level" className="dark:text-slate-200">
+              <Label htmlFor="level" className="dark:text-foreground">
                 Level
               </Label>
               <Controller
@@ -258,7 +258,7 @@ export default function SignupPage() {
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="outline"
-                        className="w-full justify-between font-normal dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
+                        className="w-full justify-between font-normal dark:bg-muted dark:border-border dark:text-foreground"
                       >
                         {field.value
                           ? `${field.value} Level`
@@ -292,13 +292,13 @@ export default function SignupPage() {
                 )}
               />
               {errors.level && (
-                <p className="text-sm text-red-500">{errors.level.message}</p>
+                <p className="text-sm text-destructive">{errors.level.message}</p>
               )}
             </div>
 
             {/* Faculty */}
             <div className="space-y-2">
-              <Label htmlFor="faculty" className="dark:text-slate-200">
+              <Label htmlFor="faculty" className="dark:text-foreground">
                 Faculty
               </Label>
               <Controller
@@ -314,7 +314,7 @@ export default function SignupPage() {
                         <Button
                           variant="outline"
                           disabled={loadingData}
-                          className="w-full justify-between font-normal dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
+                          className="w-full justify-between font-normal dark:bg-muted dark:border-border dark:text-foreground"
                         >
                           {loadingData
                             ? "Loading faculties…"
@@ -353,13 +353,13 @@ export default function SignupPage() {
                 }}
               />
               {errors.faculty_id && (
-                <p className="text-sm text-red-500">{errors.faculty_id.message}</p>
+                <p className="text-sm text-destructive">{errors.faculty_id.message}</p>
               )}
             </div>
 
             {/* Department — filtered by selected faculty */}
             <div className="space-y-2">
-              <Label htmlFor="department" className="dark:text-slate-200">
+              <Label htmlFor="department" className="dark:text-foreground">
                 Department
               </Label>
               <Controller
@@ -375,7 +375,7 @@ export default function SignupPage() {
                         <Button
                           variant="outline"
                           disabled={!selectedFaculty || loadingData}
-                          className="w-full justify-between font-normal dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
+                          className="w-full justify-between font-normal dark:bg-muted dark:border-border dark:text-foreground"
                         >
                           {!selectedFaculty
                             ? "Select a faculty first"
@@ -418,7 +418,7 @@ export default function SignupPage() {
                 }}
               />
               {errors.department_id && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-destructive">
                   {errors.department_id.message}
                 </p>
               )}
@@ -426,7 +426,7 @@ export default function SignupPage() {
 
             {/* Email */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="dark:text-slate-200">
+              <Label htmlFor="email" className="dark:text-foreground">
                 Email
               </Label>
               <Input
@@ -436,13 +436,13 @@ export default function SignupPage() {
                 {...register("email")}
               />
               {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
+                <p className="text-sm text-destructive">{errors.email.message}</p>
               )}
             </div>
 
             {/* Password */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="dark:text-slate-200">
+              <Label htmlFor="password" className="dark:text-foreground">
                 Password
               </Label>
               <div className="relative">
@@ -455,7 +455,7 @@ export default function SignupPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground dark:hover:text-foreground"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -465,7 +465,7 @@ export default function SignupPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-destructive">
                   {errors.password.message}
                 </p>
               )}
@@ -473,7 +473,7 @@ export default function SignupPage() {
 
             {/* Confirm Password */}
             <div className="space-y-2 mb-4">
-              <Label htmlFor="confirm_password" className="dark:text-slate-200">
+              <Label htmlFor="confirm_password" className="dark:text-foreground">
                 Confirm Password
               </Label>
               <div className="relative">
@@ -486,7 +486,7 @@ export default function SignupPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground dark:hover:text-foreground"
                 >
                   {showConfirmPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -496,7 +496,7 @@ export default function SignupPage() {
                 </button>
               </div>
               {errors.confirm_password && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-destructive">
                   {errors.confirm_password.message}
                 </p>
               )}
@@ -506,16 +506,16 @@ export default function SignupPage() {
           <CardFooter className="flex flex-col space-y-4 mt-2">
             <Button
               type="submit"
-              className="w-full bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF]"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Creating account..." : "Sign Up"}
             </Button>
-            <p className="text-center text-sm text-slate-600 dark:text-slate-300">
+            <p className="text-center text-sm text-muted-foreground">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="text-[#4A8C73] hover:underline"
+                className="text-primary-600 hover:text-primary-700 hover:underline dark:text-primary-400 dark:hover:text-primary-300"
               >
                 Sign in
               </Link>

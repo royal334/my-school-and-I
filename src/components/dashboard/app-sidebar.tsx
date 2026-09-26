@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Sidebar,
@@ -9,8 +9,8 @@ import {
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
@@ -24,20 +24,21 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
-  BookOpen,
-  LayoutDashboard,
-  Upload,
-  LogOut,
-  Calculator,
-  User,
-  MessageSquare,
   Bell,
+  BookOpen,
+  Calculator,
+  LayoutDashboard,
+  LogOut,
+  MessageSquare,
   Settings,
   Store,
-  House
+    Upload,
+  User,
+  House,
 } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
+import { CampusHubLogo } from "@/components/brand/logo";
 import { createClient } from "@/utils/supabase/client";
 
 const baseNavItems = [
@@ -80,12 +81,11 @@ export function AppSidebar() {
           .eq("user_id", user.id)
           .maybeSingle();
 
-        if (data && data.role === "super_admin") {
-          setIsSuperAdmin(true);
-        }
+        setIsSuperAdmin(data?.role === "super_admin");
       }
     }
-    checkRole();
+
+    void checkRole();
   }, []);
 
   const navItems = isSuperAdmin
@@ -109,10 +109,8 @@ export function AppSidebar() {
   const handleLogout = async () => {
     setLoggingOut(true);
     try {
-      const res = await axios.post("/api/auth/logout");
-      if (res.status === 200) {
-        router.push("/");
-      }
+      const response = await axios.post("/api/auth/logout");
+      router.push(response.status === 200 ? "/" : "/login");
     } catch {
       router.push("/login");
     } finally {
@@ -123,40 +121,41 @@ export function AppSidebar() {
 
   return (
     <>
-      <Sidebar>
-        <SidebarHeader className="px-5 py-5 border-b border-[rgba(126,200,160,0.15)] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C]">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#E8A020] text-[#3A2800] font-bold text-sm" style={{ fontFamily: "var(--font-display)" }}>
-              CH
-            </div>
-            <h2 className="text-lg text-[#E8F5EF]" style={{ fontFamily: "var(--font-display)" }}>
-              CampusHub
-            </h2>
-          </div>
+      <Sidebar className="border-r border-primary-800/20 bg-sidebar">
+        <SidebarHeader className="border-b border-sidebar-border bg-sidebar px-5 py-5">
+          <CampusHubLogo inverted markClassName="size-9" />
         </SidebarHeader>
 
-        <SidebarContent className="bg-[#1A3C34] dark:bg-[#0B0D0C] px-3 py-4">
+        <SidebarContent className="bg-sidebar px-3 py-4">
           <SidebarGroup>
+            <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-sidebar-foreground/45">
+              Your hub
+            </p>
             <SidebarMenu className="space-y-1">
               {navItems.map(({ href, icon: Icon, label }) => {
                 const active = isActive(href);
+
                 return (
                   <SidebarMenuItem key={href}>
                     <SidebarMenuButton
                       asChild
                       onClick={closeSidebarOnMobile}
                       isActive={active}
-                      className={`relative h-10 px-3 rounded-lg transition-all duration-150 ${
+                      className={`relative h-10 rounded-lg px-3 transition-all duration-150 ${
                         active
-                          ? "bg-[rgba(126,200,160,0.25)] text-[#E8F5EF] font-medium"
-                          : "text-[rgba(232,245,239,0.7)] hover:bg-[rgba(126,200,160,0.12)] hover:text-[#E8F5EF]"
+                          ? "bg-sidebar-accent text-accent-500 dark:text-accent-500"
+                          : "text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-accent-300"
                       }`}
                     >
                       <Link href={href}>
                         {active && (
-                          <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-full bg-[#E8A020]" />
+                          <span className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full bg-accent-500" />
                         )}
-                        <Icon className={`h-[18px] w-[18px] ${active ? "text-[#E8A020]" : ""}`} />
+                        <Icon
+                          className={`h-[18px] w-[18px] ${
+                            active ? "text-accent-400" : ""
+                          }`}
+                        />
                         <span className="ml-1">{label}</span>
                       </Link>
                     </SidebarMenuButton>
@@ -167,12 +166,12 @@ export function AppSidebar() {
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter className="px-3 py-4 border-t border-[rgba(126,200,160,0.15)] dark:border-white/10 bg-[#1A3C34] dark:bg-[#0B0D0C]">
+        <SidebarFooter className="border-t border-sidebar-border bg-sidebar px-3 py-4">
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
                 onClick={() => setShowLogoutDialog(true)}
-                className="w-full cursor-pointer h-10 px-3 rounded-lg text-[rgba(196,75,42,0.85)] hover:bg-[rgba(196,75,42,0.1)] hover:text-[#C44B2A] transition-all duration-150"
+                className="h-10 w-full cursor-pointer rounded-lg px-3 text-destructive transition-colors hover:bg-destructive/10"
               >
                 <LogOut className="h-[18px] w-[18px]" />
                 <span className="ml-1">Logout</span>
@@ -196,7 +195,7 @@ export function AppSidebar() {
             <AlertDialogAction
               onClick={handleLogout}
               disabled={loggingOut}
-              className="bg-[#C44B2A] hover:bg-[#A83D22] text-white"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {loggingOut ? "Logging out..." : "Yes, log out"}
             </AlertDialogAction>

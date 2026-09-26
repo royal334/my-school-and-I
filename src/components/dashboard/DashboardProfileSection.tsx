@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
 import { DashboardProfileSectionProps } from "@/utils/types";
 
 export function DashboardProfileSection({
@@ -13,35 +12,35 @@ export function DashboardProfileSection({
     <div className="grid gap-4 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <h2 className="text-xl" style={{ fontFamily: "var(--font-display)" }}>Your profile</h2>
+          <h2 className="text-xl">Your profile</h2>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">Level</span>
-            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#E8F5EF] dark:bg-[#1E211F] text-[#3A7260] dark:text-[#7EC8A0]">
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-sm text-muted-foreground">Level</span>
+            <span className="rounded-full bg-primary-50 px-2.5 py-1 text-xs font-semibold text-primary-700 dark:bg-primary-950 dark:text-primary-300">
               {profile?.level} Level
             </span>
           </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">Matric number</span>
-            <span className="text-sm font-medium text-[#141F1B] dark:text-[#E8F5EF]">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-sm text-muted-foreground">Matric number</span>
+            <span className="text-sm font-semibold text-foreground">
               {profile?.matric_number}
             </span>
           </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">Status</span>
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-sm text-muted-foreground">Status</span>
             <span
               className={
                 hasActiveSubscription
-                  ? "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#E8F5EF] dark:bg-[#1E211F] text-[#1A7A52] dark:text-[#7EC8A0]"
-                  : "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-[#F0F5F3] dark:bg-[#1E211F] text-[#6B7B75] dark:text-[#9BA19E]"
+                  ? "rounded-full bg-success-bg px-2.5 py-1 text-xs font-semibold text-success-text"
+                  : "rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground"
               }
             >
               {hasActiveSubscription ? "Premium" : "Free"}
             </span>
           </div>
           <Link href="/dashboard/profile">
-            <Button variant="outline" className="mt-4 w-full">
+            <Button variant="outline" className="mt-1 w-full">
               Edit profile
             </Button>
           </Link>
@@ -50,42 +49,38 @@ export function DashboardProfileSection({
 
       <Card>
         <CardHeader>
-          <h2 className="text-xl" style={{ fontFamily: "var(--font-display)" }}>Getting started</h2>
+          <h2 className="text-xl">Getting started</h2>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] text-xs text-[#1A7A52] dark:text-[#7EC8A0]">
-                ✓
-              </div>
-              <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">
-                Complete your profile
-              </span>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="flex size-6 items-center justify-center rounded-full bg-success-bg text-xs font-bold text-success-text">
+              ✓
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#E8F5EF] dark:bg-[#1E211F] text-xs text-[#1A7A52] dark:text-[#7EC8A0]">
-                {currentGPA ? "✓" : "1"}
-              </div>
-              <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">
-                Add your first semester
-              </span>
+            <span className="text-sm text-muted-foreground">Complete your profile</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div
+              className={`flex size-6 items-center justify-center rounded-full text-xs font-bold ${
+                currentGPA
+                  ? "bg-success-bg text-success-text"
+                  : "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300"
+              }`}
+            >
+              {currentGPA ? "✓" : "1"}
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F0F5F3] dark:bg-[#1E211F] text-xs text-[#6B7B75] dark:text-[#9BA19E]">
-                2
-              </div>
-              <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">
-                Browse study materials
-              </span>
+            <span className="text-sm text-muted-foreground">Add your first semester</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex size-6 items-center justify-center rounded-full bg-muted text-xs font-bold text-muted-foreground">
+              2
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F0F5F3] dark:bg-[#1E211F] text-xs text-[#6B7B75] dark:text-[#9BA19E]">
-                3
-              </div>
-              <span className="text-sm text-[#6B7B75] dark:text-[#9BA19E]">
-                Connect with vendors
-              </span>
+            <span className="text-sm text-muted-foreground">Browse study materials</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex size-6 items-center justify-center rounded-full bg-muted text-xs font-bold text-muted-foreground">
+              3
             </div>
+            <span className="text-sm text-muted-foreground">Connect with vendors</span>
           </div>
         </CardContent>
       </Card>

@@ -53,16 +53,16 @@ export default function PremiumGate({
         <div
           className={`${
             showPreview ? 'absolute inset-0' : ''
-          } flex flex-col items-center justify-center rounded-lg bg-white/90 p-8 backdrop-blur-sm dark:bg-slate-900/90`}
+          } flex flex-col items-center justify-center rounded-lg bg-card/90 p-8 backdrop-blur-sm`}
         >
           <div className="max-w-sm space-y-4 text-center">
-            <div className="mx-auto w-fit rounded-full bg-red-100 p-3 dark:bg-red-950/50">
-              <Lock className="h-8 w-8 text-red-600 dark:text-red-400" />
+            <div className="mx-auto w-fit rounded-full bg-destructive/10 p-3">
+              <Lock className="h-8 w-8 text-destructive" />
             </div>
 
             <div>
               <h3 className="text-lg font-semibold">Subscription Expired</h3>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Your {vendor.subscription_tier} subscription has expired. Renew to
                 continue using {featureName}.
               </p>
@@ -91,17 +91,17 @@ export default function PremiumGate({
       <div
         className={`${
           showPreview ? 'absolute inset-0' : ''
-        } flex flex-col items-center justify-center rounded-lg bg-white/90 p-8 backdrop-blur-sm`}
+        } flex flex-col items-center justify-center rounded-lg bg-card/90 p-8 backdrop-blur-sm`}
       >
         <div className="max-w-sm space-y-4 text-center">
           <div
             className={`mx-auto w-fit rounded-full p-3 ${
-              color === 'amber' ? 'bg-amber-100 dark:bg-amber-950/50' : 'bg-[#E8F5EF] dark:bg-[#1E211F]'
+              color === 'amber' ? 'bg-accent-50 dark:bg-accent-500/15' : 'bg-primary-50 dark:bg-muted'
             }`}
           >
             <IconComponent
               className={`h-8 w-8 ${
-                color === 'amber' ? 'text-amber-600 dark:text-amber-400' : 'text-[#4A8C73]'
+                color === 'amber' ? 'text-accent-600 dark:text-accent-400' : 'text-primary-600 dark:text-primary-400'
               }`}
             />
           </div>
@@ -110,18 +110,18 @@ export default function PremiumGate({
             <h3 className="text-lg font-semibold">
               {requiredTier === 'featured' ? 'Featured' : 'Premium'} Feature
             </h3>
-            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+            <p className="mt-1 text-sm text-muted-foreground">
               Upgrade to {requiredTier === 'featured' ? 'Featured' : 'Premium'} to
               unlock <strong>{featureName}</strong>
             </p>
           </div>
 
           {/* Feature benefits */}
-          <div className="rounded-lg bg-slate-50 p-4 text-left dark:bg-slate-800">
-            <p className="text-xs font-medium text-slate-700 dark:text-slate-300">
+          <div className="rounded-lg bg-muted p-4 text-left">
+            <p className="text-xs font-medium text-foreground">
               {requiredTier === 'featured' ? 'Featured' : 'Premium'} includes:
             </p>
-            <ul className="mt-2 space-y-1 text-xs text-slate-600 dark:text-slate-400">
+            <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
               {requiredTier === 'premium' ? (
                 <>
                   <li>• Logo & cover image</li>

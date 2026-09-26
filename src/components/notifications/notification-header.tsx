@@ -20,10 +20,10 @@ export default function NotificationHeader({
   return (
     <div className="flex items-center justify-between">
       {unreadCount > 0 && (
-        <div className="bg-[#E8F5EF] dark:bg-[#1E211F] border border-[#D6E5DF] dark:border-white/10 rounded-lg p-3 flex items-center justify-between flex-1 gap-3">
+        <div className="bg-primary-50 dark:bg-muted border border-border rounded-lg p-3 flex items-center justify-between flex-1 gap-3">
           <div className="flex items-center gap-2">
-            <Bell className="h-4 w-4 text-[#4A8C73]" />
-            <span className="text-sm font-medium text-[#1A3C34]">
+            <Bell className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+            <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
               {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
             </span>
           </div>
@@ -51,8 +51,8 @@ export default function NotificationHeader({
       )}
 
       {unreadCount === 0 && filterMode === 'unread' && (
-        <div className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 rounded-lg p-3 flex items-center justify-between flex-1">
-          <span className="text-sm text-slate-600 dark:text-slate-400">
+        <div className="bg-muted border border-border rounded-lg p-3 flex items-center justify-between flex-1">
+          <span className="text-sm text-muted-foreground">
             No unread notifications
           </span>
           <Button

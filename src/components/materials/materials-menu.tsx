@@ -14,7 +14,7 @@ export default function MaterialsMenu() {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="h-9 w-9" aria-label="Materials menu">
-          <EllipsisVertical className="h-6 w-6 text-slate-500 dark:text-slate-400" />
+          <EllipsisVertical className="h-6 w-6 text-muted-foreground" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-56 p-1">

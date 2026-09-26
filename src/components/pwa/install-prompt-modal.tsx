@@ -58,27 +58,27 @@ export function InstallPromptModal({ open, onOpenChange }: InstallPromptModalPro
         </div>
 
         {isIOS ? (
-          <div className="rounded-lg border border-[#D6E5DF] dark:border-white/10 bg-[#F0F5F3] dark:bg-[#1E211F] p-4 text-sm">
-            <p className="mb-2 flex items-center gap-2 font-medium text-[#141F1B] dark:text-[#E8F5EF]">
+          <div className="rounded-lg border border-border dark:border-border bg-muted dark:bg-muted p-4 text-sm">
+            <p className="mb-2 flex items-center gap-2 font-medium text-foreground">
               <Share className="h-4 w-4" /> How to add CampusHub to your home screen
             </p>
-            <ol className="space-y-1.5 text-[#6B7B75] dark:text-[#9BA19E]">
+            <ol className="space-y-1.5 text-muted-foreground">
               <li>
-                1. Tap the <strong className="font-medium text-[#141F1B] dark:text-[#E8F5EF]">Share</strong> button in
+                1. Tap the <strong className="font-medium text-foreground">Share</strong> button in
                 Safari&apos;s toolbar.
               </li>
               <li>
                 2. Scroll down and tap{' '}
-                <strong className="font-medium text-[#141F1B] dark:text-[#E8F5EF]">Add to Home Screen</strong>.
+                <strong className="font-medium text-foreground">Add to Home Screen</strong>.
               </li>
               <li>
-                3. Tap <strong className="font-medium text-[#141F1B] dark:text-[#E8F5EF]">Add</strong> in the
+                3. Tap <strong className="font-medium text-foreground">Add</strong> in the
                 top-right corner.
               </li>
             </ol>
           </div>
         ) : (
-          <div className="rounded-lg border border-[#D6E5DF] dark:border-white/10 bg-[#F0F5F3] dark:bg-[#1E211F] p-4 text-sm text-[#6B7B75] dark:text-[#9BA19E]">
+          <div className="rounded-lg border border-border dark:border-border bg-muted dark:bg-muted p-4 text-sm text-muted-foreground">
             <p className="flex items-start gap-2">
               <Smartphone className="mt-0.5 h-4 w-4 shrink-0" />
               <span>
@@ -94,7 +94,7 @@ export function InstallPromptModal({ open, onOpenChange }: InstallPromptModalPro
             Maybe later
           </Button>
           {!isIOS && (
-            <Button onClick={handleInstall} disabled={installing || !canInstall} className="bg-[#1A3C34] hover:bg-[#141F1B] text-[#E8F5EF]">
+            <Button onClick={handleInstall} disabled={installing || !canInstall} className="bg-primary hover:bg-primary/90 text-primary-foreground">
               <Download className="h-4 w-4" />
               {installing ? 'Installing…' : 'Install'}
             </Button>

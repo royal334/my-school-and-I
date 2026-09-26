@@ -359,9 +359,9 @@ export default function AnnouncementForm() {
 
   if (!allowedScopes.length) {
     return (
-      <Alert className="border-red-200 bg-red-50 dark:border-red-900/50 dark:bg-red-950/30">
-        <AlertCircle className="h-4 w-4 text-red-600" />
-        <AlertDescription className="text-red-800 dark:text-red-300">
+      <Alert className="border-destructive/40 bg-destructive/10 dark:bg-destructive/15">
+        <AlertCircle className="h-4 w-4 text-destructive" />
+        <AlertDescription className="text-destructive">
           You do not have permission to create announcements.
         </AlertDescription>
       </Alert>
@@ -386,18 +386,18 @@ export default function AnnouncementForm() {
                 {(errors.root || success) && (
                   <>
                     {errors.root && (
-                      <Alert className="border-red-200 bg-red-50 dark:border-red-900/50 dark:bg-red-950/30">
-                        <AlertCircle className="h-4 w-4 text-red-600" />
-                        <AlertDescription className="text-red-800 dark:text-red-300">
+                      <Alert className="border-destructive/40 bg-destructive/10 dark:bg-destructive/15">
+                        <AlertCircle className="h-4 w-4 text-destructive" />
+                        <AlertDescription className="text-destructive">
                           {errors.root.message}
                         </AlertDescription>
                       </Alert>
                     )}
 
                     {success && (
-                      <Alert className="border-green-200 bg-green-50 dark:border-green-900/50 dark:bg-green-950/30">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
-                        <AlertDescription className="text-green-800 dark:text-green-300">
+                      <Alert className="border-success/40 bg-success-bg dark:border-success/30 dark:bg-success/10">
+                        <CheckCircle2 className="h-4 w-4 text-success" />
+                        <AlertDescription className="text-success-text">
                           Announcement published successfully!
                         </AlertDescription>
                       </Alert>
@@ -413,11 +413,11 @@ export default function AnnouncementForm() {
                     disabled={isSubmitting}
                     {...register('title')}
                   />
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="text-xs text-muted-foreground">
                     {title.length}/300 characters
                   </p>
                   {errors.title && (
-                    <p className="text-sm text-red-500">{errors.title.message}</p>
+                    <p className="text-sm text-destructive">{errors.title.message}</p>
                   )}
                 </div>
 
@@ -430,11 +430,11 @@ export default function AnnouncementForm() {
                     disabled={isSubmitting}
                     {...register('content')}
                   />
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="text-xs text-muted-foreground">
                     {content.length}/10,000 characters
                   </p>
                   {errors.content && (
-                    <p className="text-sm text-red-500">
+                    <p className="text-sm text-destructive">
                       {errors.content.message}
                     </p>
                   )}
@@ -535,7 +535,7 @@ export default function AnnouncementForm() {
                       disabled={isSubmitting}
                       {...register('expires_at')}
                     />
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-muted-foreground">
                       Optional - announcement auto-archives after this date
                     </p>
                   </div>
@@ -559,7 +559,7 @@ export default function AnnouncementForm() {
                           className={`p-2 rounded border-2 transition ${
                             scope === scopeOption
                               ? 'border-primary-600 bg-primary-50 dark:border-primary-900/50 dark:bg-primary-950/30'
-                              : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700'
+                              : 'border-border bg-card hover:border-primary-300'
                           }`}
                         >
                           <span className="text-sm font-medium capitalize">
@@ -571,7 +571,7 @@ export default function AnnouncementForm() {
                       ))}
                     </div>
                     {errors.scope && (
-                      <p className="text-sm text-red-500">
+                      <p className="text-sm text-destructive">
                         {errors.scope.message}
                       </p>
                     )}
@@ -606,7 +606,7 @@ export default function AnnouncementForm() {
                         )}
                       />
                       {errors.faculty_id && (
-                        <p className="text-sm text-red-500">
+                        <p className="text-sm text-destructive">
                           {errors.faculty_id.message}
                         </p>
                       )}
@@ -642,7 +642,7 @@ export default function AnnouncementForm() {
                         )}
                       />
                       {errors.department_id && (
-                        <p className="text-sm text-red-500">
+                        <p className="text-sm text-destructive">
                           {errors.department_id.message}
                         </p>
                       )}
@@ -680,21 +680,21 @@ export default function AnnouncementForm() {
                         )}
                       />
                       {errors.level && (
-                        <p className="text-sm text-red-500">
+                        <p className="text-sm text-destructive">
                           {errors.level.message}
                         </p>
                       )}
                     </div>
                   )}
 
-                  <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg">
+                  <div className="bg-muted p-4 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
-                      <Users className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                      <Users className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm font-medium">
                         Audience Preview
                       </span>
                     </div>
-                    <p className="text-sm text-slate-700 dark:text-slate-300">{audiencePreview}</p>
+                    <p className="text-sm text-foreground">{audiencePreview}</p>
                   </div>
                 </div>
 
@@ -719,7 +719,7 @@ export default function AnnouncementForm() {
             </TabsContent>
 
             <TabsContent value="preview" className="space-y-4">
-              <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-lg border">
+              <div className="bg-muted p-6 rounded-lg border">
                 <div className="mb-4">
                   <Badge
                     variant={
@@ -743,7 +743,7 @@ export default function AnnouncementForm() {
                   {content || 'Your announcement content will appear here'}
                 </div>
 
-                <div className="border-t pt-4 text-sm text-slate-600 dark:text-slate-400">
+                <div className="border-t pt-4 text-sm text-muted-foreground">
                   <p>
                     <strong>Type:</strong> {type}
                   </p>

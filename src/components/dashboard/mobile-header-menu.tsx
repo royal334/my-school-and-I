@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import axios from 'axios';
 import { useTourStore } from '@/components/tour/tour-store';
+import { NotificationBell } from '@/components/notifications/notification-bell';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -62,47 +63,50 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
 
   return (
     <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="ml-auto size-8"
-            title="Menu"
-            aria-label="Open menu"
-            data-tour="mobile-header-menu"
-          >
-            <MoreVertical className="h-4 w-4 text-white" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-44">
-          <DropdownMenuItem asChild>
-            <Link href="/dashboard/profile">
-              <User />
-              Profile
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/dashboard/settings">
-              <Settings />
-              Settings
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <button
-              onClick={() => setShowLogoutDialog(true)}
-              className="flex items-center gap-2 text-[#C44B2A] hover:text-[#A83D22] hover:bg-[#FDEAE5] transition-colors duration-200 overflow-hidden">
-              <LogOut className='text-[#C44B2A]'/>
-              <span className="truncate text-center max-w-full">Logout</span>
-            </button>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student', 'manual')}>
-            <RotateCcw />
-            Replay tour
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div className="ml-auto flex items-center gap-2">
+        <NotificationBell />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8"
+              title="Menu"
+              aria-label="Open menu"
+              data-tour="mobile-header-menu"
+            >
+              <MoreVertical className="h-4 w-4 text-white" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/profile">
+                <User />
+                Profile
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/settings">
+                <Settings />
+                Settings
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <button
+                onClick={() => setShowLogoutDialog(true)}
+                className="flex items-center gap-2 text-destructive hover:bg-destructive/10 transition-colors duration-200 overflow-hidden">
+                <LogOut className='text-destructive'/>
+                <span className="truncate text-center max-w-full">Logout</span>
+              </button>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student', 'manual')}>
+              <RotateCcw />
+              Replay tour
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>
@@ -118,7 +122,7 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
             <AlertDialogAction
               onClick={handleLogout}
               disabled={loggingOut}
-              className="bg-[#C44B2A] hover:bg-[#A83D22] text-white"
+              className="bg-destructive hover:bg-destructive/90 text-white"
             >
               {loggingOut ? 'Logging out…' : 'Yes, log out'}
             </AlertDialogAction>

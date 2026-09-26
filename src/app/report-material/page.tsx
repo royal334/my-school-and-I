@@ -109,15 +109,15 @@ function ReportMaterialContent() {
 
   if (submitted) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
-        <Card className="w-full max-w-md text-center py-12 dark:bg-slate-900 dark:border-slate-800">
+      <div className="flex min-h-screen items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md text-center py-12 bg-card border-border">
           <CardContent className="space-y-6">
-            <div className="mx-auto w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
-              <Flag className="w-8 h-8 text-red-600 dark:text-red-400" />
+            <div className="mx-auto w-16 h-16 bg-destructive/10 dark:bg-destructive/20 rounded-full flex items-center justify-center">
+              <Flag className="w-8 h-8 text-destructive" />
             </div>
             <div className="space-y-2">
               <CardTitle className="text-2xl">Report Received!</CardTitle>
-              <CardDescription className="text-slate-500 dark:text-slate-400">
+      <CardDescription className="text-muted-foreground">
                 Thank you for helping us keep the material library accurate. Our
                 team will review this material shortly.
               </CardDescription>
@@ -132,13 +132,13 @@ function ReportMaterialContent() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950 flex-col space-y-6 py-12">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 flex-col space-y-6 py-12">
       <div className="w-full max-w-md">
         <Link href="/dashboard/materials">
           <Button
             variant="ghost"
             size="sm"
-            className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-0 hover:bg-transparent"
+            className="text-muted-foreground hover:text-foreground p-0 hover:bg-transparent"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Materials
@@ -146,12 +146,12 @@ function ReportMaterialContent() {
         </Link>
       </div>
 
-      <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800 shadow-xl border-slate-200">
+      <Card className="w-full max-w-md bg-card border-border shadow-xl">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold tracking-tight">
             Report a Material
           </CardTitle>
-          <CardDescription className="text-slate-500 dark:text-slate-400">
+          <CardDescription className="text-muted-foreground">
             Let us know if a material is incomplete, outdated, incorrect, or
             problematic
           </CardDescription>
@@ -166,7 +166,7 @@ function ReportMaterialContent() {
                   name="material_title"
                   value={materialTitle}
                   readOnly
-                  className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+                  className="bg-muted text-muted-foreground"
                 />
               </div>
             )}
@@ -178,7 +178,7 @@ function ReportMaterialContent() {
                   name="name"
                   placeholder="Your name"
                   required
-                  className="bg-slate-50 dark:bg-slate-800"
+                  className="bg-muted"
                 />
               </div>
               <div className="space-y-2">
@@ -189,7 +189,7 @@ function ReportMaterialContent() {
                   type="email"
                   placeholder="your@email.com"
                   required
-                  className="bg-slate-50 dark:bg-slate-800"
+                  className="bg-muted"
                 />
               </div>
             </div>
@@ -198,7 +198,7 @@ function ReportMaterialContent() {
               <Select value={reason} onValueChange={setReason}>
                 <SelectTrigger
                   id="reason"
-                  className="bg-slate-50 dark:bg-slate-800"
+                  className="bg-muted"
                 >
                   <SelectValue placeholder="Select a reason" />
                 </SelectTrigger>
@@ -218,7 +218,7 @@ function ReportMaterialContent() {
                 name="description"
                 placeholder="Describe the issue with this material in detail..."
                 required
-                className="min-h-[150px] bg-slate-50 dark:bg-slate-800 resize-none"
+                className="min-h-[150px] bg-muted resize-none"
               />
             </div>
 
@@ -252,7 +252,7 @@ function ReportMaterialContent() {
         </form>
       </Card>
 
-      <p className="text-center text-xs text-slate-500 dark:text-slate-500 max-w-xs">
+      <p className="text-center text-xs text-muted-foreground max-w-xs">
         Your report is directly sent to our management team for review. Thank
         you for keeping CampusHub&apos;s materials reliable.
       </p>
@@ -264,10 +264,10 @@ export default function ReportMaterialPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950 p-4">
-          <Card className="w-full max-w-md dark:bg-slate-900 dark:border-slate-800">
+        <div className="flex min-h-screen items-center justify-center bg-background p-4">
+          <Card className="w-full max-w-md bg-card border-border">
             <CardContent className="pt-6 text-center">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+              <h2 className="text-lg font-semibold text-foreground">
                 Loading...
               </h2>
             </CardContent>

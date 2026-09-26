@@ -28,17 +28,17 @@ export default function PrivacySettings() {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Shield className="h-5 w-5 text-green-600 dark:text-green-400" />
+          <Shield className="h-5 w-5 text-primary-600 dark:text-primary-400" />
           <h2 className="text-xl font-semibold">Privacy & Security</h2>
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
+        <p className="text-sm text-muted-foreground">
           Control your privacy and data sharing preferences
         </p>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Profile Visibility */}
         <div className="space-y-4">
-          <h3 className="font-medium text-slate-900 dark:text-slate-100">
+          <h3 className="font-medium text-foreground">
             Profile Visibility
           </h3>
 
@@ -46,7 +46,7 @@ export default function PrivacySettings() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="profile-visible">Public Profile</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   Allow other students to see your profile
                 </p>
               </div>
@@ -60,7 +60,7 @@ export default function PrivacySettings() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="show-email">Show Email</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   Display email on your public profile
                 </p>
               </div>
@@ -75,7 +75,7 @@ export default function PrivacySettings() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="show-phone">Show Phone Number</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   Display phone number on your public profile
                 </p>
               </div>
@@ -91,7 +91,7 @@ export default function PrivacySettings() {
 
         {/* Data & Analytics */}
         <div className="space-y-4">
-          <h3 className="font-medium text-slate-900 dark:text-slate-100">
+          <h3 className="font-medium text-foreground">
             Data & Analytics
           </h3>
 
@@ -99,7 +99,7 @@ export default function PrivacySettings() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="activity-tracking">Activity Tracking</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   Track downloads and materials viewed
                 </p>
               </div>
@@ -113,7 +113,7 @@ export default function PrivacySettings() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="data-analytics">Usage Analytics</Label>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   Help improve CampusHub with anonymous usage data
                 </p>
               </div>
@@ -127,14 +127,14 @@ export default function PrivacySettings() {
         </div>
 
         {/* Data Management */}
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950">
-          <h4 className="font-medium text-red-900 dark:text-red-100">
+        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4">
+          <h4 className="font-medium text-destructive">
             Danger Zone
           </h4>
-          <p className="mt-1 text-sm text-red-700 dark:text-red-300">
+          <p className="mt-1 text-sm text-destructive/80">
             Permanently delete your account and all associated data
           </p>
-          <button className="mt-3 text-sm font-medium text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300">
+          <button className="mt-3 text-sm font-medium text-destructive hover:text-destructive/80">
             Delete Account
           </button>
         </div>

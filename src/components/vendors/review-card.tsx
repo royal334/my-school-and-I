@@ -45,7 +45,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
                 <h4 className="font-medium">
                   {review.profiles?.full_name || 'Anonymous'}
                 </h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-muted-foreground">
                   {formatDistanceToNow(new Date(review.created_at), {
                     addSuffix: true,
                   })}
@@ -59,8 +59,8 @@ export default function ReviewCard({ review }: ReviewCardProps) {
                     key={i}
                     className={`h-4 w-4 ${
                       i < review.rating
-                        ? 'fill-amber-400 text-amber-400'
-                        : 'text-slate-300 dark:text-slate-700'
+                        ? 'fill-accent-400 text-accent-400'
+                        : 'text-muted-foreground'
                     }`}
                   />
                 ))}
@@ -69,7 +69,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 
             {/* Comment */}
             {review.comment && (
-              <p className="text-sm text-slate-700 dark:text-slate-300">{review.comment}</p>
+              <p className="text-sm text-foreground">{review.comment}</p>
             )}
           </div>
         </div>

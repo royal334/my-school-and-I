@@ -43,7 +43,7 @@ export default function OptimizedPDFViewer({
       {!isFullscreen && (
         <div className="space-y-4">
           {/* Navigation & Actions Controls */}
-          <div className="flex items-center justify-between bg-slate-100 p-4 rounded-lg">
+          <div className="flex items-center justify-between bg-muted p-4 rounded-lg">
             <div className="flex gap-2">
               <Button
                 size="sm"
@@ -82,12 +82,12 @@ export default function OptimizedPDFViewer({
           {/* PDF Display */}
           <Card className="overflow-hidden">
             <div
-              className="flex justify-center bg-slate-50 p-4 cursor-zoom-in group relative"
+              className="flex justify-center bg-muted p-4 cursor-zoom-in group relative"
               onClick={openFullscreen}
               title="Click to view full screen"
             >
               {pdfError ? (
-                <div className="flex h-96 flex-col items-center justify-center gap-2 text-red-500">
+                <div className="flex h-96 flex-col items-center justify-center gap-2 text-destructive">
                   <p className="font-semibold">Failed to render PDF</p>
                   <p className="text-sm">{pdfError}</p>
                 </div>
@@ -113,9 +113,9 @@ export default function OptimizedPDFViewer({
               )}
 
               {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-colors flex items-center justify-center pointer-events-none">
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center pointer-events-none">
                 <div className="bg-white/90 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-200">
-                  <Maximize2 className="h-5 w-5 text-slate-700" />
+                  <Maximize2 className="h-5 w-5 text-foreground" />
                 </div>
               </div>
             </div>

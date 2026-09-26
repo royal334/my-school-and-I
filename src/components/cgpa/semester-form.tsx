@@ -202,9 +202,9 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
             <div className="space-y-2">
               <Label
                 htmlFor="level"
-                className={errors.level ? "text-red-500" : ""}
+                className={errors.level ? "text-destructive" : ""}
               >
-                Level <span className="text-red-500">*</span>
+                Level <span className="text-destructive">*</span>
               </Label>
               <Controller
                 name="level"
@@ -212,7 +212,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger
-                      className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${errors.level ? "border-red-500" : ""}`}
+                      className={`relative z-50 pointer-events-auto bg-card ${errors.level ? "border-destructive" : ""}`}
                     >
                       <SelectValue placeholder="Select level" />
                     </SelectTrigger>
@@ -227,7 +227,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                 )}
               />
               {errors.level && (
-                <p className="text-xs text-red-500">{errors.level.message}</p>
+                <p className="text-xs text-destructive">{errors.level.message}</p>
               )}
             </div>
 
@@ -235,9 +235,9 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
             <div className="space-y-2">
               <Label
                 htmlFor="semester"
-                className={errors.semester ? "text-red-500" : ""}
+                className={errors.semester ? "text-destructive" : ""}
               >
-                Semester <span className="text-red-500">*</span>
+                Semester <span className="text-destructive">*</span>
               </Label>
               <Controller
                 name="semester"
@@ -245,7 +245,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger
-                      className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${errors.semester ? "border-red-500" : ""}`}
+                      className={`relative z-50 pointer-events-auto bg-card ${errors.semester ? "border-destructive" : ""}`}
                     >
                       <SelectValue placeholder="Select semester" />
                     </SelectTrigger>
@@ -257,7 +257,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                 )}
               />
               {errors.semester && (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-destructive">
                   {errors.semester.message}
                 </p>
               )}
@@ -267,19 +267,19 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
             <div className="space-y-2">
               <Label
                 htmlFor="session"
-                className={errors.session ? "text-red-500" : ""}
+                className={errors.session ? "text-destructive" : ""}
               >
-                Session <span className="text-red-500">*</span>
+                Session <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="session"
                 placeholder="e.g., 2024/2025"
                 {...register("session")}
-                className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${errors.session ? "border-red-500" : ""}`}
+                className={`relative z-50 pointer-events-auto bg-card ${errors.session ? "border-destructive" : ""}`}
               />
-              <p className="text-xs text-slate-500 dark:text-slate-400">Format: YYYY/YYYY</p>
+              <p className="text-xs text-muted-foreground">Format: YYYY/YYYY</p>
               {errors.session && (
-                <p className="text-xs text-red-500">{errors.session.message}</p>
+                <p className="text-xs text-destructive">{errors.session.message}</p>
               )}
             </div>
           </div>
@@ -316,30 +316,30 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
               <div className="relative z-100 isolate">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-slate-200 dark:border-slate-800">
-                      <th className="pb-2 text-left text-sm font-medium text-slate-700 dark:text-slate-300">
+                    <tr className="border-b border-border">
+                      <th className="pb-2 text-left text-sm font-medium text-foreground">
                         Course Code
                       </th>
-                      <th className="pb-2 text-left text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <th className="pb-2 text-left text-sm font-medium text-foreground">
                         Course Title
                       </th>
-                      <th className="pb-2 text-center text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <th className="pb-2 text-center text-sm font-medium text-foreground">
                         Units
                       </th>
-                      <th className="pb-2 text-center text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <th className="pb-2 text-center text-sm font-medium text-foreground">
                         Grade
                       </th>
-                      <th className="pb-2 text-center text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <th className="pb-2 text-center text-sm font-medium text-foreground">
                         Points
                       </th>
-                      <th className="pb-2 text-center text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <th className="pb-2 text-center text-sm font-medium text-foreground">
                         Actions
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {fields.map((field, index) => (
-                      <tr key={field.id} className="border-b border-slate-100 dark:border-slate-800">
+                      <tr key={field.id} className="border-b border-border">
                         <td className="py-2">
                           <Popover
                             open={openPopoverIndex === index}
@@ -352,9 +352,9 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                 variant="outline"
                                 role="combobox"
                                 className={cn(
-                                  "relative z-50 pointer-events-auto w-32 justify-between bg-white dark:bg-slate-800 px-3 font-normal",
+                                  "relative z-50 pointer-events-auto w-32 justify-between bg-card px-3 font-normal",
                                   errors.courses?.[index]?.course_code &&
-                                    "border-red-500",
+                                    "border-destructive",
                                 )}
                               >
                                 {watchedCourses[index]?.course_code ||
@@ -408,9 +408,9 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                           <Input
                             placeholder="Course name"
                             {...register(`courses.${index}.course_title`)}
-                            className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${
+                            className={`relative z-50 pointer-events-auto bg-card ${
                               errors.courses?.[index]?.course_title
-                                ? "border-red-500"
+                                ? "border-destructive"
                                 : ""
                             }`}
                           />
@@ -421,9 +421,9 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                             {...register(`courses.${index}.credit_units`, {
                               valueAsNumber: true,
                             })}
-                            className={`relative z-50 pointer-events-auto w-16 mx-auto text-center bg-white dark:bg-slate-800 ${
+                            className={`relative z-50 pointer-events-auto w-16 mx-auto text-center bg-card ${
                               errors.courses?.[index]?.credit_units
-                                ? "border-red-500"
+                                ? "border-destructive"
                                 : ""
                             }`}
                           />
@@ -437,7 +437,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                 onValueChange={subField.onChange}
                                 value={subField.value}
                               >
-                                <SelectTrigger className="relative z-50 pointer-events-auto w-20 mx-auto bg-white dark:bg-slate-800">
+                                <SelectTrigger className="relative z-50 pointer-events-auto w-20 mx-auto bg-card">
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -448,7 +448,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                                           <span className="font-medium">
                                             {grade}
                                           </span>
-                                          <span className="text-xs text-slate-500 dark:text-slate-400">
+                                          <span className="text-xs text-muted-foreground">
                                             ({range})
                                           </span>
                                         </div>
@@ -479,7 +479,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                             onClick={() => remove(index)}
                             disabled={fields.length === 1}
                           >
-                            <X className="h-4 w-4 text-red-600 dark:text-red-400" />
+                            <X className="h-4 w-4 text-destructive" />
                           </Button>
                         </td>
                       </tr>
@@ -495,7 +495,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                 <Card key={field.id}>
                   <CardContent className="pt-4 space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <span className="text-sm font-medium text-foreground">
                         Course {index + 1}
                       </span>
                       <Button
@@ -505,13 +505,13 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                         onClick={() => remove(index)}
                         disabled={fields.length === 1}
                       >
-                        <X className="h-4 w-4 text-red-600 dark:text-red-400" />
+                        <X className="h-4 w-4 text-destructive" />
                       </Button>
                     </div>
 
                     <div className="space-y-2">
                       <Label
-                        className={`text-xs ${errors.courses?.[index]?.course_code ? "text-red-500" : ""}`}
+                        className={`text-xs ${errors.courses?.[index]?.course_code ? "text-destructive" : ""}`}
                       >
                         Course Code
                       </Label>
@@ -526,9 +526,9 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                             variant="outline"
                             role="combobox"
                             className={cn(
-                              "relative z-50 pointer-events-auto w-full justify-between bg-white dark:bg-slate-800 px-3 font-normal",
+                              "relative z-50 pointer-events-auto w-full justify-between bg-card px-3 font-normal",
                               errors.courses?.[index]?.course_code &&
-                                "border-red-500",
+                                "border-destructive",
                             )}
                           >
                             {watchedCourses[index]?.course_code ||
@@ -579,16 +579,16 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
 
                     <div className="space-y-2">
                       <Label
-                        className={`text-xs ${errors.courses?.[index]?.course_title ? "text-red-500" : ""}`}
+                        className={`text-xs ${errors.courses?.[index]?.course_title ? "text-destructive" : ""}`}
                       >
                         Course Title
                       </Label>
                       <Input
                         placeholder="Course name"
                         {...register(`courses.${index}.course_title`)}
-                        className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${
+                        className={`relative z-50 pointer-events-auto bg-card ${
                           errors.courses?.[index]?.course_title
-                            ? "border-red-500"
+                            ? "border-destructive"
                             : ""
                         }`}
                       />
@@ -597,7 +597,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-2">
                         <Label
-                          className={`text-xs ${errors.courses?.[index]?.credit_units ? "text-red-500" : ""}`}
+                          className={`text-xs ${errors.courses?.[index]?.credit_units ? "text-destructive" : ""}`}
                         >
                           Units
                         </Label>
@@ -606,9 +606,9 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                           {...register(`courses.${index}.credit_units`, {
                             valueAsNumber: true,
                           })}
-                          className={`relative z-50 pointer-events-auto bg-white dark:bg-slate-800 ${
+                          className={`relative z-50 pointer-events-auto bg-card ${
                             errors.courses?.[index]?.credit_units
-                              ? "border-red-500"
+                              ? "border-destructive"
                               : ""
                           }`}
                         />
@@ -624,7 +624,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                               onValueChange={subField.onChange}
                               value={subField.value}
                             >
-                              <SelectTrigger className="relative z-50 pointer-events-auto bg-white dark:bg-slate-800">
+                              <SelectTrigger className="relative z-50 pointer-events-auto bg-card">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
@@ -643,7 +643,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t">
-                      <span className="text-sm text-slate-600 dark:text-slate-400">
+                      <span className="text-sm text-muted-foreground">
                         Grade Points:
                       </span>
                       <Badge
@@ -674,7 +674,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
               </Button>
             </div>
             {errors.courses && (
-              <p className="text-sm text-red-500">{errors.courses.message}</p>
+              <p className="text-sm text-destructive">{errors.courses.message}</p>
             )}
           </div>
         </CardContent>

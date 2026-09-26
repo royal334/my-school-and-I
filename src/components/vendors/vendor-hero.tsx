@@ -17,7 +17,7 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
   return (
     <Card className="overflow-hidden">
       {/* Cover Image */}
-      <div className="relative h-48 bg-linear-to-r from-[#1A3C34] to-[#4A8C73]">
+      <div className="relative h-48 bg-linear-to-r from-primary-900 to-primary-600">
         {vendor.cover_image_url && features.canUploadCover ? (
           <Image
             src={vendor.cover_image_url}
@@ -26,19 +26,19 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
             className="object-cover"
           />
         ) : (
-          <div className="absolute inset-0 bg-linear-to-br from-[#1A3C34] to-[#4A8C73]" />
+          <div className="absolute inset-0 bg-linear-to-br from-primary-900 to-primary-600" />
         )}
 
         {/* Badges */}
         <div className="absolute right-4 top-4 flex gap-2">
           {features.isFeatured && (
-            <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-[#E8A020] text-[#3A2800]">
+            <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-accent-500 text-accent-950">
               <Crown className="mr-1 h-3 w-3" />
               Featured
             </span>
           )}
           {isVerified && (
-            <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-[#1A3C34] text-[#B8D4CC]">
+            <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-black/40 text-white">
               <Award className="mr-1 h-3 w-3" />
               Verified
             </span>
@@ -59,7 +59,7 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
               />
             </div>
           ) : (
-            <div className="flex h-32 w-32 items-center justify-center rounded-lg border-4 border-white dark:border-[#262928] bg-[#E8F5EF] dark:bg-white/5 text-3xl font-bold text-[#3A7260] dark:text-[#7EC8A0] shadow-lg">
+            <div className="flex h-32 w-32 items-center justify-center rounded-lg border-4 border-white dark:border-border bg-primary-50 dark:bg-muted text-3xl font-bold text-primary-700 dark:text-primary-300 shadow-lg">
               {vendor.business_name.slice(0, 2).toUpperCase()}
             </div>
           )}
@@ -71,7 +71,7 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
               {vendor.business_name}
             </h1>
             {isVerified && (
-              <CheckCircle2 className="h-6 w-6 fill-[#4A8C73] text-white" />
+              <CheckCircle2 className="h-6 w-6 fill-success text-white" />
             )}
           </div>
 
@@ -90,8 +90,8 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
                 key={i}
                 className={`h-5 w-5 ${
                   i < Math.floor(vendor.rating_avg)
-                    ? "fill-amber-400 text-amber-400"
-                    : "text-slate-300 dark:text-slate-700"
+                    ? "fill-accent-400 text-accent-400"
+                    : "text-muted-foreground"
                 }`}
               />
             ))}

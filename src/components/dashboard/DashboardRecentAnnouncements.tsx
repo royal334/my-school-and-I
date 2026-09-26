@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
 import Link from "next/link";
-
 import { DashboardRecentAnnouncementsProps } from "@/utils/types";
 
 export function DashboardRecentAnnouncements({
@@ -16,7 +15,7 @@ export function DashboardRecentAnnouncements({
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <h2 className="text-xl" style={{ fontFamily: "var(--font-display)" }}>Recent announcements</h2>
+          <h2 className="text-xl">Recent announcements</h2>
           <Link href="/dashboard/announcements">
             <Button variant="ghost" size="sm">
               View all
@@ -28,18 +27,20 @@ export function DashboardRecentAnnouncements({
         {announcements.map((announcement) => (
           <div
             key={announcement.id}
-            className="flex items-start gap-3 rounded-lg border border-[#D6E5DF] dark:border-white/10 p-3"
+            className="flex items-start gap-3 rounded-xl border border-border bg-background/50 p-3 dark:bg-muted/30"
           >
-            <Bell className="h-5 w-5 text-[#4A8C73]" />
-            <div className="flex-1">
-              <h3 className="text-sm text-[#141F1B] dark:text-[#E8F5EF]">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 dark:bg-primary-950">
+              <Bell className="h-4 w-4 text-primary-600 dark:text-primary-300" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="truncate text-sm font-semibold text-foreground">
                 {announcement.title}
               </h3>
-              <p className="text-xs text-[#6B7B75] dark:text-[#9BA19E]">
+              <p className="text-xs text-muted-foreground">
                 {new Date(announcement.created_at).toLocaleDateString()}
               </p>
             </div>
-            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#E8F5EF] dark:bg-[#1E211F] text-[#4A8C73] dark:text-[#7EC8A0]">
+            <span className="rounded-full bg-primary-50 px-2 py-1 text-[10px] font-semibold capitalize text-primary-700 dark:bg-primary-950 dark:text-primary-300">
               {announcement.type}
             </span>
           </div>

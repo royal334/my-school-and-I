@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Serif_Display } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { cookies } from 'next/headers';
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { Providers } from "../components/providers/providers";
@@ -7,24 +8,23 @@ import { PageLoader } from "../components/providers/page-loader";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
-const dmSerif = DM_Serif_Display({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-display",
+  variable: "--font-jakarta",
   display: "swap",
 });
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#1A3C34" },
-    { media: "(prefers-color-scheme: dark)", color: "#0F1A17" },
+    { media: "(prefers-color-scheme: light)", color: "#4F46E5" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B0B12" },
   ],
 };
 
 export const metadata: Metadata = {
   title: "CampusHub",
   description:
-    "Access lecture materials, calculate your CGPA, and connect with student vendors — all in one platform for Nnamdi Azikiwe University engineering students.",
+    "The digital hub for ambitious Nigerian university students — materials, CGPA tools, vendors, announcements, and more.",
   keywords: [
     "university platform",
     "CGPA calculator",
@@ -55,8 +55,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${dmSerif.variable} font-sans antialiased`}>
+    <html>
+      <body className={`${jakarta.variable} font-sans antialiased`}>
         <Providers>
           <PageLoader />
           <Toaster />

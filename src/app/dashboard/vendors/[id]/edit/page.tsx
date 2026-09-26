@@ -59,7 +59,7 @@ export default async function EditVendorPage({ params }: PageProps) {
       {/* Header */}
       <div>
         <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Edit vendor listing</h1>
-        <p className="mt-2 text-slate-600 dark:text-slate-400">
+        <p className="mt-2 text-muted-foreground">
           Update your business information and media
         </p>
       </div>

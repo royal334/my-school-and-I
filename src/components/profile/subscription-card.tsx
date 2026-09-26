@@ -64,27 +64,27 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <CreditCard className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+          <CreditCard className="h-5 w-5 text-accent-600 dark:text-accent-400" />
           <h2 className="text-xl font-semibold">Subscription</h2>
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
+        <p className="text-sm text-muted-foreground">
           Manage your premium subscription and access
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Current Status */}
-        <div className="flex items-center justify-between rounded-lg border border-slate-200 p-4 dark:border-slate-800">
+        <div className="flex items-center justify-between rounded-lg border border-border p-4">
           <div>
-            <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Current Plan</p>
-            <p className="text-lg font-bold text-slate-900 dark:text-slate-100">
+            <p className="text-sm font-medium text-foreground">Current Plan</p>
+            <p className="text-lg font-bold text-foreground">
               {isActive ? "Premium" : "Free"}
             </p>
           </div>
           <Badge
             className={
               isActive
-                ? "bg-green-100 text-green-700 dark:bg-green-950/50 dark:text-green-400"
-                : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                ? "bg-success-bg text-success-text"
+                : "bg-muted text-muted-foreground"
             }
           >
             {isActive ? (
@@ -103,8 +103,8 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
 
         {/* Expiry Date */}
         {isActive && profile?.subscription_expires_at && (
-          <div className="rounded-lg bg-[#E8F5EF] dark:bg-[#1E211F] p-4">
-            <div className="flex items-center gap-2 text-sm text-[#1A3C34]">
+          <div className="rounded-lg bg-primary-50 dark:bg-muted p-4">
+            <div className="flex items-center gap-2 text-sm text-primary-700 dark:text-primary-300">
               <Calendar className="h-4 w-4" />
               <span className="font-medium">
                 Expires on{" "}
@@ -118,7 +118,7 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
                 )}
               </span>
             </div>
-            <p className="mt-1 text-xs text-[#4A8C73]">
+            <p className="mt-1 text-xs text-primary-600 dark:text-primary-400">
               {daysRemaining > 0
                 ? `${daysRemaining} days remaining`
                 : "Expires today"}
@@ -128,54 +128,54 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
 
         {/* Features */}
         <div className="space-y-2">
-          <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+          <p className="text-sm font-medium text-foreground">
             {isActive ? "Your Premium Features:" : "Upgrade to Premium for:"}
           </p>
           <ul className="space-y-2">
-            <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <li className="flex items-center gap-2 text-sm text-muted-foreground">
               <div
                 className={`flex h-5 w-5 items-center justify-center rounded-full ${
-                  isActive ? "bg-green-100 dark:bg-green-950/50" : "bg-slate-100 dark:bg-slate-800"
+                  isActive ? "bg-success-bg" : "bg-muted"
                 }`}
               >
                 <Check
-                  className={`h-3 w-3 ${                  isActive ? "text-green-600 dark:text-green-400" : "text-slate-400 dark:text-slate-500"}`}
+                  className={`h-3 w-3 ${                  isActive ? "text-success" : "text-muted-foreground"}`}
                 />
               </div>
               Access to all premium materials
             </li>
-            <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <li className="flex items-center gap-2 text-sm text-muted-foreground">
               <div
                 className={`flex h-5 w-5 items-center justify-center rounded-full ${
-                  isActive ? "bg-green-100 dark:bg-green-950/50" : "bg-slate-100 dark:bg-slate-800"
+                  isActive ? "bg-success-bg" : "bg-muted"
                 }`}
               >
                 <Check
-                  className={`h-3 w-3 ${                  isActive ? "text-green-600 dark:text-green-400" : "text-slate-400 dark:text-slate-500"}`}
+                  className={`h-3 w-3 ${                  isActive ? "text-success" : "text-muted-foreground"}`}
                 />
               </div>
               Unlimited downloads
             </li>
-            <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <li className="flex items-center gap-2 text-sm text-muted-foreground">
               <div
                 className={`flex h-5 w-5 items-center justify-center rounded-full ${
-                  isActive ? "bg-green-100 dark:bg-green-950/50" : "bg-slate-100 dark:bg-slate-800"
+                  isActive ? "bg-success-bg" : "bg-muted"
                 }`}
               >
                 <Check
-                  className={`h-3 w-3 ${                  isActive ? "text-green-600 dark:text-green-400" : "text-slate-400 dark:text-slate-500"}`}
+                  className={`h-3 w-3 ${                  isActive ? "text-success" : "text-muted-foreground"}`}
                 />
               </div>
               Priority support
             </li>
-            <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <li className="flex items-center gap-2 text-sm text-muted-foreground">
               <div
                 className={`flex h-5 w-5 items-center justify-center rounded-full ${
-                  isActive ? "bg-green-100 dark:bg-green-950/50" : "bg-slate-100 dark:bg-slate-800"
+                  isActive ? "bg-success-bg" : "bg-muted"
                 }`}
               >
                 <Check
-                  className={`h-3 w-3 ${                  isActive ? "text-green-600 dark:text-green-400" : "text-slate-400 dark:text-slate-500"}`}
+                  className={`h-3 w-3 ${                  isActive ? "text-success" : "text-muted-foreground"}`}
                 />
               </div>
               Early access to new features
@@ -189,7 +189,7 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
             // Show "Reactivate" button
             <Button
               onClick={reactivateSubscription}
-              className="w-full bg-green-600 hover:bg-green-700"
+              className="w-full bg-primary-600 hover:bg-primary-700"
             >
               Reactivate Subscription
             </Button>
@@ -199,7 +199,7 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
               <AlertDialogTrigger asChild>
                 <Button
                   variant="outline"
-                  className="w-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                  className="w-full border-destructive/40 text-destructive hover:bg-destructive/10"
                 >
                   Cancel Subscription
                 </Button>
@@ -233,7 +233,7 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
                   <AlertDialogCancel>Keep Subscription</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={cancelSubscription}
-                    className="bg-red-600 hover:bg-red-700 text-white"
+                    className="bg-destructive hover:bg-destructive/90 text-white"
                   >
                     Confirm Cancellation
                   </AlertDialogAction>
@@ -243,7 +243,7 @@ export default function SubscriptionCard({ profile }: SubscriptionCardProps) {
           )
         ) : (
           <>
-            <UpgradeButton className="w-full bg-amber-600 hover:bg-amber-700" />
+            <UpgradeButton className="w-full bg-accent-500 hover:bg-accent-600 text-accent-foreground" />
           </>
         )}
       </CardContent>

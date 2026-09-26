@@ -79,9 +79,9 @@ export default async function VendorDetailPage({ params }: PageProps) {
 
       {/* Pending Approval Notice */}
       {!vendor.is_approved && isOwner && (
-        <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-900/30">
+        <Card className="border-warning/40 bg-warning-bg dark:border-warning/30 dark:bg-warning/10">
           <CardContent className="p-4 text-center">
-            <p className="text-sm font-medium text-amber-900 dark:text-amber-400">
+            <p className="text-sm font-medium text-warning-text">
               ⏳ Your listing is pending admin approval. It will be visible to
               students once approved.
             </p>

@@ -129,12 +129,12 @@ export default function GalleryUpload({
 
   if (!hasAccess) {
     return (
-      <div className="rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center dark:border-slate-700 dark:bg-slate-800">
-        <Upload className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-500" />
-        <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">
+      <div className="rounded-lg border-2 border-dashed border-border bg-muted p-8 text-center">
+        <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
+        <h3 className="mt-4 font-semibold text-foreground">
           Photo Gallery Locked
         </h3>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+        <p className="mt-2 text-sm text-muted-foreground">
           Upgrade to Premium (5 photos) or Featured (10 photos)
         </p>
         <Link href={`/dashboard/vendors/${vendorId}/upgrade`}>
@@ -154,7 +154,7 @@ export default function GalleryUpload({
         {images.map((imageUrl, index) => (
           <div
             key={index}
-            className="group relative aspect-square overflow-hidden rounded-lg border bg-slate-100 dark:bg-slate-700"
+            className="group relative aspect-square overflow-hidden rounded-lg border bg-muted"
           >
             <Image
               src={imageUrl}
@@ -165,7 +165,7 @@ export default function GalleryUpload({
             {/* Remove button */}
             <button
               onClick={() => handleRemove(imageUrl)}
-              className="absolute right-2 top-2 rounded-full bg-red-500 p-2 text-white opacity-0 transition-opacity group-hover:opacity-100"
+              className="absolute right-2 top-2 rounded-full bg-destructive p-2 text-white opacity-0 transition-opacity group-hover:opacity-100"
             >
               <X className="h-4 w-4" />
             </button>
@@ -185,13 +185,13 @@ export default function GalleryUpload({
               id="gallery-input"
             />
             <label htmlFor="gallery-input" className="block h-full">
-              <div className="flex h-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 transition-colors hover:border-primary-500 hover:bg-primary-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-primary-950/30">
+              <div className="flex h-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted transition-colors hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-950/30">
                 {uploading ? (
-                  <Loader2 className="h-8 w-8 animate-spin text-slate-400 dark:text-slate-500" />
+                  <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
                 ) : (
                   <>
-                    <Plus className="h-8 w-8 text-slate-400 dark:text-slate-500" />
-                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Add Photo</p>
+                    <Plus className="h-8 w-8 text-muted-foreground" />
+                    <p className="mt-2 text-xs text-muted-foreground">Add Photo</p>
                   </>
                 )}
               </div>
@@ -202,11 +202,11 @@ export default function GalleryUpload({
 
       {/* Info */}
       <div className="flex items-center justify-between text-sm">
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-muted-foreground">
           {images.length} / {maxImages} photos
         </p>
         {!canAddMore && (
-          <p className="text-amber-600 dark:text-amber-400">
+          <p className="text-warning">
             {tier === 'premium'
               ? 'Upgrade to Featured for 10 photos'
               : 'Maximum reached'}
@@ -214,7 +214,7 @@ export default function GalleryUpload({
         )}
       </div>
 
-      <p className="text-xs text-slate-500 dark:text-slate-400">
+      <p className="text-xs text-muted-foreground">
         Recommended: 1200x800px. JPG, PNG or WebP. Max 5MB per image.
       </p>
     </div>

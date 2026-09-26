@@ -52,23 +52,23 @@ export default async function ProfilePage() {
 
       <div>
         <h1 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Profile & settings</h1>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-muted-foreground">
           Manage your account information and preferences
         </p>
       </div>
 
       {/* Role Badge (if admin) */}
       {adminRole && (
-        <Card className="border-[#D6E5DF] dark:border-white/10 bg-[#E8F5EF] dark:bg-[#1E211F]">
+        <Card className="border-border dark:border-border bg-primary-50 dark:bg-primary-950/40">
           <CardContent className="flex items-center gap-3 py-4">
-            <div className="rounded-full bg-[#1A3C34] p-2">
-              <User className="h-5 w-5 text-[#E8F5EF]" />
+            <div className="rounded-full bg-primary p-2">
+              <User className="h-5 w-5 text-primary-foreground" />
             </div>
             <div>
-              <p className="font-medium text-[#1A3C34]">
+              <p className="font-medium text-foreground">
                 {adminRole.role.replace('_', ' ').toUpperCase()}
               </p>
-              <p className="text-sm text-[#4A8C73]">
+              <p className="text-sm text-primary-600 dark:text-primary-400">
                 You have administrative access to this platform
               </p>
             </div>

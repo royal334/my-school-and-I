@@ -123,18 +123,18 @@ export default function NotificationSettings() {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Bell className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+          <Bell className="h-5 w-5 text-accent-600 dark:text-accent-400" />
           <h2 className="text-xl font-semibold">Notifications</h2>
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
+        <p className="text-sm text-muted-foreground">
           Choose which updates you want to receive
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
         {permission !== 'unsupported' && permission !== 'granted' && (
-          <div className="flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-950/30">
+          <div className="flex items-center justify-between rounded-lg border border-warning/40 bg-warning-bg p-4 dark:border-warning/30 dark:bg-warning/10">
             <div className="flex items-center gap-3">
-              <BellRing className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              <BellRing className="h-5 w-5 text-warning" />
               <div>
                 <p className="text-sm font-medium">Push notifications are off</p>
                 <p className="text-xs text-muted-foreground">
@@ -158,7 +158,7 @@ export default function NotificationSettings() {
         )}
 
         {permission === 'granted' && (
-          <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700 dark:border-green-900/50 dark:bg-green-950/30 dark:text-green-400">
+          <div className="flex items-center gap-2 rounded-lg border border-success/40 bg-success-bg p-3 text-sm text-success-text dark:border-success/30 dark:bg-success/10">
             <Check className="h-4 w-4" />
             Push notifications are enabled
           </div>
@@ -166,7 +166,7 @@ export default function NotificationSettings() {
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <Label htmlFor="push-announcements">Announcements</Label>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-muted-foreground">
               Receive academic and departmental announcements
             </p>
           </div>
@@ -183,7 +183,7 @@ export default function NotificationSettings() {
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <Label htmlFor="push-vendors">Vendor updates</Label>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-muted-foreground">
               Receive updates from approved vendors
             </p>
           </div>

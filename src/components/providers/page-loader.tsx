@@ -124,7 +124,7 @@ export function PageLoader() {
       aria-live="polite"
       aria-busy="true"
       aria-label="Loading page"
-      className={`fixed inset-0 z-[999] flex flex-col items-center justify-center gap-6 overflow-hidden bg-[#E8F5EF]/85 dark:bg-[#0B1411]/85${ignoreBreakpoint ? '' : ' md:hidden'}`}
+      className={`fixed inset-0 z-[999] flex flex-col items-center justify-center gap-6 overflow-hidden bg-background/85 backdrop-blur-sm${ignoreBreakpoint ? '' : ' md:hidden'}`}
       style={{
         animation: 'engiportal-overlay-in 220ms ease-out',
         backdropFilter: 'blur(4px)',
@@ -135,18 +135,18 @@ export function PageLoader() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'radial-gradient(circle at center, rgba(126,200,160,0.35) 0%, rgba(26,122,82,0.12) 45%, transparent 72%)',
+            'radial-gradient(circle at center, color-mix(in oklab, var(--primary) 32%, transparent) 0%, color-mix(in oklab, var(--primary) 10%, transparent) 45%, transparent 72%)',
         }}
       />
 
       {/* Spinner */}
       <div className="relative h-16 w-16">
-        <div className="absolute inset-0 rounded-full border-[3px] border-[#4A8C73]/20 dark:border-[#7EC8A0]/20" />
-        <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-transparent border-t-[#7EC8A0] border-r-[#4A8C73]/70 motion-reduce:animate-none" />
-        <div className="absolute inset-3.5 animate-pulse rounded-full bg-[#7EC8A0]/20 dark:bg-[#7EC8A0]/25 motion-reduce:animate-none" />
+        <div className="absolute inset-0 rounded-full border-[3px] border-primary/20" />
+        <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-transparent border-t-primary border-r-primary/70 motion-reduce:animate-none" />
+        <div className="absolute inset-3.5 animate-pulse rounded-full bg-primary/20 motion-reduce:animate-none" />
         <div className="absolute inset-0 grid place-items-center">
           <span
-            className="text-base text-[#1A3C34] dark:text-[#7EC8A0]"
+            className="text-base text-primary-600 dark:text-primary-300"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             CH
@@ -154,7 +154,7 @@ export function PageLoader() {
         </div>
       </div>
 
-      <p className="text-[13px] font-medium tracking-wide text-[#1A3C34]/60 dark:text-[#AFC5BB]">
+      <p className="text-[13px] font-medium tracking-wide text-muted-foreground">
         Loading…
       </p>
 

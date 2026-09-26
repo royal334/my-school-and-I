@@ -54,17 +54,17 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
   if (success) {
     return (
       <div style={{
-        background: 'rgba(26,122,82,0.06)',
-        border: '0.5px solid rgba(26,122,82,0.2)',
+        background: 'var(--success-bg)',
+        border: '1px solid color-mix(in oklab, var(--success) 25%, transparent)',
         borderRadius: 'var(--radius-md, 12px)',
         padding: 20,
         textAlign: 'center',
       }}>
         <p style={{ fontSize: 24, marginBottom: 8 }}>✓</p>
-        <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--color-success, #1A7A52)', marginBottom: 6 }}>
+        <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--success-text)', marginBottom: 6 }}>
           Viewing request submitted
         </p>
-        <p style={{ fontSize: 13, color: 'var(--text-secondary, #6B7B75)', lineHeight: 1.6 }}>
+        <p style={{ fontSize: 13, color: 'var(--muted-foreground)', lineHeight: 1.6 }}>
           Our team will contact you within 24 hours to confirm your viewing.
         </p>
       </div>
@@ -73,15 +73,15 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
 
   return (
     <div style={{
-      background: 'var(--surface-card, #FFFFFF)',
-      border: '0.5px solid #D6E5DF',
+      background: 'var(--card)',
+      border: '1px solid var(--border)',
       borderRadius: 'var(--radius-md, 12px)',
       padding: 20,
     }}>
       <h3 style={{
         fontFamily: 'var(--font-display, serif)',
         fontSize: 17,
-        color: 'var(--color-forest, #1A3C34)',
+        color: 'var(--foreground)',
         marginBottom: 16,
       }}>
         Request a viewing
@@ -90,7 +90,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {/* Name */}
         <div>
-          <label style={{ fontSize: 12, color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>
+          <label style={{ fontSize: 12, color: 'var(--muted-foreground)', display: 'block', marginBottom: 4 }}>
             Your name *
           </label>
           <input
@@ -101,7 +101,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
             style={{
               width: '100%',
               padding: '10px 14px',
-              border: '1px solid #C8E8DA',
+              border: '1px solid var(--input)',
               borderRadius: 8,
               fontSize: 14,
               outline: 'none',
@@ -113,7 +113,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
 
         {/* Phone */}
         <div>
-          <label style={{ fontSize: 12, color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>
+          <label style={{ fontSize: 12, color: 'var(--muted-foreground)', display: 'block', marginBottom: 4 }}>
             Phone number *
           </label>
           <input
@@ -124,7 +124,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
             style={{
               width: '100%',
               padding: '10px 14px',
-              border: '1px solid #C8E8DA',
+              border: '1px solid var(--input)',
               borderRadius: 8,
               fontSize: 14,
               outline: 'none',
@@ -137,7 +137,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
         {/* Preferred date/time */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           <div>
-            <label style={{ fontSize: 12, color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>
+            <label style={{ fontSize: 12, color: 'var(--muted-foreground)', display: 'block', marginBottom: 4 }}>
               Preferred date
             </label>
             <input
@@ -147,7 +147,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
               style={{
                 width: '100%',
                 padding: '10px 14px',
-                border: '1px solid #C8E8DA',
+                border: '1px solid var(--input)',
                 borderRadius: 8,
                 fontSize: 14,
                 outline: 'none',
@@ -157,7 +157,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
             />
           </div>
           <div>
-            <label style={{ fontSize: 12, color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>
+            <label style={{ fontSize: 12, color: 'var(--muted-foreground)', display: 'block', marginBottom: 4 }}>
               Preferred time
             </label>
             <select
@@ -166,13 +166,13 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
               style={{
                 width: '100%',
                 padding: '10px 14px',
-                border: '1px solid #C8E8DA',
+                border: '1px solid var(--input)',
                 borderRadius: 8,
                 fontSize: 14,
                 outline: 'none',
                 boxSizing: 'border-box',
                 fontFamily: 'inherit',
-                background: 'white',
+                background: 'var(--card)',
               }}
             >
               <option value="">Any time</option>
@@ -185,7 +185,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
 
         {/* Message */}
         <div>
-          <label style={{ fontSize: 12, color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>
+          <label style={{ fontSize: 12, color: 'var(--muted-foreground)', display: 'block', marginBottom: 4 }}>
             Additional message (optional)
           </label>
           <textarea
@@ -196,7 +196,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
             style={{
               width: '100%',
               padding: '10px 14px',
-              border: '1px solid #C8E8DA',
+              border: '1px solid var(--input)',
               borderRadius: 8,
               fontSize: 14,
               outline: 'none',
@@ -209,15 +209,16 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
         </div>
 
         {error && (
-          <p style={{ fontSize: 13, color: 'var(--color-error, #C44B2A)' }}>{error}</p>
+          <p style={{ fontSize: 13, color: 'var(--error-text)' }}>{error}</p>
         )}
 
         <button
           onClick={handleSubmit}
           disabled={loading}
           style={{
-            background: loading ? 'var(--color-sage, #4A8C73)' : 'var(--color-forest, #1A3C34)',
-            color: 'var(--color-mist, #E8F5EF)',
+            background: 'var(--primary)',
+            color: 'var(--primary-foreground)',
+            opacity: loading ? 0.7 : 1,
             border: 'none',
             borderRadius: 'var(--radius-sm, 8px)',
             padding: '12px 20px',
@@ -232,7 +233,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
           {loading ? 'Submitting…' : 'Request viewing'}
         </button>
 
-        <p style={{ fontSize: 11, color: 'var(--text-muted, #9AADA8)', textAlign: 'center', lineHeight: 1.5 }}>
+        <p style={{ fontSize: 11, color: 'var(--muted-foreground)', textAlign: 'center', lineHeight: 1.5 }}>
           CampusHub will coordinate the viewing. You will be contacted to confirm.
         </p>
       </div>

@@ -14,7 +14,7 @@ export function OwnerStep() {
 
   return (
     <div className="flex flex-col gap-[18px]">
-      <div className="rounded border-[0.5px] border-[rgba(232,160,32,0.3)] bg-[rgba(232,160,32,0.08)] px-3.5 py-3 text-[13px] leading-relaxed text-[#1A3C34]">
+      <div className="rounded border border-warning/30 bg-warning-bg px-3.5 py-3 text-[13px] leading-relaxed text-warning-text">
         ℹ️ Only share contact information that is already publicly known or that you have permission to
         share.
       </div>
@@ -43,7 +43,7 @@ export function OwnerStep() {
                     className={radioRowClass(active)}
                   >
                     <span className={radioDotClass(active)}>
-                      {active && <span className="text-[9px] leading-none text-white">✓</span>}
+                      {active && <span className="text-[9px] leading-none text-primary-foreground">✓</span>}
                     </span>
                     {rel}
                   </button>

@@ -4,6 +4,8 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { withAccommodationMediaUrls } from '@/utils/lib/accommodation-media';
 
+const SERVICE_FEE_MULTIPLIER = 1.2;
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -17,12 +19,25 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Fetch unit with property details
     const { data: unit, error } = await supabase
       .from('accommodation_units')
       .select(`
-        *,
-        property:accommodation_properties (*)
+        id,
+        room_type,
+        price,
+        additional_charges,
+        additional_charges_note,
+        availability_status,
+        available_from,
+        last_verified_at,
+        has_water,
+        has_electricity,
+        has_security,
+        has_parking,
+        is_furnished,
+        toilet_bathroom,
+        facilities_notes,
+        property:accommodation_properties (id, area, landmark)
       `)
       .eq('id', id)
       .eq('availability_status', 'available')
@@ -54,6 +69,7 @@ export async function GET(
     return NextResponse.json({
       listing: {
         ...unit,
+        price: Math.round(Number(unit.price) * SERVICE_FEE_MULTIPLIER),
         media: mediaWithUrls,
         verification: verification || null,
       },

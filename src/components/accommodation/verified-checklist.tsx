@@ -17,26 +17,25 @@ export function VerifiedChecklist({ verification }: VerifiedChecklistProps) {
 
   return (
     <div style={{
-      background: 'rgba(26,122,82,0.06)',
-      border: '0.5px solid rgba(26,122,82,0.2)',
+      border: '1px solid color-mix(in oklab, var(--success) 25%, transparent)',
       borderRadius: 'var(--radius-md, 12px)',
       padding: 16,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-        <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-success, #1A7A52)' }}>
+        <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--primary)' }}>
           ✓ CampusHub Verified
         </p>
-        <p style={{ fontSize: 11, color: 'var(--text-secondary, #6B7B75)' }}>
+        <p style={{ fontSize: 11, color: 'var(--muted-foreground)' }}>
           {formatDistanceToNow(new Date(verification.verified_at), { addSuffix: true })}
         </p>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {checks.map(({ label, value }) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 13, color: value ? 'var(--color-success, #1A7A52)' : 'var(--text-muted, #9AADA8)' }}>
+            <span style={{ fontSize: 13, color: value ? 'var(--success-text)' : 'var(--muted-foreground)' }}>
               {value ? '✓' : '○'}
             </span>
-            <span style={{ fontSize: 13, color: value ? 'var(--text-primary, #141F1B)' : 'var(--text-muted, #9AADA8)' }}>
+            <span style={{ fontSize: 13, color: value ? 'var(--foreground)' : 'var(--muted-foreground)' }}>
               {label}
             </span>
           </div>

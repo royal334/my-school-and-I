@@ -65,18 +65,18 @@ export function PhotosStep({
   if (done) {
     return (
       <div className="px-4 py-8 text-center">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(26,122,82,0.1)] text-2xl">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-success-bg text-2xl">
           ✓
         </div>
-        <h3 className="mb-2.5 text-xl text-[#1A3C34] dark:text-[#ECEEED]">Submission complete</h3>
-        <p className="mx-auto max-w-[280px] text-sm leading-relaxed text-[#6B7B75] dark:text-[#9BA19E]">
+        <h3 className="mb-2.5 text-xl text-foreground">Submission complete</h3>
+        <p className="mx-auto max-w-[280px] text-sm leading-relaxed text-muted-foreground">
           Our accommodation team will review your submission and get in touch. If the property is
           verified and rented through CampusHub, you&apos;ll receive a referral reward.
         </p>
         <button
           type="button"
           onClick={onComplete}
-          className="mt-6 min-h-[44px] cursor-pointer rounded bg-[#1A3C34] px-6 py-[11px] text-sm font-medium text-white transition-colors hover:bg-[#163229] dark:bg-[#7EC8A0] dark:text-[#0F1110] dark:hover:bg-[#A8D8C2]"
+          className="mt-6 min-h-[44px] cursor-pointer rounded bg-primary px-6 py-[11px] text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-700 dark:hover:bg-primary-500"
         >
           View my submissions
         </button>
@@ -86,20 +86,20 @@ export function PhotosStep({
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-[13px] leading-relaxed text-[#6B7B75] dark:text-[#9BA19E]">
+      <p className="text-[13px] leading-relaxed text-muted-foreground">
         Photos and videos help our team verify the property faster. You can add up to 10 files.
       </p>
 
-      <label className="flex cursor-pointer flex-col items-center gap-2.5 rounded-md border-[1.5px] border-dashed border-[#C8E8DA] bg-[rgba(232,245,239,0.4)] px-4 py-7 dark:border-white/15 dark:bg-[#1E211F]/40">
+      <label className="flex cursor-pointer flex-col items-center gap-2.5 rounded-md border-[1.5px] border-dashed border-input bg-muted/40 px-4 py-7">
         <input type="file" accept="image/*,video/*" multiple onChange={handleFiles} className="hidden" />
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-          <path d="M12 16V8m0 0l-3 3m3-3l3 3" stroke="#4A8C73" strokeWidth="1.5" strokeLinecap="round" />
-          <rect x="3" y="3" width="18" height="18" rx="4" stroke="#4A8C73" strokeWidth="1.5" />
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-primary">
+          <path d="M12 16V8m0 0l-3 3m3-3l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" strokeWidth="1.5" />
         </svg>
-        <p className="text-sm font-medium text-[#4A8C73] dark:text-[#7EC8A0]">
+        <p className="text-sm font-medium text-primary">
           Tap to add photos or videos
         </p>
-        <p className="text-[11px] text-[#6B7B75] dark:text-[#9BA19E]">JPG, PNG, MP4 — max 10 files</p>
+        <p className="text-[11px] text-muted-foreground">JPG, PNG, MP4 — max 10 files</p>
       </label>
 
       {files.length > 0 && (
@@ -110,7 +110,7 @@ export function PhotosStep({
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={URL.createObjectURL(file)} alt="" className="h-full w-full object-cover" />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-[#E8F5EF] text-[11px] text-[#4A8C73] dark:bg-[#1E211F] dark:text-[#7EC8A0]">
+                <div className="flex h-full w-full items-center justify-center bg-muted text-[11px] text-primary">
                   🎥 Video
                 </div>
               )}
@@ -123,7 +123,7 @@ export function PhotosStep({
                 ×
               </button>
               {i === 0 && (
-                <span className="absolute bottom-1 left-1 rounded-[3px] bg-[#E8A020] px-[5px] py-0.5 text-[9px] font-medium uppercase tracking-[0.06em] text-[#3A2800]">
+                <span className="absolute bottom-1 left-1 rounded-[3px] bg-accent-500 px-[5px] py-0.5 text-[9px] font-medium uppercase tracking-[0.06em] text-accent-foreground">
                   Cover
                 </span>
               )}
@@ -134,13 +134,13 @@ export function PhotosStep({
 
       {uploading && (
         <div>
-          <div className="h-1 overflow-hidden rounded bg-[#E8F5EF] dark:bg-[#1E211F]">
+          <div className="h-1 overflow-hidden rounded bg-muted">
             <div
-              className="h-full bg-[#7EC8A0] transition-[width] duration-300"
+              className="h-full bg-primary transition-[width] duration-300"
               style={{ width: `${(uploaded / (files.length || 1)) * 100}%` }}
             />
           </div>
-          <p className="mt-1.5 text-xs text-[#6B7B75] dark:text-[#9BA19E]">
+          <p className="mt-1.5 text-xs text-muted-foreground">
             Uploading {uploaded} of {files.length}…
           </p>
         </div>
@@ -153,8 +153,8 @@ export function PhotosStep({
         className={[
           'min-h-[48px] w-full cursor-pointer rounded px-5 py-3 text-[15px] font-medium transition-colors',
           uploading
-            ? 'cursor-not-allowed bg-[#4A8C73] text-white'
-            : 'bg-[#1A3C34] text-white hover:bg-[#163229] dark:bg-[#7EC8A0] dark:text-[#0F1110] dark:hover:bg-[#A8D8C2]',
+            ? 'cursor-not-allowed bg-primary/70 text-primary-foreground'
+            : 'bg-primary text-primary-foreground hover:bg-primary-700 dark:hover:bg-primary-500',
         ].join(' ')}
       >
         {uploading

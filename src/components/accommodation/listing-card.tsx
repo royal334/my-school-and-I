@@ -9,14 +9,14 @@ export function ListingCard({ listing }: { listing: Listing }) {
 
   return (
     <Link href={`/dashboard/accommodation/${listing.id}`} className="block">
-      <div className="group h-full overflow-hidden rounded-xl border border-[#D6E5DF] bg-card text-card-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-[#4A8C73]/40 hover:shadow-md dark:border-white/10 dark:hover:border-[#7EC8A0]/40">
+      <div className="group h-full overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md">
         {/* Image */}
-        <div className="relative flex h-40 items-center justify-center overflow-hidden bg-[#E8F5EF] dark:bg-[#1E211F]">
+        <div className="relative flex h-40 items-center justify-center overflow-hidden bg-muted text-primary">
           {listing.cover_image?.url ? (
               listing.cover_image.file_type === 'video' ? (
                 <video
                   src={listing.cover_image.url}
-                  aria-label={listing.property.name}
+                  aria-label={listing.room_type}
                   autoPlay
                   muted
                   loop
@@ -26,20 +26,20 @@ export function ListingCard({ listing }: { listing: Listing }) {
               ) : (
                 <img
                   src={listing.cover_image.url}
-                  alt={listing.property.name}
+                  alt={listing.room_type}
                   className="h-full w-full object-cover"
                 />
               )
           ) : (
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="9" width="18" height="13" rx="2" stroke="#4A8C73" strokeWidth="1.5" />
-              <path d="M9 9V7a3 3 0 016 0v2" stroke="#4A8C73" strokeWidth="1.5" />
-              <path d="M3 13h18" stroke="#4A8C73" strokeWidth="1.5" />
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="text-primary">
+              <rect x="3" y="9" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M9 9V7a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M3 13h18" stroke="currentColor" strokeWidth="1.5" />
             </svg>
           )}
 
           {/* Room type badge */}
-          <span className="absolute left-2.5 top-2.5 rounded-full bg-[#E8F5EF]/95 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.08em] text-[#1A3C34] dark:bg-[#0F1110]/70 dark:text-[#E1E4E2]">
+          <span className="absolute left-2.5 top-2.5 rounded-full bg-background/95 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.08em] text-foreground">
             {listing.room_type}
           </span>
         </div>
@@ -59,7 +59,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
           </h3> */}
 
           {/* Location */}
-          <p className="mt-1 mb-2.5 text-xs text-[#6B7B75] dark:text-[#9BA19E]">
+          <p className="mt-1 mb-2.5 text-xs text-muted-foreground">
             📍 {listing.property.area}
             {listing.property.landmark && ` · Near ${listing.property.landmark}`}
           </p>
@@ -75,12 +75,13 @@ export function ListingCard({ listing }: { listing: Listing }) {
           {/* Price */}
           <div className="flex items-baseline justify-between">
             <div>
-              <span className="font-mono text-[17px] font-medium text-[#1A3C34] dark:text-[#ECEEED]">
+              <span className="font-mono text-[17px] font-medium text-foreground">
                 {formatPrice(listing.price)}
               </span>
-              <span className="ml-1 text-[11px] text-[#6B7B75] dark:text-[#9BA19E]">/yr</span>
+              <span className="ml-1 text-[11px] text-muted-foreground">/yr</span>
+              <p className="text-[10px] text-muted-foreground">All fees included</p>
             </div>
-            <span className="text-xs font-medium text-[#4A8C73] dark:text-[#7EC8A0]">
+            <span className="text-xs font-medium text-primary">
               View details →
             </span>
           </div>

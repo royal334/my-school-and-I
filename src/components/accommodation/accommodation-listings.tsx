@@ -63,9 +63,9 @@ export function AccommodationListings() {
     <div  className="max-w-4xl mx-auto space-y-6">
       {/* Count pill */}
       {/* <div className="flex justify-end">
-        <div className="flex items-center gap-2 rounded-lg border border-[#D6E5DF] bg-[#E8F5EF] px-4 py-2 dark:border-white/10 dark:bg-[#1E211F]">
-          <House className="h-5 w-5 text-[#4A8C73] dark:text-[#7EC8A0]" />
-          <span className="text-sm font-medium text-[#1A3C34] dark:text-[#E8F5EF]">
+        <div className="flex items-center gap-2 rounded-lg border border-border bg-muted px-4 py-2">
+          <House className="h-5 w-5 text-primary" />
+          <span className="text-sm font-medium text-foreground">
             {loading ? 'Loading…' : `${total} ${total === 1 ? 'listing' : 'listings'}`}
           </span>
         </div>

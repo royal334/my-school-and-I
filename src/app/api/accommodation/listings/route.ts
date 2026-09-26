@@ -4,6 +4,8 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { withAccommodationMediaUrls } from '@/utils/lib/accommodation-media';
 
+const SERVICE_FEE_MULTIPLIER = 1.2;
+
 export async function GET(request: Request) {
   try {
     const supabase = createClient(await cookies());
@@ -58,8 +60,8 @@ export async function GET(request: Request) {
 
     // Filters
     if (room_type) query = query.eq('room_type', room_type);
-    if (min_price) query = query.gte('price', parseFloat(min_price));
-    if (max_price) query = query.lte('price', parseFloat(max_price));
+    if (min_price) query = query.gte('price', (parseFloat(min_price) - 0.5) / SERVICE_FEE_MULTIPLIER);
+    if (max_price) query = query.lte('price', (parseFloat(max_price) + 0.5) / SERVICE_FEE_MULTIPLIER);
     if (has_water === 'true') query = query.eq('has_water', true);
     if (has_electricity === 'true') query = query.eq('has_electricity', true);
     if (has_security === 'true') query = query.eq('has_security', true);
@@ -106,6 +108,10 @@ export async function GET(request: Request) {
 
     const result = filtered.map((u: any) => ({
       ...u,
+      price: Math.round(Number(u.price) * SERVICE_FEE_MULTIPLIER),
+      property: u.property
+        ? { id: u.property.id, area: u.property.area, landmark: u.property.landmark }
+        : null,
       cover_image: mediaByUnitId[u.id] || null,
     }));
 

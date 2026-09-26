@@ -48,7 +48,7 @@ export default function DashboardToggle({
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-lg border border-[#D6E5DF] dark:border-white/10 bg-[#F0F5F3] dark:bg-[#1E211F] p-1" data-tour="dashboard-toggle">
+    <div className="flex items-center gap-2 rounded-lg border border-border bg-muted p-1" data-tour="dashboard-toggle">
       {!isVendorAccount && (
         <>
           <Button
@@ -57,7 +57,7 @@ export default function DashboardToggle({
             onClick={() => handleToggle(false)}
             className={cn(
               'flex items-center gap-2',
-              isStudent && 'bg-[#1A3C34] dark:bg-[#4A8C73] shadow-sm text-[#E8F5EF]'
+              isStudent && 'bg-primary text-primary-foreground shadow-sm'
             )}
           >
             <GraduationCap className="h-4 w-4" />
@@ -70,7 +70,7 @@ export default function DashboardToggle({
             onClick={() => handleToggle(true)}
             className={cn(
               'flex items-center gap-2',
-              !isStudent && 'bg-[#1A3C34] dark:bg-[#4A8C73] shadow-sm text-[#E8F5EF]'
+              !isStudent && 'bg-primary text-primary-foreground shadow-sm'
             )}
           >
             <Store className="h-4 w-4" />
@@ -84,7 +84,7 @@ export default function DashboardToggle({
           variant="outline"
           size="sm"
           onClick={handleAdminToggle}
-          className="flex items-center gap-2 border-[#1A3C34] text-[#1A3C34] dark:border-[#4A8C73] dark:text-[#E8F5EF]"
+          className="flex items-center gap-2 border-primary text-primary dark:text-primary-300"
         >
           <Shield className="h-4 w-4" />
           Admin

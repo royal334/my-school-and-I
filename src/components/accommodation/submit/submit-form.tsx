@@ -78,10 +78,10 @@ export function SubmitAccommodationForm() {
   const isLastDataStep = step === 2;
 
   return (
-    <div className="min-h-screen bg-[#F0F5F3] pb-20 dark:bg-[#0F1110]">
+    <div className="min-h-screen bg-background pb-20">
       <SubmitHeader step={step} onBack={handleBack} />
 
-      <div className="bg-white pb-3 dark:bg-[#171918]">
+      <div className="bg-card pb-3">
         <SubmitStepBar current={step} total={STEPS.length} />
       </div>
 
@@ -100,7 +100,7 @@ export function SubmitAccommodationForm() {
           )}
 
           {error && (
-            <p className="mt-3 rounded bg-[rgba(196,75,42,0.06)] px-3.5 py-2.5 text-[13px] text-[#C44B2A] dark:bg-[rgba(232,105,74,0.1)] dark:text-[#E8694A]">
+            <p className="mt-3 rounded bg-error-bg px-3.5 py-2.5 text-[13px] text-error-text">
               {error}
             </p>
           )}
@@ -112,10 +112,10 @@ export function SubmitAccommodationForm() {
                 onClick={handleNext}
                 disabled={submitting}
                 className={[
-                  'min-h-[50px] w-full cursor-pointer rounded px-5 py-[13px] text-[15px] font-medium text-white transition-colors',
+                  'min-h-[50px] w-full cursor-pointer rounded px-5 py-[13px] text-[15px] font-medium text-primary-foreground transition-colors',
                   submitting
-                    ? 'cursor-not-allowed bg-[#4A8C73]'
-                    : 'bg-[#1A3C34] hover:bg-[#163229] dark:bg-[#7EC8A0] dark:text-[#0F1110] dark:hover:bg-[#A8D8C2]',
+                    ? 'cursor-not-allowed bg-primary/70'
+                    : 'bg-primary hover:bg-primary-700 dark:hover:bg-primary-500',
                 ].join(' ')}
               >
                 {submitting

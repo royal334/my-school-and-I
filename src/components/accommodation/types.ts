@@ -1,9 +1,7 @@
 export interface Property {
   id: string;
-  name: string;
   area: string;
-  street: string;
-  landmark: string;
+  landmark: string | null;
 }
 
 export interface MediaItem {
@@ -26,7 +24,6 @@ export interface Verification {
 
 export interface Listing {
   id: string;
-  unit_number: string;
   room_type: string;
   price: number;
   additional_charges: number;

@@ -85,7 +85,7 @@ const lightboxBackdropStyle: CSSProperties = {
   position: 'fixed',
   inset: 0,
   zIndex: 1000,
-  background: 'rgba(10, 20, 17, 0.95)',
+  background: 'rgba(11, 11, 18, 0.95)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -100,7 +100,7 @@ const arrowButtonStyle: CSSProperties = {
   height: 36,
   borderRadius: '50%',
   border: 'none',
-  background: 'rgba(26, 60, 52, 0.55)',
+  background: 'rgba(79, 70, 229, 0.55)',
   color: '#fff',
   cursor: 'pointer',
 };
@@ -154,7 +154,7 @@ export function ImageGallery({ media, name }: ImageGalleryProps) {
         position: 'relative',
         width: '100%',
         height: 260,
-        background: 'var(--color-mist, #E8F5EF)',
+        background: 'var(--muted)',
         overflow: 'hidden',
       }}
     >
@@ -170,9 +170,9 @@ export function ImageGallery({ media, name }: ImageGalleryProps) {
         </div>
       ) : (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="9" width="18" height="13" rx="2" stroke="#4A8C73" strokeWidth="1.5" />
-            <path d="M9 9V7a3 3 0 016 0v2" stroke="#4A8C73" strokeWidth="1.5" />
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="text-primary">
+            <rect x="3" y="9" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M9 9V7a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.5" />
           </svg>
         </div>
       )}
@@ -219,7 +219,7 @@ export function ImageGallery({ media, name }: ImageGalleryProps) {
               fontSize: 11,
               fontWeight: 600,
               color: '#fff',
-              background: 'rgba(26, 60, 52, 0.6)',
+              background: 'rgba(79, 70, 229, 0.6)',
               padding: '3px 8px',
               borderRadius: 'var(--radius-full, 10px)',
             }}

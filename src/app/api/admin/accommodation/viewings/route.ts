@@ -36,7 +36,7 @@ export async function GET(request: Request) {
           property:accommodation_properties (id, name, area, landlord_phone, caretaker_phone)
         )
       `, { count: 'exact' })
-      .order('created_at', { ascending: false })
+      .order('created_at', { ascending: true })
       .range(offset, offset + limit - 1);
 
     if (status) query = query.eq('status', status);

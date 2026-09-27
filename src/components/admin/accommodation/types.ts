@@ -14,6 +14,8 @@ export interface Lead {
 
 export interface Unit {
   id: string;
+  created_at?: string | null;
+  submission_created_at?: string | null;
   unit_number: string | null;
   room_type: string;
   price: number | null;
@@ -69,6 +71,7 @@ export interface DashboardSnapshot {
 export interface LeadSubmitter {
   id: string;
   full_name: string | null;
+  phone_number: string | null;
 }
 
 export interface LeadMedia {

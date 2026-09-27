@@ -64,18 +64,20 @@ export default function DashboardToggle({
             Student
           </Button>
 
-          <Button
-            variant={isStudent ? 'ghost' : 'default'}
-            size="sm"
-            onClick={() => handleToggle(true)}
-            className={cn(
-              'flex items-center gap-2',
-              !isStudent && 'bg-primary text-primary-foreground shadow-sm'
-            )}
-          >
-            <Store className="h-4 w-4" />
-            Vendor
-          </Button>
+          {hasVendor && (
+            <Button
+              variant={isStudent ? 'ghost' : 'default'}
+              size="sm"
+              onClick={() => handleToggle(true)}
+              className={cn(
+                'flex items-center gap-2',
+                !isStudent && 'bg-primary text-primary-foreground shadow-sm'
+              )}
+            >
+              <Store className="h-4 w-4" />
+              Vendor
+            </Button>
+          )}
         </>
       )}
 

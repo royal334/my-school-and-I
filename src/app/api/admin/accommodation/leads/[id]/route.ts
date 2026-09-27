@@ -102,6 +102,30 @@ export async function PATCH(
     const body = await request.json();
     const { action, status, admin_notes, matched_property_id, matched_unit_id, duplicate_of } = body;
 
+    const { data: currentLead, error: currentLeadError } = await supabase
+      .from('accommodation_submissions')
+      .select('status')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (currentLeadError) throw currentLeadError;
+    if (!currentLead) {
+      return NextResponse.json({ error: 'Lead not found' }, { status: 404 });
+    }
+
+    const currentStatus = currentLead.status;
+    const canReview = action === 'update_status' && status === 'reviewing' && currentStatus === 'pending';
+    const canReject = action === 'update_status' && status === 'rejected' && ['pending', 'reviewing'].includes(currentStatus);
+    const canMarkDuplicate = action === 'mark_duplicate' && ['pending', 'reviewing'].includes(currentStatus);
+    const canLinkProperty = action === 'link_property' && currentStatus === 'reviewing';
+
+    if (!(canReview || canReject || canMarkDuplicate || canLinkProperty)) {
+      return NextResponse.json(
+        { error: 'This action is not allowed for the submission’s current status' },
+        { status: 409 }
+      );
+    }
+
     const updates: Record<string, any> = {
       reviewed_by: user.id,
       reviewed_at: new Date().toISOString(),

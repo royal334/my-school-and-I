@@ -34,7 +34,7 @@ export function LeadDetailView({ lead: initialLead }: { lead: LeadDetail }) {
         <Card>
           <SectionTitle>Submitted by</SectionTitle>
           <p className="mt-1 text-sm text-primary-600 dark:text-white">
-            {lead.submitter?.full_name || 'Unknown student'}
+            {lead.submitter?.full_name || 'Unknown student'} {lead.submitter?.phone_number && `· ${lead.submitter.phone_number}`}
           </p>
           {lead.submitter_relationship && (
             <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-300">

@@ -68,12 +68,15 @@ export function CampusHubLogo({
         <span
           className={cn(
             "font-display text-xl font-bold tracking-tight",
-            inverted ? "text-black dark:text-white" : "text-foreground ",
+            inverted ? "text-primary-400 dark:text-primary-500" : "text-foreground dark:text-primary-400",
           )}
         >
           Campus
-          <span className={inverted ? "text-primary-300" : "text-primary-600 dark:text-primary-300"}>
-            Hub
+          <span className={inverted ? "text-primary-500 dark:text-white" : "text-primary-600 dark:text-primary-300"}>
+            &
+            </span>
+          <span className={inverted ? "text-primary-700 dark:text-primary-400" : "text-primary-600 dark:text-primary-400"}>
+            Me
           </span>
         </span>
       )}

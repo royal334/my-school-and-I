@@ -11,7 +11,16 @@ const FILTERS = ['available', 'pending_reverification', 'unavailable', 'rented',
 export function ListingsTab({ units, onVerified }: { units: Unit[]; onVerified: () => void }) {
   const [filter, setFilter] = useState('available');
 
-  const filtered = filter ? units.filter(u => u.availability_status === filter) : units;
+  const oldestFirst = [...units].sort((left, right) => {
+    const leftDate = left.submission_created_at || left.created_at || '';
+    const rightDate = right.submission_created_at || right.created_at || '';
+    if (!leftDate) return rightDate ? 1 : 0;
+    if (!rightDate) return -1;
+    return leftDate.localeCompare(rightDate);
+  });
+  const filtered = filter
+    ? oldestFirst.filter(unit => unit.availability_status === filter)
+    : oldestFirst;
 
   return (
     <div>

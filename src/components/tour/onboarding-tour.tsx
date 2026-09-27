@@ -445,33 +445,44 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
       continuous
       scrollToFirstStep
       onEvent={handleEvent}
-      styles={{
-        tooltip: { borderRadius: 14, padding: '18px 20px' },
-        tooltipTitle: { fontSize: 17, fontWeight: 700, color:'#15231E'  },
-        tooltipContent: { fontSize: 14, lineHeight: 1.55 },
-        buttonPrimary: {
-          backgroundColor: 'var(--primary)',
-          borderRadius: 8,
-          fontSize: 14,
-          fontWeight: 600,
-        },
-        buttonBack: { color: 'var(--primary)', borderRadius: 8, fontSize: 14 },
-        buttonSkip: { color: 'var(--muted-foreground)', borderRadius: 8, fontSize: 14 },
-        buttonClose: { color: 'var(--muted-foreground)', fontSize: 16 },
-      }}
-      options={{
-        skipBeacon: true,
-        showProgress: true,
-        targetWaitTimeout: 10000,
-        buttons: ['back', 'skip', 'primary'],
-        closeButtonAction: 'skip',
-        overlayClickAction: false,
-        dismissKeyAction: false,
-        primaryColor: 'var(--primary)',
-        textColor: 'var(--foreground)',
-        spotlightPadding: 10,
-        zIndex: 120,
-      }}
+        styles={{
+          tooltip: {
+            background: 'var(--card)',
+            borderRadius: 14,
+            padding: '18px 20px',
+            border: '1px solid var(--border)',
+            boxShadow: '0 24px 48px -20px rgb(0 0 0 / 0.45)',
+          },
+          tooltipTitle: { fontSize: 17, fontWeight: 700, color: 'var(--foreground)' },
+          tooltipContent: { fontSize: 14, lineHeight: 1.55, color: 'var(--muted-foreground)' },
+          tooltipFooter: { marginTop: 4 },
+          buttonPrimary: {
+            backgroundColor: 'var(--primary)',
+            color: 'var(--primary-foreground)',
+            borderRadius: 8,
+            fontSize: 14,
+            fontWeight: 600,
+          },
+          buttonBack: { color: 'var(--primary)', borderRadius: 8, fontSize: 14 },
+          buttonSkip: { color: 'var(--muted-foreground)', borderRadius: 8, fontSize: 14 },
+          buttonClose: { color: 'var(--muted-foreground)', fontSize: 16 },
+        }}
+        options={{
+          skipBeacon: true,
+          showProgress: true,
+          targetWaitTimeout: 10000,
+          buttons: ['back', 'skip', 'primary'],
+          closeButtonAction: 'skip',
+          overlayClickAction: false,
+          dismissKeyAction: false,
+          primaryColor: 'var(--primary)',
+          textColor: 'var(--foreground)',
+          backgroundColor: 'var(--card)',
+          arrowColor: 'var(--card)',
+          overlayColor: 'rgba(0, 0, 0, 0.65)',
+          spotlightPadding: 10,
+          zIndex: 120,
+        }}
       />
       {debugOn && debugData && (
         <div

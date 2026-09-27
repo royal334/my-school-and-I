@@ -3,6 +3,15 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Card } from './card';
 import { SectionTitle } from './section-title';
 import type { LeadAction, LeadDetail } from './types';
@@ -50,6 +59,7 @@ export function LeadActionPanel({
   onUpdate: (updated: LeadDetail) => void;
 }) {
   const [action, setAction] = useState<LeadAction | null>(null);
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [adminNotes, setAdminNotes] = useState(lead.admin_notes || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -67,21 +77,38 @@ export function LeadActionPanel({
   const [unitElec, setUnitElec] = useState(lead.has_electricity ?? false);
   const [unitSec, setUnitSec] = useState(lead.has_security ?? false);
 
-  async function updateStatus(status: string) {
+  const availableActions = lead.status === 'pending'
+    ? ACTION_BUTTONS.filter(({ action: candidate }) => candidate !== 'create_property')
+    : lead.status === 'reviewing'
+      ? ACTION_BUTTONS.filter(({ action: candidate }) => candidate !== 'reviewing')
+      : [];
+
+  async function updateStatus(status: 'reviewing' | 'duplicate' | 'rejected') {
     setLoading(true);
     setError('');
     try {
       const res = await fetch(`/api/admin/accommodation/leads/${lead.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'update_status', status, admin_notes: adminNotes }),
+        body: JSON.stringify({
+          action: status === 'duplicate' ? 'mark_duplicate' : 'update_status',
+          status: status === 'duplicate' ? undefined : status,
+          admin_notes: adminNotes,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       onUpdate({ ...lead, ...data.lead });
       setAction(null);
+      setConfirmationOpen(false);
+      toast.success({
+        reviewing: 'Submission marked as reviewing.',
+        duplicate: 'Submission marked as duplicate.',
+        rejected: 'Submission rejected.',
+      }[status]);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'An unexpected error occurred');
+      setConfirmationOpen(false);
     } finally {
       setLoading(false);
     }
@@ -158,23 +185,65 @@ export function LeadActionPanel({
 
       toast.success(`Property "${propName}" created, verified and listed on CampusHub.`);
       setAction(null);
+      setConfirmationOpen(false);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'An unexpected error occurred');
+      setConfirmationOpen(false);
     } finally {
       setLoading(false);
     }
   }
 
+  function requestConfirmation() {
+    setError('');
+    setConfirmationOpen(true);
+  }
+
+  function confirmAction() {
+    if (action === 'reviewing' || action === 'duplicate' || action === 'rejected') {
+      void updateStatus(action);
+    } else if (action === 'create_property') {
+      void createPropertyAndUnit();
+    }
+  }
+
+  const confirmationDetails = {
+    reviewing: {
+      title: 'Mark as reviewing?',
+      description: 'This submission will move to review. You can create a listing after inspection.',
+      confirmLabel: 'Mark as reviewing',
+    },
+    create_property: {
+      title: 'Create and list this property?',
+      description: 'This will create the property, verify the unit, and make it available on CampusHub.',
+      confirmLabel: 'Create listing',
+    },
+    duplicate: {
+      title: 'Mark as duplicate?',
+      description: 'This submission will be marked as a duplicate and cannot be listed.',
+      confirmLabel: 'Mark duplicate',
+    },
+    rejected: {
+      title: 'Reject this submission?',
+      description: 'This submission will be rejected and no further actions will be available.',
+      confirmLabel: 'Reject submission',
+    },
+  } as const;
+  const confirmation = action ? confirmationDetails[action] : null;
+
   return (
     <Card>
       <SectionTitle>Actions</SectionTitle>
 
-      {!action && (
+      {!action && availableActions.length > 0 && (
         <div className="mt-2 flex flex-col gap-2">
-          {ACTION_BUTTONS.map(btn => (
+          {availableActions.map(btn => (
             <button
               key={btn.action}
-              onClick={() => setAction(btn.action)}
+              onClick={() => {
+                setError('');
+                setAction(btn.action);
+              }}
               className={cn(
                 'cursor-pointer rounded-lg px-3.5 py-2.5 text-left text-[13px] font-medium',
                 btn.className,
@@ -184,6 +253,10 @@ export function LeadActionPanel({
             </button>
           ))}
         </div>
+      )}
+
+      {!action && availableActions.length === 0 && (
+        <p className="mt-2 text-[13px] text-muted-foreground">No further actions are available for this submission.</p>
       )}
 
       {action === 'reviewing' && (
@@ -199,8 +272,8 @@ export function LeadActionPanel({
             className={textareaClass}
           />
           <div className="flex gap-2">
-            <button onClick={() => updateStatus('reviewing')} disabled={loading} className={primaryBtnClass}>
-              {loading ? 'Saving…' : 'Confirm'}
+            <button onClick={requestConfirmation} disabled={loading} className={primaryBtnClass}>
+              Continue
             </button>
             <button onClick={() => setAction(null)} className={secondaryBtnClass}>
               Cancel
@@ -222,8 +295,8 @@ export function LeadActionPanel({
             className={textareaClass}
           />
           <div className="flex gap-2">
-            <button onClick={() => updateStatus('rejected')} disabled={loading} className={dangerBtnClass}>
-              {loading ? 'Saving…' : 'Reject submission'}
+            <button onClick={requestConfirmation} disabled={loading} className={dangerBtnClass}>
+              Continue to confirmation
             </button>
             <button onClick={() => setAction(null)} className={secondaryBtnClass}>
               Cancel
@@ -242,8 +315,8 @@ export function LeadActionPanel({
             className={textareaClass}
           />
           <div className="flex gap-2">
-            <button onClick={() => updateStatus('duplicate')} disabled={loading} className={secondaryBtnClass}>
-              {loading ? 'Saving…' : 'Mark duplicate'}
+            <button onClick={requestConfirmation} disabled={loading} className={secondaryBtnClass}>
+              Continue to confirmation
             </button>
             <button onClick={() => setAction(null)} className={secondaryBtnClass}>
               Cancel
@@ -291,8 +364,8 @@ export function LeadActionPanel({
           {error && <p className="text-[13px] text-error">{error}</p>}
 
           <div className="flex gap-2">
-            <button onClick={createPropertyAndUnit} disabled={loading} className={primaryBtnClass}>
-              {loading ? 'Creating…' : 'Create property + unit'}
+            <button onClick={requestConfirmation} disabled={loading} className={primaryBtnClass}>
+              Review and confirm listing
             </button>
             <button onClick={() => setAction(null)} className={secondaryBtnClass}>
               Cancel
@@ -302,6 +375,29 @@ export function LeadActionPanel({
       )}
 
       {error && !action && <p className="mt-2 text-[13px] text-error">{error}</p>}
+
+      <AlertDialog open={confirmationOpen} onOpenChange={setConfirmationOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{confirmation?.title}</AlertDialogTitle>
+            <AlertDialogDescription>{confirmation?.description}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
+            <button
+              type="button"
+              onClick={confirmAction}
+              disabled={loading}
+              className={cn(
+                action === 'rejected' ? dangerBtnClass : primaryBtnClass,
+                'min-h-9 flex-none',
+              )}
+            >
+              {loading ? 'Saving…' : confirmation?.confirmLabel}
+            </button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 }

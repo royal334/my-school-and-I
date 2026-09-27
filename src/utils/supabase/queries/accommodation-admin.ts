@@ -20,9 +20,9 @@ export async function getAdminAccommodationDashboard(
     supabase
       .from('accommodation_properties')
       .select(
-        'id, name, area, units:accommodation_units (id, unit_number, room_type, price, availability_status, last_verified_at, verification_due_at)',
+        'id, name, area, units:accommodation_units (id, unit_number, room_type, price, availability_status, last_verified_at, verification_due_at, created_at)',
       )
-      .order('created_at', { ascending: false }),
+      .order('created_at', { ascending: true }),
     supabase
       .from('accommodation_viewings')
       .select(
@@ -31,6 +31,32 @@ export async function getAdminAccommodationDashboard(
       .order('created_at', { ascending: false })
       .limit(5),
   ]);
+
+  const unitIds = (properties ?? []).flatMap(property =>
+    (property.units ?? []).map((unit: { id: string }) => unit.id),
+  );
+  const submissionCreatedAtByUnitId = new Map<string, string>();
+  if (unitIds.length > 0) {
+    const { data: linkedSubmissions } = await supabase
+      .from('accommodation_submissions')
+      .select('matched_unit_id, created_at')
+      .in('matched_unit_id', unitIds)
+      .order('created_at', { ascending: true });
+
+    for (const submission of linkedSubmissions ?? []) {
+      if (submission.matched_unit_id && !submissionCreatedAtByUnitId.has(submission.matched_unit_id)) {
+        submissionCreatedAtByUnitId.set(submission.matched_unit_id, submission.created_at);
+      }
+    }
+  }
+
+  const propertiesWithSubmissionDates = (properties ?? []).map(property => ({
+    ...property,
+    units: (property.units ?? []).map((unit: { id: string }) => ({
+      ...unit,
+      submission_created_at: submissionCreatedAtByUnitId.get(unit.id) ?? null,
+    })),
+  }));
 
   const leads = leadRows ?? [];
   const submitterIds = Array.from(
@@ -53,7 +79,7 @@ export async function getAdminAccommodationDashboard(
 
   return buildDashboardSnapshot(
     enrichedLeads,
-    (properties ?? []) as PropertyWithUnits[],
+    propertiesWithSubmissionDates as PropertyWithUnits[],
     (viewingRows ?? []) as Viewing[],
   );
 }
@@ -74,7 +100,7 @@ export async function getLeadDetail(
   if (lead.submitted_by) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('id, full_name')
+      .select('id, full_name, phone_number')
       .eq('id', lead.submitted_by)
       .maybeSingle();
     submitter = profile;

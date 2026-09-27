@@ -32,7 +32,7 @@ export async function GET(request: Request) {
     let query = supabase
       .from('accommodation_submissions')
       .select('*', { count: 'exact' })
-      .order('created_at', { ascending: false })
+      .order('created_at', { ascending: true })
       .range(offset, offset + limit - 1);
 
     if (status) query = query.eq('status', status);

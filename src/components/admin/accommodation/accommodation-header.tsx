@@ -15,7 +15,7 @@ export function AccommodationHeader({
   onTabChange: (tab: Tab) => void;
 }) {
   return (
-    <header className="bg-primary-600 px-4 pt-4 dark:bg-[#112820]">
+    <header className="bg-primary-600 px-4 pt-4 dark:bg-primary-800">
       <div className="mb-4 flex items-center justify-between gap-4">
         <div>
           <Link href="/dashboard" className="flex  gap-2">

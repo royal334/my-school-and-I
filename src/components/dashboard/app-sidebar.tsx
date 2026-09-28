@@ -32,7 +32,8 @@ import {
   MessageSquare,
   Settings,
   Store,
-    Upload,
+  Upload,
+  ShoppingCart,
   User,
   House,
 } from "lucide-react";
@@ -47,6 +48,7 @@ const baseNavItems = [
   { href: "/dashboard/cgpa", icon: Calculator, label: "CGPA" },
   {href:"/dashboard/accommodation", icon: House, label: "Accommodation"},
   { href: "/dashboard/vendors", icon: Store, label: "Vendors" },
+  { href:"/dashboard/marketplace", icon:ShoppingCart, label:"Marketplace"},
   { href: "/dashboard/notifications", icon: MessageSquare, label: "Notifications" },
   { href: "/dashboard/announcements", icon: Bell, label: "Announcements" },
   { href: "/dashboard/profile", icon: User, label: "Profile" },

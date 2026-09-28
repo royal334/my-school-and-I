@@ -41,7 +41,7 @@ export function InstallPromptModal({ open, onOpenChange }: InstallPromptModalPro
       <DialogContent className="sm:max-w-sm z-[130]">
         <div className="flex flex-col items-center gap-3 pt-2 text-center">
           <Image
-            src="/icon-192x192.png"
+            src="/campushub-logo.png"
             alt="CampusHub logo"
             width={72}
             height={72}

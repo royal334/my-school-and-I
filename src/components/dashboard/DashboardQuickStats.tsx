@@ -63,7 +63,7 @@ export function DashboardQuickStats({
       </Card>
       </Link>
 
-      <Link href="/dashboard/vendors">
+      <Link href="/dashboard/market?tab=vendors">
         <Card className="border-accent-200 bg-accent-50/50 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-accent-900 dark:bg-accent-950/20">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
@@ -78,7 +78,7 @@ export function DashboardQuickStats({
             {vendorsCount}
           </div>
           <Link
-            href="/dashboard/vendors"
+            href="/dashboard/market?tab=vendors"
             className="mt-2 inline-block text-xs font-medium text-[#E8A020] dark:text-[#E8A020] hover:text-[#C4850A] dark:hover:text-[#FFD07A] transition-colors"
           >
             Explore vendors →

@@ -30,15 +30,23 @@ const SERVICES = [
   "Printing",
   "Binding",
   "Photocopying",
-  "Scanning",
-  "Typing",
-  "Formatting",
   "Phone Repair",
   "Computer Repair",
   "Food Service",
-  "Snacks",
   "Tutoring",
-  "Transport",
+  "Nail Tech",
+  "Hair Dressing",
+  "Makeup",
+  "Laundry",
+  "Sales",
+  "Barbing",
+  "Spa",
+  "Catering",
+  "Event Planning",
+  "Lash Tech",
+  "Photography",
+
+
 ];
 
 type VendorFormData = {

@@ -26,14 +26,12 @@ import {
 import {
   Bell,
   BookOpen,
-  Calculator,
   LayoutDashboard,
   LogOut,
   MessageSquare,
   Settings,
   Store,
   Upload,
-  ShoppingCart,
   User,
   House,
 } from "lucide-react";
@@ -45,10 +43,8 @@ import { createClient } from "@/utils/supabase/client";
 const baseNavItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/dashboard/materials", icon: BookOpen, label: "Materials library" },
-  { href: "/dashboard/cgpa", icon: Calculator, label: "CGPA" },
   {href:"/dashboard/accommodation", icon: House, label: "Accommodation"},
-  { href: "/dashboard/vendors", icon: Store, label: "Vendors" },
-  { href:"/dashboard/marketplace", icon:ShoppingCart, label:"Marketplace"},
+  { href: "/dashboard/market", icon: Store, label: "Market" },
   { href: "/dashboard/notifications", icon: MessageSquare, label: "Notifications" },
   { href: "/dashboard/announcements", icon: Bell, label: "Announcements" },
   { href: "/dashboard/profile", icon: User, label: "Profile" },
@@ -105,6 +101,11 @@ export function AppSidebar() {
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
+    if (href === '/dashboard/market') {
+      return ['/dashboard/market', '/dashboard/vendors', '/dashboard/marketplace'].some(
+        base => pathname === base || pathname.startsWith(`${base}/`),
+      );
+    }
     return pathname.startsWith(href);
   };
 

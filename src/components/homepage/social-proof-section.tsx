@@ -62,7 +62,7 @@ export function SocialProofSection() {
               Social proof
             </p>
             <h2 className="text-3xl lg:text-4xl text-foreground" style={{ fontFamily: "var(--font-display)" }}>
-              Trusted by engineering students
+              Trusted by students
             </h2>
           </div>
         </Reveal>

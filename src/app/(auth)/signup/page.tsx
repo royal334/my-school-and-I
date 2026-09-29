@@ -257,7 +257,7 @@ export default function SignupPage() {
             {!isNewStudent && (
               <div className="space-y-2">
                 <Label htmlFor="matric_number" className="dark:text-foreground">
-                  Matric Number
+                  Matric/Reg Number
                 </Label>
                 <Input
                   id="matric_number"

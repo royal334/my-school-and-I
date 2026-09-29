@@ -10,6 +10,7 @@ import {
   Store,
   House,
   Upload,
+  ShoppingCart
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -28,6 +29,7 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
       : []),
     {href:"/dashboard/accommodation", icon: House, label: "Accommodation"},
     { href: '/dashboard/vendors', icon: Store, label: 'Vendors' },
+    { href: '/dashboard/marketplace', icon: ShoppingCart, label: 'Marketplace' },
     { href: '/dashboard/announcements', icon: Megaphone, label: 'Updates' },
   ];
   const pathname = usePathname();

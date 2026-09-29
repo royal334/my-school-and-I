@@ -15,13 +15,12 @@ export function SubpageHeader({ title, subtitle, backHref, action }: SubpageHead
   return (
     <div className="flex items-center justify-between gap-3 rounded-xl bg-primary p-4 dark:bg-primary-900">
       <div className="flex min-w-0 items-center gap-3">
-        {backHref && (
           <Button asChild variant="ghost" size="icon" className="text-primary-foreground hover:bg-white/10">
-            <Link href={backHref} aria-label="Go back">
+            <Link href="/dashboard/marketplace" aria-label="Go back">
               <ArrowLeft className="size-5" />
             </Link>
           </Button>
-        )}
+        
         <div className="min-w-0">
           <h1 className="truncate text-lg font-semibold text-white">{title}</h1>
           {subtitle && <p className="truncate text-xs text-white/70">{subtitle}</p>}

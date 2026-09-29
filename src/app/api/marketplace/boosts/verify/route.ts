@@ -4,6 +4,15 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { fromKobo, verifyPaystackTransaction } from '@/utils/lib/paystack';
 
+function pickRandom<T>(items: T[], count: number): T[] {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index--) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+  }
+  return shuffled.slice(0, count);
+}
+
 // GET /api/marketplace/boosts/verify?reference=xxx
 // Called by Paystack after payment
 export async function GET(request: Request) {
@@ -89,20 +98,46 @@ export async function GET(request: Request) {
         .single();
 
       if (boost_tier === 'featured') {
-        // Notify ALL marketplace users
-        const { data: allUsers } = await supabase
-          .from('profiles')
-          .select('id')
-          .neq('id', seller_id);
+        let recipientIds: string[] = [];
 
-        if (allUsers && allUsers.length > 0) {
+        if (listing?.category) {
+          const { data: similarSaves } = await supabase
+            .from('marketplace_saves')
+            .select('user_id, listing:marketplace_listings!inner(category)')
+            .eq('listing.category', listing.category)
+            .neq('user_id', seller_id);
+
+          const interestedUserIds = [
+            ...new Set(
+              (similarSaves || [])
+                .map((save: { user_id: string }) => save.user_id)
+                .filter((userId: string) => Boolean(userId) && userId !== seller_id),
+            ),
+          ];
+          recipientIds = pickRandom(interestedUserIds, 150);
+        }
+
+        if (recipientIds.length < 150) {
+          const { data: allUsers } = await supabase
+            .from('profiles')
+            .select('id')
+            .neq('id', seller_id);
+
+          const selectedIds = new Set(recipientIds);
+          const randomCandidates = (allUsers || [])
+            .map((user: { id: string }) => user.id)
+            .filter((userId: string) => !selectedIds.has(userId));
+          recipientIds.push(...pickRandom(randomCandidates, 150 - recipientIds.length));
+        }
+
+        if (recipientIds.length > 0) {
           sendBulkNotification({
-            userIds: allUsers.map((u: any) => u.id),
+            userIds: recipientIds,
             type: 'marketplace',
             title: '🌟 Featured on Marketplace',
             body: listing?.title
               ? `Check out: ${listing.title}`
-              : 'A new featured listing is available on CampusHub',
+              : 'A new featured listing is available on Campus&Me',
             data: {
               listing_id,
               deeplink: `/dashboard/marketplace/${listing_id}`,

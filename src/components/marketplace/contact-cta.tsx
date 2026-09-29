@@ -14,11 +14,11 @@ interface ContactCtaProps {
 /** Sticky bottom bar shown to buyers on active, non-owned listings. */
 export function ContactCta({ listingId, saved, title, price }: ContactCtaProps) {
   const waLink = `https://wa.me/?text=${encodeURIComponent(
-    `Hi, I'm interested in your listing on CampusHub: ${title} (₦${price})`,
+    `Hi, I'm interested in your listing on Campus&Me: ${title} (₦${price})`,
   )}`;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 flex gap-2.5 border-t border-border bg-background p-3 pb-[calc(12px+env(safe-area-inset-bottom,0px))]">
+    <div className="flex gap-2.5 border-t border-border bg-background p-3">
       <Button
         asChild
         className="h-12 flex-1 bg-[#25D366] py-3 hover:bg-[#1fb657]"

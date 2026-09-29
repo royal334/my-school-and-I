@@ -31,7 +31,7 @@ export function BoostTierCard({ tier, active, onSelect }: BoostTierCardProps) {
       <div
         className={cn(
           'flex items-center justify-between gap-2',
-          tier.popular && 'pr-[72px]',
+          'pr-[20px]',
         )}
       >
         <div className="flex items-center gap-2">

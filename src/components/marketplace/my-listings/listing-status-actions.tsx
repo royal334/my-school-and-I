@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Archive, CheckCircle2, Eye, Pencil, RotateCcw } from 'lucide-react';
+import { Archive, CheckCircle2, Eye, Pencil, RotateCcw, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MARKETPLACE_API_PATH, MARKETPLACE_BASE_PATH } from '@/components/marketplace/filters';
 import { cn } from '@/lib/utils';
@@ -50,7 +50,7 @@ export function ListingStatusActions({ listingId, status }: ListingStatusActions
   const canRelist = status === 'archived' || status === 'expired';
 
   return (
-    <div className="flex gap-2 border-t border-border p-3.5">
+    <div className="flex gap-2 border-t border-border p-3.5 overflow-x-auto">
       <Button asChild variant="outline" size="sm" className="flex-1">
         <Link href={`${MARKETPLACE_BASE_PATH}/${listingId}`}>
           <Eye />
@@ -88,6 +88,17 @@ export function ListingStatusActions({ listingId, status }: ListingStatusActions
             <Archive />
             Archive
           </Button>
+          <Link href={`${MARKETPLACE_BASE_PATH}/${listingId}/boost`}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="flex-1"
+            >
+              <Rocket />
+              Boost
+            </Button>
+          </Link>
         </>
       )}
 

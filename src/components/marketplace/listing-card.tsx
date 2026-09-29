@@ -66,7 +66,6 @@ export function ListingCard({ listing }: { listing: MarketplaceListing }) {
 
           <div className="flex items-center justify-between">
             <p className="truncate text-[11px] text-muted-foreground">
-              {listing.seller_name}
               {listing.location && ` · ${listing.location}`}
             </p>
             <StarRating

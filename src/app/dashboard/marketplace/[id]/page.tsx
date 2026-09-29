@@ -58,7 +58,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
       <ListingGallery images={listing.images} title={listing.title} isSold={isSold} />
 
       <ListingSummary listing={listing} />
-      <ListingSellerCard listing={listing} />
+      {/* <ListingSellerCard listing={listing} /> */}
       <ListingReviews listing={listing} reviews={reviews} userReview={userReview} />
 
       {!listing.is_own && (

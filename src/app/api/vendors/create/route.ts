@@ -59,6 +59,7 @@ export async function POST(request: Request) {
     const { error: profileUpdateError } = await supabase
       .from("profiles")
       .update({
+        account_type:'student_vendor',
         business_name,
         business_phone: phone_number,
         business_address: location ?? null,

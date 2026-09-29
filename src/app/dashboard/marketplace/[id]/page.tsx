@@ -12,6 +12,7 @@ import { ListingReviews } from '@/components/marketplace/listing-reviews';
 import { ReportListingButton } from '@/components/marketplace/report-listing-button';
 import { OwnerActions } from '@/components/marketplace/owner-actions';
 import { ContactCta } from '@/components/marketplace/contact-cta';
+import ListingViewTracker from '@/components/marketplace/listing-view-tracker';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -53,6 +54,8 @@ export default async function ListingDetailPage({ params }: PageProps) {
 
   return (
     <div className={`space-y-3 overflow-x-hidden ${showBuyerActions ? 'pb-24' : ''}`}>
+      <ListingViewTracker listingId={listing.id} isOwner={listing.is_own} />
+
       <ListingDetailHeader title={listing.title} listingId={listing.id} saved={listing.is_saved} />
 
       <ListingGallery images={listing.images} title={listing.title} isSold={isSold} />

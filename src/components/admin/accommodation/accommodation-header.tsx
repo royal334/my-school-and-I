@@ -18,9 +18,9 @@ export function AccommodationHeader({
     <header className="bg-primary-600 px-4 pt-4 dark:bg-primary-800">
       <div className="mb-4 flex items-center justify-between gap-4">
         <div>
-          <Link href="/dashboard" className="flex  gap-2">
+          <Link href="/admin" className="flex  gap-2">
             <ArrowLeft className="mb-2 h-4 w-4 text-white" />
-            <p className="text-sm text-white/60">Back to dashboard</p>
+            <p className="text-sm text-white/60">Back to admin</p>
           </Link>
           <h1 className="font-display text-xl tracking-tight text-white">Accommodation</h1>
           <p className="mt-0.5 text-xs text-primary-300">Operations dashboard</p>

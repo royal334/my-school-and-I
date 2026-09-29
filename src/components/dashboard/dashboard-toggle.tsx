@@ -39,7 +39,7 @@ export default function DashboardToggle({
   };
 
   const handleAdminToggle = () => {
-    router.push('/admin/accommodation');
+    router.push('/admin');
     router.refresh();
   };
 

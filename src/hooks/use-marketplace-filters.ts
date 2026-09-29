@@ -2,11 +2,7 @@
 
 import { useCallback, useMemo } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import {
-  MARKETPLACE_BASE_PATH,
-  hasActiveFilters,
-  parseMarketplaceFilters,
-} from '@/components/marketplace/filters';
+import { hasActiveFilters, parseMarketplaceFilters } from '@/components/marketplace/filters';
 import type { MarketplaceFilters } from '@/components/marketplace/types';
 
 /**
@@ -52,8 +48,12 @@ export function useMarketplaceFilters() {
   }, [filters, push]);
 
   const resetAll = useCallback(() => {
-    router.replace(MARKETPLACE_BASE_PATH, { scroll: false });
-  }, [router]);
+    const activeTab = searchParams.get('tab');
+    const target = pathname === '/dashboard/market' && activeTab
+      ? `${pathname}?tab=${encodeURIComponent(activeTab)}`
+      : pathname;
+    router.replace(target, { scroll: false });
+  }, [pathname, router, searchParams]);
 
   return {
     filters,

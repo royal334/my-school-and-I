@@ -346,19 +346,8 @@ export async function getMarketplaceListing(
       : Promise.resolve({ data: null }),
   ]);
 
-  if (!isOwn) {
-    // Fire-and-forget: the displayed view count stays the pre-increment value.
-    void Promise.resolve(
-      supabase
-        .from('marketplace_listings')
-        .update({ views: (row.views || 0) + 1 })
-        .eq('id', listingId),
-    ).then(
-      () => undefined,
-      () => undefined,
-    );
-  }
-
+  // Views are recorded by ListingViewTracker via POST
+  // /api/marketplace/listings/[id]/view, never from this render path.
   const images = dedupeImages(row.images).sort((a, b) => a.display_order - b.display_order);
   const sellerNames = new Map<string, string>();
   sellerNames.set(row.seller_id, sellerRes.data?.full_name || 'Unknown');

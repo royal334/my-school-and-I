@@ -7,7 +7,7 @@ export function DashboardQuickActions() {
   const actions = [
     { href: "/dashboard/materials", icon: BookOpen, label: "Browse materials" },
     { href: "/dashboard/cgpa/add-semester", icon: Calculator, label: "Add semester" },
-    { href: "/dashboard/vendors", icon: Store, label: "Find vendors" },
+    { href: "/dashboard/market?tab=vendors", icon: Store, label: "Find vendors" },
     { href: "/dashboard/announcements", icon: Bell, label: "Announcements" },
   ];
 

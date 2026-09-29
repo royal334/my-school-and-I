@@ -4,13 +4,11 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
   BookOpen,
-  Calculator,
   LayoutDashboard,
   Megaphone,
   Store,
   House,
   Upload,
-  ShoppingCart
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -23,13 +21,11 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
   const navItems = [
     { href: "/dashboard", icon: LayoutDashboard, label: "Home" },
     { href: "/dashboard/materials", icon: BookOpen, label: "Materials" },
-    { href: "/dashboard/cgpa", icon: Calculator, label: "CGPA" },
     ...(isSuperAdmin
       ? [{ href: "/dashboard/materials/upload", icon: Upload, label: "Upload" }]
       : []),
     {href:"/dashboard/accommodation", icon: House, label: "Accommodation"},
-    { href: '/dashboard/vendors', icon: Store, label: 'Vendors' },
-    { href: '/dashboard/marketplace', icon: ShoppingCart, label: 'Marketplace' },
+    { href: '/dashboard/market', icon: Store, label: 'Market' },
     { href: '/dashboard/announcements', icon: Megaphone, label: 'Updates' },
   ];
   const pathname = usePathname();
@@ -52,6 +48,12 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
       return (
         pathname === "/dashboard/materials/upload" ||
         pathname.startsWith("/dashboard/materials/upload/")
+      );
+    }
+
+    if (href === '/dashboard/market') {
+      return ['/dashboard/market', '/dashboard/vendors', '/dashboard/marketplace'].some(
+        base => pathname === base || pathname.startsWith(`${base}/`),
       );
     }
 

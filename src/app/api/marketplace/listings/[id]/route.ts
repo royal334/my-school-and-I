@@ -80,14 +80,8 @@ export async function GET(
       .eq('reviewer_id', user.id)
       .single();
 
-    // Increment view count (non-blocking)
-    if (listing.seller_id !== user.id) {
-      supabase
-        .from('marketplace_listings')
-        .update({ views: (listing.views || 0) + 1 })
-        .eq('id', id)
-        .then(() => {});
-    }
+    // View counting is not done here. It lives in POST /view, which the
+    // ListingViewTracker client component calls on mount.
 
     // Get active boost info
     const { data: activeBoost } = await supabase

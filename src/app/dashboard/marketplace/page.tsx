@@ -1,13 +1,9 @@
-import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
+import { MarketplaceBrowse } from '@/components/marketplace/marketplace-browse';
+import { parseMarketplaceFilters } from '@/components/marketplace/filters';
 import { hasOwnedListings } from '@/utils/supabase/queries/marketplace';
-import { marketplaceQueryString, parseMarketplaceFilters } from '@/components/marketplace/filters';
-import { MarketplaceHeader } from '@/components/marketplace/marketplace-header';
-import { MarketplaceFilters } from '@/components/marketplace/marketplace-filters';
-import { MarketplaceFeed } from '@/components/marketplace/marketplace-feed';
-import { ListingSkeletonGrid } from '@/components/marketplace/listing-skeleton';
 
 export const metadata = {
   title: 'Marketplace | CampusHub',
@@ -29,14 +25,5 @@ export default async function MarketplacePage({ searchParams }: PageProps) {
   const filters = parseMarketplaceFilters(await searchParams);
   const hasListings = await hasOwnedListings(supabase, user.id);
 
-  return (
-    <div className="space-y-4 overflow-x-hidden">
-      <MarketplaceHeader hasListings={hasListings} />
-      <MarketplaceFilters />
-
-      <Suspense key={marketplaceQueryString(filters)} fallback={<ListingSkeletonGrid />}>
-        <MarketplaceFeed filters={filters} />
-      </Suspense>
-    </div>
-  );
+  return <MarketplaceBrowse filters={filters} hasListings={hasListings} />;
 }

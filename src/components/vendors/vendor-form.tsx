@@ -45,8 +45,8 @@ const SERVICES = [
   "Event Planning",
   "Lash Tech",
   "Photography",
-
-
+  "Videography",
+  "Graphic Design",
 ];
 
 type VendorFormData = {

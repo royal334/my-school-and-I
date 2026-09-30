@@ -29,7 +29,7 @@ export default async function MarketPage({
   if (!user) redirect('/login');
 
   return (
-    <div className="space-y-4 overflow-x-hidden">
+    <div className="space-y-4 overflow-x-hidden" data-tour="page-market">
       <MarketTabs activeTab={activeTab} />
       {activeTab === 'vendors' ? (
         <VendorDirectory

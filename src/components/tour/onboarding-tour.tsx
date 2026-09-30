@@ -24,6 +24,7 @@ import {
   studentMobileTourSteps,
   vendorMobileTourSteps,
   insertNavPromptSteps,
+  resolveStepTarget,
   type TourKind,
   type TourStep,
 } from './tour-steps';
@@ -163,22 +164,8 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
       const deadline = Date.now() + maxWait;
       const target = first?.target;
 
-      const resolveTarget = () => {
-        try {
-          if (typeof target === 'function') {
-            return (target as () => HTMLElement | null)();
-          }
-          if (typeof target === 'string') {
-            return document.querySelector(target as string);
-          }
-          return null;
-        } catch {
-          return null;
-        }
-      };
-
       while (!cancelled && Date.now() < deadline) {
-        const el = resolveTarget();
+        const el = resolveStepTarget(target);
         if (el) {
           launch();
           return;
@@ -249,20 +236,9 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     let cancelled = false;
     let advanced = false;
 
-    const resolveNext = (): HTMLElement | null => {
-      const target = next.target as unknown;
-      try {
-        if (typeof target === 'function') return (target as () => HTMLElement | null)();
-        if (typeof target === 'string') return document.querySelector(target as string);
-      } catch {
-        return null;
-      }
-      return null;
-    };
-
     const id = window.setInterval(() => {
       if (cancelled || advanced) return;
-      const el = resolveNext();
+      const el = resolveStepTarget(next.target);
       if (el && el.offsetParent !== null) {
         advanced = true;
         setStepIndex(stepIndex + 1);
@@ -394,21 +370,12 @@ export function OnboardingTour({ isVendorView, hasToggle, userId }: OnboardingTo
     const cur = steps[stepIndex];
     let targetRect = '-';
     if (cur?.target) {
-      try {
-        const el =
-          typeof cur.target === 'function'
-            ? (cur.target as () => HTMLElement | null)()
-            : typeof cur.target === 'string'
-              ? document.querySelector(cur.target)
-              : null;
-        if (el) {
-          const r = (el as HTMLElement).getBoundingClientRect();
-          targetRect = `x=${Math.round(r.left)} y=${Math.round(r.top)} w=${Math.round(r.width)} h=${Math.round(r.height)}`;
-        } else {
-          targetRect = 'NOT FOUND';
-        }
-      } catch {
-        targetRect = 'target err';
+      const el = resolveStepTarget(cur.target);
+      if (el) {
+        const r = el.getBoundingClientRect();
+        targetRect = `x=${Math.round(r.left)} y=${Math.round(r.top)} w=${Math.round(r.width)} h=${Math.round(r.height)}`;
+      } else {
+        targetRect = 'NOT FOUND';
       }
     }
 

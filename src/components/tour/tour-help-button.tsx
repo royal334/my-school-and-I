@@ -31,6 +31,7 @@ export function TourHelpButton({ hasVendor, isVendorAccount, className }: TourHe
       onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student', 'manual')}
       title="Take the dashboard tour"
       aria-label="Take the dashboard tour"
+      data-tour="tour-help"
     >
       <HelpCircle className="h-4 w-4" />
     </Button>

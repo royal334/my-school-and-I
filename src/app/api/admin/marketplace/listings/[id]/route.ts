@@ -34,27 +34,47 @@ export async function GET(
           id, file_path, is_cover, display_order
         ),
         reports:marketplace_reports (
-          id, reason, status, created_at,
-          reporter:profiles!marketplace_reports_reporter_id_fkey (full_name)
+          id, reporter_id, reason, status, created_at
         )
       `)
       .eq('id', id)
       .single();
 
     if (error || !listing) {
+      console.log('Listing not found or error:', error);
       return NextResponse.json({ error: 'Listing not found' }, { status: 404 });
     }
 
-    const { data: sellerProfile } = await supabase
-      .from('profiles')
-      .select('id, full_name')
-      .eq('id', listing.seller_id)
-      .single();
+    const profileIds = [
+      ...new Set([
+        listing.seller_id,
+        ...(listing.reports || []).map((report: any) => report.reporter_id),
+      ].filter(Boolean)),
+    ];
+    const { data: profiles, error: profilesError } = profileIds.length
+      ? await supabase
+          .from('profiles')
+          .select('id, full_name')
+          .in('id', profileIds)
+      : { data: [], error: null };
+    if (profilesError) throw profilesError;
+
+    const profilesById: Record<string, any> = {};
+    (profiles || []).forEach((profile: any) => {
+      profilesById[profile.id] = profile;
+    });
 
     return NextResponse.json({
       listing: {
         ...listing,
-        seller_name: sellerProfile?.full_name || 'Unknown',
+        seller_name: profilesById[listing.seller_id]?.full_name || 'Unknown',
+        reports: (listing.reports || []).map((report: any) => {
+          const { reporter_id, ...reportData } = report;
+          return {
+            ...reportData,
+            reporter: profilesById[reporter_id] || null,
+          };
+        }),
       },
     });
   } catch (error: any) {

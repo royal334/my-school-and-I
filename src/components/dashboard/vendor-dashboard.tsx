@@ -422,7 +422,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
             </div>
                 {/* Quick Actions */}
                 <div className='xl:col-span-3'>
-                <Card>
+                <Card data-tour="vendor-actions">
                   <CardHeader>
                           <CardTitle style={{ fontFamily: "var(--font-display)" }}>Quick actions</CardTitle>
                   </CardHeader>

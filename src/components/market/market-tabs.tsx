@@ -11,7 +11,11 @@ const tabs = [
 
 export function MarketTabs({ activeTab }: { activeTab: MarketTab }) {
   return (
-    <nav aria-label="Market sections" className="mb-5 border-b border-border">
+    <nav
+      aria-label="Market sections"
+      data-tour="page-market-tabs"
+      className="mb-5 border-b border-border"
+    >
       <div role="tablist" className="flex gap-1">
         {tabs.map(({ id, label, href, icon: Icon }) => (
           <Link

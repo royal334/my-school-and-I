@@ -4,7 +4,10 @@ import { Button } from '@/components/ui/button';
 
 export function AccommodationHeader({ hasSubmissions }: { hasSubmissions: boolean }) {
   return (
-    <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+    <div
+      className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center"
+      data-tour="page-accommodation"
+    >
       <div>
         <h1 className="text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
           Accommodation

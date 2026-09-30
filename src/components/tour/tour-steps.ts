@@ -1,7 +1,9 @@
 import type { Step } from 'react-joyride';
 
 export type TourKind = 'student' | 'vendor';
-type FloatingOptions = { strategy:string; [key: string]: any };
+type FloatingOptions = { strategy: string; [key: string]: any };
+type StepTarget = Step['target'];
+
 export type TourStep = Omit<Step, 'floatingOptions'> & {
   route: string;
   floatingOptions?: FloatingOptions;
@@ -29,16 +31,43 @@ function visibleQuery(selector: string): HTMLElement | null {
   return nodes[0] ?? null;
 }
 
-function pageTarget(selector: string): () => HTMLElement | null {
+/**
+ * Resolves a step target that may be a CSS selector or a resolver function.
+ * Shared by the step factories and the OnboardingTour engine so both agree on
+ * what a step actually points at.
+ */
+export function resolveStepTarget(target?: StepTarget): HTMLElement | null {
+  if (typeof window === 'undefined' || !target) return null;
+  try {
+    if (typeof target === 'function') return (target as () => HTMLElement | null)();
+    if (typeof target === 'string') return document.querySelector<HTMLElement>(target);
+    if (target instanceof HTMLElement) return target;
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+function narrowOnMobile(wrapper: HTMLElement): HTMLElement {
+  if (isDesktopView()) return wrapper;
+  return (
+    wrapper.querySelector<HTMLElement>('h1, h2, h3, h4') ||
+    wrapper.querySelector<HTMLElement>('[data-slot="card"]') ||
+    wrapper.querySelector<HTMLElement>('a, button, [role="button"]') ||
+    wrapper
+  );
+}
+
+/**
+ * A page-level anchor. `alt` is a second anchor used when the primary one is
+ * missing — several sections render conditionally (an empty vendors list, a
+ * dashboard without announcements) and the step must still resolve.
+ */
+function pageTarget(selector: string, alt?: StepTarget): () => HTMLElement | null {
   return () => {
     const wrapper = visibleQuery(selector);
-    if (!wrapper) return null;
-    if (isDesktopView()) return wrapper;
-    const compact =
-      wrapper.querySelector<HTMLElement>('h1, h2, h3, h4') ||
-      wrapper.querySelector<HTMLElement>('[data-slot="card"]') ||
-      wrapper.querySelector<HTMLElement>('a, button, [role="button"]');
-    return compact ?? wrapper;
+    if (wrapper) return narrowOnMobile(wrapper);
+    return resolveStepTarget(alt);
   };
 }
 
@@ -46,8 +75,8 @@ function pageTarget(selector: string): () => HTMLElement | null {
  * Returns the first visible instance of a duplicated element (the dashboard
  * layout renders content twice; the hidden copy must never be targeted).
  */
-function visibleTarget(selector: string): () => HTMLElement | null {
-  return () => visibleQuery(selector);
+function visibleTarget(selector: string, alt?: StepTarget): () => HTMLElement | null {
+  return () => visibleQuery(selector) ?? resolveStepTarget(alt);
 }
 
 /**
@@ -66,14 +95,21 @@ function mobileStep(step: TourStep): TourStep {
 const ROUTE_LABELS: Record<string, string> = {
   '/dashboard': 'Dashboard',
   '/dashboard/materials': 'Materials',
-  '/dashboard/cgpa': 'CGPA',
+  '/dashboard/materials/upload': 'Upload material',
   '/dashboard/profile': 'Profile',
+  '/dashboard/market': 'Market',
   '/dashboard/vendors': 'Vendors',
+  '/dashboard/marketplace': 'Marketplace',
+  '/dashboard/marketplace/sell': 'Sell',
+  '/dashboard/marketplace/saved': 'Saved listings',
+  '/dashboard/marketplace/my-listings': 'My listings',
   '/dashboard/accommodation': 'Accommodation',
+  '/dashboard/accommodation/submit': 'Submit a vacancy',
   '/dashboard/accommodation/my-submissions': 'My Submissions',
   '/dashboard/announcements': 'Announcements',
   '/dashboard/settings': 'Settings',
   '/dashboard/vendors/analytics': 'Analytics',
+  '/dashboard/vendors/my-listings': 'Manage listing',
   '/dashboard/subscription': 'Subscription',
   '/dashboard/notifications': 'Notifications',
 };
@@ -213,7 +249,9 @@ function buildMenuPromptSteps(sourceRoute: string, next: TourStep, isMobile: boo
     {
       target: menuItemTarget(next.route),
       title: `Open ${label}`,
-      content: isMobile ? `Tap "${label}" in the menu to continue.` : `Click "${label}" in the menu to continue.`,
+      content: isMobile
+        ? `Tap "${label}" in the menu to continue.`
+        : `Click "${label}" in the menu to continue.`,
       route: sourceRoute,
       placement: 'bottom',
       floatingOptions,
@@ -266,10 +304,9 @@ export function navTarget(): HTMLElement | null {
           ?.textContent?.trim() ?? '';
 
         const isVendorSidebar = /Vendor Dashboard|Vendor Account/i.test(headerText + ' ' + footerText);
-        if (isVendorSidebar){ 
+        if (isVendorSidebar) {
           sidebar = document.querySelector('[data-tour="vendor-sidebar"]');
           return sidebar as HTMLElement;
-
         }
       } catch {
         // ignore and fall back to default
@@ -285,9 +322,42 @@ export function navTarget(): HTMLElement | null {
   return nodes[0] ?? null;
 }
 
+/** The header button that replays the tour. It lives in the desktop top bar. */
+function tourHelpTarget(): () => HTMLElement | null {
+  return () => visibleQuery('[data-tour="tour-help"]');
+}
+
+const CLOSING_STEP: TourStep = {
+  target: tourHelpTarget(),
+  content: 'Finished — but you can replay this tour any time with this button in the header.',
+  title: 'Take the tour again',
+  route: '/dashboard/settings',
+  placement: 'bottom',
+};
+
+/** On mobile the replay entry lives inside the header dropdown menu. */
+function mobileMenuTarget(): () => HTMLElement | null {
+  return () => visibleQuery('[data-tour="mobile-header-menu"]');
+}
+
+const MOBILE_CLOSING_STEP: TourStep = {
+  target: mobileMenuTarget(),
+  content: 'Finished — open this menu any time and pick "Replay tour" to go through it again.',
+  title: 'Take the tour again',
+  route: '/dashboard/settings',
+  placement: 'bottom',
+  floatingOptions: { strategy: 'fixed' },
+};
+
+/**
+ * Student tour, desktop. The page order mirrors the sidebar: Dashboard →
+ * Materials → Accommodation → Market → Notifications → Announcements →
+ * Profile → Settings, so every transition is a real sidebar link the user can
+ * click.
+ */
 export const studentTourSteps: TourStep[] = [
   {
-    target: '[data-tour="student-welcome"]',
+    target: visibleTarget('[data-tour="student-welcome"]'),
     content: 'This quick tour will show you around your dashboard. Click Next to begin.',
     title: 'Welcome to CampusHub',
     route: '/dashboard',
@@ -295,89 +365,125 @@ export const studentTourSteps: TourStep[] = [
   },
   {
     target: pageTarget('[data-tour="student-stats"]'),
-    content: 'Track your CGPA, browse study materials, and explore verified student vendors — all in one place.',
+    content: 'Live snapshot of your CGPA, the materials library, the vendor count, and a shortcut to send us feedback.',
     title: 'Your academic snapshot',
     route: '/dashboard',
     placement: 'top',
   },
   {
+    // The card is only rendered when there are published announcements, so fall
+    // back to the Announcements link when the feed is empty.
+    target: pageTarget(
+      '[data-tour="student-recent-announcements"]',
+      () => navLinkTarget('/dashboard/announcements')(),
+    ),
+    content: 'The latest department and university announcements land here. View all jumps to the full feed.',
+    title: 'Recent announcements',
+    route: '/dashboard',
+    placement: 'top',
+  },
+  {
+    target: pageTarget('[data-tour="student-profile-card"]'),
+    content: 'Your level, matric number and plan at a glance, plus a checklist of what to finish setting up.',
+    title: 'Your profile and getting started',
+    route: '/dashboard',
+    placement: 'top',
+  },
+  {
     target: '[data-tour="student-actions"]',
-    content: 'Jump straight to the materials library, add a semester, find vendors, or read the latest announcements.',
-    title: 'Quick Actions',
+    content: 'Shortcuts to browse materials, add a semester, find vendors, and read announcements.',
+    title: 'Quick actions',
     route: '/dashboard',
     placement: 'top',
   },
   {
     target: navTarget,
-    content: 'Use the menu to navigate every section. On mobile, use the bottom bar.',
+    content: 'The sidebar is your map: Materials, Accommodation, Market, Notifications, Announcements, Profile and Settings.',
     title: 'Navigate anywhere',
     route: '/dashboard',
     placement: 'auto',
   },
   {
     target: pageTarget('[data-tour="page-materials"]'),
-    content: 'Access lecture notes, past questions, and study materials uploaded by verified students.',
-    title: 'Materials Library',
+    content: 'Lecture notes, past questions and study materials from verified students. Filter by level, semester or type, and bookmark anything you want to keep.',
+    title: 'Materials library',
     route: '/dashboard/materials',
-    placement: 'top',
-  },
-  {
-    target: pageTarget('[data-tour="page-cgpa"]'),
-    content: 'Add your semester results and instantly calculate your cumulative GPA.',
-    title: 'CGPA Calculator',
-    route: '/dashboard/cgpa',
     placement: 'bottom',
   },
   {
     target: pageTarget('[data-tour="page-accommodation"]'),
-    content: 'Browse verified student housing near campus. Spotted a vacancy? Submit it and follow its verification under My Submissions.',
+    content: 'Verified student housing near campus. Spotted a vacancy? Submit it, then track its verification under My Submissions.',
     title: 'Accommodation',
     route: '/dashboard/accommodation',
+    placement: 'bottom',
+  },
+  {
+    target: pageTarget('[data-tour="page-market-tabs"]'),
+    content: 'Market is now the single home for the campus economy. This tab switches between verified vendors and peer-to-peer listings.',
+    title: 'Market: vendors and marketplace',
+    route: '/dashboard/market',
+    placement: 'bottom',
+  },
+  {
+    // The marketplace header only renders on the Marketplace tab; fall back to
+    // the page shell when the Vendors tab is showing.
+    target: pageTarget('[data-tour="page-marketplace"]', '[data-tour="page-market"]'),
+    content: 'Search and filter listings, tap Sell to run the guided listing wizard, and manage what you have posted under My listings.',
+    title: 'Buy and sell on campus',
+    route: '/dashboard/market',
+    placement: 'bottom',
+  },
+  {
+    target: pageTarget('[data-tour="page-notifications"]'),
+    content: 'Announcements, vendor updates and activity alerts are collected here so nothing slips past you.',
+    title: 'Notifications',
+    route: '/dashboard/notifications',
+    placement: 'top',
+  },
+  {
+    target: pageTarget('[data-tour="page-announcements"]'),
+    content: 'The full feed of department and university announcements, newest first.',
+    title: 'Announcements',
+    route: '/dashboard/announcements',
     placement: 'top',
   },
   {
     target: pageTarget('[data-tour="page-profile"]'),
-    content: 'Update your personal details, manage your matric number, and view your subscription status.',
-    title: 'Your Profile',
+    content: 'Update your personal details and matric number, change your password, and review your subscription status.',
+    title: 'Your profile',
     route: '/dashboard/profile',
-    placement: 'bottom',
-  },
-  {
-    target: pageTarget('[data-tour="page-vendors"]'),
-    content: 'Connect with verified service providers on campus — from food to fashion.',
-    title: 'Vendors Marketplace',
-    route: '/dashboard/vendors',
-    placement:'top',
-  },
-  {
-    target: pageTarget('[data-tour="page-announcements"]'),
-    content: 'Stay updated with department and university announcements.',
-    title: 'Announcements',
-    route: '/dashboard/announcements',
-    placement: 'bottom',
+    placement: 'top',
   },
   {
     target: pageTarget('[data-tour="page-settings"]'),
-    content: 'Customize your appearance, notifications, and privacy preferences.',
+    content: 'Pick a theme, choose which notifications you get, and set your preferences.',
     title: 'Settings',
     route: '/dashboard/settings',
-    placement: 'bottom',
+    placement: 'top',
   },
+  CLOSING_STEP,
 ];
 
 export function vendorTourSteps(includeToggle: boolean): TourStep[] {
   const steps: TourStep[] = [
     {
       target: '[data-tour="vendor-welcome"]',
-      content: 'Your vendor dashboard at a glance. Manage your business and track how it\'s performing.',
+      content: "Your vendor dashboard at a glance. Manage your business and track how it's performing.",
       title: 'Welcome to your Vendor Dashboard',
       route: '/dashboard',
       placement: 'bottom',
     },
     {
-      target: pageTarget('[data-tour="vendor-stats"]'),
+      target: visibleTarget('[data-tour="vendor-stats"]', '[data-tour="vendor-welcome"]'),
       content: 'See how many people viewed your listing, reached out, and rated your service.',
       title: 'Your performance',
+      route: '/dashboard',
+      placement: 'top',
+    },
+    {
+      target: visibleTarget('[data-tour="vendor-actions"]', '[data-tour="vendor-welcome"]'),
+      content: 'Jump to your listing, analytics, notifications and account settings from here.',
+      title: 'Quick actions',
       route: '/dashboard',
       placement: 'top',
     },
@@ -396,7 +502,7 @@ export function vendorTourSteps(includeToggle: boolean): TourStep[] {
   steps.push(
     {
       target: navTarget,
-      content: 'Use the menu to access analytics, subscription, notifications, and settings. On mobile, use the bottom bar.',
+      content: 'This menu is your business hub: Analytics, Subscription, Notifications and Settings.',
       title: 'Vendor navigation',
       route: '/dashboard',
       placement: 'auto',
@@ -415,20 +521,21 @@ export function vendorTourSteps(includeToggle: boolean): TourStep[] {
       route: '/dashboard/subscription',
       placement: 'bottom',
     },
-  {
-    target: pageTarget('[data-tour="page-notifications"]'),
-    content: 'Get alerts for inquiries and activity related to your business. A dot on the header bell flags anything unread.',
-    title: 'Notifications',
-    route: '/dashboard/notifications',
-    placement: 'bottom',
-  },
-  {
-    target: pageTarget('[data-tour="page-settings"]'),
-    content: 'Customize your appearance and manage your account.',
-    title: 'Settings',
-    route: '/dashboard/settings',
-    placement: 'bottom',
-  },
+    {
+      target: pageTarget('[data-tour="page-notifications"]'),
+      content: 'Get alerts for inquiries and activity related to your business. A dot on the header bell flags anything unread.',
+      title: 'Notifications',
+      route: '/dashboard/notifications',
+      placement: 'bottom',
+    },
+    {
+      target: pageTarget('[data-tour="page-settings"]'),
+      content: 'Customize your appearance and manage your account.',
+      title: 'Settings',
+      route: '/dashboard/settings',
+      placement: 'bottom',
+    },
+    CLOSING_STEP,
   );
 
   return steps;
@@ -438,7 +545,8 @@ export function vendorTourSteps(includeToggle: boolean): TourStep[] {
  * Mobile tour. The bottom bar replaces the sidebar, so the navigation step
  * targets the fixed bottom nav, and the header bell (which replaced the bar's
  * Alerts tab) gets its own step. Page steps stay compact and keep the tooltip
- * below the highlight so it stays inside the viewport.
+ * below the highlight so it stays inside the viewport. Profile and Settings
+ * live in the header dropdown and get a two-stage prompt.
  */
 export const studentMobileTourSteps: TourStep[] = [
   mobileStep({
@@ -449,8 +557,15 @@ export const studentMobileTourSteps: TourStep[] = [
     placement: 'bottom',
   }),
   mobileStep({
+    target: pageTarget('[data-tour="student-stats"]'),
+    content: 'Your CGPA, the materials count and the vendor count, all tappable straight from here.',
+    title: 'Your academic snapshot',
+    route: '/dashboard',
+    placement: 'top',
+  }),
+  mobileStep({
     target: navTarget,
-    content: 'Use this bar to jump between your Dashboard, Materials, CGPA, Accommodation, Vendors, and Announcements.',
+    content: 'Use this bar to jump between Home, Materials, Accommodation, Market and Updates.',
     title: 'Navigate anywhere',
     route: '/dashboard',
     placement: 'top',
@@ -464,46 +579,61 @@ export const studentMobileTourSteps: TourStep[] = [
   }),
   mobileStep({
     target: pageTarget('[data-tour="page-materials"]'),
-    content: 'Access lecture notes, past questions, and study materials uploaded by verified students.',
-    title: 'Materials Library',
+    content: 'Lecture notes, past questions and study materials. Filter by level, semester or type, and bookmark what you want to keep.',
+    title: 'Materials library',
     route: '/dashboard/materials',
     placement: 'bottom',
   }),
   mobileStep({
-    target: pageTarget('[data-tour="page-cgpa"]'),
-    content: 'Add your semester results and instantly calculate your cumulative GPA.',
-    title: 'CGPA Calculator',
-    route: '/dashboard/cgpa',
-    placement: 'bottom',
-  }),
-  mobileStep({
     target: pageTarget('[data-tour="page-accommodation"]'),
-    content: 'Browse verified student housing near campus. Spotted a vacancy? Submit it and follow its verification under My Submissions.',
+    content: 'Verified student housing near campus. Spotted a vacancy? Submit it, then track its verification under My Submissions.',
     title: 'Accommodation',
     route: '/dashboard/accommodation',
     placement: 'bottom',
   }),
   mobileStep({
-    target: pageTarget('[data-tour="page-vendors"]'),
-    content: 'Connect with verified service providers on campus — from food to fashion.',
-    title: 'Vendors Marketplace',
-    route: '/dashboard/vendors',
+    target: pageTarget('[data-tour="page-market-tabs"]'),
+    content: 'Market is now the single home for the campus economy. This tab switches between verified vendors and peer-to-peer listings.',
+    title: 'Market: vendors and marketplace',
+    route: '/dashboard/market',
+    placement: 'bottom',
+  }),
+  mobileStep({
+    target: pageTarget('[data-tour="page-marketplace"]', '[data-tour="page-market"]'),
+    content: 'Search and filter listings, tap Sell to run the guided listing wizard, and manage what you have posted under My listings.',
+    title: 'Buy and sell on campus',
+    route: '/dashboard/market',
+    placement: 'bottom',
+  }),
+  mobileStep({
+    target: pageTarget('[data-tour="page-notifications"]'),
+    content: 'Announcements, vendor updates and activity alerts, all in one feed.',
+    title: 'Notifications',
+    route: '/dashboard/notifications',
     placement: 'bottom',
   }),
   mobileStep({
     target: pageTarget('[data-tour="page-announcements"]'),
-    content: 'Stay updated with the latest news and announcements from your institution.',
+    content: 'The full feed of department and university announcements, newest first.',
     title: 'Announcements',
     route: '/dashboard/announcements',
     placement: 'bottom',
   }),
   mobileStep({
     target: pageTarget('[data-tour="page-profile"]'),
-    content: 'Update your personal details, manage your matric number, and view your subscription status.',
-    title: 'Your Profile',
+    content: 'Update your personal details and matric number, and review your subscription status.',
+    title: 'Your profile',
     route: '/dashboard/profile',
     placement: 'bottom',
-  })
+  }),
+  mobileStep({
+    target: pageTarget('[data-tour="page-settings"]'),
+    content: 'Pick a theme, choose which notifications you get, and set your preferences.',
+    title: 'Settings',
+    route: '/dashboard/settings',
+    placement: 'bottom',
+  }),
+  MOBILE_CLOSING_STEP,
 ];
 
 export function vendorMobileTourSteps(): TourStep[] {
@@ -514,6 +644,13 @@ export function vendorMobileTourSteps(): TourStep[] {
       title: 'Welcome to your Vendor Dashboard',
       route: '/dashboard',
       placement: 'bottom',
+    }),
+    mobileStep({
+      target: visibleTarget('[data-tour="vendor-stats"]', '[data-tour="vendor-welcome"]'),
+      content: 'Views, contacts, average rating and conversion rate for your listing.',
+      title: 'Your performance',
+      route: '/dashboard',
+      placement: 'top',
     }),
     mobileStep({
       target: navTarget,
@@ -537,6 +674,13 @@ export function vendorMobileTourSteps(): TourStep[] {
       placement: 'bottom',
     }),
     mobileStep({
+      target: pageTarget('[data-tour="page-subscription"]'),
+      content: 'Manage your subscription plan, view billing history, and upgrade or cancel.',
+      title: 'Subscription',
+      route: '/dashboard/subscription',
+      placement: 'bottom',
+    }),
+    mobileStep({
       target: pageTarget('[data-tour="page-notifications"]'),
       content: 'Get alerts for inquiries and activity related to your business.',
       title: 'Notifications',
@@ -550,5 +694,6 @@ export function vendorMobileTourSteps(): TourStep[] {
       route: '/dashboard/settings',
       placement: 'bottom',
     }),
+    MOBILE_CLOSING_STEP,
   ];
 }

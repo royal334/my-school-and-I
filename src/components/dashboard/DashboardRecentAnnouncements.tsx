@@ -12,7 +12,7 @@ export function DashboardRecentAnnouncements({
   }
 
   return (
-    <Card>
+    <Card data-tour="student-recent-announcements">
       <CardHeader>
         <div className="flex items-center justify-between">
           <h2 className="text-xl">Recent announcements</h2>

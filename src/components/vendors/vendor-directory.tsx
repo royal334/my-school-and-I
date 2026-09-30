@@ -51,7 +51,10 @@ export async function VendorDirectory({
 
   return (
     <div className="space-y-6 overflow-x-hidden">
-      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+      <div
+        className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center"
+        data-tour="page-vendors"
+      >
         <div>
           <h1 className="text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
             Vendors marketplace
@@ -97,7 +100,7 @@ export async function VendorDirectory({
           </Link>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-tour="page-vendors">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {vendors.map(vendor => <VendorCard key={vendor.id} vendor={vendor} />)}
         </div>
       )}

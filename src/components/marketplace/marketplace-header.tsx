@@ -10,7 +10,7 @@ interface MarketplaceHeaderProps {
 
 export function MarketplaceHeader({ hasListings }: MarketplaceHeaderProps) {
   return (
-    <div className="rounded-xl bg-primary p-4 pb-3.5 dark:bg-primary-900">
+    <div className="rounded-xl bg-primary p-4 pb-3.5 dark:bg-primary-900" data-tour="page-marketplace">
       <div className="mb-3.5 flex items-center justify-between gap-2">
         <h1 className="text-[22px] font-semibold tracking-tight text-white">
           Marketplace

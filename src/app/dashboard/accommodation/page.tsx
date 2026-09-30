@@ -27,7 +27,7 @@ export default async function AccommodationPage() {
   }
 
   return (
-    <div className="space-y-6 overflow-x-hidden" data-tour="page-accommodation">
+    <div className="space-y-6 overflow-x-hidden">
       <AccommodationHeader hasSubmissions={hasSubmissions} />
       <AccommodationListings />
     </div>

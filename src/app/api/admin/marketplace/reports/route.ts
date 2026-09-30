@@ -28,10 +28,7 @@ export async function GET(request: Request) {
     let query = supabase
       .from('marketplace_reports')
       .select(`
-        id, reason, details, status, created_at,
-        reporter:profiles!marketplace_reports_reporter_id_fkey (
-          id, full_name
-        ),
+        id, reporter_id, reason, details, status, created_at,
         listing:marketplace_listings (
           id, title, seller_type, seller_id
         )
@@ -43,24 +40,38 @@ export async function GET(request: Request) {
     const { data: reports, error } = await query;
     if (error) throw error;
 
-    // Enrich with seller names
-    const sellerIds = [...new Set((reports || []).map((r: any) => r.listing?.seller_id).filter(Boolean))];
-    let profilesById: Record<string, any> = {};
-    if (sellerIds.length > 0) {
-      const { data: profiles } = await supabase
+    const profileIds = [
+      ...new Set(
+        (reports || [])
+          .flatMap((report: any) => [report.reporter_id, report.listing?.seller_id])
+          .filter(Boolean),
+      ),
+    ];
+    const profilesById: Record<string, any> = {};
+    if (profileIds.length > 0) {
+      const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('id, full_name')
-        .in('id', sellerIds);
-      (profiles || []).forEach((p: any) => { profilesById[p.id] = p; });
+        .in('id', profileIds);
+      if (profilesError) throw profilesError;
+      (profiles || []).forEach((profile: any) => {
+        profilesById[profile.id] = profile;
+      });
     }
 
-    const result = (reports || []).map((r: any) => ({
-      ...r,
-      listing: r.listing ? {
-        ...r.listing,
-        seller_name: profilesById[r.listing.seller_id]?.full_name || 'Unknown',
-      } : null,
-    }));
+    const result = (reports || []).map((report: any) => {
+      const { reporter_id, ...reportData } = report;
+      return {
+        ...reportData,
+        reporter: profilesById[reporter_id] || null,
+        listing: report.listing
+          ? {
+              ...report.listing,
+              seller_name: profilesById[report.listing.seller_id]?.full_name || 'Unknown',
+            }
+          : null,
+      };
+    });
 
     return NextResponse.json({ reports: result });
   } catch (error: any) {

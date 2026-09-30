@@ -95,7 +95,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between gap-8 mt-4">
+      <div className="flex items-center justify-between gap-8 mt-4" data-tour="page-materials">
         <div>
           <h1 className="text-xl md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
             Materials library

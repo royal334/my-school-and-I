@@ -29,9 +29,6 @@ export async function GET(request: Request) {
       .from('accommodation_referrals')
       .select(`
         *,
-        referrer:profiles!accommodation_referrals_referrer_id_fkey (
-          id, full_name
-        ),
         unit:accommodation_units (
           id, unit_number, room_type,
           property:accommodation_properties (id, name, area)
@@ -44,10 +41,76 @@ export async function GET(request: Request) {
 
     if (status) query = query.eq('eligibility_status', status);
 
-    const { data: referrals, error } = await query;
-    if (error) throw error;
+    // Summary tiles must describe every referral, not just the filtered page,
+    // so the aggregates are read from a second, join-free query.
+    const [filteredResult, statsResult] = await Promise.all([
+      query,
+      supabase
+        .from('accommodation_referrals')
+        .select('eligibility_status, payout_status, reward_amount'),
+    ]);
 
-    return NextResponse.json({ referrals: referrals || [] });
+    if (filteredResult.error) throw filteredResult.error;
+    if (statsResult.error) throw statsResult.error;
+
+    const referrals = filteredResult.data || [];
+    const allRows = statsResult.data || [];
+
+    const stats = {
+      awaiting_payout: allRows.filter(
+        (r: { eligibility_status: string; payout_status: string }) =>
+          r.eligibility_status === 'eligible' && r.payout_status !== 'paid',
+      ).length,
+      processing: allRows.filter(
+        (r: { payout_status: string }) => r.payout_status === 'processing',
+      ).length,
+      paid_count: allRows.filter((r: { payout_status: string }) => r.payout_status === 'paid')
+        .length,
+      total_paid: allRows.reduce(
+        (sum: number, r: { payout_status: string; reward_amount: number | null }) =>
+          r.payout_status === 'paid' ? sum + (r.reward_amount || 0) : sum,
+        0,
+      ),
+    };
+
+    const referrerIds = [
+      ...new Set(referrals.map((referral) => referral.referrer_id).filter(Boolean)),
+    ];
+    const [profileResult, payoutDetailsResult] = referrerIds.length
+      ? await Promise.all([
+          supabase
+            .from('profiles')
+            .select('id, full_name')
+            .in('id', referrerIds),
+          supabase
+            .from('accommodation_payout_details')
+            .select('user_id, bank_name, account_name, account_number')
+            .in('user_id', referrerIds),
+        ])
+      : [
+          { data: [], error: null },
+          { data: [], error: null },
+        ];
+
+    if (profileResult.error) throw profileResult.error;
+    if (payoutDetailsResult.error) throw payoutDetailsResult.error;
+
+    const referrersByUserId = Object.fromEntries(
+      (profileResult.data || []).map((profile) => [profile.id, profile]),
+    );
+
+    const payoutDetailsByUserId = Object.fromEntries(
+      (payoutDetailsResult.data || []).map((details) => [details.user_id, details]),
+    );
+
+    return NextResponse.json({
+      referrals: referrals.map((referral) => ({
+        ...referral,
+        referrer: referrersByUserId[referral.referrer_id] || null,
+        payout_details: payoutDetailsByUserId[referral.referrer_id] || null,
+      })),
+      stats,
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

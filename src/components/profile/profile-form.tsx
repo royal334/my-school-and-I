@@ -203,7 +203,7 @@ export default function ProfileForm({
 
             {/* Matric Number (Read-only) */}
             <div className="space-y-2">
-              <Label htmlFor="matric_number">Matric Number</Label>
+              <Label htmlFor="matric_number">Matric/Reg Number</Label>
               <Input
                 id="matric_number"
                 value={profile?.matric_number || "N/A"}
@@ -211,7 +211,7 @@ export default function ProfileForm({
                 className="bg-muted cursor-not-allowed"
               />
               <p className="text-xs text-muted-foreground">
-                Matric number cannot be changed
+                Matric/Reg number cannot be changed
               </p>
             </div>
           </div>

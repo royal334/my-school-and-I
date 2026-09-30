@@ -166,6 +166,65 @@ export interface ViewingDetail {
 
 export type ViewingAction = 'schedule' | 'transaction';
 
+// ─── Referral rewards ────────────────────────────────────────────────────────
+
+export interface ReferralPayoutDetails {
+  bank_name: string;
+  account_name: string;
+  account_number: string;
+}
+
+export interface ReferralUnit {
+  id: string;
+  unit_number: string | null;
+  room_type: string;
+  property: { name: string; area: string };
+}
+
+export interface ReferralTransaction {
+  id: string;
+  rent_amount: number | null;
+  completed_at: string | null;
+}
+
+export interface Referral {
+  id: string;
+  referrer_id: string;
+  eligibility_status: string;
+  payout_status: string;
+  reward_amount: number | null;
+  paid_at: string | null;
+  admin_notes: string | null;
+  created_at: string;
+  referrer: { full_name: string } | null;
+  payout_details: ReferralPayoutDetails | null;
+  unit: ReferralUnit | null;
+  transaction: ReferralTransaction | null;
+}
+
+/** Aggregates across every referral, independent of the active status filter. */
+export interface ReferralStats {
+  awaiting_payout: number;
+  processing: number;
+  paid_count: number;
+  total_paid: number;
+}
+
+export const REFERRAL_FILTERS = [
+  'eligible',
+  'pending',
+  'paid',
+  'disputed',
+  'rejected',
+  '',
+] as const;
+
+export type ReferralFilter = (typeof REFERRAL_FILTERS)[number];
+
+export function isReferralFilter(value: string): value is ReferralFilter {
+  return (REFERRAL_FILTERS as readonly string[]).includes(value);
+}
+
 export function isTab(value: string | undefined): value is Tab {
   return value === 'overview' || value === 'leads' || value === 'listings' || value === 'viewings';
 }

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import type { Tab } from './types';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Gift } from 'lucide-react';
 
 const TABS: Tab[] = ['overview', 'leads', 'listings', 'viewings'];
 
@@ -25,12 +25,21 @@ export function AccommodationHeader({
           <h1 className="font-display text-xl tracking-tight text-white">Accommodation</h1>
           <p className="mt-0.5 text-xs text-primary-300">Operations dashboard</p>
         </div>
-        <Link
-          href="/dashboard/accommodation/submit"
-          className="rounded-lg bg-accent-500 px-3.5 py-2 text-[13px] font-medium text-[#3A2800] no-underline"
-        >
-          + New property
-        </Link>
+        <div className="flex shrink-0 items-center gap-2">
+          <Link
+            href="/admin/accommodation/referrals"
+            className="flex items-center gap-1.5 rounded-lg border border-white/25 px-3.5 py-2 text-[13px] font-medium text-white no-underline transition-colors hover:bg-white/10"
+          >
+            <Gift className="size-3.5" />
+            Referrals
+          </Link>
+          <Link
+            href="/dashboard/accommodation/submit"
+            className="rounded-lg bg-accent-500 px-3.5 py-2 text-[13px] font-medium text-[#3A2800] no-underline"
+          >
+            + New property
+          </Link>
+        </div>
       </div>
 
       <div className="flex overflow-x-auto">

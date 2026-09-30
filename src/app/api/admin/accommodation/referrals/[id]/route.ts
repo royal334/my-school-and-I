@@ -50,15 +50,18 @@ export async function PATCH(
       .from('accommodation_referrals')
       .update(updates)
       .eq('id', id)
-      .select(`
-        *,
-        referrer:profiles!accommodation_referrals_referrer_id_fkey (
-          id, full_name
-        )
-      `)
+      .select('*')
       .single();
 
     if (error) throw error;
+
+    const { data: referrer, error: referrerError } = await supabase
+      .from('profiles')
+      .select('id, full_name')
+      .eq('id', referral.referrer_id)
+      .maybeSingle();
+
+    if (referrerError) throw referrerError;
 
     // Notify referrer when paid
     if (payout_status === 'paid' && reward_amount) {
@@ -81,7 +84,10 @@ export async function PATCH(
       }).catch(console.error);
     }
 
-    return NextResponse.json({ success: true, referral });
+    return NextResponse.json({
+      success: true,
+      referral: { ...referral, referrer },
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

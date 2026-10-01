@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
 import Img from "next/image";
 
-type CampusHubMarkProps = {
+type CampusMeMarkProps = {
   className?: string;
   title?: string;
 };
 
-export function CampusHubMark({ className, title }: CampusHubMarkProps) {
+export function CampusMeMark({ className, title }: CampusMeMarkProps) {
   return (
     <span
       className={cn(
@@ -45,25 +45,25 @@ export function CampusHubMark({ className, title }: CampusHubMarkProps) {
   );
 }
 
-type CampusHubLogoProps = {
+type CampusMeLogoProps = {
   className?: string;
   markClassName?: string;
   compact?: boolean;
   inverted?: boolean;
 };
 
-export function CampusHubLogo({
+export function CampusMeLogo({
   className,
   markClassName,
   compact = false,
   inverted = false,
-}: CampusHubLogoProps) {
+}: CampusMeLogoProps) {
   return (
     <span
       className={cn("inline-flex items-center gap-2.5", className)}
-      aria-label="CampusHub"
+      aria-label="Campus&Me"
     >
-      <Img src="/campushub-logo.png" alt="CampusHub" width={40} height={40} />
+      <Img src="/campus-and-me-logo.png" alt="Campus&Me" width={40} height={40} />
       {!compact && (
         <span
           className={cn(

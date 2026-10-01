@@ -71,7 +71,7 @@ export function PhotosStep({
         <h3 className="mb-2.5 text-xl text-foreground">Submission complete</h3>
         <p className="mx-auto max-w-[280px] text-sm leading-relaxed text-muted-foreground">
           Our accommodation team will review your submission and get in touch. If the property is
-          verified and rented through CampusHub, you&apos;ll receive a referral reward.
+          verified and rented through Campus&Me, you&apos;ll receive a referral reward.
         </p>
         <button
           type="button"

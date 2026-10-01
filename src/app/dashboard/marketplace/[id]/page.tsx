@@ -34,10 +34,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { id } = await params;
   const result = await fetchListing(id).catch(() => null);
 
-  if (!result) return { title: 'Listing not found | CampusHub' };
+  if (!result) return { title: 'Listing not found | Campus&Me' };
 
   return {
-    title: `${result.listing.title} | Marketplace | CampusHub`,
+    title: `${result.listing.title} | Marketplace | Campus&Me`,
     description: result.listing.description ?? undefined,
   };
 }

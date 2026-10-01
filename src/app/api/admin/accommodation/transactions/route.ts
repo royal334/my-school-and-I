@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { cancelActiveViewingsForUnit } from '@/utils/lib/services/accommodation-viewings';
 
 async function isAdmin(supabase: any, userId: string) {
   const { data } = await supabase
@@ -47,13 +48,17 @@ export async function POST(request: Request) {
     if (txError) throw txError;
 
     // Mark unit as rented
-    await supabase
+    const { error: unitUpdateError } = await supabase
       .from('accommodation_units')
       .update({
         availability_status: 'rented',
         updated_at: new Date().toISOString(),
       })
       .eq('id', unit_id);
+
+    if (unitUpdateError) throw unitUpdateError;
+
+    const viewingCancellations = await cancelActiveViewingsForUnit(unit_id, 'rented');
 
     // Find the oldest approved submission linked to this rented unit.
     const { data: submission, error: submissionError } = await supabase
@@ -137,6 +142,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       transaction,
+      viewingCancellations,
       referral: {
         created: referralCreated,
         issue: referralIssue,

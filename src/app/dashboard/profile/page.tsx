@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 export const metadata = {
-  title: 'Profile & Settings | CampusHub',
+  title: 'Profile & Settings | Campus&Me',
 };
 
 export default async function ProfilePage() {

@@ -4,7 +4,7 @@ import { AccommodationListings } from '@/components/accommodation/accommodation-
 import { createClient } from '@/utils/supabase/server';
 
 export const metadata = {
-  title: 'Accommodation | CampusHub',
+  title: 'Accommodation | Campus&Me',
 };
 
 export default async function AccommodationPage() {

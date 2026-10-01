@@ -22,7 +22,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "CampusHub",
+  title: "Campus&Me",
   description:
     "The digital hub for ambitious Nigerian university students — materials, CGPA tools, vendors, announcements, and more.",
   keywords: [
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     "university portal",
   ],
   openGraph: {
-    title: "CampusHub — Your Complete Academic Companion",
+    title: "Campus&Me — Your Complete Academic Companion",
     description: "The all-in-one platform for university students.",
     type: "website",
   },
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'CampusHub',
+    title: 'Campus&Me',
   },
   formatDetection: {
     telephone: false,

@@ -1,16 +1,16 @@
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { createAdminClient } from '@/utils/supabase/admin';
 
 export async function GET(request: Request) {
   try {
     // Verify cron secret
+    const cronSecret = process.env.CRON_SECRET;
     const authHeader = request.headers.get('authorization');
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const supabase = createClient(await cookies());
+    const supabase = createAdminClient();
     const now = new Date().toISOString();
 
     // Find expired subscriptions

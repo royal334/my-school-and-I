@@ -1,7 +1,7 @@
 "use client";
 
 import { Instagram, MessageCircle, Twitter } from "lucide-react";
-import { CampusHubLogo } from "@/components/brand/logo";
+import { CampusMeLogo } from "@/components/brand/logo";
 
 const PRODUCT_LINKS = [
   "Features",
@@ -31,7 +31,7 @@ export function Footer() {
       <div className="mx-auto max-w-[1440px] px-6 pb-8 pt-16">
         <div className="mb-12 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <CampusHubLogo className="mb-4" inverted />
+            <CampusMeLogo className="mb-4" inverted />
             <p className="mb-6 max-w-xs text-sm leading-6 text-primary-200/75">
               The digital hub for ambitious Nigerian university students.
             </p>
@@ -87,7 +87,7 @@ export function Footer() {
 
           <div>
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-white">
-              CampusHub
+              Campus&Me
             </p>
             <div className="space-y-2 text-sm text-primary-200/75">
               <p>Nnamdi Azikiwe University</p>
@@ -103,7 +103,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm text-primary-200/60 sm:flex-row">
-          <p>© 2025 CampusHub. All rights reserved.</p>
+          <p>© 2025 Campus&Me. All rights reserved.</p>
           <p>Built for the next generation.</p>
         </div>
       </div>

@@ -36,7 +36,7 @@ import {
   MessageSquare,
   Settings,
 } from "lucide-react";
-import { CampusHubLogo } from "@/components/brand/logo";
+import { CampusMeLogo } from "@/components/brand/logo";
 
 const vendorNavigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -89,7 +89,7 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
         <Sidebar className="border-r border-primary-800/20 bg-sidebar">
           <SidebarHeader className="border-b border-sidebar-border bg-sidebar px-5 py-5">
             <Link href="/dashboard" onClick={closeSidebarOnMobile}>
-              <CampusHubLogo inverted />
+              <CampusMeLogo inverted />
               <p className="mt-2 text-xs text-sidebar-foreground/55">Vendor dashboard</p>
             </Link>
           </SidebarHeader>
@@ -159,7 +159,7 @@ export default function VendorSidebar({ userName }: VendorSidebarProps) {
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Sign out of CampusHub?</AlertDialogTitle>
+            <AlertDialogTitle>Sign out of Campus&Me?</AlertDialogTitle>
             <AlertDialogDescription>
               You will be signed out of your vendor account and redirected.
             </AlertDialogDescription>

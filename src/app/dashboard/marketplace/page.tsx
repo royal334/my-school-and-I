@@ -6,7 +6,7 @@ import { parseMarketplaceFilters } from '@/components/marketplace/filters';
 import { hasOwnedListings } from '@/utils/supabase/queries/marketplace';
 
 export const metadata = {
-  title: 'Marketplace | CampusHub',
+  title: 'Marketplace | Campus&Me',
   description: 'Buy and sell electronics, books, furniture and more on campus',
 };
 

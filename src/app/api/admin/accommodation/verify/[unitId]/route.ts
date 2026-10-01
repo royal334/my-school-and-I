@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { cancelActiveViewingsForUnit } from '@/utils/lib/services/accommodation-viewings';
 
 async function isAdmin(supabase: any, userId: string) {
   const { data } = await supabase
@@ -100,10 +101,15 @@ export async function POST(
 
     if (unitError) throw unitError;
 
+    const viewingCancellations = unit.availability_status === 'unavailable'
+      ? await cancelActiveViewingsForUnit(unitId, 'unavailable')
+      : undefined;
+
     return NextResponse.json({
       success: true,
       verification,
       unit,
+      viewingCancellations,
       message: verification_result === 'approved'
         ? 'Unit verified and listed as available'
         : 'Unit marked as unavailable',

@@ -8,7 +8,7 @@ import { SavedListingCard } from '@/components/marketplace/saved/saved-listing-c
 import { SavedListingsEmptyState } from '@/components/marketplace/saved/saved-listings-empty-state';
 
 export const metadata = {
-  title: 'Saved listings | Marketplace | CampusHub',
+  title: 'Saved listings | Marketplace | Campus&Me',
   description: 'Listings you saved for later',
 };
 

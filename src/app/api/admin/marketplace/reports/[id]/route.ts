@@ -62,7 +62,7 @@ export async function PATCH(
           userId: listing.seller_id,
           type: 'platform',
           title: 'Listing removed',
-          body: `Your listing "${listing.title}" was removed for violating CampusHub guidelines.`,
+          body: `Your listing "${listing.title}" was removed for violating Campus&Me guidelines.`,
           data: { listing_id },
         }).catch(console.error);
       }

@@ -12,7 +12,7 @@ import { MyListingRow } from '@/components/marketplace/my-listings/my-listing-ro
 import { MyListingsEmptyState } from '@/components/marketplace/my-listings/my-listings-empty-state';
 
 export const metadata = {
-  title: 'My listings | Marketplace | CampusHub',
+  title: 'My listings | Marketplace | Campus&Me',
   description: 'Manage the items you are selling on campus',
 };
 

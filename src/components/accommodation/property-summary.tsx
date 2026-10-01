@@ -23,7 +23,7 @@ export function PropertySummary({ listing }: { listing: Listing }) {
             borderRadius: 'var(--radius-full)',
             padding: '3px 10px',
           }}>
-            ✓ CampusHub Verified — {formatDistanceToNow(new Date(listing.last_verified_at), { addSuffix: true })}
+            ✓ Campus&Me Verified — {formatDistanceToNow(new Date(listing.last_verified_at), { addSuffix: true })}
           </span>
         </div>
       )}

@@ -111,7 +111,7 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Log out of CampusHub?</AlertDialogTitle>
+            <AlertDialogTitle>Log out of Campus&Me?</AlertDialogTitle>
             <AlertDialogDescription>
               You will be signed out of your account and redirected to the login
               page.

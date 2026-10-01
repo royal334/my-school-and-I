@@ -6,7 +6,7 @@ import { MARKETPLACE_BASE_PATH } from '@/components/marketplace/filters';
 import { SellWizard } from '@/components/marketplace/sell/sell-wizard';
 
 export const metadata = {
-  title: 'Sell something | Marketplace | CampusHub',
+  title: 'Sell something | Marketplace | Campus&Me',
   description: 'List an item for sale on the campus marketplace',
 };
 

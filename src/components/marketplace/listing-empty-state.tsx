@@ -16,7 +16,7 @@ export function ListingEmptyState({ hasFilters }: ListingEmptyStateProps) {
       <p className="max-w-65 text-sm leading-relaxed text-muted-foreground">
         {hasFilters
           ? 'Try adjusting your filters.'
-          : 'Be the first to sell something on CampusHub!'}
+          : 'Be the first to sell something on Campus&Me!'}
       </p>
       <div className="flex gap-2.5">
         {hasFilters && (

@@ -41,7 +41,7 @@ const STATUS_CONFIG: Record<string, { label: string; text: string; bg: string; d
     label: 'Approved',
     text: 'text-success-text',
     bg: 'bg-success-bg',
-    desc: 'This property has been verified and listed on CampusHub.',
+    desc: 'This property has been verified and listed on Campus&Me.',
   },
   rejected: {
     label: 'Rejected',
@@ -94,7 +94,7 @@ function SubmissionCard({ submission }: { submission: Submission }) {
           ) : (
             <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
               {submission.matched_unit_status === 'rented'
-                ? '🏠 This unit has been rented through CampusHub.'
+                ? '🏠 This unit has been rented through Campus&Me.'
                 : submission.matched_unit_status
                   ? 'This listing is being verified and will go live shortly.'
                   : 'This listing is not live yet.'}
@@ -156,7 +156,7 @@ export default function MySubmissionsPage() {
             <h2 className="text-xl text-foreground">No submissions yet</h2>
             <p className="max-w-[260px] text-sm leading-relaxed text-muted-foreground">
               Know of a vacant accommodation near campus? Report it and earn a reward if it gets rented
-              through CampusHub.
+              through Campus&Me.
             </p>
             <Link
               href="/dashboard/accommodation/submit"
@@ -169,7 +169,7 @@ export default function MySubmissionsPage() {
           <div className="flex flex-col gap-3">
             {/* Referral note */}
             <div className="rounded border border-warning/25 bg-warning-bg px-3.5 py-2.5 text-xs leading-relaxed text-warning-text">
-              🏆 You earn a referral reward when an approved submission is rented through CampusHub.
+              🏆 You earn a referral reward when an approved submission is rented through Campus&Me.
             </div>
 
             {submissions.map(s => (

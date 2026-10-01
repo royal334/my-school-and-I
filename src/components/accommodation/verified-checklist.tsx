@@ -23,7 +23,7 @@ export function VerifiedChecklist({ verification }: VerifiedChecklistProps) {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
         <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--primary)' }}>
-          ✓ CampusHub Verified
+          ✓ Campus&Me Verified
         </p>
         <p style={{ fontSize: 11, color: 'var(--muted-foreground)' }}>
           {formatDistanceToNow(new Date(verification.verified_at), { addSuffix: true })}

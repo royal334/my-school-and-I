@@ -5,7 +5,7 @@ import { isUserAdmin } from '@/utils/supabase/queries';
 import { AdminHome } from '@/components/admin/admin-home/admin-home';
 
 export const metadata = {
-  title: 'Admin | CampusHub',
+  title: 'Admin | Campus&Me',
 };
 
 export default async function AdminPage() {

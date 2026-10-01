@@ -177,7 +177,7 @@ export async function PATCH(
       const messages: Record<string, { title: string; body: string }> = {
         approved: {
           title: 'Your submission was approved!',
-          body: `${lead.property_name} has been verified and listed on CampusHub.`,
+          body: `${lead.property_name} has been verified and listed on Campus&Me.`,
         },
         rejected: {
           title: 'Submission update',

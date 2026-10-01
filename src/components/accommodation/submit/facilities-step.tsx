@@ -45,7 +45,7 @@ export function FacilitiesStep() {
         />
       </FormField>
 
-      <FormField label="Other notes" hint="Anything else CampusHub should know">
+      <FormField label="Other notes" hint="Anything else Campus&Me should know">
         <textarea
           {...register('other_notes')}
           className={textareaClass}

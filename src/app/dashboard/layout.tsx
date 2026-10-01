@@ -46,7 +46,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
     .select("role")
     .eq("user_id", user.id)
     .maybeSingle();
-  const isSuperAdmin = adminRole?.role === "super_admin";
   const showVendorSidebar = isVendorAccount || (hasVendor && !isStudentToggle);
 
   return (
@@ -95,7 +94,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
           {children}
         </main>
 
-        {showVendorSidebar ? <VendorMobileBottomNav /> : <MobileBottomNav isSuperAdmin={isSuperAdmin} />}
+        {showVendorSidebar ? <VendorMobileBottomNav /> : <MobileBottomNav />}
       </div>
 
       <OnboardingTour

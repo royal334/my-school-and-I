@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { Building2, Store } from 'lucide-react';
+import { BookOpen, Building2, Store } from 'lucide-react';
 
 export interface AdminSection {
   href: string;
@@ -25,5 +25,12 @@ export const ADMIN_SECTIONS: AdminSection[] = [
     description: 'Moderate listings, resolve user reports and manage boosted posts.',
     icon: Store,
     features: ['Listings', 'Reports', 'Boosts', 'Stats'],
+  },
+  {
+    href: '/admin/materials',
+    title: 'Materials',
+    description: 'Review student submissions, publish uploads and curate the library.',
+    icon: BookOpen,
+    features: ['Submissions', 'Library', 'Uploads', 'Stats'],
   },
 ];

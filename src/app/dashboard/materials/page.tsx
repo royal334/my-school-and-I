@@ -106,7 +106,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
         </div>
         <div className="flex items-center gap-4">
           <div>
-            <Link href="/submit-materials" className="hidden md:inline-block">
+            <Link href="/submit-material" className="hidden md:inline-block">
               <Button>
                 <Upload className="h-4 w-4" />
                 Submit Materials for Review

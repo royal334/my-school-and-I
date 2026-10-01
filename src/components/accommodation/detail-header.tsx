@@ -6,7 +6,7 @@ interface DetailHeaderProps {
 export function DetailHeader({ name, onBack }: DetailHeaderProps) {
   return (
     <div style={{
-      background: 'var(--primary-950)',
+      background: 'var(--primary-500)',
       padding: '16px',
       display: 'flex',
       alignItems: 'center',

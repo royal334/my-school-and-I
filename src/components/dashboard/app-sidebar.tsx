@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Sidebar,
@@ -31,14 +31,12 @@ import {
   MessageSquare,
   Settings,
   Store,
-  Upload,
   User,
   House,
 } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
 import { CampusHubLogo } from "@/components/brand/logo";
-import { createClient } from "@/utils/supabase/client";
 
 const baseNavItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -57,47 +55,12 @@ export function AppSidebar() {
   const { isMobile, setOpenMobile } = useSidebar();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   const closeSidebarOnMobile = () => {
     if (isMobile) {
       setOpenMobile(false);
     }
   };
-
-  useEffect(() => {
-    async function checkRole() {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        const { data } = await supabase
-          .from("admin_roles")
-          .select("role")
-          .eq("user_id", user.id)
-          .maybeSingle();
-
-        setIsSuperAdmin(data?.role === "super_admin");
-      }
-    }
-
-    void checkRole();
-  }, []);
-
-  const navItems = isSuperAdmin
-    ? [
-        baseNavItems[0],
-        baseNavItems[1],
-        {
-          href: "/dashboard/materials/upload",
-          icon: Upload,
-          label: "Upload material",
-        },
-        ...baseNavItems.slice(2),
-      ]
-    : baseNavItems;
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
@@ -135,7 +98,7 @@ export function AppSidebar() {
               Your hub
             </p>
             <SidebarMenu className="space-y-1">
-              {navItems.map(({ href, icon: Icon, label }) => {
+              {baseNavItems.map(({ href, icon: Icon, label }) => {
                 const active = isActive(href);
 
                 return (

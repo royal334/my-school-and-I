@@ -72,11 +72,23 @@ export function ViewingActionPanel({
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      toast.success('Transaction created! Unit has been marked as rented.', {
-        duration: 5000,
-        position: 'top-center',
-      });
-      router.push('/dashboard/admin/accommodation');
+      if (data.referral?.created) {
+        toast.success('Transaction created, unit rented, and referral created.', {
+          duration: 5000,
+          position: 'top-center',
+        });
+      } else {
+        const message = data.referral?.issue === 'no_matching_submission'
+          ? 'Transaction created, but no approved submission is linked to this unit.'
+          : data.referral?.issue === 'missing_submitter'
+            ? 'Transaction created, but the approved submission has no submitter.'
+            : 'Transaction created, but referral creation failed. Check the server logs.';
+        toast.warning(message, {
+          duration: 7000,
+          position: 'top-center',
+        });
+      }
+      router.push('/admin/accommodation');
     } catch (e) {
       setError(e instanceof Error ? e.message : 'An unexpected error occurred');
     } finally {

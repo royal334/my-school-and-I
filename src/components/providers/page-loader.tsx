@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { toast } from 'sonner';
 
 const REVEAL_DELAY_MS = 150;
 const SAFETY_TIMEOUT_MS = 8000;
@@ -22,6 +23,7 @@ export function PageLoader() {
   const visibleRef = useRef(false);
   const revealTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navStartPathRef = useRef<string | null>(null);
 
   const cancelTimers = useCallback(() => {
     if (revealTimer.current) clearTimeout(revealTimer.current);
@@ -32,6 +34,7 @@ export function PageLoader() {
 
   const hide = useCallback(() => {
     cancelTimers();
+    navStartPathRef.current = null;
     visibleRef.current = false;
     setVisible(false);
   }, [cancelTimers]);
@@ -42,7 +45,22 @@ export function PageLoader() {
     revealTimer.current = setTimeout(() => {
       visibleRef.current = true;
       setVisible(true);
-      hideTimer.current = setTimeout(hide, SAFETY_TIMEOUT_MS);
+      navStartPathRef.current = window.location.pathname;
+      // A committed route change calls `hide()`, which clears this timer. So
+      // reaching here means the navigation stalled: warn the user instead of
+      // leaving the overlay to vanish without explanation.
+      hideTimer.current = setTimeout(() => {
+        if (navStartPathRef.current === window.location.pathname) {
+          toast.warning('This page is taking longer than usual', {
+            description:
+              'We could not finish loading it. Check your connection, then try again.',
+            duration: 8000,
+            position: 'top-center',
+          });
+        }
+        navStartPathRef.current = null;
+        hide();
+      }, SAFETY_TIMEOUT_MS);
     }, REVEAL_DELAY_MS);
   }, [hide]);
 

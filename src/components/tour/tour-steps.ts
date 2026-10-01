@@ -95,7 +95,6 @@ function mobileStep(step: TourStep): TourStep {
 const ROUTE_LABELS: Record<string, string> = {
   '/dashboard': 'Dashboard',
   '/dashboard/materials': 'Materials',
-  '/dashboard/materials/upload': 'Upload material',
   '/dashboard/profile': 'Profile',
   '/dashboard/market': 'Market',
   '/dashboard/vendors': 'Vendors',

@@ -8,22 +8,14 @@ import {
   Megaphone,
   Store,
   House,
-  Upload,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-interface MobileBottomNavProps {
-  isSuperAdmin?: boolean;
-}
-
-export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) {
+export function MobileBottomNav() {
   const navItems = [
     { href: "/dashboard", icon: LayoutDashboard, label: "Home" },
     { href: "/dashboard/materials", icon: BookOpen, label: "Materials" },
-    ...(isSuperAdmin
-      ? [{ href: "/dashboard/materials/upload", icon: Upload, label: "Upload" }]
-      : []),
     {href:"/dashboard/accommodation", icon: House, label: "Accommodation"},
     { href: '/dashboard/market', icon: Store, label: 'Market' },
     { href: '/dashboard/announcements', icon: Megaphone, label: 'Updates' },
@@ -39,15 +31,7 @@ export function MobileBottomNav({ isSuperAdmin = false }: MobileBottomNavProps) 
       return (
         pathname === "/dashboard/materials" ||
         pathname === "/dashboard/materials/" ||
-        (pathname.startsWith("/dashboard/materials/") &&
-          !pathname.startsWith("/dashboard/materials/upload"))
-      );
-    }
-
-    if (href === "/dashboard/materials/upload") {
-      return (
-        pathname === "/dashboard/materials/upload" ||
-        pathname.startsWith("/dashboard/materials/upload/")
+        pathname.startsWith("/dashboard/materials/")
       );
     }
 

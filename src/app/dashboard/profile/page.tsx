@@ -1,7 +1,9 @@
 import { createClient } from '@/utils/supabase/server';
+import { createAdminClient } from '@/utils/supabase/admin';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import ProfileForm from '@/components/profile/profile-form';
+import { AccommodationPayoutDetailsForm } from '@/components/profile/accommodation-payout-details-form';
 //import SubscriptionCard from '@/components/profile/subscription-card';
 import SecurityCard from '@/components/profile/security-card';
 import { ArrowLeft, User } from 'lucide-react';
@@ -37,6 +39,28 @@ export default async function ProfilePage() {
     .select('role')
     .eq('user_id', user.id)
     .single();
+
+  const { data: qualifyingReferral, error: referralError } = await createAdminClient()
+    .from('accommodation_referrals')
+    .select('id')
+    .eq('referrer_id', user.id)
+    .not('transaction_id', 'is', null)
+    .limit(1)
+    .maybeSingle();
+
+  if (referralError) throw referralError;
+
+  let payoutDetails = null;
+  if (qualifyingReferral) {
+    const { data, error } = await supabase
+      .from('accommodation_payout_details')
+      .select('bank_name, account_name, account_number')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (error) throw error;
+    payoutDetails = data;
+  }
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -83,6 +107,14 @@ export default async function ProfilePage() {
           email={user.email!}
           userId={user.id}
         />
+        {qualifyingReferral && (
+          <div className="mt-6">
+            <AccommodationPayoutDetailsForm
+              userId={user.id}
+              initialValues={payoutDetails}
+            />
+          </div>
+        )}
         {/* Subscription Status */}
         {/* <SubscriptionCard profile={profile} /> */}
         {/* Security Settings */}

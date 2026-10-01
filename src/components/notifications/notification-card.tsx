@@ -1,8 +1,9 @@
 'use client';
 
+import { createElement, useState } from 'react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
-import { Check } from 'lucide-react';
+import { Check, ChevronDown } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import type { Notification } from './types';
 import { getNotificationIcon, getNotificationColor, getDeeplink } from './notification-utils';
@@ -14,10 +15,11 @@ interface NotificationCardProps {
 
 function NotificationIcon({ typeKey, className }: { typeKey: string | null | undefined; className?: string }) {
   const Icon = getNotificationIcon(typeKey);
-  return <Icon className={className} />;
+  return createElement(Icon, { className });
 }
 
 export default function NotificationCard({ notification, onMarkAsRead }: NotificationCardProps) {
+  const [expanded, setExpanded] = useState(false);
   const typeKey = notification.notification_type?.type_key;
   const colorClass = getNotificationColor(typeKey);
   const deeplink = getDeeplink(notification.data);
@@ -49,7 +51,11 @@ export default function NotificationCard({ notification, onMarkAsRead }: Notific
               )}
             </div>
 
-            <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+            <p
+              className={`mt-1 whitespace-pre-line text-sm text-muted-foreground ${
+                expanded ? '' : 'line-clamp-2'
+              }`}
+            >
               {notification.body}
             </p>
 
@@ -59,6 +65,24 @@ export default function NotificationCard({ notification, onMarkAsRead }: Notific
               </span>
 
               <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  aria-expanded={expanded}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setExpanded((v) => !v);
+                  }}
+                  className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >
+                  <ChevronDown
+                    className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                      expanded ? 'rotate-180' : ''
+                    }`}
+                  />
+                  {expanded ? 'Show less' : 'Show more'}
+                </button>
+
                 {!notification.is_read && (
                   <button
                     onClick={(e) => {

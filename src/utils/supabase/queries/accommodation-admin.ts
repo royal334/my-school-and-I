@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { buildDashboardSnapshot, type DashboardSnapshot } from '@/components/admin/accommodation/utils';
+import { withAccommodationMediaUrls } from '@/utils/lib/accommodation-media';
 import type {
   Lead,
   LeadDetail,
@@ -130,13 +131,14 @@ export async function getLeadDetail(
     .from('accommodation_media')
     .select('*')
     .eq('submission_id', id);
+  const mediaWithUrls = await withAccommodationMediaUrls(supabase, media || []);
 
   return {
     ...lead,
     submitter,
     matched_property,
     matched_unit,
-    media: media || [],
+    media: mediaWithUrls,
   } as LeadDetail;
 }
 

@@ -13,7 +13,7 @@ import Link from "next/link";
 import { Upload } from "lucide-react";
 
 export const metadata = {
-  title: "Materials Library | CampusHub",
+  title: "Materials Library | Campus&Me",
   description: "Access lecture notes, past questions, and study materials",
 };
 

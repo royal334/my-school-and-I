@@ -14,7 +14,7 @@ const STATS = [
 const TESTIMONIALS = [
   {
     quote:
-      "CampusHub saved me hours of searching for past questions. Everything is organized and easy to find!",
+      "Campus&Me saved me hours of searching for past questions. Everything is organized and easy to find!",
     name: "Chioma A.",
     meta: "300 Level, Mechanical Engineering",
     initials: "CA",

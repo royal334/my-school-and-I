@@ -1,8 +1,8 @@
-# AGENTS.md - EnGiPortal Codebase Guide
+# AGENTS.md - Campus&Me Codebase Guide
 
 ## Project Overview
 
-EnGiPortal is a Next.js 16 app with TypeScript, Tailwind CSS v4, and Supabase backend. Educational materials, vendor services, and CGPA tracking for engineering students.
+Campus&Me is a Next.js 16 app with TypeScript, Tailwind CSS v4, and Supabase backend. Educational materials, vendor services, and CGPA tracking for engineering students.
 
 ## Commands
 

@@ -34,7 +34,7 @@ export default function PreferencesSettings() {
           <h2 className="text-xl font-semibold">Preferences</h2>
         </div>
         <p className="text-sm text-muted-foreground">
-          Customize your CampusHub experience
+          Customize your Campus&Me experience
         </p>
       </CardHeader>
       <CardContent className="space-y-6">

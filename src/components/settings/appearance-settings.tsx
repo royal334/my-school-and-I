@@ -37,7 +37,7 @@ export default function AppearanceSettings() {
           <h2 className="text-xl font-semibold">Appearance</h2>
         </div>
         <p className="text-sm text-muted-foreground">
-          Customize how CampusHub looks on your device
+          Customize how Campus&Me looks on your device
         </p>
       </CardHeader>
       <CardContent className="space-y-4">

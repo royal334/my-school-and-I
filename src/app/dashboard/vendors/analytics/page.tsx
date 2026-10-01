@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import AnalyticsDashboard from '@/components/vendors/analytics-dashboard'
 
 export const metadata = {
-  title: 'Analytics | CampusHub',
+  title: 'Analytics | Campus&Me',
   description: 'View your vendor analytics',
 };
 

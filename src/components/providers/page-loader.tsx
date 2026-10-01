@@ -11,12 +11,12 @@ export function PageLoader() {
   const [visible, setVisible] = useState(false);
   const pathname = usePathname();
 
-  // Debug aid: set localStorage 'engiportal:loaderDesktop' to '1' to also show
+  // Debug aid: set localStorage 'campusandme:loaderDesktop' to '1' to also show
   // the overlay on desktop-sized screens while testing.
   const [ignoreBreakpoint] = useState(
     () =>
       typeof window !== 'undefined' &&
-      window.localStorage.getItem('engiportal:loaderDesktop') === '1'
+      window.localStorage.getItem('campusandme:loaderDesktop') === '1'
   );
 
   const committedPathRef = useRef(pathname);
@@ -112,21 +112,21 @@ export function PageLoader() {
 
     history.pushState = (...args: Parameters<History['pushState']>) => {
       nativePushState(...args);
-      window.dispatchEvent(new Event('engiportal:navigate'));
+      window.dispatchEvent(new Event('campusandme:navigate'));
     };
 
     history.replaceState = (...args: Parameters<History['replaceState']>) => {
       nativeReplaceState(...args);
-      window.dispatchEvent(new Event('engiportal:navigate'));
+      window.dispatchEvent(new Event('campusandme:navigate'));
     };
 
     document.addEventListener('click', onClick, true);
-    window.addEventListener('engiportal:navigate', trigger);
+    window.addEventListener('campusandme:navigate', trigger);
     window.addEventListener('popstate', trigger);
 
     return () => {
       document.removeEventListener('click', onClick, true);
-      window.removeEventListener('engiportal:navigate', trigger);
+      window.removeEventListener('campusandme:navigate', trigger);
       window.removeEventListener('popstate', trigger);
       history.pushState = nativePushState;
       history.replaceState = nativeReplaceState;
@@ -144,7 +144,7 @@ export function PageLoader() {
       aria-label="Loading page"
       className={`fixed inset-0 z-[999] flex flex-col items-center justify-center gap-6 overflow-hidden bg-background/85 backdrop-blur-sm${ignoreBreakpoint ? '' : ' md:hidden'}`}
       style={{
-        animation: 'engiportal-overlay-in 220ms ease-out',
+        animation: 'campusandme-overlay-in 220ms ease-out',
         backdropFilter: 'blur(4px)',
         WebkitBackdropFilter: 'blur(4px)',
       }}
@@ -177,7 +177,7 @@ export function PageLoader() {
       </p>
 
       <style>{`
-        @keyframes engiportal-overlay-in {
+        @keyframes campusandme-overlay-in {
           from { opacity: 0; }
           to { opacity: 1; }
         }

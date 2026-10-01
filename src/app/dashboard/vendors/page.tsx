@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { VendorDirectory } from "@/components/vendors/vendor-directory";
 
 export const metadata = {
-  title: "Vendors Marketplace | CampusHub",
+  title: "Vendors Marketplace | Campus&Me",
 };
 
 interface PageProps {

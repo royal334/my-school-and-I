@@ -10,7 +10,7 @@ import CancelSubscriptionButton from '@/components/vendors/cancel-subscription-b
 import ReactivateSubscriptionButton from '@/components/vendors/reactivate-subscription-button';
 
 export const metadata = {
-  title: 'Subscription | CampusHub',
+  title: 'Subscription | Campus&Me',
   description: 'Manage your subscription',
 };
 

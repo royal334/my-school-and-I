@@ -81,7 +81,7 @@ export default function SuggestionPage() {
             <div className="space-y-2">
               <CardTitle className="text-2xl">Feedback Received!</CardTitle>
               <CardDescription className="text-muted-foreground">
-                Thank you for helping us improve CampusHub. We appreciate your
+                Thank you for helping us improve Campus&Me. We appreciate your
                 input!
               </CardDescription>
             </div>
@@ -115,7 +115,7 @@ export default function SuggestionPage() {
             Suggestions & Feedback
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            Tell us how we can make CampusHub better for you
+            Tell us how we can make Campus&Me better for you
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -191,7 +191,7 @@ export default function SuggestionPage() {
 
       <p className="text-center text-xs text-muted-foreground max-w-xs">
         Your feedback is directly sent to our management team for review. Thank
-        you for being part of CampusHub.
+        you for being part of Campus&Me.
       </p>
     </div>
   );

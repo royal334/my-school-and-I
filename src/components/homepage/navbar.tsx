@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, User } from "lucide-react";
 import ThemeToggle from "@/components/theme-toggle";
-import { CampusHubLogo } from "@/components/brand/logo";
+import { CampusMeLogo } from "@/components/brand/logo";
 import { createClient } from "@/utils/supabase/client";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 
@@ -72,8 +72,8 @@ export function Navbar() {
       }`}
     >
       <div className="mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-5 sm:px-6">
-        <Link href="/" aria-label="CampusHub home">
-          <CampusHubLogo />
+        <Link href="/" aria-label="Campus&Me home">
+          <CampusMeLogo />
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">

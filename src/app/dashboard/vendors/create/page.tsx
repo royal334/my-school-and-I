@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Create Vendor Listing | CampusHub",
+  title: "Create Vendor Listing | Campus&Me",
 };
 
 export default async function CreateVendorPage() {

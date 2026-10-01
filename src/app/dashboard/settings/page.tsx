@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import ComingSoonOverlay from "@/components/settings/coming-soon-overlay";
 
 export const metadata = {
-  title: "Settings | CampusHub",
+  title: "Settings | Campus&Me",
 };
 
 export default async function SettingsPage() {

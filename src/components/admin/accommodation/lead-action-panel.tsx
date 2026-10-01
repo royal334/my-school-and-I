@@ -183,7 +183,7 @@ export function LeadActionPanel({
         if (refreshed.lead) onUpdate({ ...lead, ...refreshed.lead });
       }
 
-      toast.success(`Property "${propName}" created, verified and listed on CampusHub.`);
+      toast.success(`Property "${propName}" created, verified and listed on Campus&Me.`);
       setAction(null);
       setConfirmationOpen(false);
     } catch (e) {
@@ -215,7 +215,7 @@ export function LeadActionPanel({
     },
     create_property: {
       title: 'Create and list this property?',
-      description: 'This will create the property, verify the unit, and make it available on CampusHub.',
+      description: 'This will create the property, verify the unit, and make it available on Campus&Me.',
       confirmLabel: 'Create listing',
     },
     duplicate: {

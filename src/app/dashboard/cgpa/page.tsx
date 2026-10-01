@@ -13,7 +13,7 @@ import Link from "next/link";
 // import { toast } from 'sonner';
 
 export const metadata = {
-  title: "CGPA Calculator | CampusHub",
+  title: "CGPA Calculator | Campus&Me",
 };
 
 export default async function CGPAPage() {

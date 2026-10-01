@@ -9,7 +9,7 @@ import { StudentDashboard } from '@/components/dashboard';
 import VendorDashboard from '@/components/dashboard/vendor-dashboard';
 
 export const metadata = {
-  title: 'Dashboard | CampusHub',
+  title: 'Dashboard | Campus&Me',
 };
 
 export default async function DashboardPage() {

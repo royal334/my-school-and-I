@@ -41,15 +41,15 @@ export function InstallPromptModal({ open, onOpenChange }: InstallPromptModalPro
       <DialogContent className="sm:max-w-sm z-[130]">
         <div className="flex flex-col items-center gap-3 pt-2 text-center">
           <Image
-            src="/campushub-logo.png"
-            alt="CampusHub logo"
+            src="/campus-and-me-logo.png"
+            alt="Campus&Me logo"
             width={72}
             height={72}
             priority
             className="rounded-2xl"
           />
           <DialogHeader className="items-center text-center">
-            <DialogTitle style={{ fontFamily: "var(--font-display)" }}>Install CampusHub</DialogTitle>
+            <DialogTitle style={{ fontFamily: "var(--font-display)" }}>Install Campus&Me</DialogTitle>
             <DialogDescription>
               Get a full-screen app experience with one-tap access from your home screen — no app
               store required.
@@ -60,7 +60,7 @@ export function InstallPromptModal({ open, onOpenChange }: InstallPromptModalPro
         {isIOS ? (
           <div className="rounded-lg border border-border dark:border-border bg-muted dark:bg-muted p-4 text-sm">
             <p className="mb-2 flex items-center gap-2 font-medium text-foreground">
-              <Share className="h-4 w-4" /> How to add CampusHub to your home screen
+              <Share className="h-4 w-4" /> How to add Campus&Me to your home screen
             </p>
             <ol className="space-y-1.5 text-muted-foreground">
               <li>
@@ -82,7 +82,7 @@ export function InstallPromptModal({ open, onOpenChange }: InstallPromptModalPro
             <p className="flex items-start gap-2">
               <Smartphone className="mt-0.5 h-4 w-4 shrink-0" />
               <span>
-                CampusHub will be installed directly on your device and open in its own window, just
+                Campus&Me will be installed directly on your device and open in its own window, just
                 like an app from an app store.
               </span>
             </p>

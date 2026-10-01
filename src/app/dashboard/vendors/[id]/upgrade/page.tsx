@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export const metadata = {
-  title: 'Upgrade Subscription | CampusHub',
+  title: 'Upgrade Subscription | Campus&Me',
   description: 'Upgrade your vendor subscription',
 };
 

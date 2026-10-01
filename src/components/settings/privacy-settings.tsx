@@ -114,7 +114,7 @@ export default function PrivacySettings() {
               <div className="space-y-0.5">
                 <Label htmlFor="data-analytics">Usage Analytics</Label>
                 <p className="text-sm text-muted-foreground">
-                  Help improve CampusHub with anonymous usage data
+                  Help improve Campus&Me with anonymous usage data
                 </p>
               </div>
               <Switch

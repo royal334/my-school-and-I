@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { cancelActiveViewingsForUnit } from '@/utils/lib/services/accommodation-viewings';
 
 async function isAdmin(supabase: any, userId: string) {
   const { data } = await supabase
@@ -92,7 +93,12 @@ export async function PATCH(
 
     if (error) throw error;
 
-    return NextResponse.json({ success: true, unit });
+    const viewingCancellations =
+      unit.availability_status === 'unavailable' || unit.availability_status === 'rented'
+        ? await cancelActiveViewingsForUnit(id, unit.availability_status)
+        : undefined;
+
+    return NextResponse.json({ success: true, unit, viewingCancellations });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

@@ -36,7 +36,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
-import { CampusHubLogo } from "@/components/brand/logo";
+import { CampusMeLogo } from "@/components/brand/logo";
 
 const baseNavItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -89,7 +89,7 @@ export function AppSidebar() {
     <>
       <Sidebar className="border-r border-primary-800/20 bg-sidebar">
         <SidebarHeader className="border-b border-sidebar-border bg-sidebar px-5 py-5">
-          <CampusHubLogo inverted markClassName="size-9" />
+          <CampusMeLogo inverted markClassName="size-9" />
         </SidebarHeader>
 
         <SidebarContent className="bg-sidebar px-3 py-4">
@@ -150,7 +150,7 @@ export function AppSidebar() {
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Log out of CampusHub?</AlertDialogTitle>
+            <AlertDialogTitle>Log out of Campus&Me?</AlertDialogTitle>
             <AlertDialogDescription>
               You will be signed out of your account and redirected to the login
               page.

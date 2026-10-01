@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { cancelActiveViewingsForUnit } from '@/utils/lib/services/accommodation-viewings';
 
 export async function POST(request: Request) {
   try {
@@ -77,6 +78,22 @@ export async function POST(request: Request) {
       .single();
 
     if (error) throw error;
+
+    const { data: currentUnit, error: currentUnitError } = await supabase
+      .from('accommodation_units')
+      .select('availability_status')
+      .eq('id', unit_id)
+      .single();
+
+    if (currentUnitError) throw currentUnitError;
+
+    if (currentUnit.availability_status === 'unavailable' || currentUnit.availability_status === 'rented') {
+      await cancelActiveViewingsForUnit(unit_id, currentUnit.availability_status);
+      return NextResponse.json(
+        { error: 'This listing is no longer available. Your viewing request was cancelled.' },
+        { status: 400 }
+      );
+    }
 
     // Notify admin team
     const { data: admins } = await supabase

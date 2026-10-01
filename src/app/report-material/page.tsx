@@ -254,7 +254,7 @@ function ReportMaterialContent() {
 
       <p className="text-center text-xs text-muted-foreground max-w-xs">
         Your report is directly sent to our management team for review. Thank
-        you for keeping CampusHub&apos;s materials reliable.
+        you for keeping Campus&Me&apos;s materials reliable.
       </p>
     </div>
   );

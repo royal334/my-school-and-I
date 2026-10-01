@@ -77,7 +77,7 @@ export default function AccommodationDetailPage() {
           lineHeight: 1.6,
           padding: '0 8px',
         }}>
-          This listing was verified by CampusHub at the date shown above. Verification confirms conditions at that specific time — not permanently. Always inspect the property before committing to a tenancy.
+          This listing was verified by Campus&Me at the date shown above. Verification confirms conditions at that specific time — not permanently. Always inspect the property before committing to a tenancy.
         </p>
       </div>
     </div>

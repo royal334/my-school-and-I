@@ -8,7 +8,7 @@ import { VendorDirectory } from '@/components/vendors/vendor-directory';
 import { MarketTabs, type MarketTab } from '@/components/market/market-tabs';
 
 export const metadata = {
-  title: 'Market | CampusHub',
+  title: 'Market | Campus&Me',
   description: 'Browse marketplace listings and verified campus vendors',
 };
 

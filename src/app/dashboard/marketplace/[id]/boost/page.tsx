@@ -7,7 +7,7 @@ import { BoostCheckout } from '@/components/marketplace/boost/boost-checkout';
 import { BoostUnavailable } from '@/components/marketplace/boost/boost-unavailable';
 
 export const metadata = {
-  title: 'Boost listing | Marketplace | CampusHub',
+  title: 'Boost listing | Marketplace | Campus&Me',
   description: 'Promote one of your listings to more campus buyers',
 };
 
@@ -49,7 +49,7 @@ export default async function BoostPage({ params }: PageProps) {
         )}
 
         <p className="mb-5 text-[13px] leading-relaxed text-muted-foreground">
-          Boosting places your listing in front of more buyers on CampusHub. Choose how much reach
+          Boosting places your listing in front of more buyers on Campus&Me. Choose how much reach
           you want.
         </p>
 

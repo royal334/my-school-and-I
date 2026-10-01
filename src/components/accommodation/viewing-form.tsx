@@ -234,7 +234,7 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
         </button>
 
         <p style={{ fontSize: 11, color: 'var(--muted-foreground)', textAlign: 'center', lineHeight: 1.5 }}>
-          CampusHub will coordinate the viewing. You will be contacted to confirm.
+          Campus&Me will coordinate the viewing. You will be contacted to confirm.
         </p>
       </div>
     </div>

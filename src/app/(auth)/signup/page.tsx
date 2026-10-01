@@ -215,7 +215,7 @@ export default function SignupPage() {
         <CardHeader>
           <CardTitle className="text-foreground">Create Account</CardTitle>
           <CardDescription className="dark:text-muted-foreground">
-            Join CampusHub to access academic resources
+            Join Campus&Me to access academic resources
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>

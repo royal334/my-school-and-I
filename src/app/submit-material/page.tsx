@@ -238,7 +238,7 @@ export default function SubmitMaterialPage() {
             <div className="space-y-2">
               <CardTitle className="text-2xl">Material Submitted!</CardTitle>
               <CardDescription className="text-muted-foreground">
-                Thank you for contributing to CampusHub. Our review team will
+                Thank you for contributing to Campus&Me. Our review team will
                 verify your material and add it to the platform if approved.
               </CardDescription>
             </div>
@@ -272,7 +272,7 @@ export default function SubmitMaterialPage() {
             Submit a Material
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            Have study materials that are not on CampusHub yet? Submit them
+            Have study materials that are not on Campus&Me yet? Submit them
             here for review and they could be shared with the whole community.
           </CardDescription>
         </CardHeader>
@@ -548,7 +548,7 @@ export default function SubmitMaterialPage() {
 
       <p className="text-center text-xs text-muted-foreground max-w-xs">
         Your submission is sent to our review team for verification before it
-        appears on the platform. Thank you for contributing to CampusHub.
+        appears on the platform. Thank you for contributing to Campus&Me.
       </p>
     </div>
   );

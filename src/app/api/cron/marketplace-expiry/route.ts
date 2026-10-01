@@ -1,58 +1,77 @@
-import { createClient } from '@/utils/supabase/server';
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { createAdminClient } from '@/utils/supabase/admin';
 
 export async function GET(request: Request) {
+  const cronSecret = process.env.CRON_SECRET;
   const authHeader = request.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
-    const supabase = createClient(await cookies());
+    const supabase = createAdminClient();
+    const now = new Date().toISOString();
 
-    // 1. Expire overdue listings
-    const { data: expired, error } = await supabase
+    const { data: expiredListings, error: listingExpiryError } = await supabase
       .rpc('expire_marketplace_listings');
 
-    if (error) throw error;
+    if (listingExpiryError) throw listingExpiryError;
 
-    // 2. Deactivate expired boosts
-    const { data: expiredBoosts } = await supabase
+    const { data: expiredBoosts, error: boostExpiryError } = await supabase
       .from('marketplace_boosts')
       .update({ is_active: false })
       .eq('is_active', true)
-      .lt('expires_at', new Date().toISOString())
+      .or(`expires_at.is.null,expires_at.lte.${now}`)
       .select('listing_id');
 
-    // 3. Remove boosted flag from listings with no active boosts
-    if (expiredBoosts && expiredBoosts.length > 0) {
-      const listingIds = expiredBoosts.map((b: any) => b.listing_id);
+    if (boostExpiryError) throw boostExpiryError;
 
-      for (const listingId of listingIds) {
-        const { data: activeBoost } = await supabase
-          .from('marketplace_boosts')
-          .select('id')
-          .eq('listing_id', listingId)
-          .eq('is_active', true)
-          .single();
+    const { data: boostedListings, error: boostedListingsError } = await supabase
+      .from('marketplace_listings')
+      .select('id')
+      .eq('is_boosted', true);
 
-        if (!activeBoost) {
-          await supabase
-            .from('marketplace_listings')
-            .update({ is_boosted: false })
-            .eq('id', listingId);
-        }
-      }
+    if (boostedListingsError) throw boostedListingsError;
+
+    const boostedListingIds = (boostedListings || []).map((listing) => listing.id);
+    let staleListingIds: string[] = [];
+
+    if (boostedListingIds.length > 0) {
+      const { data: activeBoosts, error: activeBoostsError } = await supabase
+        .from('marketplace_boosts')
+        .select('listing_id')
+        .in('listing_id', boostedListingIds)
+        .eq('is_active', true)
+        .gt('expires_at', now);
+
+      if (activeBoostsError) throw activeBoostsError;
+
+      const listingsWithActiveBoosts = new Set(
+        (activeBoosts || []).map((boost) => boost.listing_id),
+      );
+      staleListingIds = boostedListingIds.filter(
+        (listingId) => !listingsWithActiveBoosts.has(listingId),
+      );
+    }
+
+    if (staleListingIds.length > 0) {
+      const { error: clearFlagsError } = await supabase
+        .from('marketplace_listings')
+        .update({ is_boosted: false })
+        .in('id', staleListingIds);
+
+      if (clearFlagsError) throw clearFlagsError;
     }
 
     return NextResponse.json({
       success: true,
-      expired_listings: expired,
+      expired_listings: expiredListings,
       expired_boosts: expiredBoosts?.length || 0,
+      cleared_boost_flags: staleListingIds.length,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Marketplace expiry cron error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Marketplace expiry failed';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -18,7 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CampusHubLogo } from "@/components/brand/logo";
+import { CampusMeLogo } from "@/components/brand/logo";
 import { markJustLoggedIn } from "@/components/tour/tour-login-marker";
 
 type LoginFormValues = {
@@ -63,13 +63,13 @@ export default function LoginPage() {
               Back to home
             </Button>
           </Link>
-          <CampusHubLogo compact />
+          <CampusMeLogo compact />
         </div>
 
         <Card className="w-full border-border/80 bg-card/95 shadow-xl backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Welcome back</CardTitle>
-            <CardDescription>Sign in to access your campus hub.</CardDescription>
+            <CardDescription>Sign in to access your Campus&Me account.</CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
             <CardContent className="space-y-4">

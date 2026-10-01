@@ -1,6 +1,6 @@
 {
-  "name": "CampusHub",
-  "short_name": "CampusHub",
+  "name": "Campus&Me",
+  "short_name": "Campus&Me",
   "description": "University platform for students",
   "start_url": "/",
   "scope": "/",
@@ -10,13 +10,13 @@
   "theme_color": "#4F46E5",
   "icons": [
     {
-      "src": "/campushub-logo.png",
+      "src": "/campus-and-me-logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/campushub-logo.png",
+      "src": "/campus-and-me-logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"

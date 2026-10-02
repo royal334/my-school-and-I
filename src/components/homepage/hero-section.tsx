@@ -63,13 +63,13 @@ export function HeroSection() {
                   href="/signup"
                   className="inline-flex items-center gap-2 rounded-xl bg-accent-500 px-6 py-3 text-base font-semibold text-accent-950 shadow-lg shadow-accent-500/20 transition-all hover:-translate-y-0.5 hover:bg-accent-400 hover:shadow-xl"
                 >
-                  Start free <ArrowRight size={18} />
+                  Get started <ArrowRight size={18} />
                 </Link>
                 <Link
                   href="/vendor-signup"
                   className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-base font-semibold text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary-300 hover:bg-muted"
                 >
-                  List your business <ArrowRight size={18} />
+                  List your business as a non-student <ArrowRight size={18} />
                 </Link>
               </div>
             </Reveal>

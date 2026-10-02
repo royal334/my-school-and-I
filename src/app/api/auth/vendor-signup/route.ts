@@ -1,11 +1,15 @@
 // app/api/auth/vendor-signup/route.ts
 import { createClient } from '@/utils/supabase/server';
+import { createAdminClient } from '@/utils/supabase/admin';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
     const supabase = createClient(await cookies());
+    // Service-role client. The anon key cannot insert into profiles here
+    // because a freshly signed-up user has no session yet, so RLS rejects it.
+    const admin = createAdminClient();
 
     const body = await request.json();
     const {
@@ -69,14 +73,15 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if email already exists
-    const { data: existingUser } = await supabase
+    // Check if email already exists. Queried with the admin client: an RLS
+    // 'select id' on another user's row is not visible to the anon key.
+    const { data: existingProfile } = await admin
       .from('profiles')
       .select('id')
       .eq('email', email)
-      .single();
+      .maybeSingle();
 
-    if (existingUser) {
+    if (existingProfile) {
       return NextResponse.json(
         { error: 'Email already registered' },
         { status: 400 }
@@ -96,6 +101,13 @@ export async function POST(request: Request) {
     });
 
     if (authError) {
+      if (/already (registered|exists)/i.test(authError.message)) {
+        return NextResponse.json(
+          { error: 'Email already registered' },
+          { status: 400 }
+        );
+      }
+
       console.error('Auth error:', authError);
       return NextResponse.json(
         { error: authError.message || 'Failed to create account' },
@@ -110,25 +122,36 @@ export async function POST(request: Request) {
       );
     }
 
-    // Update profile with business info
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .update({
+    // Upsert (not update): a previous run may have created the auth user without
+    // a profiles row, in which case .update() silently matches zero rows.
+    const { error: profileError } = await admin.from('profiles').upsert(
+      {
+        id: authData.user.id,
+        email,
         full_name,
         account_type: 'vendor',
         business_name,
         business_phone,
         business_address,
-      })
-      .eq('id', authData.user.id);
+      },
+      { onConflict: 'id' }
+    );
 
     if (profileError) {
-      console.error('Profile update error:', profileError);
-      // Don't fail - user is created, they can update profile later
+      // Never swallow this: roll the auth user back so signup can be retried.
+      console.error('Profile insert error:', profileError);
+      await admin.auth.admin.deleteUser(authData.user.id).catch((e) => {
+        console.error('Failed to roll back auth user:', e);
+      });
+
+      return NextResponse.json(
+        { error: 'Failed to create profile. Please try again.' },
+        { status: 500 }
+      );
     }
 
     // Create vendor record
-    const { error: vendorError } = await supabase.from('vendors').insert({
+    const { error: vendorError } = await admin.from('vendors').insert({
       owner_id: authData.user.id,
       business_name,
       category_id,
@@ -147,7 +170,7 @@ export async function POST(request: Request) {
     }
 
     // Log activity
-    await supabase.from('activity_logs').insert({
+    await admin.from('activity_logs').insert({
       user_id: authData.user.id,
       action: 'vendor_signup',
       details: { business_name, email },
@@ -160,10 +183,10 @@ export async function POST(request: Request) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Vendor signup error:', error);
     return NextResponse.json(
-      { error: error.message || 'Server error' },
+      { error: error instanceof Error ? error.message : 'Server error' },
       { status: 500 }
     );
   }

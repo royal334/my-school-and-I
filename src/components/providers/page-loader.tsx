@@ -167,7 +167,7 @@ export function PageLoader() {
             className="text-base text-primary-600 dark:text-primary-300"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            CH
+            C&M
           </span>
         </div>
       </div>

@@ -33,9 +33,20 @@ export const metadata: Metadata = {
     "university portal",
   ],
   openGraph: {
-    title: "Campus&Me — Your Complete Academic Companion",
+    title: "Campus&Me — Your Campus life in one place",
     description: "The all-in-one platform for university students.",
     type: "website",
+    url: "https://campusandme.com",
+    siteName: "Campus&Me",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Campus&Me — Your campus life in one place",
+      },
+    ],
+    locale: "en_NG",
   },
 
   manifest: '/manifest.json',

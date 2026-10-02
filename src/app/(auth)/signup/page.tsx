@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,48 +26,13 @@ import {
 } from "@/components/ui/card";
 import { toast } from "sonner";
 import Link from "next/link";
+import { signupFormSchema, type SignupFormValues } from "@/lib/validations/signup";
 
 type Faculty = { id: string; name: string };
 type Department = { id: string; name: string; faculty_id: string };
 
-const signupSchema = z
-  .object({
-    full_name: z.string().min(1, "Full name is required"),
-    is_new_student: z.boolean(),
-    matric_number: z.string(),
-    phone_number: z.string().min(1, "Phone number is required"),
-    level: z.string().min(1, "Level is required"),
-    faculty: z.string(),
-    department: z.string(),
-    email: z.string().min(1, "Email is required").email("Enter a valid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirm_password: z.string().min(1, "Confirm password is required"),
-    faculty_id: z.string().min(1, "Faculty is required"),
-    department_id: z.string().min(1, "Department is required"),
-  })
-  .superRefine((data, ctx) => {
-    if (!data.is_new_student && !data.matric_number.trim()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Matric number is required",
-        path: ["matric_number"],
-      });
-    }
-
-    if (data.password !== data.confirm_password) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Passwords do not match",
-        path: ["confirm_password"],
-      });
-    }
-  });
-
-type SignupFormValues = z.infer<typeof signupSchema>;
-
 export default function SignupPage() {
   const router = useRouter();
-  const supabase = createClient();
 
   const [faculties, setFaculties] = useState<Faculty[]>([]);
   const [allDepartments, setAllDepartments] = useState<Department[]>([]);
@@ -89,17 +52,21 @@ export default function SignupPage() {
     clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormValues>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: {
-      level: "100",
-      faculty: "",
-      department: "",
-      faculty_id: "",
-      department_id: "",
-      phone_number: "",
-      matric_number: "",
-      is_new_student: false,
-    },
+    resolver: zodResolver(signupFormSchema),
+defaultValues: {
+        full_name: "",
+        email: "",
+        password: "",
+        confirm_password: "",
+        level: "100",
+        faculty: "",
+        department: "",
+        faculty_id: "",
+        department_id: "",
+        phone_number: "",
+        matric_number: "",
+        is_new_student: false,
+      },
   });
 
   const selectedFaculty = watch("faculty_id");
@@ -125,7 +92,7 @@ export default function SignupPage() {
       }
     };
     load();
-  }, [supabase]);
+  }, []);
 
   // Filter departments whenever the selected faculty changes
   useEffect(() => {
@@ -144,55 +111,28 @@ export default function SignupPage() {
   }, [selectedFaculty, allDepartments, setValue]);
 
   const onSubmit = async (data: SignupFormValues) => {
-    const matricNumber = data.is_new_student
-      ? null
-      : data.matric_number.trim();
-
     try {
-      // 1. Sign up user with Supabase Auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: {
-            full_name: data.full_name,
-            phone_number: data.phone_number,
-            matric_number: matricNumber,
-            is_new_student: data.is_new_student,
-            level: parseInt(data.level),
-            department: data.department,
-            faculty: data.faculty,
-          },
-        },
+      // Signup and the profiles insert both happen server-side. A client-side
+      // profiles write cannot succeed here: with email confirmation enabled the
+      // new user has no session, so RLS rejects it.
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
 
-      if (authError) throw authError;
+      const result = await response.json().catch(() => null);
 
-      // 2. Create profile record when possible. Some setups handle this via DB trigger/RLS,
-      // so we should not block the signup flow if the profile write is not allowed.
-      if (authData.user) {
-        const { error: profileError } = await supabase.from("profiles").upsert({
-          id: authData.user.id,
-          email: data.email,
-          full_name: data.full_name,
-          phone_number: data.phone_number,
-          matric_number: matricNumber,
-          level: parseInt(data.level),
-          department: data.department,
-        });
-
-        if (profileError) {
-          console.warn("Profile sync skipped:", profileError.message);
-        }
+      if (!response.ok) {
+        throw new Error(result?.error || "Signup failed");
       }
 
-      const successMessage = authData.session
-        ? "Account created successfully"
-        : "Account created successfully. Please check your email to confirm your account before signing in.";
-
-      toast.success(successMessage, {
-        position: "top-center",
-      });
+      toast.success(
+        result?.requiresEmailConfirmation
+          ? "Account created successfully. Please check your email to confirm your account before signing in."
+          : "Account created successfully",
+        { position: "top-center" },
+      );
       router.replace("/login");
     } catch (error: unknown) {
       const message =

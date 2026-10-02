@@ -120,21 +120,67 @@ async function getAccessToken() {
   return data.access_token;
 }
 
+// Only codes that unambiguously identify the token itself as dead. INVALID_ARGUMENT
+// is deliberately excluded: FCM also returns it for a malformed `data` payload, so
+// pruning on it would delete valid tokens whenever a message body is malformed.
+const DEAD_TOKEN_ERROR_CODES = new Set(["UNREGISTERED"]);
+
+type SendResult = {
+  token: string;
+  ok: boolean;
+  error?: string;
+  errorCode?: string | null;
+};
+
+function jsonResponse(body: unknown, status: number): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+function isValidLink(link: unknown): link is string {
+  return (
+    typeof link === "string" &&
+    (link.startsWith("https://") || link.startsWith("http://localhost"))
+  );
+}
+
+/**
+ * Deletes tokens FCM has declared permanently dead. Without this the table
+ * accumulates dead rows that fail on every send and skew the delivery report.
+ */
+async function pruneDeadTokens(results: SendResult[]): Promise<string[]> {
+  const deadTokens = results
+    .filter((result) => !result.ok && result.errorCode && DEAD_TOKEN_ERROR_CODES.has(result.errorCode))
+    .map((result) => result.token);
+
+  if (deadTokens.length === 0) return [];
+
+  const { error } = await supabaseAdmin
+    .from("user_notification_tokens")
+    .delete()
+    .in("device_token", deadTokens);
+
+  if (error) {
+    console.error("Failed to prune dead tokens:", error);
+    return [];
+  }
+
+  console.log(`Pruned ${deadTokens.length} dead token(s) from user_notification_tokens`);
+
+  return deadTokens;
+}
+
 Deno.serve(async (req) => {
   if (req.method !== "POST") {
-    return new Response(
-      JSON.stringify({ error: "Method not allowed" }),
-      {
-        status: 405,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    return jsonResponse({ error: "Method not allowed" }, 405);
   }
 
   try {
-    const { token, tokens, title, body, data } = await req.json();
+    const { token, tokens, title, body, data, link } = await req.json();
 
     // Support both the legacy single-token payload and the bulk payload.
     const deviceTokens = Array.from(
@@ -147,36 +193,16 @@ Deno.serve(async (req) => {
     );
 
     if (deviceTokens.length === 0) {
-      return new Response(
-        JSON.stringify({
-          error: "FCM token(s) are required",
-        }),
-        {
-          status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      return jsonResponse({ error: "FCM token(s) are required" }, 400);
     }
 
     if (!title || !body) {
-      return new Response(
-        JSON.stringify({
-          error: "title and body are required",
-        }),
-        {
-          status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      return jsonResponse({ error: "title and body are required" }, 400);
     }
 
     const accessToken = await getAccessToken();
 
-    const results: { token: string; ok: boolean; error?: string }[] = [];
+    const results: SendResult[] = [];
 
     // FCM v1 API sends one message per request — loop over all tokens.
     for (const t of deviceTokens) {
@@ -199,6 +225,12 @@ Deno.serve(async (req) => {
                 },
 
                 data: data || {},
+
+                // Directs the service worker's notificationclick handler to a
+                // real URL instead of falling back to the site root.
+                ...(isValidLink(link)
+                  ? { webpush: { fcmOptions: { link } } }
+                  : {}),
               },
             }),
           }
@@ -212,6 +244,10 @@ Deno.serve(async (req) => {
             token: t,
             ok: false,
             error: result.error?.message || JSON.stringify(result),
+            errorCode:
+              result.error?.details?.[0]?.errorCode ??
+              result.error?.status ??
+              null,
           });
         } else {
           results.push({ token: t, ok: true });
@@ -225,41 +261,40 @@ Deno.serve(async (req) => {
       }
     }
 
+    const prunedTokens = await pruneDeadTokens(results);
+
     const succeeded = results.filter((r) => r.ok).length;
     const failed = results.filter((r) => !r.ok).length;
 
-    return new Response(
-      JSON.stringify({
+    console.log(
+      `FCM send complete: ${succeeded}/${deviceTokens.length} accepted, ${failed} failed, ${prunedTokens.length} tokens pruned`
+    );
+
+    // A total failure must not look like success. Returning 200 here is what
+    // let the panel record deliveries that never reached a browser.
+    return jsonResponse(
+      {
         success: succeeded > 0,
         succeeded,
         failed,
         total: deviceTokens.length,
+        pruned: prunedTokens.length,
         details: results,
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      },
+      succeeded > 0 ? 200 : 502
     );
   } catch (error) {
     console.error("Notification error:", error);
 
-    return new Response(
-      JSON.stringify({
+    return jsonResponse(
+      {
         success: false,
         error:
           error instanceof Error
             ? error.message
             : "Unknown error",
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      },
+      500
     );
   }
 });

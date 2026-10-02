@@ -23,13 +23,10 @@ const nextConfig: NextConfig = {
   turbopack: {}
 };
 
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-});
-
-export default withSentryConfig(withPWA(nextConfig), {
+// NOTE: do not reintroduce next-pwa. It emits a root-scoped /sw.js that would
+// take control of scope / and silently replace the Firebase service worker,
+// which drops every push notification. The Firebase worker owns that scope.
+export default withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 

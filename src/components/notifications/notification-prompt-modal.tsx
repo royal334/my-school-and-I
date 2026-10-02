@@ -12,7 +12,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { requestNotificationPermission } from '@/utils/lib/notifications';
+import {
+  isPushSupported,
+  requestNotificationPermission,
+} from '@/utils/lib/notifications';
 
 const DISMISSED_KEY = 'unihub_notifications_dismissed';
 
@@ -32,16 +35,12 @@ function dismissNotifications() {
   }
 }
 
-function isNotificationSupported(): boolean {
-  return typeof window !== 'undefined' && 'Notification' in window;
-}
-
-function isAlreadyGranted(): boolean {
-  return isNotificationSupported() && Notification.permission === 'granted';
-}
-
 export function shouldShowNotificationPrompt(): boolean {
-  return isNotificationSupported() && !isAlreadyGranted() && !hasDismissedNotifications();
+  return (
+    isPushSupported() &&
+    Notification.permission !== 'granted' &&
+    !hasDismissedNotifications()
+  );
 }
 
 interface NotificationPromptModalProps {

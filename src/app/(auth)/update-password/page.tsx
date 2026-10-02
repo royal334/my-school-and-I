@@ -1,250 +1,27 @@
-"use client";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { createClient } from "@/utils/supabase/server";
+import { RECOVERY_SESSION_COOKIE } from "@/utils/constants/constants";
+import UpdatePasswordForm from "./update-password-form";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Lock, Eye, EyeOff, CheckCircle } from "lucide-react";
-import { toast } from "sonner";
-import { createClient } from "@/utils/supabase/client";
+export default async function UpdatePasswordPage() {
+  const cookieStore = await cookies();
 
-export default function UpdatePasswordPage() {
-  const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const supabase = createClient();
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    defaultValues: {
-      password: "",
-      confirmPassword: "",
-    },
-    mode: "onChange",
-  });
-
-  const currentPassword = watch("password");
-
-  // Check if user is authenticated (from password reset link)
-  useEffect(() => {
-    const checkAuth = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        setIsAuthenticated(true);
-      } else {
-        toast.error("Invalid or expired reset link");
-        router.push("/forgot-password");
-      }
-    };
-
-    checkAuth();
-  }, [router, supabase.auth]);
-
-  const onSubmit = async (data: any) => {
-    try {
-      const { error } = await supabase.auth.updateUser({
-        password: data.password,
-      });
-
-      if (error) throw error;
-
-      toast.success("Password updated successfully!");
-
-      // Wait a moment then redirect
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1500);
-    } catch (error: any) {
-      console.error("Update error:", error);
-      toast.error(error.message || "Failed to update password");
-    }
-  };
-
-  if (!isAuthenticated) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background dark:bg-background">
-        <div className="text-center">
-          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary-200 border-t-primary-600" />
-          <p className="mt-4 text-muted-foreground">Verifying reset link...</p>
-        </div>
-      </div>
-    );
+  // The marker is only ever set by the auth callback after a recovery link has
+  // been verified. Without it this page is just a weaker, current-password-free
+  // password change surface for anyone who happens to be logged in.
+  if (cookieStore.get(RECOVERY_SESSION_COOKIE)?.value !== "1") {
+    redirect("/forgot-password");
   }
 
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4 dark:bg-background">
-      <Card className="w-full max-w-md dark:bg-card dark:border-border">
-        <CardHeader>
-          <div className="mx-auto w-fit rounded-full bg-primary-100 p-3 dark:bg-primary-950/50">
-            <Lock className="h-6 w-6 text-primary-600 dark:text-primary-400" />
-          </div>
-          <h1 className="mt-4 text-center text-2xl font-bold text-foreground">
-            Set New Password
-          </h1>
-          <p className="mt-2 text-center text-muted-foreground">
-            Choose a strong password for your Campus&Me account
-          </p>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* New Password */}
-            <div className="space-y-2">
-              <Label htmlFor="password">New Password</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter new password"
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 8,
-                      message: "Password must be at least 8 characters",
-                    },
-                    validate: {
-                      hasUpperCase: (v) =>
-                        /[A-Z]/.test(v) ||
-                        "Include at least one uppercase letter",
-                      hasLowerCase: (v) =>
-                        /[a-z]/.test(v) ||
-                        "Include at least one lowercase letter",
-                      hasNumber: (v) =>
-                        /[0-9]/.test(v) || "Include at least one number",
-                    },
-                  })}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground dark:hover:text-foreground"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="text-sm text-destructive">
-                  {errors.password.message as string}
-                </p>
-              )}
-            </div>
+  const supabase = createClient(cookieStore);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-            {/* Confirm Password */}
-            <div className="space-y-2">
-              <Label htmlFor="confirm-password">Confirm Password</Label>
-              <div className="relative">
-                <Input
-                  id="confirm-password"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm new password"
-                  {...register("confirmPassword", {
-                    required: "Please confirm your password",
-                    validate: (val) => {
-                      if (currentPassword !== val) {
-                        return "Passwords do not match";
-                      }
-                    },
-                  })}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground dark:hover:text-foreground"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="text-sm text-destructive">
-                  {errors.confirmPassword.message as string}
-                </p>
-              )}
-            </div>
+  if (!user) {
+    redirect("/forgot-password");
+  }
 
-            {/* Password Requirements */}
-            <div className="rounded-lg bg-muted p-3 text-xs text-muted-foreground dark:bg-muted/50">
-              <p className="font-medium text-foreground">
-                Password must contain:
-              </p>
-              <ul className="mt-2 space-y-1">
-                <li className="flex items-center gap-2">
-                  <CheckCircle
-                    className={`h-3 w-3 ${
-                      currentPassword?.length >= 8
-                        ? "text-success dark:text-success"
-                        : "text-muted-foreground dark:text-muted-foreground"
-                    }`}
-                  />
-                  At least 8 characters
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle
-                    className={`h-3 w-3 ${
-                      /[A-Z]/.test(currentPassword || "")
-                        ? "text-success dark:text-success"
-                        : "text-muted-foreground dark:text-muted-foreground"
-                    }`}
-                  />
-                  One uppercase letter
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle
-                    className={`h-3 w-3 ${
-                      /[a-z]/.test(currentPassword || "")
-                        ? "text-success dark:text-success"
-                        : "text-muted-foreground dark:text-muted-foreground"
-                    }`}
-                  />
-                  One lowercase letter
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle
-                    className={`h-3 w-3 ${
-                      /[0-9]/.test(currentPassword || "")
-                        ? "text-success dark:text-success"
-                        : "text-muted-foreground dark:text-muted-foreground"
-                    }`}
-                  />
-                  One number
-                </li>
-              </ul>
-            </div>
-
-            <Button type="submit" disabled={isSubmitting} className="w-full">
-              {isSubmitting ? (
-                <>
-                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
-                  Updating Password...
-                </>
-              ) : (
-                <>
-                  <Lock className="mr-2 h-4 w-4" />
-                  Update Password
-                </>
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  return <UpdatePasswordForm />;
 }

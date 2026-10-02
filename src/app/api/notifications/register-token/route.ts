@@ -18,6 +18,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'token is required' }, { status: 400 });
     }
 
+    if (body.checkOnly === true) {
+      const { data, error } = await supabase
+        .from('user_notification_tokens')
+        .select('device_token')
+        .eq('user_id', user.id)
+        .eq('device_token', token)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      return NextResponse.json({ registered: Boolean(data) });
+    }
+
     const { error } = await supabase
       .from('user_notification_tokens')
       .upsert(
@@ -32,10 +45,10 @@ export async function POST(request: Request) {
     if (error) throw error;
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Register token error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to register token' },
+      { error: error instanceof Error ? error.message : 'Failed to register token' },
       { status: 500 }
     );
   }
@@ -66,10 +79,10 @@ export async function DELETE(request: Request) {
     if (error) throw error;
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Delete token error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to remove token' },
+      { error: error instanceof Error ? error.message : 'Failed to remove token' },
       { status: 500 }
     );
   }

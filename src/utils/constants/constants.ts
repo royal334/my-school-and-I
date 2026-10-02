@@ -303,6 +303,16 @@ export const ROUTES = {
 } as const;
 
 // ============================================================
+// PASSWORD RECOVERY
+// ============================================================
+
+// Set by the auth callback only after a recovery link is successfully exchanged.
+// /update-password refuses to render without it, so a plain logged-in session
+// cannot use that page as a password-change surface.
+export const RECOVERY_SESSION_COOKIE = "campusandme-password-recovery";
+export const RECOVERY_SESSION_MAX_AGE = 60 * 15;
+
+// ============================================================
 // API ENDPOINTS
 // ============================================================
 

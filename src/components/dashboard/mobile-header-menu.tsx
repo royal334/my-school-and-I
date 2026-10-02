@@ -91,13 +91,14 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
                 Settings
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <button
-                onClick={() => setShowLogoutDialog(true)}
-                className="flex items-center gap-2 text-destructive hover:bg-destructive/10 transition-colors duration-200 overflow-hidden">
-                <LogOut className='text-destructive'/>
-                <span className="truncate text-center max-w-full">Logout</span>
-              </button>
+            <DropdownMenuItem
+              onSelect={() => {
+                window.requestAnimationFrame(() => setShowLogoutDialog(true));
+              }}
+              className="text-destructive focus:text-destructive"
+            >
+              <LogOut className="text-destructive" />
+              <span>Logout</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => start(isVendorViewRef.current ? 'vendor' : 'student', 'manual')}>

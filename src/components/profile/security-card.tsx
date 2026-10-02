@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { passwordStrengthSchema, PASSWORD_REQUIREMENTS } from "@/lib/validations/password";
 
 interface SecurityCardProps {
   email: string;
@@ -20,12 +21,16 @@ interface SecurityCardProps {
 const passwordSchema = z
   .object({
     currentPassword: z.string().min(1, "Current password is required"),
-    newPassword: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string().min(8, "Confirm new password is required"),
+    newPassword: passwordStrengthSchema,
+    confirmPassword: z.string().min(1, "Confirm new password is required"),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "New passwords do not match",
     path: ["confirmPassword"],
+  })
+  .refine((data) => data.newPassword !== data.currentPassword, {
+    message: "New password must be different from your current password",
+    path: ["newPassword"],
   });
 
 type PasswordFormValues = z.infer<typeof passwordSchema>;
@@ -47,6 +52,7 @@ export default function SecurityCard({ email }: SecurityCardProps) {
     handleSubmit,
     formState: { errors },
     reset,
+    setError,
   } = useForm<PasswordFormValues>({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
@@ -60,9 +66,21 @@ export default function SecurityCard({ email }: SecurityCardProps) {
     setLoading(true);
 
     try {
-      // NOTE: Supabase auth.updateUser doesn't actually verify currentPassword
-      // by default unless required in the auth provider settings, but we collect it
-      // as it's a standard practice or if a custom endpoint verifying it is used.
+      // updateUser() will happily overwrite the password for whoever holds the
+      // session, so the current password has to be proven first. Re-authenticating
+      // is the only way to check it — there is no server-side "verify then update".
+      const { error: reauthError } = await supabase.auth.signInWithPassword({
+        email,
+        password: data.currentPassword,
+      });
+
+      if (reauthError) {
+        setError("currentPassword", {
+          message: "Current password is incorrect",
+        });
+        return;
+      }
+
       const { error } = await supabase.auth.updateUser({
         password: data.newPassword,
       });
@@ -72,8 +90,10 @@ export default function SecurityCard({ email }: SecurityCardProps) {
       toast.success("Password updated successfully!");
       setShowPasswordForm(false);
       reset();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to update password");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to update password",
+      );
     } finally {
       setLoading(false);
     }
@@ -204,7 +224,9 @@ export default function SecurityCard({ email }: SecurityCardProps) {
                   {errors.newPassword.message}
                 </p>
               ) : (
-                <p className="text-xs text-muted-foreground">Minimum 8 characters</p>
+                <p className="text-xs text-muted-foreground">
+                  {PASSWORD_REQUIREMENTS.map((r) => r.label).join(", ")}
+                </p>
               )}
             </div>
 

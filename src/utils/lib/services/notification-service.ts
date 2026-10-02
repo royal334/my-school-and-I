@@ -9,6 +9,13 @@ interface NotificationPayload {
   data?: Record<string, unknown>;
 }
 
+interface FcmSendDetail {
+  token: string;
+  ok: boolean;
+  error?: string;
+  errorCode?: string | null;
+}
+
 interface BulkNotificationPayload {
   userIds: string[]; // Multiple users
   type: 'announcement' | 'vendor' | 'marketplace' | 'accommodation' | 'platform';
@@ -99,6 +106,9 @@ export async function sendBulkNotification(payload: BulkNotificationPayload) {
           tokens: deviceTokens,
           title: payload.title,
           body: payload.body,
+          link: process.env.NEXT_PUBLIC_APP_URL
+            ? `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/notifications`
+            : undefined,
           data: {
             type: payload.type,
             ...payload.data,
@@ -107,29 +117,72 @@ export async function sendBulkNotification(payload: BulkNotificationPayload) {
       }
     );
 
+    // The function answers non-2xx when no token could be delivered, so this
+    // covers "every recipient's token is dead" rather than just transport loss.
     if (fcmError) throw fcmError;
 
-    // 4. Get notification_type_id for logging
+    const details: FcmSendDetail[] = Array.isArray(fcmResult?.details)
+      ? fcmResult.details
+      : [];
+
+    // If the deployed function predates per-token reporting, fall back to
+    // treating every token as delivered rather than silently logging nothing.
+    const acceptedTokens = new Set(
+      details.length > 0
+        ? details.filter((detail) => detail.ok).map((detail) => detail.token)
+        : deviceTokens
+    );
+
+    // 4. Only recipients with a token FCM actually accepted get a panel row.
+    // Writing rows for the full eligible set is what let the panel look
+    // delivered while no browser ever showed a notification.
+    const deliveredUserIds = Array.from(
+      new Set(
+        tokens
+          .filter((token) => acceptedTokens.has(token.device_token))
+          .map((token) => token.user_id)
+      )
+    );
+
+    const failedDetails = details.filter((detail) => !detail.ok);
+
+    if (failedDetails.length > 0) {
+      console.warn(
+        `FCM rejected ${failedDetails.length}/${deviceTokens.length} token(s) for "${payload.title}":`,
+        failedDetails.map((detail) => ({
+          token: `${detail.token.slice(0, 12)}...`,
+          errorCode: detail.errorCode,
+          error: detail.error,
+        }))
+      );
+    }
+
+    // 5. Get notification_type_id for logging
     const { data: notifType } = await supabase
       .from('notification_types')
       .select('id')
       .eq('type_key', payload.type)
       .single();
 
-    // 5. Log notifications in DB
-    const logs = finalEligibleUserIds.map((userId) => ({
-      user_id: userId,
-      notification_type_id: notifType?.id || null,
-      title: payload.title,
-      body: payload.body,
-      data: payload.data || {},
-    }));
+    // 6. Log notifications in DB
+    if (deliveredUserIds.length > 0) {
+      const logs = deliveredUserIds.map((userId) => ({
+        user_id: userId,
+        notification_type_id: notifType?.id || null,
+        title: payload.title,
+        body: payload.body,
+        data: payload.data || {},
+      }));
 
-    await supabase.from('notifications_sent').insert(logs);
+      await supabase.from('notifications_sent').insert(logs);
+    }
 
     return {
-      success: true,
-      sent: finalEligibleUserIds.length,
+      success: deliveredUserIds.length > 0,
+      sent: deliveredUserIds.length,
+      eligible: finalEligibleUserIds.length,
+      tokensFound: deviceTokens.length,
+      tokensRejected: failedDetails.length,
       fcmResult,
     };
   } catch (error: unknown) {

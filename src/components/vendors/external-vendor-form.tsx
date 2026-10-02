@@ -108,16 +108,18 @@ export default function ExternalVendorForm({
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Registration failed');
+        // The route returns `error`; reading `message` silently surfaced
+        // "Registration failed" for every failure.
+        const error = await response.json().catch(() => null);
+        throw new Error(error?.error || 'Registration failed');
       }
 
       toast.success(
         'Registration successful!'
       );
       router.push('/login');
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : 'Registration failed');
     } finally {
       setLoading(false);
     }
@@ -357,13 +359,23 @@ export default function ExternalVendorForm({
             </p>
 
             {showSignInLink && (
-              <div className="text-center">
-                <p className="text-sm text-muted-foreground">
-                  Already have an account?{' '}
-                  <Link href={signInHref} className="text-primary-600 hover:underline dark:text-primary-400">
-                    Sign in
-                  </Link>
-                </p>
+              <div>
+                <div className="text-center mb-2">
+                  <p className="text-sm text-muted-foreground">
+                    Already a student?{' '}
+                    <Link href='/dashboard/vendors/create' className="text-primary-600 hover:underline dark:text-primary-400">
+                      Create vendor account here
+                    </Link>
+                  </p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Already have an account?{' '}
+                    <Link href={signInHref} className="text-primary-600 hover:underline dark:text-primary-400">
+                      Sign in
+                    </Link>
+                  </p>
+                </div>
               </div>
             )}
           </CardContent>

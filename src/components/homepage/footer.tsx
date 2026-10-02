@@ -2,6 +2,7 @@
 
 import { Instagram, MessageCircle, Twitter } from "lucide-react";
 import { CampusMeLogo } from "@/components/brand/logo";
+import Link from "next/link";
 
 const PRODUCT_LINKS = [
   "Features",
@@ -12,11 +13,11 @@ const PRODUCT_LINKS = [
 ];
 
 const SUPPORT_LINKS = [
-  "Help center",
-  "Contact us",
-  "FAQs",
-  "Terms of service",
-  "Privacy policy",
+  { label: "Help center", href: "#" },
+  { label: "Contact us", href: "#" },
+  { label: "FAQs", href: "#" },
+  { label: "Terms of service", href: "/terms" },
+  { label: "Privacy policy", href: "/privacy" },
 ];
 
 const SOCIAL_ICONS = [
@@ -72,14 +73,14 @@ export function Footer() {
               Support
             </p>
             <ul className="space-y-3">
-              {SUPPORT_LINKS.map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
+              {SUPPORT_LINKS.map(({ label, href }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
                     className="text-sm text-primary-200/75 transition-colors hover:text-white"
                   >
-                    {link}
-                  </a>
+                    {label}
+                  </Link>
                 </li>
               ))}
             </ul>

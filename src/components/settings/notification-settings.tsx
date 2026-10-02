@@ -13,6 +13,7 @@ import {
   RefreshCw,
   Send,
   X,
+  CircleX,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -270,7 +271,14 @@ export default function NotificationSettings() {
           </div>
         )}
 
-        <div className="rounded-lg border">
+          {permission !== 'granted' && (
+          <div className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive-bg p-3 text-sm text-destructive-text dark:border-destructive/30 dark:bg-destructive/10">
+            <CircleX className="h-4 w-4" />
+            Push notifications are disabled
+          </div>
+        )}
+
+        {/* <div className="rounded-lg border">
           <button
             type="button"
             onClick={() => setDiagnosticsOpen((open) => !open)}
@@ -370,7 +378,7 @@ export default function NotificationSettings() {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <Label htmlFor="push-announcements">Announcements</Label>

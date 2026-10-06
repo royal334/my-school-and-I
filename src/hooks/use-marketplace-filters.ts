@@ -28,6 +28,8 @@ export function useMarketplaceFilters() {
       if (next.sellerType) params.set('seller_type', next.sellerType);
       if (next.minPrice) params.set('min_price', next.minPrice);
       if (next.maxPrice) params.set('max_price', next.maxPrice);
+      if (next.urgent) params.set('urgent', 'true');
+      if (next.negotiable) params.set('negotiable', 'true');
       if (next.sort !== 'recent') params.set('sort', next.sort);
 
       const query = params.toString();
@@ -44,7 +46,20 @@ export function useMarketplaceFilters() {
   );
 
   const clearFilters = useCallback(() => {
-    push({ ...filters, category: 'all', condition: '', sellerType: '', minPrice: '', maxPrice: '' });
+    push({
+      ...filters,
+      category: 'all',
+      condition: '',
+      sellerType: '',
+      minPrice: '',
+      maxPrice: '',
+      urgent: false,
+      negotiable: false,
+    });
+  }, [filters, push]);
+
+  const clearListingOptions = useCallback(() => {
+    push({ ...filters, urgent: false, negotiable: false });
   }, [filters, push]);
 
   const resetAll = useCallback(() => {
@@ -60,6 +75,7 @@ export function useMarketplaceFilters() {
     hasFilters: hasActiveFilters(filters),
     setFilter,
     clearFilters,
+    clearListingOptions,
     resetAll,
   };
 }

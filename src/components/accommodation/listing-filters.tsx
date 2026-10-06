@@ -13,9 +13,10 @@ import { Search, X, SlidersHorizontal, Check } from 'lucide-react';
 const ROOM_TYPES = [
   'self-contained',
   'single room',
-  'shared room',
+  'shared room/roommate space',
   '1-bedroom',
   '2-bedroom',
+  'other'
 ];
 
 interface ListingFiltersProps {

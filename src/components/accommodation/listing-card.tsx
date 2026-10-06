@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useState } from 'react';
 import { VerifiedBadge } from '@/components/accommodation/verified-badge';
 import { FacilityChip } from '@/components/accommodation/facility-chip';
 import type { Listing } from '@/components/accommodation/types';
@@ -6,16 +7,18 @@ import type { Listing } from '@/components/accommodation/types';
 export function ListingCard({ listing }: { listing: Listing }) {
   const formatPrice = (price: number) =>
     new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(price);
+  const [imageFailed, setImageFailed] = useState(false);
+  const imageSrc = listing.cover_image?.url || listing.cover_image?.file_path || null;
 
   return (
     <Link href={`/dashboard/accommodation/${listing.id}`} className="block">
       <div className="group h-full overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md">
         {/* Image */}
         <div className="relative flex h-40 items-center justify-center overflow-hidden bg-muted text-primary">
-          {listing.cover_image?.url ? (
-              listing.cover_image.file_type === 'video' ? (
+          {imageSrc && !imageFailed ? (
+              listing.cover_image?.file_type === 'video' ? (
                 <video
-                  src={listing.cover_image.url}
+                  src={imageSrc}
                   aria-label={listing.room_type}
                   autoPlay
                   muted
@@ -24,10 +27,12 @@ export function ListingCard({ listing }: { listing: Listing }) {
                   className="h-full w-full object-cover"
                 />
               ) : (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={listing.cover_image.url}
+                  src={imageSrc}
                   alt={listing.room_type}
                   className="h-full w-full object-cover"
+                  onError={() => setImageFailed(true)}
                 />
               )
           ) : (

@@ -173,6 +173,8 @@ export interface MarketplaceFilters {
   sellerType: string;
   minPrice: string;
   maxPrice: string;
+  urgent: boolean;
+  negotiable: boolean;
   sort: MarketplaceSort;
 }
 

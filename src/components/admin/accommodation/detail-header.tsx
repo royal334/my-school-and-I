@@ -12,7 +12,7 @@ export function DetailHeader({
   onBack: () => void;
 }) {
   return (
-    <header className="bg-primary-600 px-4 py-4 dark:bg-[#112820]">
+    <header className="bg-primary-600 px-4 py-4 dark:bg-primary-800">
       <div className="flex items-center gap-3">
         <button
           onClick={onBack}

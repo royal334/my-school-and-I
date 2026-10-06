@@ -6,10 +6,11 @@ import {
   generatePaymentReference, 
   toKobo 
 } from '@/utils/lib/paystack';
+import { handlePrice } from '@/app/api/marketplace/boosts/initialize/route';
 
 const TIER_PRICING = {
   basic: 0,
-  premium: 2000, // ₦2,000
+  premium: 2500, // ₦2,500
   featured: 5000, // ₦5,000
 };
 
@@ -60,7 +61,7 @@ export async function POST(request: Request) {
       .eq('id', user.id)
       .single();
 
-    const amountNaira = TIER_PRICING[tier as keyof typeof TIER_PRICING];
+    const amountNaira = handlePrice(TIER_PRICING[tier as keyof typeof TIER_PRICING]);
     const amount = toKobo(amountNaira);
     const reference = generatePaymentReference(user.id);
 

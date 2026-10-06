@@ -106,6 +106,8 @@ const handleSavedMaterials = () => {
 
   const savedActive = searchParams.get("saved") === "true";
   const hasActiveFilters = search || level !== "all" || semester !== "all" || type !== "all" || savedActive;
+  const activeSelectClass =
+    "bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-600 [&_svg:not([class*='text-'])]:text-white";
 
   const clearFilters = () => {
     setSearch('');
@@ -146,7 +148,7 @@ const handleSavedMaterials = () => {
 
         {/* Level Filter */}
         <Select value={level} onValueChange={setLevel}>
-          <SelectTrigger>
+          <SelectTrigger className={level !== "all" ? activeSelectClass : undefined}>
             <SelectValue placeholder="All Levels" />
           </SelectTrigger>
           <SelectContent>
@@ -161,7 +163,7 @@ const handleSavedMaterials = () => {
 
         {/* Semester Filter */}
         <Select value={semester} onValueChange={setSemester}>
-          <SelectTrigger>
+          <SelectTrigger className={semester !== "all" ? activeSelectClass : undefined}>
             <SelectValue placeholder="All Semesters" />
           </SelectTrigger>
           <SelectContent>
@@ -173,7 +175,7 @@ const handleSavedMaterials = () => {
 
         {/* Type Filter */}
         <Select value={type} onValueChange={setType}>
-          <SelectTrigger>
+          <SelectTrigger className={type !== "all" ? activeSelectClass : undefined}>
             <SelectValue placeholder="All Types" />
           </SelectTrigger>
           <SelectContent>
@@ -188,9 +190,13 @@ const handleSavedMaterials = () => {
         </Select>
 
         {/* Bookmarked Materials*/}
-        <Button variant={savedActive?"outline":"default"}
+        <Button variant={savedActive ? "default" : "outline"}
           onClick={handleSavedMaterials}
-          className="flex items-center gap-2 justify-center"
+          className={`flex items-center gap-2 justify-center ${
+            savedActive
+              ? "bg-primary-600 text-white hover:bg-primary-700"
+              : ""
+          }`}
         >
           <Bookmark className="h-4 w-4" />
           <span className="ml-2">Bookmarks</span>

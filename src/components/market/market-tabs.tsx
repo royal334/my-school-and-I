@@ -1,11 +1,14 @@
+'use client';
+
 import Link from 'next/link';
 import { ShoppingCart, Store } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { requestPageLoader } from '@/components/providers/page-loader';
 
 export type MarketTab = 'marketplace' | 'vendors';
 
-const tabs = [  
-     { id: 'vendors', label: 'Vendors', href: '/dashboard/market?tab=vendors', icon: Store },
+const tabs = [
+  { id: 'vendors', label: 'Vendors', href: '/dashboard/market?tab=vendors', icon: Store },
   { id: 'marketplace', label: 'Marketplace', href: '/dashboard/market?tab=marketplace', icon: ShoppingCart },
 ] as const;
 
@@ -23,6 +26,9 @@ export function MarketTabs({ activeTab }: { activeTab: MarketTab }) {
             href={href}
             role="tab"
             aria-selected={activeTab === id}
+            onClick={() => {
+              if (activeTab !== id) requestPageLoader();
+            }}
             className={cn(
               'inline-flex min-h-11 items-center gap-2 border-b-2 px-4 text-sm font-medium transition-colors',
               activeTab === id

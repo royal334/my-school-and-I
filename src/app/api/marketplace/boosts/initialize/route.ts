@@ -14,6 +14,13 @@ const BOOST_PRICES: Record<string, { price: number; hours: number }> = {
   featured: { price: 3000, hours: 168 },
 };
 
+export function handlePrice(price: number) {
+  if (price < 2500) {
+    return price + 0.015 * price;
+  }
+  return price + (0.015 * price + 100);
+}
+
 // POST /api/marketplace/boosts/initialize
 export async function POST(request: Request) {
   try {
@@ -74,7 +81,7 @@ export async function POST(request: Request) {
 
     const paystackData = await initializePaystackTransaction({
       email,
-      amount: toKobo(tierInfo.price),
+      amount: toKobo(handlePrice(tierInfo.price)), // Convert to kobo
       reference,
       callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/marketplace/boosts/verify?reference=${reference}`,
       metadata: {

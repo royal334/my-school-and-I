@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { GraduationCap, Shield, Store } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { requestPageLoader } from '@/components/providers/page-loader';
 
 interface DashboardToggleProps {
   hasVendor: boolean;
@@ -39,6 +40,7 @@ export default function DashboardToggle({
   };
 
   const handleAdminToggle = () => {
+    requestPageLoader();
     router.push('/admin');
     router.refresh();
   };

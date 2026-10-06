@@ -16,11 +16,11 @@ export function AccommodationHeader({ hasSubmissions }: { hasSubmissions: boolea
           Verified student housing near campus
         </p>
       </div>
-      <div className="flex gap-3">
+      <div className="flex flex-col gap-3">
         <Link href="/dashboard/accommodation/submit">
           <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Know a vacancy?
+            <Plus className=" h-4 w-4" />
+            Know a vacancy? Get paid if rented.
           </Button>
         </Link>
         {hasSubmissions && (

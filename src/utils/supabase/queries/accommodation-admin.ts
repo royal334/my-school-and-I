@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { buildDashboardSnapshot, type DashboardSnapshot } from '@/components/admin/accommodation/utils';
 import { withAccommodationMediaUrls } from '@/utils/lib/accommodation-media';
+import type { AgentAuditEvent } from '@/components/agent/types';
 import type {
   Lead,
   LeadDetail,
@@ -133,13 +134,42 @@ export async function getLeadDetail(
     .eq('submission_id', id);
   const mediaWithUrls = await withAccommodationMediaUrls(supabase, media || []);
 
+  const row = lead as Record<string, unknown>;
+  let agent_profile = null;
+  if (row.source_type === 'agent' && typeof row.agent_id === 'string') {
+    const { data: agent } = await supabase
+      .from('agents')
+      .select('id, display_name, phone_number, operating_area, status')
+      .eq('user_id', row.agent_id)
+      .maybeSingle();
+    agent_profile = agent;
+  }
+
   return {
     ...lead,
     submitter,
     matched_property,
     matched_unit,
     media: mediaWithUrls,
+    agent_profile,
   } as LeadDetail;
+}
+
+/** Audit history recorded against a single property submission. Only agent
+ *  submissions produce events, so this is empty for student leads. */
+export async function getLeadAuditEvents(
+  supabase: SupabaseClient,
+  submissionId: string,
+): Promise<AgentAuditEvent[]> {
+  const { data } = await supabase
+    .from('agent_audit_events')
+    .select('id, event_type, entity_type, metadata, created_at')
+    .eq('entity_type', 'property')
+    .eq('entity_id', submissionId)
+    .order('created_at', { ascending: false })
+    .limit(10);
+
+  return (data ?? []) as AgentAuditEvent[];
 }
 
 export async function getViewingDetail(

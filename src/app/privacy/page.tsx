@@ -107,7 +107,7 @@ const sections: LegalSection[] = [
     title: 'Your choices and rights',
     paragraphs: [
       'Depending on applicable law, you may request access to or correction or deletion of your personal information, object to or restrict certain processing, withdraw consent where processing relies on consent, or request a portable copy. Some records may need to be retained for legal, security, or transaction reasons.',
-      'The visibility, activity, and analytics controls and account deletion button shown in the current Privacy & Security screen are not connected to backend workflows. To make a privacy request, contact privacy@campushub.ng. Notification category preferences are supported separately in notification settings.',
+      'The visibility, activity, and analytics controls and account deletion button shown in the current Privacy & Security screen are not connected to backend workflows. To make a privacy request, contact privacy@campusandme.ng. Notification category preferences are supported separately in notification settings.',
     ],
   },
   {
@@ -135,7 +135,7 @@ const sections: LegalSection[] = [
     id: 'contact',
     title: 'Contact us',
     paragraphs: [
-      'For privacy questions or requests, contact privacy@campushub.ng. For general support, contact support@campushub.ng. The registered operator name and address must be added by Campus&Me before publication.',
+      'For privacy questions or requests, contact privacy@campusandme.ng. For general support, contact support@campusandme.ng. The registered operator name and address must be added by Campus&Me before publication.',
     ],
   },
 ];

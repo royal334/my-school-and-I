@@ -107,8 +107,8 @@ export function LegalDocument({ title, summary, updatedAt, sections }: LegalDocu
 
             <div className="border-t border-border pt-6 text-sm leading-6 text-muted-foreground">
               Questions about this document? Contact{' '}
-              <a className="font-medium text-primary-700 underline underline-offset-4" href="mailto:support@campushub.com">
-                support@campushub.com
+              <a className="font-medium text-primary-700 underline underline-offset-4" href="mailto:support@campusandme.com">
+                support@campusandme.com
               </a>
               .
             </div>

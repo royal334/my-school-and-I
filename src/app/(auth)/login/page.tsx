@@ -45,7 +45,14 @@ export default function LoginPage() {
 
       markJustLoggedIn();
       toast.success("Welcome back!", { position: "top-center" });
-      router.push("/dashboard");
+      const requestedNext = new URLSearchParams(window.location.search).get("next");
+      const next =
+        requestedNext?.startsWith("/") &&
+        !requestedNext.startsWith("//") &&
+        !requestedNext.includes("\\")
+          ? requestedNext
+          : "/dashboard";
+      router.push(next);
       router.refresh();
     } catch (error: any) {
       toast.error(error.message || "Login failed", { position: "top-center" });

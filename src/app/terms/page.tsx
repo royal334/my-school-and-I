@@ -140,7 +140,7 @@ const sections: LegalSection[] = [
     id: 'contact',
     title: 'Contact and operator details',
     paragraphs: [
-      'For questions about these Terms, contact support@campushub.ng. The legal entity name, registered address, and telephone details supplied in the source draft were placeholders and must be completed by the operator before publication.',
+      'For questions about these Terms, contact support@campusandme.ng. The legal entity name, registered address, and telephone details supplied in the source draft were placeholders and must be completed by the operator before publication.',
     ],
   },
 ];

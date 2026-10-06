@@ -86,7 +86,7 @@ export async function POST(request: Request) {
         body: `${property_name} in ${area} submitted for review`,
         data: {
           submission_id: submission.id,
-          deeplink: `/dashboard/admin/accommodation/leads/${submission.id}`,
+          deeplink: `/admin/accommodation/leads/${submission.id}`,
         },
       }).catch(console.error);
     }

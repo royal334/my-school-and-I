@@ -4,6 +4,7 @@ import { FeaturesSection } from "@/components/homepage/features-section";
 import { HowItWorksSection } from "@/components/homepage/how-it-works-section";
 //import { PricingSection } from "@/components/homepage/pricing-section";
 import { SocialProofSection } from "@/components/homepage/social-proof-section";
+import { FAQSection } from "@/components/homepage/faq-section";
 import { CTASection } from "@/components/homepage/cta-section";
 import { Footer } from "@/components/homepage/footer";
 
@@ -23,6 +24,7 @@ export default function LandingPage() {
         <FeaturesSection />
         <HowItWorksSection />
         <SocialProofSection />
+        <FAQSection />
         <CTASection />
       </main>
       <Footer />

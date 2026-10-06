@@ -40,7 +40,22 @@ export default async function VendorDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  
+  const cookieStore = await cookies();
+  const [{ data: profile }, { data: ownedVendor }] = await Promise.all([
+    supabase.from("profiles").select("account_type").eq("id", user.id).maybeSingle(),
+    supabase
+      .from("vendors")
+      .select("id, is_approved")
+      .eq("owner_id", user.id)
+      .maybeSingle(),
+  ]);
+
+  // Same rule as dashboard layout: hide browse chrome in vendor-dashboard mode
+  const isStudentToggle = cookieStore.get("isStudent")?.value !== "false";
+  const isVendorAccount = profile?.account_type === "vendor";
+  const hasVendor = !!ownedVendor?.is_approved;
+  const isVendorDashboard = isVendorAccount || (hasVendor && !isStudentToggle);
+
   const isVerified = vendor.is_verified || vendor.subscription_tier === 'featured';
   const isOwner = vendor.owner_id === user.id;
   const isActive = checkSubscriptionActive(vendor);
@@ -75,7 +90,9 @@ export default async function VendorDetailPage({ params }: PageProps) {
   return (
     <div className="space-y-6">
       <VendorViewTracker vendorId={id} vendorName={vendor.business_name} isOwner={isOwner} />
-      <VendorHeader id={id} isOwner={isOwner} vendor={vendor} />
+      {!isVendorDashboard && (
+        <VendorHeader id={id} isOwner={isOwner} vendor={vendor} />
+      )}
 
       {/* Pending Approval Notice */}
       {!vendor.is_approved && isOwner && (

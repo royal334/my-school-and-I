@@ -6,6 +6,35 @@ import { withAccommodationMediaUrls } from '@/utils/lib/accommodation-media';
 
 const SERVICE_FEE_MULTIPLIER = 1.2;
 
+interface AccommodationPropertyRow {
+  id: string;
+  name: string | null;
+  area: string | null;
+  street: string | null;
+  landmark: string | null;
+}
+
+interface AccommodationUnitRow {
+  id: string;
+  room_type: string;
+  price: number | string;
+  property: AccommodationPropertyRow | AccommodationPropertyRow[] | null;
+  [key: string]: unknown;
+}
+
+interface AccommodationMediaRow {
+  unit_id: string;
+  file_path: string;
+  file_name: string;
+  file_type: string;
+  is_cover: boolean;
+  display_order: number;
+}
+
+function getProperty(unit: AccommodationUnitRow): AccommodationPropertyRow | null {
+  return Array.isArray(unit.property) ? unit.property[0] || null : unit.property;
+}
+
 export async function GET(request: Request) {
   try {
     const supabase = createClient(await cookies());
@@ -71,26 +100,27 @@ export async function GET(request: Request) {
     if (error) throw error;
 
     // Filter by area or property name (search)
-    let filtered = units || [];
+    let filtered: AccommodationUnitRow[] = (units || []) as AccommodationUnitRow[];
     if (search) {
       const s = search.toLowerCase();
-      filtered = filtered.filter((u: any) =>
-        u.property?.name?.toLowerCase().includes(s) ||
-        u.property?.area?.toLowerCase().includes(s) ||
-        u.property?.street?.toLowerCase().includes(s) ||
-        u.property?.landmark?.toLowerCase().includes(s)
-      );
+      filtered = filtered.filter((u) => {
+        const property = getProperty(u);
+        return property?.name?.toLowerCase().includes(s) ||
+          property?.area?.toLowerCase().includes(s) ||
+          property?.street?.toLowerCase().includes(s) ||
+          property?.landmark?.toLowerCase().includes(s);
+      });
     }
 
     if (area) {
-      filtered = filtered.filter((u: any) =>
-        u.property?.area?.toLowerCase().includes(area.toLowerCase())
+      filtered = filtered.filter((u) =>
+        getProperty(u)?.area?.toLowerCase().includes(area.toLowerCase())
       );
     }
 
     // Attach cover media for each unit
-    const unitIds = filtered.map((u: any) => u.id);
-    let mediaByUnitId: Record<string, any> = {};
+    const unitIds = filtered.map((u) => u.id);
+    const mediaByUnitId: Record<string, AccommodationMediaRow & { url: string | null }> = {};
 
     if (unitIds.length > 0) {
       const { data: media } = await supabase
@@ -98,22 +128,31 @@ export async function GET(request: Request) {
         .select('unit_id, file_path, file_name, file_type, is_cover')
         .in('unit_id', unitIds)
         .eq('media_source', 'verified')
-        .eq('is_cover', true);
+        .order('is_cover', { ascending: false })
+        .order('display_order', { ascending: true });
 
-      const mediaWithUrls = await withAccommodationMediaUrls(supabase, media || []);
-      mediaWithUrls.forEach((m: any) => {
-        mediaByUnitId[m.unit_id] = m;
+      const mediaWithUrls = await withAccommodationMediaUrls(
+        supabase,
+        (media || []) as AccommodationMediaRow[],
+      );
+      mediaWithUrls.forEach((m) => {
+        if (!mediaByUnitId[m.unit_id]) {
+          mediaByUnitId[m.unit_id] = m;
+        }
       });
     }
 
-    const result = filtered.map((u: any) => ({
-      ...u,
-      price: Math.round(Number(u.price) * SERVICE_FEE_MULTIPLIER),
-      property: u.property
-        ? { id: u.property.id, area: u.property.area, landmark: u.property.landmark }
-        : null,
-      cover_image: mediaByUnitId[u.id] || null,
-    }));
+    const result = filtered.map((u) => {
+      const property = getProperty(u);
+      return {
+        ...u,
+        price: Math.round(Number(u.price) * SERVICE_FEE_MULTIPLIER),
+        property: property
+          ? { id: property.id, area: property.area, landmark: property.landmark }
+          : null,
+        cover_image: mediaByUnitId[u.id] || null,
+      };
+    });
 
     return NextResponse.json({
       listings: result,
@@ -123,10 +162,10 @@ export async function GET(request: Request) {
         offset,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Fetch listings error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch listings' },
+      { error: error instanceof Error ? error.message : 'Failed to fetch listings' },
       { status: 500 }
     );
   }

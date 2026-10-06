@@ -11,6 +11,9 @@ import {
   getVendorSearch,
   getCachedVendorCategories,
 } from '@/utils/cache';
+import { shuffleByOrderedKeys } from '@/utils/lib';
+
+const VENDOR_TIER_ORDER = ['featured', 'premium', 'basic'];
 
 type VendorSearchParams = {
   category?: string | string[];
@@ -45,9 +48,15 @@ export async function VendorDirectory({
   const search = first(searchParams.search);
 
   const categories = await getCachedVendorCategories();
-  const vendors = search
+  const fetchedVendors = search
     ? await getVendorSearch({ category, search })
     : await getCachedVendors({ category, search });
+  // Shuffle after cache so each request gets a fresh within-tier order
+  const vendors = shuffleByOrderedKeys(
+    fetchedVendors ?? [],
+    (vendor) => vendor.subscription_tier || 'basic',
+    VENDOR_TIER_ORDER,
+  );
 
   return (
     <div className="space-y-6 overflow-x-hidden">

@@ -2,8 +2,11 @@ import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { isUserAdmin } from '@/utils/supabase/queries';
-import { getLeadDetail } from '@/utils/supabase/queries/accommodation-admin';
-import { LeadDetailView } from '@/components/admin/accommodation/lead-detail';
+import {
+  getLeadAuditEvents,
+  getLeadDetail,
+} from '@/utils/supabase/queries/accommodation-admin';
+import { LeadDetailView } from '@/components/admin/accommodation/leads/detail/lead-detail-view';
 
 export const metadata = {
   title: 'Admin · Lead details',
@@ -26,5 +29,8 @@ export default async function AdminLeadDetailPage({
   const lead = await getLeadDetail(supabase, id);
   if (!lead) notFound();
 
-  return <LeadDetailView lead={lead} />;
+  const auditEvents =
+    lead.source_type === 'agent' ? await getLeadAuditEvents(supabase, lead.id) : [];
+
+  return <LeadDetailView lead={lead} auditEvents={auditEvents} />;
 }

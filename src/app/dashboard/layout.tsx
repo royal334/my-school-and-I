@@ -31,6 +31,10 @@ export default async function Layout({ children }: { children: React.ReactNode }
     .eq("id", user.id)
     .single();
 
+  if (profile?.account_type === "agent") {
+    redirect("/agent");
+  }
+
   const { data: vendor } = await supabase
     .from("vendors")
     .select("id, subscription_tier, is_approved")

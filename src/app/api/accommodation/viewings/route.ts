@@ -111,7 +111,7 @@ export async function POST(request: Request) {
         data: {
           viewing_id: viewing.id,
           unit_id,
-          deeplink: `/dashboard/admin/accommodation/viewings/${viewing.id}`,
+          deeplink: `/admin/accommodation/viewings/${viewing.id}`,
         },
       }).catch(console.error);
     }

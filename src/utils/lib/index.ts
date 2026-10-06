@@ -375,6 +375,39 @@ export function shuffle<T>(array: T[]): T[] {
   return shuffled;
 }
 
+/**
+ * Preserve group order (e.g. featured → premium → basic) while shuffling
+ * items within each group. Unknown keys are shuffled and appended last.
+ */
+export function shuffleByOrderedKeys<T>(
+  items: T[],
+  getKey: (item: T) => string,
+  orderedKeys: string[],
+): T[] {
+  const groups = new Map<string, T[]>();
+  for (const item of items) {
+    const key = getKey(item);
+    const list = groups.get(key);
+    if (list) list.push(item);
+    else groups.set(key, [item]);
+  }
+
+  const result: T[] = [];
+  for (const key of orderedKeys) {
+    const group = groups.get(key);
+    if (group) {
+      result.push(...shuffle(group));
+      groups.delete(key);
+    }
+  }
+
+  for (const group of groups.values()) {
+    result.push(...shuffle(group));
+  }
+
+  return result;
+}
+
 // ============================================================
 // OBJECT UTILITIES
 // ============================================================

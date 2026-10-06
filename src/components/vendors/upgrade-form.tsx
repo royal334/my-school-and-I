@@ -15,7 +15,7 @@ interface UpgradeFormProps {
 const PRICING = {
   premium: {
     name: 'Premium',
-    price: 2000,
+    price: 2500,
     period: 'month',
     description: 'Perfect for growing businesses',
     icon: Sparkles,
@@ -28,6 +28,7 @@ const PRICING = {
       'Priority in search (2x boost)',
       'Daily analytics',
       'Contact breakdown (phone vs WhatsApp)',
+      '6 active marketplace listings'
       // 'Email support (48hr response)',
       // '5 quick reply templates',
       // 'Premium badge',
@@ -46,6 +47,7 @@ const PRICING = {
       //'Verified badge ✓',
       '10 photo gallery images',
       'Unlimited services',
+      'Unlimited marketplace listings',
       'Top of all searches (10x boost)',
       // 'Homepage spotlight',
       'Hourly analytics',

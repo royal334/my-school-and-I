@@ -1,15 +1,28 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
 const REVEAL_DELAY_MS = 150;
 const SAFETY_TIMEOUT_MS = 8000;
+const SHOW_LOADER_EVENT = 'campusandme:show-loader';
 
-export function PageLoader() {
+/** Show the mobile page loader for programmatic navigations (e.g. router.push). */
+export function requestPageLoader() {
+  if (typeof window === 'undefined') return;
+  window.dispatchEvent(new Event(SHOW_LOADER_EVENT));
+}
+
+function routeKey(pathname: string, search: string) {
+  return search ? `${pathname}?${search}` : pathname;
+}
+
+function PageLoaderInner() {
   const [visible, setVisible] = useState(false);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentRoute = routeKey(pathname, searchParams.toString());
 
   // Debug aid: set localStorage 'campusandme:loaderDesktop' to '1' to also show
   // the overlay on desktop-sized screens while testing.
@@ -19,7 +32,7 @@ export function PageLoader() {
       window.localStorage.getItem('campusandme:loaderDesktop') === '1'
   );
 
-  const committedPathRef = useRef(pathname);
+  const committedPathRef = useRef(currentRoute);
   const visibleRef = useRef(false);
   const revealTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -45,12 +58,19 @@ export function PageLoader() {
     revealTimer.current = setTimeout(() => {
       visibleRef.current = true;
       setVisible(true);
-      navStartPathRef.current = window.location.pathname;
+      navStartPathRef.current = routeKey(
+        window.location.pathname,
+        window.location.search.replace(/^\?/, ''),
+      );
       // A committed route change calls `hide()`, which clears this timer. So
       // reaching here means the navigation stalled: warn the user instead of
       // leaving the overlay to vanish without explanation.
       hideTimer.current = setTimeout(() => {
-        if (navStartPathRef.current === window.location.pathname) {
+        const now = routeKey(
+          window.location.pathname,
+          window.location.search.replace(/^\?/, ''),
+        );
+        if (navStartPathRef.current === now) {
           toast.warning('This page is taking longer than usual', {
             description:
               'We could not finish loading it. Check your connection, then try again.',
@@ -64,17 +84,20 @@ export function PageLoader() {
     }, REVEAL_DELAY_MS);
   }, [hide]);
 
-  // A committed route change hides the overlay.
+  // A committed route change (path or query) hides the overlay.
   useEffect(() => {
-    if (pathname === committedPathRef.current) return;
-    committedPathRef.current = pathname;
+    if (currentRoute === committedPathRef.current) return;
+    committedPathRef.current = currentRoute;
     hide();
-  }, [pathname, hide]);
+  }, [currentRoute, hide]);
 
   // Detect client-side navigation start.
   useEffect(() => {
     const isActualPageChange = () =>
-      window.location.pathname !== committedPathRef.current;
+      routeKey(
+        window.location.pathname,
+        window.location.search.replace(/^\?/, ''),
+      ) !== committedPathRef.current;
 
     const trigger = () => {
       if (isActualPageChange()) showSoon();
@@ -93,15 +116,18 @@ export function PageLoader() {
       if (anchor.hasAttribute('download')) return;
       const url = anchor.getAttribute('href');
       if (!url || /^(#|mailto:|tel:|javascript:|data:)/i.test(url)) return;
-      let samePage = false;
       try {
         const next = new URL(url, window.location.href);
         if (next.origin !== window.location.origin) return;
-        samePage = next.pathname === window.location.pathname;
+        const nextKey = routeKey(next.pathname, next.search.replace(/^\?/, ''));
+        const currentKey = routeKey(
+          window.location.pathname,
+          window.location.search.replace(/^\?/, ''),
+        );
+        if (nextKey === currentKey) return;
       } catch {
         return;
       }
-      if (samePage) return;
       showSoon();
     };
 
@@ -120,13 +146,17 @@ export function PageLoader() {
       window.dispatchEvent(new Event('campusandme:navigate'));
     };
 
+    const onShowRequest = () => showSoon();
+
     document.addEventListener('click', onClick, true);
     window.addEventListener('campusandme:navigate', trigger);
+    window.addEventListener(SHOW_LOADER_EVENT, onShowRequest);
     window.addEventListener('popstate', trigger);
 
     return () => {
       document.removeEventListener('click', onClick, true);
       window.removeEventListener('campusandme:navigate', trigger);
+      window.removeEventListener(SHOW_LOADER_EVENT, onShowRequest);
       window.removeEventListener('popstate', trigger);
       history.pushState = nativePushState;
       history.replaceState = nativeReplaceState;
@@ -186,5 +216,13 @@ export function PageLoader() {
         }
       `}</style>
     </div>
+  );
+}
+
+export function PageLoader() {
+  return (
+    <Suspense fallback={null}>
+      <PageLoaderInner />
+    </Suspense>
   );
 }

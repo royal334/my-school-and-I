@@ -1,7 +1,7 @@
 export const ROOM_TYPES = [
   'Self-contained',
   'Single room',
-  'Shared room',
+  'Shared room/Roommate Space',
   '1-bedroom',
   '2-bedroom',
   'Other',

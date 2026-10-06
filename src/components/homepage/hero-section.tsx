@@ -71,6 +71,12 @@ export function HeroSection() {
                 >
                   List your business as a non-student <ArrowRight size={18} />
                 </Link>
+                <Link
+                  href="/agent/apply"
+                  className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-base font-semibold text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary-300 hover:bg-muted"
+                >
+                  Become an agent<ArrowRight size={18} />
+                </Link>
               </div>
             </Reveal>
 

@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { createAdminClient } from '@/utils/supabase/admin';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { passwordStrengthSchema } from '@/lib/validations/password';
 
 export async function POST(request: Request) {
   try {
@@ -66,9 +67,10 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!password || password.length < 8) {
+    const passwordResult = passwordStrengthSchema.safeParse(password);
+    if (!passwordResult.success) {
       return NextResponse.json(
-        { error: 'Password must be at least 8 characters' },
+        { error: passwordResult.error.issues[0]?.message || 'Enter a valid password.' },
         { status: 400 }
       );
     }

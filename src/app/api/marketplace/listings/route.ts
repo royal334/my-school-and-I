@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { shuffle } from '@/utils/lib';
 
 const CATEGORIES = [
   'electronics', 'books', 'fashion', 'furniture',
@@ -25,6 +26,8 @@ export async function GET(request: Request) {
     const seller_type = searchParams.get('seller_type') || '';
     const min_price = searchParams.get('min_price');
     const max_price = searchParams.get('max_price');
+    const urgent = searchParams.get('urgent') === 'true';
+    const negotiable = searchParams.get('negotiable') === 'true';
     const sort = searchParams.get('sort') || 'recent'; // 'recent', 'price_asc', 'price_desc'
     const limit = parseInt(searchParams.get('limit') || '20', 10);
     const offset = parseInt(searchParams.get('offset') || '0', 10);
@@ -66,6 +69,8 @@ export async function GET(request: Request) {
     if (seller_type) query = query.eq('seller_type', seller_type);
     if (min_price) query = query.gte('price', parseFloat(min_price));
     if (max_price) query = query.lte('price', parseFloat(max_price));
+    if (urgent) query = query.eq('is_urgent', true);
+    if (negotiable) query = query.eq('negotiable', true);
 
     // Sort
     if (sort === 'price_asc') query = query.order('price', { ascending: true });
@@ -126,7 +131,7 @@ export async function GET(request: Request) {
     });
 
     return NextResponse.json({
-      promoted: (boostedListings || []).map(enrich),
+      promoted: shuffle((boostedListings || []).map(enrich)),
       listings: filtered.map(enrich),
       pagination: {
         total: count || 0,

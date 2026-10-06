@@ -12,9 +12,9 @@ interface VendorHeaderProps {
 export default function VendorHeader({ id, isOwner, vendor }: VendorHeaderProps) {
   return (
     <div className="flex items-center justify-between mt-2">
-      <Link href="/dashboard/vendors">
+      <Link href="/dashboard/market">
         <Button variant="ghost" size="sm">
-          ← Back to Vendors
+          ← Back to Market
         </Button>
       </Link>
 
@@ -33,7 +33,7 @@ export default function VendorHeader({ id, isOwner, vendor }: VendorHeaderProps)
               Edit
             </Button>
           </Link>
-          <Link href={`/dashboard/vendors/${id}/analytics`}>
+          <Link href={`/dashboard/vendors/analytics`}>
             <Button variant="outline" size="sm">
               <BarChart3 className="mr-2 h-4 w-4" />
               View Analytics

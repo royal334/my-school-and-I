@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { passwordStrengthSchema } from "@/lib/validations/password";
 
 /**
  * Shared signup contract.
@@ -14,7 +15,7 @@ const baseFields = {
     .trim()
     .min(1, "Email is required")
     .email("Enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: passwordStrengthSchema,
   phone_number: z.string().trim().min(1, "Phone number is required"),
   // Kept as a string in the form because the level dropdown emits "100"…"500".
   level: z.string().trim().min(1, "Level is required"),

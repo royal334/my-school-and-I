@@ -27,6 +27,10 @@ export default async function DashboardPage() {
   // Get user profile + role (cached 15 min)
   const { profile } = await getCachedUserContext(user.id);
 
+  if (profile?.account_type === 'agent') {
+    redirect('/agent');
+  }
+
   // Get user statistics - Use admin client to count ALL approved materials
   // regardless of user's subscription status
   const { count: materialsCount } = await adminClient

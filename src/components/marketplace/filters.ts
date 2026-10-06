@@ -15,6 +15,8 @@ export const DEFAULT_MARKETPLACE_FILTERS: MarketplaceFilters = {
   sellerType: '',
   minPrice: '',
   maxPrice: '',
+  urgent: false,
+  negotiable: false,
   sort: 'recent',
 };
 
@@ -40,6 +42,8 @@ export function parseMarketplaceFilters(params: RawSearchParams): MarketplaceFil
     sellerType: first(params.seller_type),
     minPrice: first(params.min_price),
     maxPrice: first(params.max_price),
+    urgent: first(params.urgent) === 'true',
+    negotiable: first(params.negotiable) === 'true',
     sort: toSort(first(params.sort)),
   };
 }
@@ -53,6 +57,8 @@ export function marketplaceQueryString(filters: MarketplaceFilters): string {
   if (filters.sellerType) params.set('seller_type', filters.sellerType);
   if (filters.minPrice) params.set('min_price', filters.minPrice);
   if (filters.maxPrice) params.set('max_price', filters.maxPrice);
+  if (filters.urgent) params.set('urgent', 'true');
+  if (filters.negotiable) params.set('negotiable', 'true');
   if (filters.sort !== 'recent') params.set('sort', filters.sort);
   return params.toString();
 }
@@ -63,6 +69,8 @@ export function hasActiveFilters(filters: MarketplaceFilters): boolean {
       filters.sellerType ||
       filters.minPrice ||
       filters.maxPrice ||
+      filters.urgent ||
+      filters.negotiable ||
       (filters.category && filters.category !== 'all'),
   );
 }

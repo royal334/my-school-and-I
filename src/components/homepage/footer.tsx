@@ -94,10 +94,10 @@ export function Footer() {
               <p>Nnamdi Azikiwe University</p>
               <p>Faculty of Engineering</p>
               <a
-                href="mailto:support@campushub.com"
+                href="mailto:support@campusandme.com"
                 className="block transition-colors hover:text-accent-300"
               >
-                support@campushub.com
+                support@campusandme.com
               </a>
             </div>
           </div>

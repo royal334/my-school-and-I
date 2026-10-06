@@ -93,6 +93,14 @@ export interface MatchedUnit {
   room_type: string;
 }
 
+export interface AgentProfile {
+  id: string;
+  display_name: string;
+  phone_number: string;
+  operating_area: string;
+  status: string;
+}
+
 export interface LeadDetail {
   id: string;
   property_name: string;
@@ -114,20 +122,24 @@ export interface LeadDetail {
   other_notes: string | null;
   status: string;
   admin_notes: string | null;
+  source_type?: string;
   submitted_by: string;
+  agent_id?: string | null;
   created_at: string;
   updated_at?: string | null;
   submitter: LeadSubmitter | null;
   matched_property: MatchedProperty | null;
   matched_unit: MatchedUnit | null;
   media: LeadMedia[];
+  agent_profile?: AgentProfile | null;
 }
 
 export type LeadAction =
   | 'reviewing'
   | 'create_property'
   | 'duplicate'
-  | 'rejected';
+  | 'rejected'
+  | 'correction';
 
 // ─── Viewing detail ──────────────────────────────────────────────────────────
 

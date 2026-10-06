@@ -20,16 +20,28 @@ const activePill =
   'border-primary-600 bg-primary-600 text-white shadow-sm';
 const inactivePill =
   'border-transparent bg-muted text-foreground hover:bg-muted/70';
+const activePillStyle = {
+  borderColor: 'var(--color-primary-600)',
+  backgroundColor: 'var(--color-primary-600)',
+  color: '#fff',
+};
 
 const fieldClass =
   'w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary-500';
 
 function MarketplaceFiltersPanel() {
-  const { filters, hasFilters, setFilter, clearFilters, resetAll } = useMarketplaceFilters();
+  const {
+    filters,
+    hasFilters,
+    setFilter,
+    clearFilters,
+    clearListingOptions,
+    resetAll,
+  } = useMarketplaceFilters();
   const [open, setOpen] = useState(hasFilters);
 
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-border bg-card p-2.5 sm:flex-row sm:items-center">
+    <div className="flex flex-col gap-2 rounded-xl border border-border bg-card p-2.5 sm:items-center">
       {/* Filter toggle + sort */}
       <div className="flex items-center gap-2">
         <button
@@ -38,16 +50,30 @@ function MarketplaceFiltersPanel() {
           className={`inline-flex items-center gap-1.5 rounded-md border px-3 py-2 text-sm font-medium transition-colors ${
             hasFilters ? activePill : inactivePill
           }`}
+          style={hasFilters ? activePillStyle : undefined}
         >
           <SlidersHorizontal className="size-4" />
           Filters {hasFilters ? '·' : ''}
         </button>
 
+        {hasFilters && (
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="rounded-md px-2.5 py-2 text-sm font-medium text-error hover:bg-error/10"
+          >
+            Clear filters
+          </button>
+        )}
+
         <select
           value={filters.sort}
           onChange={(e) => setFilter('sort', e.target.value as MarketplaceSort)}
           aria-label="Sort listings"
-          className={`rounded-md border px-2.5 py-2 text-sm outline-none ${inactivePill}`}
+          className={`rounded-md border px-2.5 py-2 text-sm outline-none ${
+            filters.sort !== 'recent' ? activePill : inactivePill
+          }`}
+          style={filters.sort !== 'recent' ? activePillStyle : undefined}
         >
           {SORT_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -85,6 +111,7 @@ function MarketplaceFiltersPanel() {
                     className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
                       active ? activePill : inactivePill
                     }`}
+                    style={active ? activePillStyle : undefined}
                   >
                     <span aria-hidden="true">{cat.emoji}</span>
                     {cat.label}
@@ -135,6 +162,7 @@ function MarketplaceFiltersPanel() {
                   className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
                     filters.condition === condition ? activePill : inactivePill
                   }`}
+                  style={filters.condition === condition ? activePillStyle : undefined}
                 >
                   {getConditionLabel(condition)}
                 </button>
@@ -155,6 +183,7 @@ function MarketplaceFiltersPanel() {
                   className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
                     filters.sellerType === option.key ? activePill : inactivePill
                   }`}
+                  style={filters.sellerType === option.key ? activePillStyle : undefined}
                 >
                   {option.label}
                 </button>
@@ -162,14 +191,44 @@ function MarketplaceFiltersPanel() {
             </div>
           </div>
 
-          {hasFilters && (
-            <button
-              onClick={clearFilters}
-              className="w-fit p-0 text-left text-[13px] font-medium text-error no-underline"
-            >
-              Clear all filters
-            </button>
-          )}
+          <div>
+            <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Listing options
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              <button
+                onClick={clearListingOptions}
+                aria-pressed={!filters.urgent && !filters.negotiable}
+                className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  !filters.urgent && !filters.negotiable ? activePill : inactivePill
+                }`}
+                style={!filters.urgent && !filters.negotiable ? activePillStyle : undefined}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setFilter('urgent', !filters.urgent)}
+                aria-pressed={filters.urgent}
+                className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  filters.urgent ? activePill : inactivePill
+                }`}
+                style={filters.urgent ? activePillStyle : undefined}
+              >
+                Urgent only
+              </button>
+              <button
+                onClick={() => setFilter('negotiable', !filters.negotiable)}
+                aria-pressed={filters.negotiable}
+                className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  filters.negotiable ? activePill : inactivePill
+                }`}
+                style={filters.negotiable ? activePillStyle : undefined}
+              >
+                Negotiable only
+              </button>
+            </div>
+          </div>
+
         </div>
       )}
 

@@ -61,12 +61,6 @@ export async function getVendors(filters: {
     query = query.eq("is_verified", true);
   }
 
-  // Secondary sorts (DB level)
-  query = query
-    .order('rating_avg', { ascending: false })
-    .order('view_count', { ascending: false })
-    .order('created_at', { ascending: false });
-
   // Limit
   if (filters.limit) {
     query = query.limit(filters.limit);
@@ -99,39 +93,18 @@ export async function getVendors(filters: {
     });
   }
 
-  // Complex sorting logic to enforce: Featured > Premium > Basic
+  // Tier order only — within-tier shuffle happens after cache (VendorDirectory)
   const tierPriority: Record<string, number> = {
     featured: 1,
     premium: 2,
     basic: 3,
   };
 
-  const sortedData = filteredData.sort((a: any, b: any) => {
-    // 1. Primary Sort: Subscription Tier
+  return filteredData.sort((a: any, b: any) => {
     const priorityA = tierPriority[a.subscription_tier] || 4;
     const priorityB = tierPriority[b.subscription_tier] || 4;
-
-    if (priorityA !== priorityB) {
-      return priorityA - priorityB;
-    }
-
-    // 2. Secondary Sort: Rating Average (Highest first)
-    if (b.rating_avg !== a.rating_avg) {
-      return b.rating_avg - a.rating_avg;
-    }
-
-    // 3. Tertiary Sort: View Count (Most viewed first)
-    if (b.view_count !== a.view_count) {
-      return b.view_count - a.view_count;
-    }
-
-    // 4. Quaternary Sort: Recency (Newest first)
-    return (
-      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    );
+    return priorityA - priorityB;
   });
-
-  return sortedData;
 }
 
 export async function getVendorById(id: string, supabaseProp?: any) {

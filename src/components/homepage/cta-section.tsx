@@ -33,7 +33,7 @@ export function CTASection() {
               Create free account <ChevronRight size={18} />
             </Link>
             <a
-              href="mailto:support@campushub.com"
+              href="mailto:support@campusandme.com"
               className="inline-flex items-center gap-2 rounded-xl border border-white/25 px-8 py-3.5 text-base font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-white/10"
             >
               Talk to us

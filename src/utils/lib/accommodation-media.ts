@@ -10,20 +10,39 @@ export async function withAccommodationMediaUrls<T extends StorageMedia>(
 ) {
   return Promise.all(
     media.map(async item => {
-      const { data, error } = await supabase.storage
-        .from('accommodation-media')
-        .createSignedUrl(item.file_path, 3600);
+      const storagePath = item.file_path;
 
-      if (error) {
+      if (storagePath.startsWith('http://') || storagePath.startsWith('https://')) {
+        return {
+          ...item,
+          url: storagePath,
+        };
+      }
+
+      const { data: signedData, error: signedError } = await supabase.storage
+        .from('accommodation-media')
+        .createSignedUrl(storagePath, 3600);
+
+      let url = signedData?.signedUrl || null;
+
+      if (!url) {
+        const { data: publicData } = supabase.storage
+          .from('accommodation-media')
+          .getPublicUrl(storagePath);
+
+        url = publicData?.publicUrl || null;
+      }
+
+      if (!url && signedError) {
         console.error('Accommodation media URL error:', {
-          path: item.file_path,
-          message: error.message,
+          path: storagePath,
+          message: signedError.message,
         });
       }
 
       return {
         ...item,
-        url: data?.signedUrl || null,
+        url,
       };
     }),
   );

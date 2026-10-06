@@ -93,7 +93,7 @@ export default async function SubscriptionPage() {
                 {vendor.subscription_tier === 'basic'
                   ? 'Free plan with basic features'
                   : vendor.subscription_tier === 'premium'
-                  ? '₦2,000/month - Enhanced visibility and features'
+                  ? '₦2,500/month - Enhanced visibility and features'
                   : '₦5,000/month - Maximum visibility and all features'}
               </p>
             </div>
@@ -189,7 +189,7 @@ export default async function SubscriptionPage() {
             {/* Premium */}
             <div className="rounded-lg border p-4 border-border dark:border-border bg-primary-50 dark:bg-primary-950/40">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <h3 className="font-medium text-sm sm:text-base text-foreground">Premium (₦2,000/month)</h3>
+                <h3 className="font-medium text-sm sm:text-base text-foreground">Premium (₦2,500/month)</h3>
                 {vendor.subscription_tier === 'premium' && (
                   <Badge variant="outline">Current</Badge>
                 )}
@@ -197,6 +197,7 @@ export default async function SubscriptionPage() {
               <ul className="mt-2 space-y-1 text-sm text-primary-700 dark:text-primary-300">
                 <li>• Logo & cover image</li>
                 <li>• 5 photo gallery</li>
+                <li>• 6 active marketplace listings</li>
                 <li>• Up to 10 services</li>
                 <li>• Priority in search (2x)</li>
                 <li>• Daily analytics</li>
@@ -216,6 +217,7 @@ export default async function SubscriptionPage() {
               <ul className="mt-2 space-y-1 text-sm text-accent-800 dark:text-accent-300">
                 <li>• Everything in Premium</li>
                 <li>• Verified badge ✓</li>
+                <li>• Unlimited Marketplace Listings</li>
                 <li>• 10 photo gallery</li>
                 <li>• Unlimited services</li>
                 <li>• Top of search results (10x)</li>

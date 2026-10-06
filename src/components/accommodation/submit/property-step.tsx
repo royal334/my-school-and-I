@@ -68,8 +68,8 @@ export function PropertyStep() {
         </FormField>
       </div>
 
-      <FormField label="Additional charges" hint="Agency fee, caution fee, service charge etc.">
-        <input {...register('additional_charges_note')} className={inputClass} placeholder="e.g. ₦50k agency fee" />
+      <FormField label="Additional charges" hint="e.g. light fee, generator fee, etc">
+        <input {...register('additional_charges_note')} className={inputClass} placeholder="e.g. light fee, generator fee, etc" />
       </FormField>
     </div>
   );

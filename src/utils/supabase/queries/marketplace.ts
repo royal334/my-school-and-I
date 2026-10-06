@@ -18,6 +18,7 @@ import type {
   UserReview,
   VendorSummary,
 } from '@/components/marketplace/types';
+import { shuffle } from '@/utils/lib';
 
 export const MARKETPLACE_PAGE_SIZE = 20;
 
@@ -248,6 +249,12 @@ export async function getMarketplaceFeed(
   if (filters.maxPrice) {
     feedQuery = feedQuery.lte('price', Number(filters.maxPrice));
   }
+  if (filters.urgent) {
+    feedQuery = feedQuery.eq('is_urgent', true);
+  }
+  if (filters.negotiable) {
+    feedQuery = feedQuery.eq('negotiable', true);
+  }
 
   if (filters.sort === 'price_asc') {
     feedQuery = feedQuery.order('price', { ascending: true });
@@ -280,7 +287,9 @@ export async function getMarketplaceFeed(
   ]);
 
   return {
-    promoted: promotedRows.map((row) => toListing(row, sellerNames, sellerProfiles, savedIds)),
+    promoted: shuffle(
+      promotedRows.map((row) => toListing(row, sellerNames, sellerProfiles, savedIds)),
+    ),
     listings: feedRows.map((row) => toListing(row, sellerNames, sellerProfiles, savedIds)),
     total: feedRes.count ?? 0,
   };

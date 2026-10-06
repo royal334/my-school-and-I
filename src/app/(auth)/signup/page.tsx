@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +27,7 @@ import {
 import { toast } from "sonner";
 import Link from "next/link";
 import { signupFormSchema, type SignupFormValues } from "@/lib/validations/signup";
+import { PasswordRequirements } from "@/components/auth/password-requirements";
 
 type Faculty = { id: string; name: string };
 type Department = { id: string; name: string; faculty_id: string };
@@ -36,9 +37,6 @@ export default function SignupPage() {
 
   const [faculties, setFaculties] = useState<Faculty[]>([]);
   const [allDepartments, setAllDepartments] = useState<Department[]>([]);
-  const [filteredDepartments, setFilteredDepartments] = useState<Department[]>(
-    [],
-  );
   const [loadingData, setLoadingData] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -47,7 +45,6 @@ export default function SignupPage() {
     register,
     handleSubmit,
     control,
-    watch,
     setValue,
     clearErrors,
     formState: { errors, isSubmitting },
@@ -69,8 +66,12 @@ defaultValues: {
       },
   });
 
-  const selectedFaculty = watch("faculty_id");
-  const isNewStudent = watch("is_new_student");
+  const selectedFaculty = useWatch({ control, name: "faculty_id" });
+  const isNewStudent = useWatch({ control, name: "is_new_student" });
+  const passwordValue = useWatch({ control, name: "password" });
+  const filteredDepartments = selectedFaculty
+    ? allDepartments.filter((department) => department.faculty_id === selectedFaculty)
+    : [];
 
   // Load faculties and departments once on mount
   useEffect(() => {
@@ -93,22 +94,6 @@ defaultValues: {
     };
     load();
   }, []);
-
-  // Filter departments whenever the selected faculty changes
-  useEffect(() => {
-    if (selectedFaculty) {
-      setFilteredDepartments(
-        allDepartments.filter((d) => d.faculty_id === selectedFaculty),
-      );
-      // Reset department when faculty changes
-      setValue("department", "");
-      setValue("department_id", "");
-    } else {
-      setFilteredDepartments([]);
-      setValue("department", "");
-      setValue("department_id", "");
-    }
-  }, [selectedFaculty, allDepartments, setValue]);
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
@@ -469,6 +454,7 @@ defaultValues: {
                   {errors.password.message}
                 </p>
               )}
+              <PasswordRequirements value={passwordValue || ""} />
             </div>
 
             {/* Confirm Password */}

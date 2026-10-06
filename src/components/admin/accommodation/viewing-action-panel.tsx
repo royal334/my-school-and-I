@@ -32,6 +32,9 @@ export function ViewingActionPanel({
   const [action, setAction] = useState<ViewingAction | null>(null);
   const [scheduledDate, setScheduledDate] = useState('');
   const [adminNotes, setAdminNotes] = useState(viewing.admin_notes || '');
+  const [landlordRentAmount, setLandlordRentAmount] = useState(
+    viewing.unit.price?.toString() || '',
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -56,6 +59,12 @@ export function ViewingActionPanel({
   }
 
   async function createTransaction() {
+    const rentAmount = Number(landlordRentAmount);
+    if (!Number.isFinite(rentAmount) || rentAmount <= 0) {
+      setError('Enter a valid annual rent amount greater than zero.');
+      return;
+    }
+
     setSaving(true);
     setError('');
     try {
@@ -67,22 +76,35 @@ export function ViewingActionPanel({
           property_id: viewing.unit.property.id,
           student_id: viewing.student_id,
           viewing_id: viewing.id,
-          rent_amount: viewing.unit.price || null,
+          landlord_rent_amount: rentAmount,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      if (data.referral?.created) {
-        toast.success('Transaction created, unit rented, and referral created.', {
+      if (!data.referral) {
+        toast.warning(
+          'Transaction recorded, but this server response did not include referral status. Refresh the page and retry to check or create the referral.',
+          { duration: 7000, position: 'top-center' },
+        );
+      } else if (data.referral.created || data.referral.issue === null) {
+        toast.success(data.referral.created
+          ? 'Transaction created, unit rented, and referral created.'
+          : 'Transaction is recorded and its referral already exists.', {
           duration: 5000,
           position: 'top-center',
         });
       } else {
         const message = data.referral?.issue === 'no_matching_submission'
-          ? 'Transaction created, but no approved submission is linked to this unit.'
+          ? 'Transaction recorded, but no approved submission is linked to this unit.'
           : data.referral?.issue === 'missing_submitter'
-            ? 'Transaction created, but the approved submission has no submitter.'
-            : 'Transaction created, but referral creation failed. Check the server logs.';
+            ? 'Transaction recorded, but the approved submission has no submitter.'
+            : data.referral?.issue === 'agent_sourced'
+              ? data.agent_commission?.created
+                ? 'Transaction recorded and agent commission created.'
+                : data.agent_commission?.exists
+                  ? 'Transaction recorded; the agent commission already exists.'
+                  : `Transaction recorded, but agent commission was not created: ${data.agent_commission?.error || data.agent_commission?.issue || 'check the server logs.'}`
+              : `Transaction recorded, but referral was not created. Reason: ${data.referral.issue || 'unknown'}.${data.referral.error ? ` ${data.referral.error}` : ''}`;
         toast.warning(message, {
           duration: 7000,
           position: 'top-center',
@@ -198,6 +220,18 @@ export function ViewingActionPanel({
             Unit: {viewing.unit.property.name} · {viewing.unit.unit_number || viewing.unit.room_type}
             {viewing.unit.price && ` · ${formatPrice(viewing.unit.price)}/yr`}
           </p>
+          <label className="flex flex-col gap-1 text-[12px] font-medium text-primary-600 dark:text-white">
+            Agreed annual rent paid to landlord (NGN)
+            <input
+              type="number"
+              min="1"
+              step="1"
+              required
+              value={landlordRentAmount}
+              onChange={e => setLandlordRentAmount(e.target.value)}
+              className={inputClass}
+            />
+          </label>
           {error && <p className="text-[13px] text-error">{error}</p>}
           <div className="flex gap-2">
             <button onClick={createTransaction} disabled={saving} className={successBtnClass}>

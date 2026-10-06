@@ -6,12 +6,11 @@ interface DetailHeaderProps {
 export function DetailHeader({ name, onBack }: DetailHeaderProps) {
   return (
     <div style={{
-      background: 'var(--primary-500)',
       padding: '16px',
       display: 'flex',
       alignItems: 'center',
       gap: 12,
-    }}>
+    }} className="bg-primary-600 dark:bg-primary-800">
       <button
         onClick={onBack}
         style={{

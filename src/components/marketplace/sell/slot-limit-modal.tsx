@@ -1,9 +1,13 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Store, Package } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import type { SellerSlots } from '@/components/marketplace/types';
+import { createClient } from '@/utils/supabase/client';
 
 interface SlotLimitModalProps {
   slots: SellerSlots;
@@ -12,6 +16,45 @@ interface SlotLimitModalProps {
 
 /** Shown when the seller has no active-listing slots left. */
 export function SlotLimitModal({ slots, onClose }: SlotLimitModalProps) {
+  const router = useRouter();
+  const [checkingVendor, setCheckingVendor] = useState(false);
+
+  async function handleVendorAction() {
+    setCheckingVendor(true);
+
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError) throw userError;
+      if (!user) {
+        router.push('/login');
+        return;
+      }
+
+      const { data: vendor, error: vendorError } = await supabase
+        .from('vendors')
+        .select('id')
+        .eq('owner_id', user.id)
+        .maybeSingle();
+
+      if (vendorError) throw vendorError;
+
+      router.push(vendor ? '/dashboard/subscription' : '/dashboard/vendors/create');
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Could not check your vendor account. Please try again.',
+      );
+    } finally {
+      setCheckingVendor(false);
+    }
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-6"
@@ -29,7 +72,8 @@ export function SlotLimitModal({ slots, onClose }: SlotLimitModalProps) {
         <h2 className="mt-3 mb-2 text-xl font-semibold text-foreground">Listing limit reached</h2>
         <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
           You have {slots.active_listings} of {slots.max_listings} active listings. Archive a
-          listing or upgrade to sell more.
+          listing, or open your vendor account to create a business profile or manage your
+          subscription.
         </p>
         <div className="flex flex-col gap-2.5">
           <Button asChild>
@@ -38,11 +82,15 @@ export function SlotLimitModal({ slots, onClose }: SlotLimitModalProps) {
               Manage my listings
             </Link>
           </Button>
-          <Button asChild variant="outline" className="border-accent-300 bg-accent-500/10 text-accent-700 hover:bg-accent-500/20 dark:border-accent-600/50 dark:text-accent-400">
-            <Link href="/dashboard/vendors/upgrade">
-              <Store />
-              Become a vendor — sell more
-            </Link>
+          <Button
+            type="button"
+            variant="outline"
+            className="border-accent-300 bg-accent-500/10 text-accent-700 hover:bg-accent-500/20 dark:border-accent-600/50 dark:text-accent-400"
+            onClick={handleVendorAction}
+            disabled={checkingVendor}
+          >
+            <Store />
+            {checkingVendor ? 'Checking account…' : 'Vendor account & plans'}
           </Button>
           <button
             type="button"

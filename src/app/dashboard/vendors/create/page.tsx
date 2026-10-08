@@ -19,19 +19,21 @@ export default async function CreateVendorPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  // Get user profile
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single();
-
   // Check if user already has a vendor listing
-  const { data: existingVendor } = await supabase
+  const admin = createAdminClient();
+  const { data: existingVendor, error: existingVendorError } = await admin
     .from("vendors")
     .select("id")
     .eq("owner_id", user.id)
-    .single();
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (existingVendorError) {
+    throw new Error("Failed to check for an existing vendor listing", {
+      cause: existingVendorError,
+    });
+  }
 
   if (existingVendor) {
     // Redirect to their vendor page
@@ -39,9 +41,9 @@ export default async function CreateVendorPage() {
   }
 
   // Get categories using admin client to bypass RLS
-  const { data: categories } = await createAdminClient()
+  const { data: categories } = await admin
     .from("vendor_categories")
-    .select("id, name")
+    .select("id, name, services")
     .order("name");
 
   return (

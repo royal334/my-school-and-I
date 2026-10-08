@@ -351,7 +351,7 @@ export async function getMarketplaceListing(
       .gt('expires_at', new Date().toISOString())
       .maybeSingle(),
     row.vendor_id
-      ? supabase.from('vendors').select('id, business_name, rating').eq('id', row.vendor_id).maybeSingle()
+      ? supabase.from('vendors').select('id, business_name').eq('id', row.vendor_id).maybeSingle()
       : Promise.resolve({ data: null }),
   ]);
 

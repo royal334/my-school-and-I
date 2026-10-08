@@ -17,7 +17,7 @@ interface VendorFiltersProps {
   categories: Array<{
     id: string;
     name: string;
-    icon: string;
+    emoji: string;
   }>;
   filterPath?: string;
 }
@@ -151,7 +151,7 @@ function VendorFiltersContent({
                       : "text-muted-foreground hover:bg-muted dark:hover:bg-accent"
                   }`}
                 >
-                  <span className="text-base">{category.icon}</span>
+                  <span className="text-base">{category.emoji}</span>
                   <span className="flex-1 text-left">{category.name}</span>
                   {selectedCategory === category.id && (
                     <Check className="h-4 w-4 text-primary-600 dark:text-primary-400" />
@@ -179,7 +179,7 @@ function VendorFiltersContent({
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <span>Showing:</span>
           <span className="inline-flex items-center gap-1 rounded-full border border-border bg-primary-50 px-2.5 py-0.5 text-xs font-medium text-primary-700 dark:bg-muted dark:text-primary-300">
-            {activeCategoryName.icon} {activeCategoryName.name}
+            {activeCategoryName.emoji} {activeCategoryName.name}
             <button
               onClick={() => setSelectedCategory("all")}
               className="ml-0.5 rounded-full p-0.5 hover:bg-border"

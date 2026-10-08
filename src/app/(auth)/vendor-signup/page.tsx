@@ -11,7 +11,7 @@ export default async function VendorSignupPage() {
   // Get categories
   const { data: categories } = await supabase
     .from("vendor_categories")
-    .select("id, name")
+    .select("id, name, services")
     .order("name");
 
   return (

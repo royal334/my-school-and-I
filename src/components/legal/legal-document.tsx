@@ -109,6 +109,10 @@ export function LegalDocument({ title, summary, updatedAt, sections }: LegalDocu
               Questions about this document? Contact{' '}
               <a className="font-medium text-primary-700 underline underline-offset-4" href="mailto:support@campusandme.com">
                 support@campusandme.com
+              </a>{' '}
+              or call{' '}
+              <a className="font-medium text-primary-700 underline underline-offset-4" href="tel:+2349110224171">
+                +234 911 022 4171
               </a>
               .
             </div>

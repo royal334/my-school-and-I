@@ -6,8 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Crown, Calendar, CreditCard, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
-import CancelSubscriptionButton from '@/components/vendors/cancel-subscription-button';
-import ReactivateSubscriptionButton from '@/components/vendors/reactivate-subscription-button';
 
 export const metadata = {
   title: 'Subscription | Campus&Me',
@@ -43,10 +41,9 @@ export default async function SubscriptionPage() {
     vendor.subscription_expires_at &&
     new Date(vendor.subscription_expires_at) > new Date();
 
-  const autoRenewOn = vendor.subscription_auto_renew;
-
   const daysUntilExpiry = vendor.subscription_expires_at
     ? Math.ceil(
+        // eslint-disable-next-line react-hooks/purity
         (new Date(vendor.subscription_expires_at).getTime() - Date.now()) /
           (1000 * 60 * 60 * 24)
       )
@@ -99,33 +96,9 @@ export default async function SubscriptionPage() {
             </div>
 
             {isActive ? (
-              <div className='flex flex-wrap gap-3'>
               <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
-                <Button variant="outline">Change Plan</Button>
+                <Button variant="outline">Renew or change plan</Button>
               </Link>
-            {autoRenewOn   ? (         
-            <>
-              <CancelSubscriptionButton
-                vendorId={vendor.id}
-                tier={vendor.subscription_tier}
-                expiresAt={vendor.subscription_expires_at}
-                type="hard"/>
-              
-                <CancelSubscriptionButton
-                vendorId={vendor.id}
-                tier={vendor.subscription_tier}
-                expiresAt={vendor.subscription_expires_at}
-                type="soft"
-              />
-            </>
-            ) : (
-              <ReactivateSubscriptionButton
-              vendorId={vendor.id}
-              tier={vendor.subscription_tier}
-              expiresAt={vendor.subscription_expires_at}
-            />
-            )}
-            </div>
             ) : (
               <Link href={`/dashboard/vendors/${vendor.id}/upgrade`}>
               <Button className="w-full sm:w-auto">
@@ -146,17 +119,20 @@ export default async function SubscriptionPage() {
                     Started: {new Date(vendor.subscription_starts_at!).toLocaleDateString()}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Renews: {new Date(vendor.subscription_expires_at!).toLocaleDateString()}
+                    Expires: {new Date(vendor.subscription_expires_at!).toLocaleDateString()}
+                  </p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Vendor plans do not renew automatically. Renew manually to keep your premium features.
                   </p>
                 </div>
               </div>
 
               {daysUntilExpiry <= 7 && (
                 <div className="flex items-start gap-3 rounded-lg bg-warning-bg p-3 dark:bg-warning/10">
-                  <AlertCircle className="h-5 w-5 text-warning mt-0.5" />
+                  <AlertCircle className="mt-0.5 h-5 w-5 text-warning" />
                   <div>
                     <p className="text-sm font-medium text-warning-text">
-                      Subscription Expiring Soon
+                      Subscription expiring soon
                     </p>
                     <p className="text-sm text-warning-text">
                       Your subscription expires in {daysUntilExpiry} day(s)

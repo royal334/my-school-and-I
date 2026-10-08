@@ -77,7 +77,7 @@ export default function VendorHero({ vendor, isVerified }: VendorHeroProps) {
 
         {vendor.vendor_categories && (
           <p className="mb-4 text-lg text-muted-foreground">
-            {vendor.vendor_categories.icon}{" "}
+            {vendor.vendor_categories.emoji}{" "}
             {vendor.vendor_categories.name}
           </p>
         )}

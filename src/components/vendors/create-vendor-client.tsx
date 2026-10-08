@@ -6,16 +6,18 @@ import VendorForm from './vendor-form';
 import VendorMediaEditor from './vendor-media-editor';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Lock } from 'lucide-react';
+import type { VendorCategory } from './category-types';
+import type { VendorListing } from './vendor-form';
 
 interface CreateVendorClientProps {
-  categories: Array<{ id: string; name: string }>;
+  categories: VendorCategory[];
 }
 
 export default function CreateVendorClient({ categories }: CreateVendorClientProps) {
-  const [vendor, setVendor] = useState<any>(null);
+  const [vendor, setVendor] = useState<VendorListing | null>(null);
   const [activeTab, setActiveTab] = useState('details');
 
-  const handleVendorCreated = (newVendor: any) => {
+  const handleVendorCreated = (newVendor: VendorListing) => {
     setVendor(newVendor);
     setActiveTab('media');
   };

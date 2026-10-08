@@ -36,7 +36,7 @@ export default async function MyListingsPage() {
       *,
       vendor_categories (
         name,
-        icon
+        emoji
       )
     `)
     .eq('owner_id', user.id)
@@ -200,7 +200,7 @@ export default async function MyListingsPage() {
                   </div>
                   {vendor.vendor_categories && (
                     <p className="text-muted-foreground">
-                      {vendor.vendor_categories.icon}{' '}
+                      {vendor.vendor_categories.emoji}{' '}
                       {vendor.vendor_categories.name}
                     </p>
                   )}
@@ -239,7 +239,7 @@ export default async function MyListingsPage() {
 
               {/* Services */}
               <div className="mb-4 flex flex-wrap gap-1">
-                {vendor.services.map((service: string, index: number) => (
+                {(vendor.services ?? []).map((service: string, index: number) => (
                   <Badge key={index} variant="secondary" className="text-xs">
                     {service}
                   </Badge>

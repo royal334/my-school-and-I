@@ -39,7 +39,7 @@ interface VendorDashboardProps {
     is_approved?: boolean;
     logo_url?: string;
     business_name: string;
-    vendor_categories?: { icon?: string; name?: string };
+    vendor_categories?: { emoji?: string; name?: string };
     description?: string;
     subscription_expires_at?: string;
     [key: string]: unknown;
@@ -105,7 +105,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
               <p className="mb-3 text-sm text-muted-foreground dark:text-muted-foreground">
                 Start connecting with thousands of students by listing your business
               </p>
-              <Link href="/vendor-signup">
+              <Link href="/dashboard/vendors/create">
                 <Button size="sm">Create Listing</Button>
               </Link>
             </div>
@@ -120,7 +120,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
             <Card className="border-border bg-accent-50 dark:bg-accent-500/10 dark:border-accent-500/30">
               <CardContent className="p-4">
                 <p className="text-sm font-medium text-accent-800">
-                  â³ Your listing is pending admin approval. It will be visible to
+                  Your listing is pending admin approval. It will be visible to
                   students once approved.
                 </p>
               </CardContent>
@@ -264,7 +264,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                           </div>
                           {vendor.vendor_categories && (
                             <p className="text-sm text-muted-foreground">
-                              {vendor.vendor_categories.icon}{' '}
+                              {vendor.vendor_categories.emoji}{' '}
                               {vendor.vendor_categories.name}
                             </p>
                           )}

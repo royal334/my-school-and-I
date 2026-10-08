@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useForm, Controller, type ControllerRenderProps } from "react-hook-form";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,29 +25,10 @@ import { Badge } from "../ui/badge";
 import { toast } from "sonner";
 import { useVendorFeatures } from "@/hooks/use-vendor-features";
 import { Checkbox } from "../ui/checkbox";
+import { getVendorServiceOptions, type VendorCategory } from "./category-types";
+import type { Database } from "@/utils/supabase/database.types";
 
-const SERVICES = [
-  "Printing",
-  "Binding",
-  "Photocopying",
-  "Phone Repair",
-  "Computer Repair",
-  "Food Service",
-  "Tutoring",
-  "Nail Tech",
-  "Hair Dressing",
-  "Makeup",
-  "Laundry",
-  "Sales",
-  "Barbing",
-  "Spa",
-  "Catering",
-  "Event Planning",
-  "Lash Tech",
-  "Photography",
-  "Videography",
-  "Graphic Design",
-];
+export type VendorListing = Database["public"]["Tables"]["vendors"]["Row"];
 
 type VendorFormData = {
   business_name: string;
@@ -63,20 +44,27 @@ type VendorFormData = {
 type VendorFormProps = {
   initialData?: Partial<VendorFormData> & { id?: string };
   mode?: "create" | "edit";
-  categories?: Array<{ id: string; name: string }>;
-  onSuccess?: (vendor: any) => void;
-  vendor?: any;
+  categories?: VendorCategory[];
+  onSuccess?: (vendor: VendorListing) => void;
+  vendor?: VendorListing;
 };
 
 // Helper component to follow Rules of Hooks
 function CategorySelector({
   field,
   categories,
+  onCategoryChange,
 }: {
-  field: any;
-  categories?: Array<{ id: string; name: string }>;
+  field: ControllerRenderProps<VendorFormData, "category_id">;
+  categories?: VendorCategory[];
+  onCategoryChange: (categoryId: string) => void;
 }) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(
+    () =>
+      field.value
+        ? categories?.find((category) => category.id === field.value)?.name ?? ""
+        : "",
+  );
 
   // Filter categories based on query
   const filteredCategories =
@@ -86,20 +74,14 @@ function CategorySelector({
           c.name.toLowerCase().includes(query.toLowerCase()),
         );
 
-  // Sync query with selected category name on load or change
-  useEffect(() => {
-    if (field.value && categories) {
-      const selected = categories.find((c) => c.id === field.value);
-      if (selected) setQuery(selected.name);
-    }
-  }, [field.value, categories]);
-
   return (
     <Combobox
-      value={field.value}
+      value={field.value ?? ""}
       onValueChange={(val) => {
-        field.onChange(val);
-        const selected = categories?.find((c) => c.id === val);
+        const categoryId = val ?? "";
+        field.onChange(categoryId);
+        onCategoryChange(categoryId);
+        const selected = categories?.find((c) => c.id === categoryId);
         if (selected) setQuery(selected.name);
       }}
     >
@@ -109,13 +91,17 @@ function CategorySelector({
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            if (field.value) field.onChange("");
+            if (field.value) {
+              field.onChange("");
+              onCategoryChange("");
+            }
           }}
           showTrigger
           showClear={!!query}
           onClear={() => {
             setQuery("");
             field.onChange("");
+            onCategoryChange("");
           }}
         />
       </div>
@@ -141,9 +127,9 @@ export default function VendorForm({
   vendor,
 }: VendorFormProps) {
   const router = useRouter();
-  const features = vendor ? useVendorFeatures(vendor) : null;
-  const maxServices = features?.maxServices || 5;
-  const isUnlimited = features?.canHaveUnlimitedServices || false;
+  const features = useVendorFeatures(vendor ?? { subscription_tier: "basic" });
+  const maxServices = features.maxServices;
+  const isUnlimited = features.canHaveUnlimitedServices;
 
   const {
     register,
@@ -165,8 +151,13 @@ export default function VendorForm({
     },
   });
 
-  const selectedServices = watch("services");
+  const selectedServices = watch("services") ?? [];
+  const selectedCategoryId = watch("category_id");
   const description = watch("description");
+  const selectedCategory = categories?.find(
+    (category) => category.id === selectedCategoryId,
+  );
+  const availableServices = getVendorServiceOptions(selectedCategory?.services);
 
   const toggleService = (service: string) => {
     const current = selectedServices ?? [];
@@ -183,6 +174,10 @@ export default function VendorForm({
   const onSubmit = async (data: VendorFormData) => {
     try {
       const isEdit = mode === "edit" && initialData?.id;
+      if (data.services.length > maxServices && !isUnlimited) {
+        throw new Error(`Your plan allows up to ${maxServices} services.`);
+      }
+
       const url = isEdit
         ? `/api/vendors/${initialData!.id}`
         : "/api/vendors/create";
@@ -200,11 +195,6 @@ export default function VendorForm({
         );
       }
 
-      if(selectedServices.length > maxServices){
-        toast.error(isEdit ? "Failed to update vendor" : "Failed to create vendor")
-        throw new Error(isEdit ? "Failed to update vendor" : "Failed to create vendor")
-      }
-
       const { vendor } = await response.json();
       toast.success(
         isEdit
@@ -217,8 +207,8 @@ export default function VendorForm({
       } else {
         router.push(`/dashboard/vendors/${vendor.id}`);
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred.");
     }
   };
 
@@ -249,7 +239,15 @@ export default function VendorForm({
           control={control}
           rules={{ required: "Please select a category" }}
           render={({ field }) => (
-            <CategorySelector field={field} categories={categories} />
+            <CategorySelector
+              field={field}
+              categories={categories}
+              onCategoryChange={(categoryId) => {
+                if (categoryId !== selectedCategoryId) {
+                  setValue("services", [], { shouldValidate: true });
+                }
+              }}
+            />
           )}
         />
         {errors.category_id && (
@@ -282,13 +280,19 @@ export default function VendorForm({
 
       {/* Services Multi-select */}
       <div>
+        {!selectedCategoryId ? (
+          <p className="text-sm text-muted-foreground">
+            Select a category to see its available services.
+          </p>
+        ) : (
+          <>
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium">Services Offered *</label>
           <div className="flex items-center gap-2">
           <Badge variant={selectedServices.length >= maxServices ? 'destructive' : 'default'}>
             {selectedServices.length} / {isUnlimited ? '∞' : maxServices}
           </Badge>
-          {vendor && features && (
+          {vendor && (
           <Badge variant="outline" className="text-xs">
           {features.tier}
           </Badge>
@@ -302,8 +306,8 @@ export default function VendorForm({
       <CircleAlert className="h-4 w-4 text-warning" />
       <AlertTitle className="text-warning-text">Service Limit Reached</AlertTitle>
       <AlertDescription className="text-warning-text">
-        You've reached your limit of {maxServices} services.
-        {features?.tier === 'basic' && (
+        You&apos;ve reached your limit of {maxServices} services.
+        {features.tier === 'basic' && (
           <>
             {' '}
             <Link 
@@ -315,7 +319,7 @@ export default function VendorForm({
             {' '}for 10 services.
           </>
         )}
-        {features?.tier === 'premium' && (
+        {features.tier === 'premium' && (
           <>
             {' '}
             <Link 
@@ -340,28 +344,35 @@ export default function VendorForm({
           })}
         />
         <div className="mt-2 grid grid-cols-2 gap-2">
-          {SERVICES.map((service) => {
-            const isSelected = selectedServices.includes(service);
+          {availableServices.map((service) => {
+            const isSelected = selectedServices.includes(service.value);
             const isDisabled = !isSelected && selectedServices.length >= maxServices && !isUnlimited;
             
             return (
               <label 
-                key={service} 
+                key={service.key}
                 className={`flex items-center gap-2 ${isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
               >
                 <Checkbox
-                  id={`service-${service}`}
+                  id={`service-${service.key}`}
                   checked={isSelected}
-                  onCheckedChange={() => toggleService(service)}
+                  onCheckedChange={() => toggleService(service.value)}
                   disabled={isDisabled}
                 />
-                <span className="text-sm font-normal">{service}</span>
+                <span className="text-sm font-normal">{service.label}</span>
               </label>
             );
           })}
         </div>
+        {availableServices.length === 0 && (
+          <p className="mt-2 text-sm text-muted-foreground">
+            No services are configured for this category yet.
+          </p>
+        )}
         {errors.services && (
           <p className="mt-1 text-xs text-destructive">{errors.services.message}</p>
+        )}
+          </>
         )}
       </div>
 

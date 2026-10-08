@@ -8,6 +8,7 @@ import {
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { MobileBottomNav } from "@/components/dashboard/mobile-bottom-nav";
 import { createClient } from "@/utils/supabase/server";
+import { createAdminClient } from "@/utils/supabase/admin";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import DashboardToggle from "@/components/dashboard/dashboard-toggle";
@@ -35,11 +36,19 @@ export default async function Layout({ children }: { children: React.ReactNode }
     redirect("/agent");
   }
 
-  const { data: vendor } = await supabase
+  const { data: vendor, error: vendorError } = await createAdminClient()
     .from("vendors")
     .select("id, subscription_tier, is_approved")
     .eq("owner_id", user.id)
-    .single();
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (vendorError) {
+    throw new Error("Failed to load vendor account details", {
+      cause: vendorError,
+    });
+  }
 
   const cookieStore = await cookies();
   const isStudentToggle = cookieStore.get("isStudent")?.value !== "false";

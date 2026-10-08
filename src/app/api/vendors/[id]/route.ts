@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { getVendorServiceOptions } from '@/components/vendors/category-types';
 
 // GET - Fetch single vendor
 export async function GET(
@@ -19,7 +20,7 @@ export async function GET(
         *,
         vendor_categories (
           name,
-          icon
+          emoji
         ),
         profiles (
           full_name
@@ -109,6 +110,32 @@ export async function PUT(
         { error: 'Maximum 10 services allowed' },
         { status: 400 }
       );
+    }
+
+    if (category_id && Array.isArray(services)) {
+      const { data: category, error: categoryError } = await supabase
+        .from('vendor_categories')
+        .select('id, services')
+        .eq('id', category_id)
+        .maybeSingle();
+
+      if (categoryError) throw categoryError;
+      if (!category) {
+        return NextResponse.json({ error: 'Select a valid category' }, { status: 400 });
+      }
+
+      const categoryServices = getVendorServiceOptions(category.services).map(({ value }) => value);
+      if (
+        services.some(
+          (service: unknown) =>
+            typeof service !== 'string' || !categoryServices.includes(service),
+        )
+      ) {
+        return NextResponse.json(
+          { error: 'Choose services from the selected category' },
+          { status: 400 },
+        );
+      }
     }
 
     if (phone_number) {

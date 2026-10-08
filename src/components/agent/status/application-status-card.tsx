@@ -63,10 +63,21 @@ export function ApplicationStatusCard({
       )}
 
       {cta && 'mailto' in cta && (
-        <a href={`mailto:${cta.mailto}`} className={ctaClass}>
-          <Mail className="size-4" aria-hidden />
-          {cta.label}
-        </a>
+        <>
+          <a href={`mailto:${cta.mailto}`} className={ctaClass}>
+            <Mail className="size-4" aria-hidden />
+            {cta.label}
+          </a>
+          <p className="mt-2 text-xs text-muted-foreground">
+            or call{' '}
+            <a
+              href="tel:+2349110224171"
+              className="font-medium text-primary-600 hover:underline dark:text-primary-300"
+            >
+              +234 911 022 4171
+            </a>
+          </p>
+        </>
       )}
     </section>
   );

@@ -21,10 +21,9 @@ export async function getVendors(filters: {
       vendor_categories (
         id,
         name,
-        icon,
-        slug
+        emoji
       ),
-      profiles!vendors_owner_id_fkey (
+      profiles (
         full_name,
         avatar_url
       )
@@ -93,7 +92,7 @@ export async function getVendors(filters: {
     });
   }
 
-  // Tier order only — within-tier shuffle happens after cache (VendorDirectory)
+  // Tier order only — VendorDirectory shuffles within each tier after fetching.
   const tierPriority: Record<string, number> = {
     featured: 1,
     premium: 2,
@@ -117,7 +116,7 @@ export async function getVendorById(id: string, supabaseProp?: any) {
       *,
       vendor_categories (
         name,
-        icon
+        emoji
       ),
       profiles (
         full_name

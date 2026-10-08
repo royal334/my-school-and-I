@@ -4,7 +4,6 @@ import { createAdminClient } from '@/utils/supabase/admin';
 import { createClient as createServerClient } from '@/utils/supabase/server';
 import { getVendors } from '@/utils/supabase/queries/vendors';
 
-const FEED_REVALIDATE = 60;
 const CATEGORIES_REVALIDATE = 3 * 24 * 60 * 60; // 3 days
 const MAX_SEARCH_LENGTH = 80;
 const SEARCH_INVALID_CHARS = /[%,_{}\[\]\(\),\\]/;
@@ -35,8 +34,8 @@ async function fetchVendorFeed(filters: VendorFeedFilters) {
   const normalizedSearch = normalizeSearchTerm(filters.search);
   const normalizedFilters = { ...filters, search: normalizedSearch };
 
-  // Approved vendors + public category/owner data: safe to read with the
-  // service-role client. Errors propagate so they are not cached.
+  // Approved vendors + public category/owner data are safe to read with the
+  // service-role client. Errors propagate to the caller.
   return getVendors({
     ...normalizedFilters,
     supabaseProp: createAdminClient(),
@@ -44,10 +43,8 @@ async function fetchVendorFeed(filters: VendorFeedFilters) {
   });
 }
 
-/** Cached vendor feed (60s). */
-export const getCachedVendors = unstable_cache(fetchVendorFeed, ['vendors-feed'], {
-  revalidate: FEED_REVALIDATE,
-});
+/** Fetch the vendor feed live so deleted or changed vendors are not served stale. */
+export const getVendorsFresh = fetchVendorFeed;
 
 /**
  * Vendor search results (fresh, uncached).
@@ -70,7 +67,7 @@ async function fetchVendorCategories() {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from('vendor_categories')
-    .select('id, name, icon')
+    .select('id, name, emoji')
     .order('name');
 
   if (error) throw error;

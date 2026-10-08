@@ -7,7 +7,7 @@ import VendorCard from '@/components/vendors/vendor-card';
 import VendorFilters from '@/components/vendors/vendor-filter';
 import { Store, Plus, Edit } from 'lucide-react';
 import {
-  getCachedVendors,
+  getVendorsFresh,
   getVendorSearch,
   getCachedVendorCategories,
 } from '@/utils/cache';
@@ -50,8 +50,8 @@ export async function VendorDirectory({
   const categories = await getCachedVendorCategories();
   const fetchedVendors = search
     ? await getVendorSearch({ category, search })
-    : await getCachedVendors({ category, search });
-  // Shuffle after cache so each request gets a fresh within-tier order
+    : await getVendorsFresh({ category, search });
+  // Shuffle after fetching so each request gets a fresh within-tier order
   const vendors = shuffleByOrderedKeys(
     fetchedVendors ?? [],
     (vendor) => vendor.subscription_tier || 'basic',

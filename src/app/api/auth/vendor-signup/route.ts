@@ -4,6 +4,38 @@ import { createAdminClient } from '@/utils/supabase/admin';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { passwordStrengthSchema } from '@/lib/validations/password';
+import { getVendorServiceOptions } from '@/components/vendors/category-types';
+import { z } from 'zod';
+
+const phoneNumberSchema = z
+  .string()
+  .regex(/^(\+234|0)[789]\d{9}$/, 'Invalid Nigerian phone number');
+
+const vendorSignupSchema = z
+  .object({
+    business_name: z.string().trim().min(3).max(200),
+    category_id: z.string().min(1),
+    description: z.string().trim().min(20).max(2000),
+    services: z.array(z.string()).min(1).max(5),
+    phone_number: phoneNumberSchema,
+    whatsapp_number: z
+      .string()
+      .default('')
+      .refine(
+        (value) => value === '' || /^(\+234|0)[789]\d{9}$/.test(value),
+        'Invalid Nigerian phone number',
+      ),
+    location: z.string().trim().max(500).default(''),
+    operating_hours: z.string().trim().max(200).default(''),
+    full_name: z.string().trim().min(3).max(100),
+    email: z.string().email(),
+    password: passwordStrengthSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
 export async function POST(request: Request) {
   try {
@@ -12,66 +44,48 @@ export async function POST(request: Request) {
     // because a freshly signed-up user has no session yet, so RLS rejects it.
     const admin = createAdminClient();
 
-    const body = await request.json();
+    const parsedBody = vendorSignupSchema.safeParse(await request.json());
+    if (!parsedBody.success) {
+      return NextResponse.json(
+        { error: parsedBody.error.issues[0]?.message || 'Invalid vendor registration details.' },
+        { status: 400 },
+      );
+    }
+
     const {
       business_name,
       category_id,
-      business_phone,
-      business_address,
+      description,
+      services,
+      phone_number,
+      whatsapp_number,
+      location,
+      operating_hours,
       full_name,
       email,
       password,
-    } = body;
+    } = parsedBody.data;
 
-    // Validation
-    if (!business_name || business_name.length < 3) {
-      return NextResponse.json(
-        { error: 'Business name must be at least 3 characters' },
-        { status: 400 }
-      );
+    const { data: category, error: categoryError } = await admin
+      .from('vendor_categories')
+      .select('id, services')
+      .eq('id', category_id)
+      .maybeSingle();
+
+    if (categoryError) throw categoryError;
+    if (!category) {
+      return NextResponse.json({ error: 'Select a valid category.' }, { status: 400 });
     }
 
-    if (!category_id) {
+    const categoryServices = getVendorServiceOptions(category.services).map(({ value }) => value);
+    if (
+      services.some((service: unknown) =>
+        typeof service !== 'string' || !categoryServices.includes(service)
+      )
+    ) {
       return NextResponse.json(
-        { error: 'Please select a category' },
-        { status: 400 }
-      );
-    }
-
-    const phoneRegex = /^(\+234|0)[789]\d{9}$/;
-    if (!phoneRegex.test(business_phone)) {
-      return NextResponse.json(
-        { error: 'Invalid Nigerian phone number' },
-        { status: 400 }
-      );
-    }
-
-    if (!business_address || business_address.length < 10) {
-      return NextResponse.json(
-        { error: 'Please provide a complete business address' },
-        { status: 400 }
-      );
-    }
-
-    if (!full_name || full_name.length < 3) {
-      return NextResponse.json(
-        { error: 'Full name must be at least 3 characters' },
-        { status: 400 }
-      );
-    }
-
-    if (!email || !email.includes('@')) {
-      return NextResponse.json(
-        { error: 'Invalid email address' },
-        { status: 400 }
-      );
-    }
-
-    const passwordResult = passwordStrengthSchema.safeParse(password);
-    if (!passwordResult.success) {
-      return NextResponse.json(
-        { error: passwordResult.error.issues[0]?.message || 'Enter a valid password.' },
-        { status: 400 }
+        { error: 'Choose services from the selected category.' },
+        { status: 400 },
       );
     }
 
@@ -133,8 +147,8 @@ export async function POST(request: Request) {
         full_name,
         account_type: 'vendor',
         business_name,
-        business_phone,
-        business_address,
+        business_phone: phone_number,
+        business_address: location || null,
       },
       { onConflict: 'id' }
     );
@@ -157,18 +171,28 @@ export async function POST(request: Request) {
       owner_id: authData.user.id,
       business_name,
       category_id,
-      phone_number: business_phone,
-      location: business_address,
-      description: '',
-      services: [],
+      phone_number,
+      whatsapp_number: whatsapp_number || null,
+      location: location || null,
+      operating_hours: operating_hours || null,
+      description,
+      services,
       is_approved: true, // Pending admin approval
       subscription_tier: 'basic',
-      vendor_type: 'vendor',
     });
 
     if (vendorError) {
       console.error('Vendor creation error:', vendorError);
-      // Don't fail - user is created, they can create vendor profile later
+      const { error: rollbackError } = await admin.auth.admin.deleteUser(authData.user.id);
+      if (rollbackError) {
+        console.error('Failed to roll back vendor signup:', rollbackError);
+      }
+      return NextResponse.json(
+        {
+          error: 'Could not save your vendor listing. Please try again.',
+        },
+        { status: 500 },
+      );
     }
 
     // Log activity

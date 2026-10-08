@@ -4,8 +4,6 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { Reveal } from "./reveal";
 
-const TRUST_ITEMS = ["Free to start", "No credit card needed"];
-
 export function CTASection() {
   return (
     <section className="relative overflow-hidden bg-primary-950 py-20 lg:py-28">
@@ -38,11 +36,12 @@ export function CTASection() {
             >
               Talk to us
             </a>
-          </div>
-          <div className="flex flex-wrap justify-center gap-6 text-sm font-semibold text-primary-200">
-            {TRUST_ITEMS.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
+            <a
+              href="tel:+2349110224171"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/25 px-8 py-3.5 text-base font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-white/10"
+            >
+              Call +234 911 022 4171
+            </a>
           </div>
         </Reveal>
       </div>

@@ -94,7 +94,7 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
         {/* Category */}
         {vendor.vendor_categories && (
           <p className="mb-2 text-sm text-muted-foreground">
-            {vendor.vendor_categories.icon} {vendor.vendor_categories.name}
+            {vendor.vendor_categories.emoji} {vendor.vendor_categories.name}
           </p>
         )}
 
@@ -105,14 +105,14 @@ export default function VendorCard({ vendor,showPriority = false }: VendorCardPr
 
         {/* Services */}
         <div className="mb-3 flex flex-wrap gap-1">
-          {vendor.services.slice(0, 3).map((service :any, index:any) => (
+          {(vendor.services ?? []).slice(0, 3).map((service :any, index:any) => (
             <span key={index} className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-muted text-muted-foreground border border-border">
               {service}
             </span>
           ))}
-          {vendor.services.length > 3 && (
+          {(vendor.services ?? []).length > 3 && (
             <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-muted text-muted-foreground border border-border">
-              +{vendor.services.length - 3} more
+              +{(vendor.services ?? []).length - 3} more
             </span>
           )}
         </div>

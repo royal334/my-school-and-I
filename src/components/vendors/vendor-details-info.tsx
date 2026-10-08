@@ -17,7 +17,7 @@ export default function VendorDetailsInfo({ vendor }: VendorDetailsInfoProps) {
       <div>
         <h6 className="mb-3">Services Offered</h6>
         <div className="flex flex-wrap gap-2">
-          {vendor.services.map((service: string, index: number) => (
+          {(vendor.services ?? []).map((service: string, index: number) => (
             <Badge key={index} variant="secondary" className="bg-muted text-foreground">
               {service}
             </Badge>

@@ -30,6 +30,11 @@ import { Loader2, Store } from 'lucide-react';
 import Link from 'next/link';
 import { PasswordRequirements } from '@/components/auth/password-requirements';
 import { passwordStrengthSchema } from '@/lib/validations/password';
+import { Checkbox } from '@/components/ui/checkbox';
+import type { VendorCategory } from './category-types';
+import { getVendorServiceOptions } from './category-types';
+
+const MAX_SERVICES = 5;
 
 const externalVendorSchema = z
   .object({
@@ -39,13 +44,22 @@ const externalVendorSchema = z
       .min(3, 'Business name must be at least 3 characters')
       .max(200),
     category_id: z.string().min(1, 'Please select a category'),
-    business_phone: z
+    description: z
+      .string()
+      .min(20, 'Description must be at least 20 characters')
+      .max(2000),
+    services: z.array(z.string()).min(1, 'Select at least one service'),
+    phone_number: z
       .string()
       .regex(/^(\+234|0)[789]\d{9}$/, 'Invalid Nigerian phone number'),
-    business_address: z
+    whatsapp_number: z
       .string()
-      .min(10, 'Please provide a complete address')
-      .max(500),
+      .refine(
+        (value) => value === '' || /^(\+234|0)[789]\d{9}$/.test(value),
+        'Invalid Nigerian phone number',
+      ),
+    location: z.string().max(500),
+    operating_hours: z.string().max(200, 'Operating hours must be under 200 characters'),
 
     // Owner Information
     full_name: z
@@ -67,7 +81,7 @@ type ExternalVendorFormProps = {
   subtitle?: string;
   showSignInLink?: boolean;
   signInHref?: string;
-  categories?: Array<{ id: string; name: string }>;
+  categories?: VendorCategory[];
 };
 
 export default function ExternalVendorForm({
@@ -85,8 +99,12 @@ export default function ExternalVendorForm({
     defaultValues: {
       business_name: '',
       category_id: '',
-      business_phone: '',
-      business_address: '',
+      description: '',
+      services: [],
+      phone_number: '',
+      whatsapp_number: '',
+      location: '',
+      operating_hours: '',
       full_name: '',
       email: '',
       password: '',
@@ -97,6 +115,16 @@ export default function ExternalVendorForm({
     control: form.control,
     name: 'password',
   });
+  const selectedCategoryId = useWatch({
+    control: form.control,
+    name: 'category_id',
+  });
+  const selectedServices = useWatch({
+    control: form.control,
+    name: 'services',
+  }) || [];
+  const selectedCategory = categories.find((category) => category.id === selectedCategoryId);
+  const availableServices = getVendorServiceOptions(selectedCategory?.services);
   const filteredCategories = categoryQuery === ''
     ? categories
     : categories.filter((category) =>
@@ -176,6 +204,9 @@ export default function ExternalVendorForm({
                       value={field.value}
                       onValueChange={(val) => {
                         field.onChange(val);
+                        if (val !== selectedCategoryId) {
+                          form.setValue('services', [], { shouldValidate: true });
+                        }
                         const selected = categories.find((c) => c.id === val);
                         if (selected) setCategoryQuery(selected.name);
                       }}
@@ -184,12 +215,19 @@ export default function ExternalVendorForm({
                         <ComboboxInput
                           placeholder="Select or search category"
                           value={categoryQuery}
-                          onChange={(e) => setCategoryQuery(e.target.value)}
+                          onChange={(e) => {
+                            setCategoryQuery(e.target.value);
+                            if (field.value) {
+                              field.onChange('');
+                              form.setValue('services', [], { shouldValidate: true });
+                            }
+                          }}
                           showTrigger
                           showClear={!!categoryQuery}
                           onClear={() => {
                             setCategoryQuery('');
                             field.onChange('');
+                            form.setValue('services', [], { shouldValidate: true });
                           }}
                         />
                       </FormControl>
@@ -211,7 +249,83 @@ export default function ExternalVendorForm({
 
               <FormField
                 control={form.control}
-                name="business_phone"
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Description <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Describe your business and services..."
+                        rows={4}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="services"
+                render={() => (
+                  <FormItem>
+                    <div className="flex items-center justify-between">
+                      <FormLabel>Services Offered <span className="text-destructive">*</span></FormLabel>
+                      {selectedCategoryId && (
+                        <span className="text-xs text-muted-foreground">
+                          {selectedServices.length} / {MAX_SERVICES}
+                        </span>
+                      )}
+                    </div>
+                    {!selectedCategoryId ? (
+                      <p className="text-sm text-muted-foreground">
+                        Select a category to see its available services.
+                      </p>
+                    ) : availableServices.length === 0 ? (
+                      <p className="text-sm text-muted-foreground">
+                        No services are configured for this category yet.
+                      </p>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-2">
+                        {availableServices.map((service) => {
+                          const selected = selectedServices.includes(service.value);
+                          const disabled = !selected && selectedServices.length >= MAX_SERVICES;
+                          return (
+                            <label
+                              key={service.key}
+                              className={`flex items-center gap-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+                            >
+                              <Checkbox
+                                id={`external-service-${service.key}`}
+                                checked={selected}
+                                disabled={disabled}
+                                onCheckedChange={(checked) => {
+                                  const next = checked
+                                    ? [...selectedServices, service.value]
+                                    : selectedServices.filter((item) => item !== service.value);
+                                  form.setValue('services', next, {
+                                    shouldDirty: true,
+                                    shouldValidate: true,
+                                  });
+                                }}
+                              />
+                              <span className="text-sm">{service.label}</span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="phone_number"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
@@ -231,16 +345,51 @@ export default function ExternalVendorForm({
 
               <FormField
                 control={form.control}
-                name="business_address"
+                name="whatsapp_number"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>WhatsApp Number</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="tel"
+                        placeholder="e.g., 08012345678"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="location"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Business Address <span className="text-destructive">*</span>
+                      Location <span className="text-destructive">*</span>
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Full business address"
                         rows={2}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="operating_hours"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Operating Hours</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="e.g., Mon-Fri 8AM-6PM"
                         {...field}
                       />
                     </FormControl>

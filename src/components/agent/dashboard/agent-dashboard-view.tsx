@@ -10,6 +10,7 @@ import { DashboardStatsGrid } from './dashboard-stats-grid';
 import { CommissionSummaryCard } from './commission-summary-card';
 import { QuickActions } from './quick-actions';
 import { DashboardDisclaimer } from './dashboard-disclaimer';
+import { AgentPromptModals } from './agent-prompt-modals';
 import type { DashboardAgent, DashboardCommissionSummary } from './types';
 
 export function AgentDashboardView() {
@@ -94,6 +95,8 @@ export function AgentDashboardView() {
 
         <DashboardDisclaimer />
       </div>
+
+      <AgentPromptModals />
     </div>
   );
 }

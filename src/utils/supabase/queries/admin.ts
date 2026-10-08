@@ -88,7 +88,7 @@ export async function getPendingVendors() {
       vendor_categories (
         name
       ),
-      profiles!vendors_user_id_fkey (
+      profiles (
         full_name,
         matric_number,
         email
@@ -102,15 +102,13 @@ export async function getPendingVendors() {
   return data;
 }
 
-export async function approveVendor(vendorId: string, adminId: string) {
+export async function approveVendor(vendorId: string) {
   const supabase = createClient();
 
   const { data, error } = await supabase
     .from("vendors")
     .update({
       is_approved: true,
-      approved_by: adminId,
-      approved_at: new Date().toISOString(),
     })
     .eq("id", vendorId)
     .select()

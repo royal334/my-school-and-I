@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { getVendorServiceOptions } from '@/components/vendors/category-types';
 
 export async function POST(request: Request) {
   try {
@@ -52,6 +53,32 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: 'At least one service must be selected' },
         { status: 400 }
+      );
+    }
+
+    if (!category_id || !Array.isArray(services) || services.some((service) => typeof service !== 'string')) {
+      return NextResponse.json(
+        { error: 'Select a category and valid services.' },
+        { status: 400 },
+      );
+    }
+
+    const { data: category, error: categoryError } = await supabase
+      .from('vendor_categories')
+      .select('id, services')
+      .eq('id', category_id)
+      .maybeSingle();
+
+    if (categoryError) throw categoryError;
+    if (!category) {
+      return NextResponse.json({ error: 'Select a valid category.' }, { status: 400 });
+    }
+
+    const categoryServices = getVendorServiceOptions(category.services).map(({ value }) => value);
+    if (services.some((service: string) => !categoryServices.includes(service))) {
+      return NextResponse.json(
+        { error: 'Choose services from the selected category.' },
+        { status: 400 },
       );
     }
 

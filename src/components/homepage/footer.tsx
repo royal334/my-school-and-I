@@ -4,27 +4,27 @@ import { Instagram, MessageCircle, Twitter } from "lucide-react";
 import { CampusMeLogo } from "@/components/brand/logo";
 import Link from "next/link";
 
-const PRODUCT_LINKS = [
-  "Features",
-  "Pricing",
-  "Materials library",
-  "CGPA calculator",
-  "Vendors",
-];
+// const PRODUCT_LINKS = [
+//   "Features",
+//   "Pricing",
+//   "Materials library",
+//   "CGPA calculator",
+//   "Vendors",
+// ];
 
 const SUPPORT_LINKS = [
   { label: "Help center", href: "#" },
   { label: "Contact us", href: "#" },
-  { label: "FAQs", href: "#" },
+  { label: "FAQs", href: "#faq" },
   { label: "Terms of service", href: "/terms" },
   { label: "Privacy policy", href: "/privacy" },
 ];
 
-const SOCIAL_ICONS = [
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: MessageCircle, href: "#", label: "WhatsApp" },
-];
+// const SOCIAL_ICONS = [
+//   { icon: Twitter, href: "#", label: "Twitter" },
+//   { icon: Instagram, href: "#", label: "Instagram" },
+//   { icon: MessageCircle, href: "#", label: "WhatsApp" },
+// ];
 
 export function Footer() {
   return (
@@ -36,7 +36,7 @@ export function Footer() {
             <p className="mb-6 max-w-xs text-sm leading-6 text-primary-200/75">
               The digital hub for ambitious Nigerian university students.
             </p>
-            <div className="flex gap-3">
+            {/* <div className="flex gap-3">
               {SOCIAL_ICONS.map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
@@ -47,10 +47,10 @@ export function Footer() {
                   <Icon size={17} />
                 </a>
               ))}
-            </div>
+            </div> */}
           </div>
 
-          <div>
+          {/* <div>
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-white">
               Product
             </p>
@@ -66,7 +66,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           <div>
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-white">
@@ -92,12 +92,17 @@ export function Footer() {
             </p>
             <div className="space-y-2 text-sm text-primary-200/75">
               <p>Nnamdi Azikiwe University</p>
-              <p>Faculty of Engineering</p>
               <a
                 href="mailto:support@campusandme.com"
                 className="block transition-colors hover:text-accent-300"
               >
                 support@campusandme.com
+              </a>
+              <a
+                href="tel:+2349110224171"
+                className="block transition-colors hover:text-accent-300"
+              >
+                +234 911 022 4171
               </a>
             </div>
           </div>

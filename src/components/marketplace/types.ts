@@ -17,7 +17,6 @@ export interface SellerProfile {
 export interface VendorSummary {
   id: string;
   business_name: string;
-  rating: number | null;
 }
 
 /** Shape used by feed cards and grids. */

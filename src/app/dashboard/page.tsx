@@ -74,17 +74,30 @@ export default async function DashboardPage() {
 
     const isVendor = profile?.account_type === 'vendor';
 
-    const { data: vendor } = await supabase
+    const { data: vendorRecord, error: vendorError } = await adminClient
     .from('vendors')
-    .select(`
-      *,
-      vendor_categories (
-        name,
-        icon
-      )
-    `)
+    .select('*')
     .eq('owner_id', user.id)
-    .single();
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+    if (vendorError) {
+      throw new Error('Failed to load vendor listing for the dashboard', {
+        cause: vendorError,
+      });
+    }
+
+    const { data: vendorCategory } = vendorRecord?.category_id
+      ? await adminClient
+          .from('vendor_categories')
+          .select('name, emoji')
+          .eq('id', vendorRecord.category_id)
+          .maybeSingle()
+      : { data: null };
+    const vendor = vendorRecord
+      ? { ...vendorRecord, vendor_categories: vendorCategory }
+      : null;
 
     const hasVendor = !!vendor && vendor.is_approved;
 

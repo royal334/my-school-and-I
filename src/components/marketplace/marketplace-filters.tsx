@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
 import { useMarketplaceFilters } from '@/hooks/use-marketplace-filters';
 import {
@@ -29,6 +29,45 @@ const activePillStyle = {
 const fieldClass =
   'w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary-500';
 
+function PriceField({
+  filterKey,
+  placeholder,
+  ariaLabel,
+}: {
+  filterKey: 'minPrice' | 'maxPrice';
+  placeholder: string;
+  ariaLabel: string;
+}) {
+  const { filters, setFilter } = useMarketplaceFilters();
+  const committed = filters[filterKey];
+  const [draft, setDraft] = useState(committed);
+  const [synced, setSynced] = useState(committed);
+
+  // Re-sync when the URL changes (back/forward, clear filters, reset).
+  if (committed !== synced) {
+    setSynced(committed);
+    setDraft(committed);
+  }
+
+  useEffect(() => {
+    if (draft === committed) return;
+    const timer = setTimeout(() => setFilter(filterKey, draft), 400);
+    return () => clearTimeout(timer);
+  }, [draft, committed, filterKey, setFilter]);
+
+  return (
+    <input
+      type="number"
+      inputMode="numeric"
+      placeholder={placeholder}
+      aria-label={ariaLabel}
+      value={draft}
+      onChange={(e) => setDraft(e.target.value)}
+      className={fieldClass}
+    />
+  );
+}
+
 function MarketplaceFiltersPanel() {
   const {
     filters,
@@ -43,7 +82,7 @@ function MarketplaceFiltersPanel() {
   return (
     <div className="flex flex-col gap-2 rounded-xl border border-border bg-card p-2.5 sm:items-center">
       {/* Filter toggle + sort */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 overflow-x-auto">
         <button
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
@@ -53,17 +92,17 @@ function MarketplaceFiltersPanel() {
           style={hasFilters ? activePillStyle : undefined}
         >
           <SlidersHorizontal className="size-4" />
-          Filters {hasFilters ? '·' : ''}
+          Filters 
+          {/* {hasFilters ? '·' : ''} */}
         </button>
 
         {hasFilters && (
-          <button
-            type="button"
+          <Button
             onClick={clearFilters}
-            className="rounded-md px-2.5 py-2 text-sm font-medium text-error hover:bg-error/10"
+            className="bg-accent text-accent-950 hover:bg-accent-600 hover:text-accent-50"
           >
             Clear filters
-          </button>
+          </Button>
         )}
 
         <select
@@ -126,24 +165,8 @@ function MarketplaceFiltersPanel() {
               Price (₦)
             </p>
             <div className="grid grid-cols-2 gap-2">
-              <input
-                type="number"
-                inputMode="numeric"
-                placeholder="Min"
-                aria-label="Minimum price"
-                value={filters.minPrice}
-                onChange={(e) => setFilter('minPrice', e.target.value)}
-                className={fieldClass}
-              />
-              <input
-                type="number"
-                inputMode="numeric"
-                placeholder="Max"
-                aria-label="Maximum price"
-                value={filters.maxPrice}
-                onChange={(e) => setFilter('maxPrice', e.target.value)}
-                className={fieldClass}
-              />
+              <PriceField filterKey="minPrice" placeholder="Min" ariaLabel="Minimum price" />
+              <PriceField filterKey="maxPrice" placeholder="Max" ariaLabel="Maximum price" />
             </div>
           </div>
 

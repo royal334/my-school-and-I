@@ -7,7 +7,7 @@ import { useInView, useCountUp } from "../../hooks/hooks";
 const STATS = [
   { label: "Active students", value: 500, suffix: "+" },
   { label: "Materials available", value: 2000, suffix: "+" },
-  { label: "Verified vendors", value: 50, suffix: "+" },
+  { label: "Vendors", value: 50, suffix: "+" },
   { label: "Student rating", value: 4.8, suffix: "/5" },
 ];
 

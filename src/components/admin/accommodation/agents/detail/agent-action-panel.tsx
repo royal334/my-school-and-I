@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { ShieldAlert, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { TONE_CLASSES } from '@/components/agent/status-meta';
 import { Card } from '@/components/admin/accommodation/card';
@@ -32,6 +33,7 @@ export function AgentActionPanel({
 
   const actions = AGENT_ACTIONS[agent.status] ?? [];
   const PendingIcon = pending?.icon;
+  const hasIdDocument = Boolean(agent.id_doc_path);
 
   async function confirmAction(key: AgentActionKey) {
     setSaving(true);
@@ -71,6 +73,27 @@ export function AgentActionPanel({
   return (
     <Card>
       <SectionTitle>Actions</SectionTitle>
+
+      <div
+        role="status"
+        className={cn(
+          'mb-3 flex items-center gap-2 rounded-lg border px-3 py-2 text-[13px] font-medium',
+          hasIdDocument
+            ? 'border-success/25 bg-success-bg text-success-text'
+            : 'border-warning/25 bg-warning-bg text-warning-text',
+        )}
+      >
+        {hasIdDocument ? (
+          <ShieldCheck className="size-4 shrink-0" aria-hidden />
+        ) : (
+          <ShieldAlert className="size-4 shrink-0" aria-hidden />
+        )}
+        <span>
+          {hasIdDocument
+            ? 'Identity document submitted'
+            : 'Identity document not submitted yet'}
+        </span>
+      </div>
 
       {!pending && actions.length === 0 && (
         <p className="mt-1 text-[13px] text-muted-foreground">

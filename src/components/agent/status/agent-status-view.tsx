@@ -1,6 +1,7 @@
 import { AgentStatusHeader } from './agent-status-header';
 import { ApplicationDetailsCard } from './application-details-card';
 import { ApplicationStatusCard } from './application-status-card';
+import { IdentityVerificationCard } from './identity-verification-card';
 import { AgentPerformanceStats } from './agent-performance-stats';
 import { ApplyPrompt } from './apply-prompt';
 import { SupportNote } from './support-note';
@@ -24,6 +25,8 @@ export function AgentStatusView({ agent }: { agent: AgentProfile | null }) {
       <AgentStatusHeader subtitle={agent.display_name} />
 
       <div className="flex flex-col gap-3 p-4">
+        {!agent.id_doc_path && <IdentityVerificationCard />}
+
         <ApplicationStatusCard
           tone={meta.tone}
           icon={meta.icon}

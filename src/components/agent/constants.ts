@@ -1,4 +1,4 @@
-export const AGENT_STEPS = ['About you', 'Areas & Bio', 'Verification'] as const;
+export const AGENT_STEPS = ['About you', 'Areas & Bio'] as const;
 
 export const OPERATING_AREAS = [
   'Ifite-Awka',

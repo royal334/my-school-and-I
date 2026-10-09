@@ -2,12 +2,8 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { createAdminClient } from '@/utils/supabase/admin';
-import { ID_TYPES, OPERATING_AREAS } from '@/components/agent/constants';
+import { OPERATING_AREAS } from '@/components/agent/constants';
 import { passwordStrengthSchema } from '@/lib/validations/password';
-import {
-  removeAgentIdDocument,
-  uploadAgentIdDocument,
-} from '@/utils/agent-documents';
 
 const PHONE_PATTERN = /^(\+234|0)[789]\d{9}$/;
 
@@ -18,7 +14,6 @@ function getText(formData: FormData, key: string): string {
 
 export async function POST(request: Request) {
   let userId: string | null = null;
-  let documentPath: string | null = null;
 
   try {
     const formData = await request.formData();
@@ -29,13 +24,9 @@ export async function POST(request: Request) {
     const passwordValue = formData.get('password');
     const password = typeof passwordValue === 'string' ? passwordValue : '';
     const bio = getText(formData, 'bio');
-    const idType = getText(formData, 'id_type');
     const areas = formData
       .getAll('operating_areas')
       .filter((value): value is string => typeof value === 'string');
-    const fileValue = formData.get('id_document');
-    const idDocument =
-      fileValue instanceof File && fileValue.size > 0 ? fileValue : null;
 
     if (fullName.length < 3 || displayName.length < 2) {
       return NextResponse.json({ error: 'Enter your full name and agent name.' }, { status: 400 });
@@ -59,13 +50,6 @@ export async function POST(request: Request) {
     ) {
       return NextResponse.json({ error: 'Select at least one valid operating area.' }, { status: 400 });
     }
-    if (idType && !ID_TYPES.some((allowedType) => allowedType === idType)) {
-      return NextResponse.json({ error: 'Select a valid ID type.' }, { status: 400 });
-    }
-    if (idDocument && !idType) {
-      return NextResponse.json({ error: 'Select an ID type for the uploaded document.' }, { status: 400 });
-    }
-
     const supabase = createClient(await cookies());
     const admin = createAdminClient();
 
@@ -118,10 +102,6 @@ export async function POST(request: Request) {
     );
     if (profileError) throw profileError;
 
-    if (idDocument) {
-      documentPath = await uploadAgentIdDocument(userId, idDocument);
-    }
-
     const { data: agent, error: agentError } = await admin
       .from('agents')
       .insert({
@@ -130,8 +110,6 @@ export async function POST(request: Request) {
         phone_number: phoneNumber,
         operating_area: areas.join(', '),
         bio: bio || null,
-        id_type: idType || null,
-        id_doc_path: documentPath,
         status: 'pending_review',
         submitted_at: new Date().toISOString(),
       })
@@ -182,11 +160,6 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Agent signup error:', error);
 
-    if (documentPath) {
-      await removeAgentIdDocument(documentPath).catch((cleanupError) => {
-        console.error('Failed to remove agent ID document after signup failure:', cleanupError);
-      });
-    }
     if (userId) {
       const admin = createAdminClient();
       const { error: agentCleanupError } = await admin

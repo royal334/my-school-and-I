@@ -9,9 +9,9 @@ import type {
 } from '@/components/agent/types';
 
 const PROFILE_COLUMNS =
-  'id, display_name, phone_number, operating_area, status, submitted_at, reviewed_at, agent_feedback, total_properties_submitted, total_properties_approved, total_transactions';
+  'id, display_name, phone_number, operating_area, id_type, id_doc_path, status, submitted_at, reviewed_at, agent_feedback, total_properties_submitted, total_properties_approved, total_transactions';
 
-const ADMIN_COLUMNS = `${PROFILE_COLUMNS}, user_id, bio, id_type, review_note, created_at`;
+const ADMIN_COLUMNS = `${PROFILE_COLUMNS}, user_id, bio, review_note, created_at`;
 
 /** The signed-in user's own agent application, or null if they never applied. */
 export async function getAgentProfile(

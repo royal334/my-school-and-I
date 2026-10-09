@@ -64,7 +64,7 @@ export function MobileHeaderMenu({ hasVendor, isVendorAccount }: MobileHeaderMen
   return (
     <>
       <div className="ml-auto flex items-center gap-2">
-        <NotificationBell />
+        <NotificationBell href ='/dashboard/notifications'/>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell } from "lucide-react";
 
-export function NotificationBell() {
+export function NotificationBell({ href }: { href: string }) {
   const [unreadCount, setUnreadCount] = useState(0);
   const pathname = usePathname();
 
@@ -34,7 +34,7 @@ export function NotificationBell() {
 
   return (
     <Link
-      href="/dashboard/notifications"
+      href={href}
       title="Alerts"
       aria-label={hasUnread ? `Alerts, ${unreadCount} unread` : "Alerts"}
       data-tour="notification-bell"

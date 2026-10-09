@@ -13,6 +13,7 @@ import { MediaSection } from "./media-section";
 import { EditForm } from "./edit-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { requestPageLoader } from "@/components/providers/page-loader";
 
 function triLabel(v: boolean | null) {
   if (v === true) return "Yes";
@@ -42,6 +43,7 @@ export function PropertyDetailContainer() {
       try {
         const res = await fetch(`/api/agent/properties/${id}`);
         if (res.status === 404) {
+          requestPageLoader();
           router.replace("/agent/properties");
           return;
         }

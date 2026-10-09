@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, BadgeCheck } from 'lucide-react';
 import axios from 'axios'
 import { useState } from 'react';
+import { NotificationBell } from '@/components/notifications/notification-bell';
+import { requestPageLoader } from '@/components/providers/page-loader';
 
 export function DashboardHeader({ displayName }: { displayName: string }) {
 
@@ -14,8 +16,10 @@ export function DashboardHeader({ displayName }: { displayName: string }) {
       setLoggingOut(true);
       try {
         const response = await axios.post("/api/auth/logout");
+        requestPageLoader();
         router.push(response.status === 200 ? "/" : "/login");
       } catch {
+        requestPageLoader();
         router.push("/login");
       } finally {
         setLoggingOut(false);
@@ -28,14 +32,14 @@ export function DashboardHeader({ displayName }: { displayName: string }) {
       <div className="flex justify-between items-center">
         <div>
           <div className="mb-2 flex items-center gap-3">
-            <button
+            {/* <button
               type="button"
               onClick={() => router.back()}
               aria-label="Go back"
               className="-ml-1.5 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-transparent text-primary-200 transition-colors hover:bg-white/10 hover:text-white"
             >
               <ArrowLeft className="size-4.5" aria-hidden />
-            </button>
+            </button> */}
             <div className="min-w-0">
               <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-primary-200 dark:text-primary-300">
                 Agent dashboard
@@ -48,14 +52,17 @@ export function DashboardHeader({ displayName }: { displayName: string }) {
             Approved agent
           </span>
           </div>
-        <button
-        type="button"
-        onClick={handleLogout}
-        disabled={loggingOut}
-        className="mt-4 rounded-lg bg-error px-3.5 py-2 text-sm text-white font-medium text-error-foreground transition-colors hover:bg-error/90 disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {loggingOut ? 'Logging Out' : 'Log out'}
-      </button>
+        <div className="ml-auto flex items-center gap-2">
+          <NotificationBell href="/agent/notifications" />         
+          <button
+          type="button"
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className="h-fit rounded-lg bg-error px-3.5 py-2 text-sm text-white font-medium text-error-foreground transition-colors hover:bg-error/90 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+          {loggingOut ? 'Logging Out' : 'Log out'}
+                </button>
+        </div>
       </div>
     </header>
   );

@@ -11,6 +11,7 @@ import { FacilitiesStep, FacilitiesFormData } from "./facilities-step";
 import { PhotosStep } from "./photos-step";
 import { FormError, primaryButtonClass } from "@/components/agent/apply/form-primitives";
 import { cn } from "@/lib/utils";
+import { requestPageLoader } from "@/components/providers/page-loader";
 
 const EMPTY_PROPERTY: PropertyFormData = {
   property_name: "",
@@ -122,6 +123,7 @@ export function SubmitForm() {
     if (!submissionId) return;
 
     if (files.length === 0) {
+      requestPageLoader();
       router.push(`/agent/properties/${submissionId}`);
       return;
     }
@@ -157,6 +159,7 @@ export function SubmitForm() {
     }
 
     setUploading(false);
+    requestPageLoader();
     router.push(`/agent/properties/${submissionId}`);
   }
 

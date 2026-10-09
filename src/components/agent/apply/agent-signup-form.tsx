@@ -13,6 +13,7 @@ import { CampusMeLogo } from '@/components/brand/logo';
 import { ID_TYPES, OPERATING_AREAS } from '@/components/agent/constants';
 import { PasswordRequirements } from '@/components/auth/password-requirements';
 import { passwordStrengthSchema } from '@/lib/validations/password';
+import { requestPageLoader } from '@/components/providers/page-loader';
 
 export function AgentSignupForm() {
   const router = useRouter();
@@ -67,6 +68,7 @@ export function AgentSignupForm() {
       toast.success('Agent account created. Your application is under review.', {
         position: 'top-center',
       });
+      requestPageLoader();
       router.push('/agent/status');
       router.refresh();
     } catch (caught) {

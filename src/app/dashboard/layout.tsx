@@ -15,6 +15,7 @@ import DashboardToggle from "@/components/dashboard/dashboard-toggle";
 import { MobileHeaderMenu } from "@/components/dashboard/mobile-header-menu";
 import { OnboardingTour } from "@/components/tour/onboarding-tour";
 import { TourHelpButton } from "@/components/tour/tour-help-button";
+import { checkSubscriptionActive } from "@/utils/lib/vendor-features";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const supabase = createClient(await cookies());
@@ -38,7 +39,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
   const { data: vendor, error: vendorError } = await createAdminClient()
     .from("vendors")
-    .select("id, subscription_tier, is_approved")
+    .select("id, subscription_tier, subscription_expires_at, is_approved")
     .eq("owner_id", user.id)
     .order("created_at", { ascending: false })
     .limit(1)
@@ -49,6 +50,14 @@ export default async function Layout({ children }: { children: React.ReactNode }
       cause: vendorError,
     });
   }
+
+  const isFeaturedVendor =
+    !!vendor &&
+    vendor.subscription_tier === "featured" &&
+    checkSubscriptionActive({
+      subscription_tier: vendor.subscription_tier,
+      subscription_expires_at: vendor.subscription_expires_at,
+    });
 
   const cookieStore = await cookies();
   const isStudentToggle = cookieStore.get("isStudent")?.value !== "false";
@@ -107,7 +116,11 @@ export default async function Layout({ children }: { children: React.ReactNode }
           {children}
         </main>
 
-        {showVendorSidebar ? <VendorMobileBottomNav /> : <MobileBottomNav />}
+        {showVendorSidebar ? (
+          <VendorMobileBottomNav isFeatured={isFeaturedVendor} />
+        ) : (
+          <MobileBottomNav />
+        )}
       </div>
 
       <OnboardingTour

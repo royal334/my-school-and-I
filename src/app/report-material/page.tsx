@@ -66,6 +66,8 @@ function ReportMaterialContent() {
     data.reason = reason;
     data.material_id = materialId;
     data.access_key = process.env.NEXT_PUBLIC_WEB3FORMS_ID || "";
+    data.subject = `Report: ${materialTitle}`;
+    data.from_name = 'Campus&Me Report';
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10_000);

@@ -32,6 +32,8 @@ export default function SuggestionPage() {
 
     // Add Web3Forms access key
     data.access_key = process.env.NEXT_PUBLIC_WEB3FORMS_ID || "";
+    data.subject = `Suggestion request`;
+    data.from_name = 'Campus&Me Suggestion box';
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {

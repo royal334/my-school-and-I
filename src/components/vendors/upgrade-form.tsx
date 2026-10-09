@@ -44,7 +44,7 @@ const PRICING = {
     popular: true,
     features: [
       'Everything in Premium',
-      //'Verified badge ✓',
+      'Eligible for a Verified badge ✓',
       '10 photo gallery images',
       'Unlimited services',
       'Unlimited marketplace listings',

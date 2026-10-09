@@ -4,6 +4,7 @@ import type { AgentProfile } from '../types';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import axios from 'axios';
+import { requestPageLoader } from '@/components/providers/page-loader';
 
 
 function InfoRow({ label, value }: { label: string; value: string }) {
@@ -25,8 +26,10 @@ export function ApplicationDetailsCard({ agent }: { agent: AgentProfile }) {
     setLoggingOut(true);
     try {
       const response = await axios.post("/api/auth/logout");
+      requestPageLoader();
       router.push(response.status === 200 ? "/" : "/login");
     } catch {
+      requestPageLoader();
       router.push("/login");
     } finally {
       setLoggingOut(false);

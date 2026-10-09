@@ -25,7 +25,7 @@ export function useNotifications() {
   });
 
   const pathname = usePathname();
-  const isNotificationsPage = pathname === '/dashboard/notifications';
+  const isNotificationsPage = pathname === '/dashboard/notifications' || pathname === '/agent/notifications';
 
   const getParams = useCallback(() => {
     const params = new URLSearchParams({ limit: '100' });

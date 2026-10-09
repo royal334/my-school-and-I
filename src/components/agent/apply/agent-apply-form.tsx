@@ -19,6 +19,7 @@ import { AboutYouStep } from './about-you-step';
 import { AreasBioStep } from './areas-bio-step';
 import { VerificationStep } from './verification-step';
 import { FormError, primaryButtonClass } from './form-primitives';
+import { requestPageLoader } from '@/components/providers/page-loader';
 
 const LAST_STEP = 2;
 
@@ -73,6 +74,7 @@ export function AgentApplyForm() {
         description: 'We will review it and get back to you shortly.',
         position: 'top-center',
       });
+      requestPageLoader();
       router.push('/agent/status');
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not submit your application');

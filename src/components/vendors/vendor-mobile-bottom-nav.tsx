@@ -7,6 +7,7 @@ import {
   Crown,
   LayoutDashboard,
   Settings,
+  ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -17,8 +18,28 @@ const vendorNavItems = [
   { href: "/dashboard/settings", icon: Settings, label: "Settings" },
 ];
 
-export function VendorMobileBottomNav() {
+const verificationNavItem = {
+  href: "/dashboard/vendors/verification",
+  icon: ShieldCheck,
+  label: "Verify",
+};
+
+export function VendorMobileBottomNav({
+  isFeatured = false,
+}: {
+  isFeatured?: boolean;
+}) {
   const pathname = usePathname();
+
+  const navItems = isFeatured
+    ? [
+        vendorNavItems[0],
+        vendorNavItems[1],
+        verificationNavItem,
+        vendorNavItems[2],
+        vendorNavItems[3],
+      ]
+    : vendorNavItems;
 
   const isActive = (href: string) => {
     if (href === "/dashboard") {
@@ -35,7 +56,7 @@ export function VendorMobileBottomNav() {
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between gap-1 px-1.5 sm:h-18">
-          {vendorNavItems.map(({ href, icon: Icon, label }) => (
+          {navItems.map(({ href, icon: Icon, label }) => (
             <Link
               key={href}
               href={href}

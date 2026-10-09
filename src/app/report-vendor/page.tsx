@@ -65,6 +65,8 @@ function ReportVendorContent() {
     data.reason = reason;
     data.vendor_id = vendorId;
     data.access_key = process.env.NEXT_PUBLIC_WEB3FORMS_ID || "";
+    data.subject = `Vendor Report — ${businessName}`;
+    data.from_name = 'Campus&Me Vendor Verification';
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10_000);

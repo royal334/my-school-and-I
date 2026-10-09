@@ -45,6 +45,7 @@ export function ApplicationDetailsCard({ agent }: { agent: AgentProfile }) {
       <InfoRow label="Name / Agency" value={agent.display_name} />
       <InfoRow label="Phone" value={agent.phone_number} />
       <InfoRow label="Operating areas" value={agent.operating_area} />
+      <InfoRow label="Identity" value={agent.id_doc_path ? 'Submitted' : 'Not submitted'} />
       <InfoRow label="Applied" value={format(new Date(agent.submitted_at), 'd MMMM yyyy')} />
       <InfoRow
         label="Reviewed"

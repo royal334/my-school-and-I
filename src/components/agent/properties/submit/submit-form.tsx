@@ -98,7 +98,7 @@ export function SubmitForm() {
             setError(result.message);
             return;
           }
-          throw new Error(result.error);
+          throw new Error(result.message || result.error);
         }
         setSubmissionId(result.submission.id);
         setStep(3);

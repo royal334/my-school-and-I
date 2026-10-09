@@ -8,7 +8,7 @@ import { withAccommodationMediaUrls } from '@/utils/lib/accommodation-media';
 async function getApprovedAgent(supabase: any, userId: string) {
   const { data } = await supabase
     .from('agents')
-    .select('id, status, display_name')
+    .select('id, status, display_name, id_doc_path')
     .eq('user_id', userId)
     .single();
 
@@ -93,6 +93,16 @@ export async function POST(request: Request) {
     const agent = await getApprovedAgent(supabase, user.id);
     if (!agent) {
       return NextResponse.json({ error: 'Approved agent account required' }, { status: 403 });
+    }
+
+    if (!agent.id_doc_path) {
+      return NextResponse.json(
+        {
+          error: 'verification_required',
+          message: 'Complete identity verification before submitting properties.',
+        },
+        { status: 403 },
+      );
     }
 
     const body = await request.json();

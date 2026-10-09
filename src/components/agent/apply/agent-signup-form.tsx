@@ -4,13 +4,13 @@ import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { CampusMeLogo } from '@/components/brand/logo';
-import { ID_TYPES, OPERATING_AREAS } from '@/components/agent/constants';
+import { OPERATING_AREAS } from '@/components/agent/constants';
 import { PasswordRequirements } from '@/components/auth/password-requirements';
 import { passwordStrengthSchema } from '@/lib/validations/password';
 import { requestPageLoader } from '@/components/providers/page-loader';
@@ -22,6 +22,9 @@ export function AgentSignupForm() {
   const [error, setError] = useState('');
   const [confirmationPending, setConfirmationPending] = useState(false);
   const [passwordValue, setPasswordValue] = useState('');
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   function toggleArea(area: string) {
     setOperatingAreas((current) =>
@@ -43,6 +46,11 @@ export function AgentSignupForm() {
       const passwordResult = passwordStrengthSchema.safeParse(password);
       if (!passwordResult.success) {
         throw new Error(passwordResult.error.issues[0]?.message || 'Enter a valid password.');
+      }
+      const confirmValue = formData.get('confirm_password');
+      const confirmPassword = typeof confirmValue === 'string' ? confirmValue : '';
+      if (password !== confirmPassword) {
+        throw new Error('Passwords do not match.');
       }
       operatingAreas.forEach((area) => formData.append('operating_areas', area));
 
@@ -145,17 +153,55 @@ export function AgentSignupForm() {
 
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                minLength={8}
-                pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}"
-                required
-                onChange={(event) => setPasswordValue(event.target.value)}
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  className="pr-10"
+                  autoComplete="new-password"
+                  minLength={8}
+                  pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}"
+                  required
+                  onChange={(event) => setPasswordValue(event.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((value) => !value)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
               <PasswordRequirements value={passwordValue} />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirm_password">Confirm password</Label>
+              <div className="relative">
+                <Input
+                  id="confirm_password"
+                  name="confirm_password"
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  className="pr-10"
+                  autoComplete="new-password"
+                  minLength={8}
+                  required
+                  onChange={(event) => setConfirmPasswordValue(event.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((value) => !value)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+              {confirmPasswordValue && passwordValue && confirmPasswordValue !== passwordValue && (
+                <p className="text-sm text-destructive">Passwords do not match.</p>
+              )}
             </div>
 
             <fieldset className="space-y-2">
@@ -180,31 +226,6 @@ export function AgentSignupForm() {
             <div className="space-y-2">
               <Label htmlFor="bio">About you (optional)</Label>
               <Textarea id="bio" name="bio" rows={3} maxLength={1000} />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="id_type">ID type (optional)</Label>
-              <select
-                id="id_type"
-                name="id_type"
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                defaultValue=""
-              >
-                <option value="">Select an ID type</option>
-                {ID_TYPES.map((idType) => (
-                  <option key={idType} value={idType}>{idType}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="id_document">ID document (optional, PDF/JPEG/PNG/WebP, up to 5 MB)</Label>
-              <Input
-                id="id_document"
-                name="id_document"
-                type="file"
-                accept="application/pdf,image/jpeg,image/png,image/webp"
-              />
             </div>
 
             {error && (

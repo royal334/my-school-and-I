@@ -19,6 +19,8 @@ export interface AgentProfile {
   display_name: string;
   phone_number: string;
   operating_area: string;
+  id_type: string | null;
+  id_doc_path: string | null;
   status: string;
   submitted_at: string;
   reviewed_at: string | null;
@@ -32,7 +34,6 @@ export interface AgentProfile {
 export interface AdminAgent extends AgentProfile {
   user_id: string;
   bio: string | null;
-  id_type: string | null;
   review_note: string | null;
   created_at: string;
 }

@@ -8,9 +8,6 @@ export const agentApplicationSchema = z.object({
   // Step 2 — Areas & bio
   operating_areas: z.array(z.string()).min(1, 'Select at least one operating area'),
   bio: z.string(),
-
-  // Step 3 — Verification
-  id_type: z.string(),
 });
 
 export type AgentApplicationValues = z.infer<typeof agentApplicationSchema>;
@@ -20,12 +17,10 @@ export const defaultValues: AgentApplicationValues = {
   phone_number: '',
   operating_areas: [],
   bio: '',
-  id_type: '',
 };
 
 /** Fields validated as each step is passed. */
 export const AGENT_STEP_FIELDS: Record<number, (keyof AgentApplicationValues)[]> = {
   0: ['display_name', 'phone_number'],
   1: ['operating_areas'],
-  2: [],
 };

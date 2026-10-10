@@ -440,9 +440,13 @@ export const THEME = {
 
 // POSTHOG EVENTS
 export const POSTHOG_EVENTS = {
+  // Auth
+  userSignedUp: "user_signed_up",
+
   materialsViewed: "materials_viewed",
   materialDownloaded: "material_downloaded",
   semesterAdded: "semester_added",
+  cgpaCalculatorUsed: "cgpa_calculator_used",
   vendorViewed: "vendor_viewed",
   announcementViewed: "announcement_viewed",
   materialSearchPerformed: "material_search_performed",
@@ -460,10 +464,10 @@ export const POSTHOG_EVENTS = {
   marketplaceListingCreated: "marketplace_listing_created",
 
   // Accommodation
-  accommodationPropertyViewed: "accommodation_property_viewed",
+  accommodationListingViewed: "accommodation_listing_viewed",
   accommodationSearchPerformed: "accommodation_search_performed",
-  accommodationViewingRequested: "accommodation_viewing_requested",
-  accommodationListingSubmitted: "accommodation_listing_submitted",
+  accommodationViewingRequested: "viewing_requested",
+  accommodationLeadSubmitted: "lead_submitted",
 
   // Agent
   agentApplicationSubmitted: "agent_application_submitted",

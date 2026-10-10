@@ -39,7 +39,7 @@ export default function AccommodationDetailPage() {
 
   useEffect(() => {
     if (!listing) return;
-    track(POSTHOG_EVENTS.accommodationPropertyViewed, {
+    track(POSTHOG_EVENTS.accommodationListingViewed, {
       listing_id: listing.id,
       property_id: listing.property.id,
       room_type: listing.room_type,

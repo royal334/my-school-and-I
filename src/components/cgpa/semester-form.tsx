@@ -171,6 +171,16 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
         });
       }
 
+      track(POSTHOG_EVENTS.cgpaCalculatorUsed, {
+        level: semesterData.level,
+        semester: semesterData.semester,
+        session: semesterData.session,
+        mode: existingSemester ? "update" : "add",
+        gpa,
+        total_units: totalUnits,
+        course_count: semesterData.courses.length,
+      });
+
       toast.success(
         existingSemester
           ? "Semester updated successfully!"

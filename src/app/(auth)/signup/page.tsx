@@ -28,12 +28,15 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { signupFormSchema, type SignupFormValues } from "@/lib/validations/signup";
 import { PasswordRequirements } from "@/components/auth/password-requirements";
+import { usePostHogAnalytics } from "@/hooks/posthog-events";
+import { POSTHOG_EVENTS } from "@/utils/constants/constants";
 
 type Faculty = { id: string; name: string };
 type Department = { id: string; name: string; faculty_id: string };
 
 export default function SignupPage() {
   const router = useRouter();
+  const { track } = usePostHogAnalytics();
 
   const [faculties, setFaculties] = useState<Faculty[]>([]);
   const [allDepartments, setAllDepartments] = useState<Department[]>([]);
@@ -111,6 +114,14 @@ defaultValues: {
       if (!response.ok) {
         throw new Error(result?.error || "Signup failed");
       }
+
+      track(POSTHOG_EVENTS.userSignedUp, {
+        requires_email_confirmation: Boolean(result?.requiresEmailConfirmation),
+        level: data.level,
+        faculty: data.faculty,
+        department: data.department,
+        is_new_student: data.is_new_student,
+      });
 
       toast.success(
         result?.requiresEmailConfirmation

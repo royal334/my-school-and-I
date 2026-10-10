@@ -66,7 +66,7 @@ export function SubmitAccommodationForm() {
         };
         if (!res.ok) throw new Error(result.error || 'Failed to submit');
         setSubmissionId(result.submission?.id ?? null);
-        track(POSTHOG_EVENTS.accommodationListingSubmitted, {
+        track(POSTHOG_EVENTS.accommodationLeadSubmitted, {
           submission_id: result.submission?.id,
           room_type: values.room_type,
         });

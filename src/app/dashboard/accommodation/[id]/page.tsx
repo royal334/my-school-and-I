@@ -10,11 +10,14 @@ import { FacilityList } from '@/components/accommodation/facility-list';
 import { ViewingForm } from '@/components/accommodation/viewing-form';
 import { DetailSkeleton } from '@/components/accommodation/detail-skeleton';
 import { ListingNotFound } from '@/components/accommodation/listing-not-found';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 import type { Listing } from '@/components/accommodation/types';
 
 export default function AccommodationDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { track } = usePostHogAnalytics();
   const [listing, setListing] = useState<Listing | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -33,6 +36,15 @@ export default function AccommodationDetailPage() {
     }
     if (params.id) fetch_();
   }, [params.id]);
+
+  useEffect(() => {
+    if (!listing) return;
+    track(POSTHOG_EVENTS.accommodationPropertyViewed, {
+      listing_id: listing.id,
+      property_id: listing.property.id,
+      room_type: listing.room_type,
+    });
+  }, [listing, track]);
 
   if (loading) {
     return <DetailSkeleton />;

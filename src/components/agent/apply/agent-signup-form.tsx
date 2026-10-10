@@ -14,9 +14,12 @@ import { OPERATING_AREAS } from '@/components/agent/constants';
 import { PasswordRequirements } from '@/components/auth/password-requirements';
 import { passwordStrengthSchema } from '@/lib/validations/password';
 import { requestPageLoader } from '@/components/providers/page-loader';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
 export function AgentSignupForm() {
   const router = useRouter();
+  const { track } = usePostHogAnalytics();
   const [operatingAreas, setOperatingAreas] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -63,6 +66,11 @@ export function AgentSignupForm() {
       if (!response.ok) {
         throw new Error(result.error || 'Could not create your agent account.');
       }
+
+      track(POSTHOG_EVENTS.agentApplicationSubmitted, {
+        source: 'signup',
+        operating_areas: operatingAreas.join(', '),
+      });
 
       if (result.requiresEmailConfirmation) {
         setConfirmationPending(true);

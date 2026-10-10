@@ -451,5 +451,27 @@ export const POSTHOG_EVENTS = {
   contactPhone: "vendor_contacted_phone",
   contactWhatsApp: "vendor_contacted_whatsapp",
 
+  // Marketplace
+  marketplaceListingViewed: "marketplace_listing_viewed",
+  marketplaceSearchPerformed: "marketplace_search_performed",
+  marketplaceListingSaved: "marketplace_listing_saved",
+  marketplaceListingUnsaved: "marketplace_listing_unsaved",
+  marketplaceContactSeller: "marketplace_contact_seller",
+  marketplaceListingCreated: "marketplace_listing_created",
+
+  // Accommodation
+  accommodationPropertyViewed: "accommodation_property_viewed",
+  accommodationSearchPerformed: "accommodation_search_performed",
+  accommodationViewingRequested: "accommodation_viewing_requested",
+  accommodationListingSubmitted: "accommodation_listing_submitted",
+
+  // Agent
+  agentApplicationSubmitted: "agent_application_submitted",
+  agentPropertySubmitted: "agent_property_submitted",
+  agentVerificationSubmitted: "agent_verification_submitted",
+
+  // Vendor
+  vendorVerificationRequested: "vendor_verification_requested",
+
   // materialUploaded: "material_uploaded",
 }

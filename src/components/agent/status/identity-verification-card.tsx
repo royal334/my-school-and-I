@@ -13,9 +13,12 @@ import {
   primaryButtonClass,
 } from '../apply/form-primitives';
 import { DocUploadField } from '../apply/doc-upload-field';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
 export function IdentityVerificationCard() {
   const router = useRouter();
+  const { track } = usePostHogAnalytics();
   const [idType, setIdType] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -45,6 +48,10 @@ export function IdentityVerificationCard() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Could not submit your verification.');
+
+      track(POSTHOG_EVENTS.agentVerificationSubmitted, {
+        id_type: idType,
+      });
 
       toast.success('Identity verification submitted', {
         description: 'We will review your document shortly.',

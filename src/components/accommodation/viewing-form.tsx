@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
 interface ViewingFormProps {
   listingId: string;
@@ -8,6 +10,7 @@ interface ViewingFormProps {
 }
 
 export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
+  const { track } = usePostHogAnalytics();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
@@ -43,6 +46,10 @@ export function ViewingForm({ listingId, propertyId }: ViewingFormProps) {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      track(POSTHOG_EVENTS.accommodationViewingRequested, {
+        listing_id: listingId,
+        property_id: propertyId,
+      });
       setSuccess(true);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to submit request');

@@ -37,6 +37,18 @@ export default function PostHogPageview() {
         });
       }
 
+      if (pathname.includes('/marketplace') || pathname.includes('/market')) {
+        posthog.capture('page_marketplace_viewed', {
+          path: pathname,
+        });
+      }
+
+      if (pathname.includes('/accommodation')) {
+        posthog.capture('page_accommodation_viewed', {
+          path: pathname,
+        });
+      }
+
       if (pathname.includes('/dashboard')) {
         posthog.capture('page_dashboard_viewed', {
           path: pathname,

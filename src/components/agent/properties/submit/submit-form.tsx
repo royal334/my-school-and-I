@@ -12,6 +12,8 @@ import { PhotosStep } from "./photos-step";
 import { FormError, primaryButtonClass } from "@/components/agent/apply/form-primitives";
 import { cn } from "@/lib/utils";
 import { requestPageLoader } from "@/components/providers/page-loader";
+import { usePostHogAnalytics } from "@/hooks/posthog-events";
+import { POSTHOG_EVENTS } from "@/utils/constants/constants";
 
 const EMPTY_PROPERTY: PropertyFormData = {
   property_name: "",
@@ -40,6 +42,7 @@ const EMPTY_FACILITIES: FacilitiesFormData = {
 
 export function SubmitForm() {
   const router = useRouter();
+  const { track } = usePostHogAnalytics();
   const [step, setStep] = useState(0);
   const [propertyData, setPropertyData] = useState(EMPTY_PROPERTY);
   const [ownerData, setOwnerData] = useState(EMPTY_OWNER);
@@ -101,6 +104,11 @@ export function SubmitForm() {
           throw new Error(result.message || result.error);
         }
         setSubmissionId(result.submission.id);
+        track(POSTHOG_EVENTS.agentPropertySubmitted, {
+          submission_id: result.submission.id,
+          area: propertyData.area,
+          room_type: propertyData.room_type,
+        });
         setStep(3);
       } catch (e: any) {
         setError(e.message);

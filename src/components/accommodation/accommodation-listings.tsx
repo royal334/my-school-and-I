@@ -4,9 +4,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { House } from 'lucide-react';
 import { ListingFilters } from '@/components/accommodation/listing-filters';
 import { ListingResults } from '@/components/accommodation/listing-results';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 import type { Listing } from '@/components/accommodation/types';
 
 export function AccommodationListings() {
+  const { track } = usePostHogAnalytics();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
@@ -43,9 +46,17 @@ export function AccommodationListings() {
   }, [search, roomType, minPrice, maxPrice, hasWater, hasElectricity, hasSecurity]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => fetchListings(), 300);
+    const timeout = setTimeout(() => {
+      fetchListings();
+      if (search.trim()) {
+        track(POSTHOG_EVENTS.accommodationSearchPerformed, {
+          search_query: search.trim(),
+          room_type: roomType,
+        });
+      }
+    }, 300);
     return () => clearTimeout(timeout);
-  }, [fetchListings]);
+  }, [fetchListings, search, roomType, track]);
 
   const hasActiveFilters = Boolean(roomType || minPrice || maxPrice || hasWater || hasElectricity || hasSecurity);
   const activeCount = [roomType, minPrice, maxPrice, hasWater, hasElectricity, hasSecurity].filter(Boolean).length;

@@ -18,9 +18,12 @@ import { PhotosStep } from './photos-step';
 import { PropertyStep } from './property-step';
 import { SubmitHeader } from './submit-header';
 import { SubmitStepBar } from './step-bar';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
 export function SubmitAccommodationForm() {
   const router = useRouter();
+  const { track } = usePostHogAnalytics();
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -63,6 +66,10 @@ export function SubmitAccommodationForm() {
         };
         if (!res.ok) throw new Error(result.error || 'Failed to submit');
         setSubmissionId(result.submission?.id ?? null);
+        track(POSTHOG_EVENTS.accommodationListingSubmitted, {
+          submission_id: result.submission?.id,
+          room_type: values.room_type,
+        });
         setStep(3);
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : 'Failed to submit');

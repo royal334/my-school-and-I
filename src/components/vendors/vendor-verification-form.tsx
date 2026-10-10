@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { BadgeCheck, Send } from 'lucide-react';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -36,6 +38,7 @@ export function VendorVerificationForm({
   tier,
   isVerified,
 }: VendorVerificationFormProps) {
+  const { track } = usePostHogAnalytics();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -68,6 +71,10 @@ export function VendorVerificationForm({
       const result = await response.json();
 
       if (result.success) {
+        track(POSTHOG_EVENTS.vendorVerificationRequested, {
+          vendor_id: vendorId,
+          subscription_tier: tier,
+        });
         setSubmitted(true);
         toast.success('Verification request sent!', {
           position: 'top-center',
@@ -169,6 +176,7 @@ export function VendorVerificationForm({
               <Input
                 id="phone_number"
                 name="phone_number"
+                defaultValue={phone}
                 placeholder="Phone number"
                 required
                 className="bg-muted"

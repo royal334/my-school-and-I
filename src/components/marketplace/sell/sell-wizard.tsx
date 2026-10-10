@@ -12,6 +12,8 @@ import { SlotLimitModal } from '@/components/marketplace/sell/slot-limit-modal';
 import { ListingDetailsStep } from '@/components/marketplace/sell/listing-details-step';
 import { ListingPricingStep } from '@/components/marketplace/sell/listing-pricing-step';
 import { ListingPhotoStep } from '@/components/marketplace/sell/listing-photo-step';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 import type { ListingDraft, SellerSlots } from '@/components/marketplace/types';
 
 interface SellWizardProps {
@@ -36,6 +38,7 @@ function validateStep(step: number, draft: ListingDraft): string | null {
 
 export function SellWizard({ sellerId, slots, initialDraft, editId }: SellWizardProps) {
   const router = useRouter();
+  const { track } = usePostHogAnalytics();
   const isEditing = editId !== null;
 
   const [step, setStep] = useState(0);
@@ -106,6 +109,11 @@ export function SellWizard({ sellerId, slots, initialDraft, editId }: SellWizard
       }
 
       setCreatedListingId(data.listing.id);
+      track(POSTHOG_EVENTS.marketplaceListingCreated, {
+        listing_id: data.listing.id,
+        category: draft.category,
+        price: Number.parseFloat(draft.price) || 0,
+      });
       setStep(2);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'Something went wrong. Please try again.');

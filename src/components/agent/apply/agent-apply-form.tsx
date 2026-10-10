@@ -19,11 +19,14 @@ import { AboutYouStep } from './about-you-step';
 import { AreasBioStep } from './areas-bio-step';
 import { FormError, primaryButtonClass } from './form-primitives';
 import { requestPageLoader } from '@/components/providers/page-loader';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
 const LAST_STEP = 1;
 
 export function AgentApplyForm() {
   const router = useRouter();
+  const { track } = usePostHogAnalytics();
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -65,6 +68,11 @@ export function AgentApplyForm() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Could not submit your application');
+
+      track(POSTHOG_EVENTS.agentApplicationSubmitted, {
+        source: 'apply',
+        operating_areas: values.operating_areas.join(', '),
+      });
 
       toast.success('Application submitted', {
         description: 'We will review it and get back to you shortly.',

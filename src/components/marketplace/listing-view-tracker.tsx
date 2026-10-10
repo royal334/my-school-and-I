@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
 interface ListingViewTrackerProps {
   listingId: string;
@@ -16,6 +18,7 @@ interface ListingViewTrackerProps {
  * overwrite each other the way the previous read-modify-write did.
  */
 export default function ListingViewTracker({ listingId, isOwner = false }: ListingViewTrackerProps) {
+  const { track } = usePostHogAnalytics();
   // Survives StrictMode's double-invoked effects so dev never double counts.
   const sentFor = useRef<string | null>(null);
 
@@ -25,6 +28,10 @@ export default function ListingViewTracker({ listingId, isOwner = false }: Listi
 
     sentFor.current = listingId;
 
+    track(POSTHOG_EVENTS.marketplaceListingViewed, {
+      listing_id: listingId,
+    });
+
     fetch(`/api/marketplace/listings/${listingId}/view`, { method: 'POST' })
       .then((res) => {
         if (!res.ok) console.error('Failed to record listing view:', res.status);
@@ -32,7 +39,7 @@ export default function ListingViewTracker({ listingId, isOwner = false }: Listi
       .catch((error) => {
         console.error('Error recording listing view:', error);
       });
-  }, [isOwner, listingId]);
+  }, [isOwner, listingId, track]);
 
   return null;
 }

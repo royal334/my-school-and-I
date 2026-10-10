@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
 export type SaveButtonVariant = 'floating' | 'header' | 'bar';
 
@@ -24,6 +26,7 @@ const VARIANT_CLASSES: Record<SaveButtonVariant, string> = {
 
 export function SaveButton({ listingId, saved, variant = 'floating' }: SaveButtonProps) {
   const router = useRouter();
+  const { track } = usePostHogAnalytics();
   const [isSaved, setIsSaved] = useState(saved);
   const [pending, setPending] = useState(false);
 
@@ -41,6 +44,12 @@ export function SaveButton({ listingId, saved, variant = 'floating' }: SaveButto
         method: next ? 'POST' : 'DELETE',
       });
       if (!res.ok) throw new Error('Request failed');
+      track(
+        next
+          ? POSTHOG_EVENTS.marketplaceListingSaved
+          : POSTHOG_EVENTS.marketplaceListingUnsaved,
+        { listing_id: listingId },
+      );
       router.refresh();
     } catch {
       setIsSaved(!next);

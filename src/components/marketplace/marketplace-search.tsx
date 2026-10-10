@@ -3,9 +3,12 @@
 import { Suspense, useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
 import { useMarketplaceFilters } from '@/hooks/use-marketplace-filters';
+import { usePostHogAnalytics } from '@/hooks/posthog-events';
+import { POSTHOG_EVENTS } from '@/utils/constants/constants';
 
 function MarketplaceSearchInput() {
   const { filters, setFilter } = useMarketplaceFilters();
+  const { track } = usePostHogAnalytics();
   const [query, setQuery] = useState(filters.search);
   const [syncedSearch, setSyncedSearch] = useState(filters.search);
 
@@ -17,9 +20,16 @@ function MarketplaceSearchInput() {
 
   useEffect(() => {
     if (query === filters.search) return;
-    const timer = setTimeout(() => setFilter('search', query), 400);
+    const timer = setTimeout(() => {
+      setFilter('search', query);
+      if (query.trim()) {
+        track(POSTHOG_EVENTS.marketplaceSearchPerformed, {
+          search_query: query.trim(),
+        });
+      }
+    }, 400);
     return () => clearTimeout(timer);
-  }, [query, filters.search, setFilter]);
+  }, [query, filters.search, setFilter, track]);
 
   return (
     <div className="relative">

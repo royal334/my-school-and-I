@@ -169,7 +169,7 @@ export default async function MyListingsPage() {
       {/* Vendor Details Card */}
       <Card>
         <CardContent className="p-6">
-          <div className="flex items-start gap-6">
+          <div className="flex flex-col items-start gap-6">
             {/* Logo */}
             <div>
               {vendor.logo_url ? (

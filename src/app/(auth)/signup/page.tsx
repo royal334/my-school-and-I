@@ -140,7 +140,7 @@ defaultValues: {
         <CardHeader>
           <CardTitle className="text-foreground">Create Account</CardTitle>
           <CardDescription className="dark:text-muted-foreground">
-            Join Campus&Me to access academic resources
+            Join Campus&Me and have your campus life in one place
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>

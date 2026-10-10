@@ -192,7 +192,7 @@ export default async function SubscriptionPage() {
               </div>
               <ul className="mt-2 space-y-1 text-sm text-accent-800 dark:text-accent-300">
                 <li>• Everything in Premium</li>
-                <li>• Verified badge ✓</li>
+                <li>• Eligible for a Verified badge ✓</li>
                 <li>• Unlimited Marketplace Listings</li>
                 <li>• 10 photo gallery</li>
                 <li>• Unlimited services</li>

@@ -138,7 +138,7 @@ export default function LoginPage() {
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="mt-4 flex flex-col space-y-4">
+            <CardFooter className="mt-4 flex flex-col space-y-2">
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? "Signing in..." : "Sign in"}
               </Button>
@@ -146,6 +146,15 @@ export default function LoginPage() {
                 Don&apos;t have an account?{" "}
                 <Link
                   href="/signup"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-300"
+                >
+                  Sign up
+                </Link>
+              </p>
+              <p className="text-center text-sm text-muted-foreground">
+                A non-student vendor?{" "}
+                <Link
+                  href="/vendor-signup"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-300"
                 >
                   Sign up

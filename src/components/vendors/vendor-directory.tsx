@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import VendorCard from '@/components/vendors/vendor-card';
 import VendorFilters from '@/components/vendors/vendor-filter';
+import { LiabilityNotice } from '@/components/legal/liability-notice';
 import { Store, Plus, Edit } from 'lucide-react';
 import {
   getVendorsFresh,
@@ -87,6 +88,8 @@ export async function VendorDirectory({
           </Link>
         </div>
       </div>
+
+      <LiabilityNotice />
 
       <VendorFilters categories={categories || []} filterPath={filterPath} />
 

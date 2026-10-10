@@ -132,7 +132,7 @@ export default function PremiumGate({
                 </>
               ) : (
                 <>
-                  <li>• Verified badge ✓</li>
+                  <li>• Eligible for a Verified badge ✓</li>
                   <li>• 10 photo gallery</li>
                   <li>• Unlimited services</li>
                   <li>• Top of all searches</li>

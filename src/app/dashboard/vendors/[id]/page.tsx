@@ -9,6 +9,7 @@ import { redirect, notFound } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import ContactButtons from "@/components/vendors/contact-buttons";
 import ShareButton from "@/components/vendors/share-button";
+import { LiabilityNotice } from "@/components/legal/liability-notice";
 
 // New Components
 import VendorHeader from "@/components/vendors/vendor-header";
@@ -105,6 +106,8 @@ export default async function VendorDetailPage({ params }: PageProps) {
           </CardContent>
         </Card>
       )}
+
+      {!isOwner && <LiabilityNotice />}
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Left Column - Vendor Info */}

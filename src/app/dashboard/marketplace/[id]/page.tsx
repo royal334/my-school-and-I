@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { createClient } from '@/utils/supabase/server';
 import { getMarketplaceListing } from '@/utils/supabase/queries/marketplace';
 import { ListingDetailHeader } from '@/components/marketplace/listing-detail-header';
+import { LiabilityNotice } from '@/components/legal/liability-notice';
 import { ListingGallery } from '@/components/marketplace/listing-gallery';
 import { ListingSummary } from '@/components/marketplace/listing-summary';
 import { ListingSellerCard } from '@/components/marketplace/listing-seller-card';
@@ -57,6 +58,8 @@ export default async function ListingDetailPage({ params }: PageProps) {
       <ListingViewTracker listingId={listing.id} isOwner={listing.is_own} />
 
       <ListingDetailHeader title={listing.title} listingId={listing.id} saved={listing.is_saved} />
+
+      {showBuyerActions && <LiabilityNotice />}
 
       <ListingGallery images={listing.images} title={listing.title} isSold={isSold} />
 

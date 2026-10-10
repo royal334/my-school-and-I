@@ -305,11 +305,11 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                             Edit Listing
                           </Button>
                         </Link>
-                        <Link href={`/dashboard/vendors/${vendor.id}`} className="w-full sm:w-auto">
+                        {/* <Link href={`/dashboard/vendors/${vendor.id}`} className="w-full sm:w-auto">
                           <Button variant="outline" size="sm" className="w-full sm:w-auto">
                             View Public Page
                           </Button>
-                        </Link>
+                        </Link> */}
                       </div>
                     </div>
                   </div>

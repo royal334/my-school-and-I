@@ -128,7 +128,7 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
           )}
 
           {/* Stats Overview */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" data-tour="vendor-stats">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5" data-tour="vendor-stats">
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
@@ -219,6 +219,27 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                 )}
               </CardContent>
             </Card>
+
+            <Link href="/suggestion-page" className="block">
+              <Card className="h-full transition-all hover:-translate-y-0.5 hover:shadow-md">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">
+                      Feedback
+                    </CardTitle>
+                    <MessageSquare className="h-4 w-4 text-info" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-[#141F1B] dark:text-[#E8F5EF]">
+                    Make it better
+                  </div>
+                  <div className="mt-1 text-xs font-medium text-[#4A8C73] dark:text-[#7EC8A0]">
+                    Share feedback →
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
 
           {/* Main Content Grid */}
@@ -400,8 +421,6 @@ export default function VendorDashboard({ profile, vendor }: VendorDashboardProp
                   )}
                 </CardContent>
               </Card>
-
-
 
               {/* Help Card */}
               {/* <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900/30">

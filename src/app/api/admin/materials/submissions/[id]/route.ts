@@ -42,7 +42,6 @@ async function resolveCourseId(
       course_title: courseTitle.trim(),
       level,
       semester,
-      credit_units: creditUnits,
     })
     .select('id')
     .single();

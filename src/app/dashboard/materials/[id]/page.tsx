@@ -224,14 +224,6 @@ export default async function MaterialDetailPage({ params }: PageProps) {
                       {material.courses.semester}
                     </p>
                   </div>
-                  <div>
-                    <span className="text-sm font-medium text-foreground">
-                      Credits
-                    </span>
-                    <p className="text-sm text-muted-foreground">
-                      {material.courses.credit_units}
-                    </p>
-                  </div>
                 </div>
               </CardContent>
             </Card>

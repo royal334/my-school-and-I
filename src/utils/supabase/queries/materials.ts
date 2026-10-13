@@ -78,7 +78,7 @@ export async function getMaterialById(id: string, supabaseProp?: any) {
         course_code,
         course_title,
         level,
-        semester,
+        semester
       )
     `,
     )

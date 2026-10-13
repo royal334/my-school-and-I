@@ -200,7 +200,7 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
       {/* Semester Information */}
       <Card>
         <CardHeader>
@@ -426,16 +426,37 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                           />
                         </td>
                         <td className="py-2 text-center">
-                          <Input
-                            type="number"
-                            {...register(`courses.${index}.credit_units`, {
-                              valueAsNumber: true,
-                            })}
-                            className={`relative z-50 pointer-events-auto w-16 mx-auto text-center bg-card ${
-                              errors.courses?.[index]?.credit_units
-                                ? "border-destructive"
-                                : ""
-                            }`}
+                          <Controller
+                            name={`courses.${index}.credit_units`}
+                            control={control}
+                            render={({ field: unitsField }) => (
+                              <Input
+                                type="number"
+                                inputMode="numeric"
+                                placeholder="3"
+                                value={
+                                  unitsField.value === undefined ||
+                                  unitsField.value === null ||
+                                  Number.isNaN(unitsField.value)
+                                    ? ""
+                                    : unitsField.value
+                                }
+                                onChange={(e) =>
+                                  unitsField.onChange(
+                                    e.target.value === ""
+                                      ? undefined
+                                      : Number(e.target.value),
+                                  )
+                                }
+                                onBlur={unitsField.onBlur}
+                                ref={unitsField.ref}
+                                className={cn(
+                                  "relative z-50 pointer-events-auto w-16 mx-auto text-center bg-card",
+                                  errors.courses?.[index]?.credit_units &&
+                                    "border-destructive",
+                                )}
+                              />
+                            )}
                           />
                         </td>
                         <td className="py-2 text-center">
@@ -611,16 +632,37 @@ export default function SemesterForm({ existingSemester }: SemesterFormProps) {
                         >
                           Units
                         </Label>
-                        <Input
-                          type="number"
-                          {...register(`courses.${index}.credit_units`, {
-                            valueAsNumber: true,
-                          })}
-                          className={`relative z-50 pointer-events-auto bg-card ${
-                            errors.courses?.[index]?.credit_units
-                              ? "border-destructive"
-                              : ""
-                          }`}
+                        <Controller
+                          name={`courses.${index}.credit_units`}
+                          control={control}
+                          render={({ field: unitsField }) => (
+                            <Input
+                              type="number"
+                              inputMode="numeric"
+                              placeholder="3"
+                              value={
+                                unitsField.value === undefined ||
+                                unitsField.value === null ||
+                                Number.isNaN(unitsField.value)
+                                  ? ""
+                                  : unitsField.value
+                              }
+                              onChange={(e) =>
+                                unitsField.onChange(
+                                  e.target.value === ""
+                                    ? undefined
+                                    : Number(e.target.value),
+                                )
+                              }
+                              onBlur={unitsField.onBlur}
+                              ref={unitsField.ref}
+                              className={cn(
+                                "relative z-50 pointer-events-auto bg-card",
+                                errors.courses?.[index]?.credit_units &&
+                                  "border-destructive",
+                              )}
+                            />
+                          )}
                         />
                       </div>
 

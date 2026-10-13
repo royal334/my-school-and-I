@@ -3,6 +3,8 @@ import { createClient } from "@/utils/supabase/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { getMaterials } from "@/utils/supabase/queries";
+import { shuffle } from "@/utils/lib";
+import type { Material } from "@/utils/types";
 import MaterialsContent from "@/components/materials/materials-content";
 import MaterialsFilters from "@/components/materials/materials-filters";
 import MaterialsMenu from "@/components/materials/materials-menu";
@@ -92,6 +94,9 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
           ids: savedMaterialIds,
         });
 
+  // Shuffle so the top material is not the same on every render.
+  const shuffledMaterials = shuffle(materials as Material[]);
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -154,7 +159,7 @@ export default async function MaterialsPage({ searchParams }: PageProps) {
         }
       >
         
-          <MaterialsContent materials={materials} profile={profile} />
+          <MaterialsContent materials={shuffledMaterials} profile={profile} />
       </Suspense>
     </div>
   );

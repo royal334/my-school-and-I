@@ -88,9 +88,9 @@ export default function MaterialCard({
         </h3>
 
         {material.courses && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <BookOpen className="h-4 w-4" />
-            <span className="truncate">
+          <div className="flex items-start gap-2 text-sm text-muted-foreground">
+            <BookOpen className="h-4 w-4 shrink-0 mt-0.5" />
+            <span className="break-words whitespace-normal min-w-0">
               {material.courses.course_code} - {material.courses.course_title}
             </span>
           </div>

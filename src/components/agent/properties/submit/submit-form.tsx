@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { SubmitHeader } from "./submit-header";
-import { STEPS } from "./submit-constants";
+
 import { PropertyStep, PropertyFormData } from "./property-step";
-import { OwnerStep, OwnerFormData } from "./owner-step";
+
 import { FacilitiesStep, FacilitiesFormData } from "./facilities-step";
 import { PhotosStep } from "./photos-step";
 import { FormError, primaryButtonClass } from "@/components/agent/apply/form-primitives";
@@ -27,10 +27,7 @@ const EMPTY_PROPERTY: PropertyFormData = {
   additional_charges_note: "",
 };
 
-const EMPTY_OWNER: OwnerFormData = {
-  landlord_name: "",
-  landlord_phone: "",
-};
+
 
 const EMPTY_FACILITIES: FacilitiesFormData = {
   has_water: null,
@@ -45,7 +42,7 @@ export function SubmitForm() {
   const { track } = usePostHogAnalytics();
   const [step, setStep] = useState(0);
   const [propertyData, setPropertyData] = useState(EMPTY_PROPERTY);
-  const [ownerData, setOwnerData] = useState(EMPTY_OWNER);
+
   const [facilitiesData, setFacilitiesData] = useState(EMPTY_FACILITIES);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -67,10 +64,7 @@ export function SubmitForm() {
       if (!propertyData.area.trim()) return "Area is required";
       if (!propertyData.room_type) return "Select a room type";
     }
-    if (step === 1) {
-      if (!ownerData.landlord_name.trim()) return "Landlord/caretaker name is required";
-      if (!ownerData.landlord_phone.trim()) return "Landlord/caretaker phone is required";
-    }
+
     return null;
   }
 
@@ -82,7 +76,7 @@ export function SubmitForm() {
     }
     setError("");
 
-    if (step === 2) {
+    if (step === 1) {
       setSubmitting(true);
       try {
         const res = await fetch("/api/agent/properties", {
@@ -90,7 +84,8 @@ export function SubmitForm() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...propertyData,
-            ...ownerData,
+            landlord_name: null,
+            landlord_phone: null,
             ...facilitiesData,
             expected_price: propertyData.expected_price || null,
           }),
@@ -109,9 +104,9 @@ export function SubmitForm() {
           area: propertyData.area,
           room_type: propertyData.room_type,
         });
-        setStep(3);
-      } catch (e: any) {
-        setError(e.message);
+        setStep(2);
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : String(e));
       } finally {
         setSubmitting(false);
       }
@@ -183,18 +178,12 @@ export function SubmitForm() {
           />
         )}
         {step === 1 && (
-          <OwnerStep
-            data={ownerData}
-            onChange={(k, v) => setOwnerData((prev) => ({ ...prev, [k]: v }))}
-          />
-        )}
-        {step === 2 && (
           <FacilitiesStep
             data={facilitiesData}
             onChange={(k, v) => setFacilitiesData((prev) => ({ ...prev, [k]: v }))}
           />
         )}
-        {step === 3 && (
+        {step === 2 && (
           <PhotosStep
             submissionId={submissionId}
             files={files}
@@ -208,13 +197,13 @@ export function SubmitForm() {
 
         {error && <FormError message={error} />}
 
-        {step < 3 && (
+        {step < 2 && (
           <button
             onClick={handleNext}
             disabled={submitting}
             className={cn(primaryButtonClass, "mt-6")}
           >
-            {submitting ? "Submitting" : step === 2 ? "Submit property" : "Continue"}
+            {submitting ? "Submitting" : step === 1 ? "Submit property" : "Continue"}
           </button>
         )}
       </div>

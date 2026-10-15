@@ -92,7 +92,6 @@ export async function PATCH(
       property_name, area, street, landmark,
       unit_number, room_type, expected_price,
       available_from, additional_charges_note,
-      landlord_name, landlord_phone,
       has_water, has_electricity, has_security,
       facilities_notes, other_notes,
     } = body;
@@ -110,8 +109,7 @@ export async function PATCH(
     if (expected_price !== undefined) updates.expected_price = expected_price ? parseFloat(expected_price) : null;
     if (available_from !== undefined) updates.available_from = available_from;
     if (additional_charges_note !== undefined) updates.additional_charges_note = additional_charges_note;
-    if (landlord_name !== undefined) updates.landlord_name = landlord_name;
-    if (landlord_phone !== undefined) updates.landlord_phone = landlord_phone;
+
     if (has_water !== undefined) updates.has_water = has_water;
     if (has_electricity !== undefined) updates.has_electricity = has_electricity;
     if (has_security !== undefined) updates.has_security = has_security;

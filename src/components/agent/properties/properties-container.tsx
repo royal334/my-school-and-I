@@ -15,16 +15,21 @@ export function PropertiesContainer() {
   const router = useRouter();
 
   useEffect(() => {
+    const controller = new AbortController();
     setLoading(true);
     const url = filter
       ? `/api/agent/properties?status=${filter}`
       : "/api/agent/properties";
 
-    fetch(url)
+    fetch(url, { signal: controller.signal })
       .then((r) => r.json())
       .then((d) => setSubmissions(d.submissions || []))
-      .catch(console.error)
+      .catch((err) => {
+        if (err.name !== "AbortError") console.error(err);
+      })
       .finally(() => setLoading(false));
+
+    return () => controller.abort();
   }, [filter]);
 
   const needsAttention = submissions.filter((s) => s.status === "correction_required").length;

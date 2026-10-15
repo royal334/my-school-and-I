@@ -57,8 +57,7 @@ export function EditForm({ submission, onSaved }: EditFormProps) {
   const [expectedPrice, setExpectedPrice] = useState(submission.expected_price?.toString() || "");
   const [availableFrom, setAvailableFrom] = useState(submission.available_from || "");
   const [additionalCharges, setAdditionalCharges] = useState(submission.additional_charges_note || "");
-  const [landlordName, setLandlordName] = useState(submission.landlord_name || "");
-  const [landlordPhone, setLandlordPhone] = useState(submission.landlord_phone || "");
+
   const [hasWater, setHasWater] = useState(submission.has_water);
   const [hasElec, setHasElec] = useState(submission.has_electricity);
   const [hasSec, setHasSec] = useState(submission.has_security);
@@ -84,8 +83,8 @@ export function EditForm({ submission, onSaved }: EditFormProps) {
           expected_price: expectedPrice || null,
           available_from: availableFrom || null,
           additional_charges_note: additionalCharges || null,
-          landlord_name: landlordName || null,
-          landlord_phone: landlordPhone || null,
+          landlord_name: null,
+          landlord_phone: null,
           has_water: hasWater,
           has_electricity: hasElec,
           has_security: hasSec,
@@ -96,8 +95,8 @@ export function EditForm({ submission, onSaved }: EditFormProps) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       onSaved(data.submission);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e));
     } finally {
       setSaving(false);
     }
@@ -142,8 +141,7 @@ export function EditForm({ submission, onSaved }: EditFormProps) {
       </div>
 
       <input className={inputClass} placeholder="Additional charges note" value={additionalCharges} onChange={(e) => setAdditionalCharges(e.target.value)} />
-      <input className={inputClass} placeholder="Landlord name" value={landlordName} onChange={(e) => setLandlordName(e.target.value)} />
-      <input className={inputClass} type="tel" placeholder="Landlord phone" value={landlordPhone} onChange={(e) => setLandlordPhone(e.target.value)} />
+
 
       <TriToggle label="Water?" value={hasWater} onChange={setHasWater} />
       <TriToggle label="Electricity?" value={hasElec} onChange={setHasElec} />

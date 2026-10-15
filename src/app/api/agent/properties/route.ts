@@ -10,7 +10,7 @@ async function getApprovedAgent(supabase: any, userId: string) {
     .from('agents')
     .select('id, status, display_name, id_doc_path')
     .eq('user_id', userId)
-    .single();
+    .single() as any;
 
   if (!data || data.status !== 'approved') return null;
   return data;
@@ -75,8 +75,8 @@ export async function GET(request: Request) {
     }));
 
     return NextResponse.json({ submissions: result });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
 
@@ -110,7 +110,6 @@ export async function POST(request: Request) {
       property_name, area, street, landmark,
       unit_number, room_type, expected_price,
       available_from, additional_charges_note,
-      landlord_name, landlord_phone,
       has_water, has_electricity, has_security,
       facilities_notes, other_notes,
     } = body;
@@ -160,8 +159,8 @@ export async function POST(request: Request) {
         expected_price: expected_price ? parseFloat(expected_price) : null,
         available_from: available_from || null,
         additional_charges_note: additional_charges_note || null,
-        landlord_name: landlord_name || null,
-        landlord_phone: landlord_phone || null,
+        landlord_name: null,
+        landlord_phone: null,
         submitter_relationship: 'Agent — manages this property',
         has_water: has_water ?? null,
         has_electricity: has_electricity ?? null,
@@ -216,7 +215,7 @@ export async function POST(request: Request) {
       submission,
       message: 'Property submitted for review.',
     });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }

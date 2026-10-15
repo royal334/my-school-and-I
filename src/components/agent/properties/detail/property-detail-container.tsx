@@ -148,11 +148,7 @@ export function PropertyDetailContainer() {
               <InfoRow label="Additional charges" value={submission.additional_charges_note} />
             </Card>
 
-            <Card>
-              <SectionTitle>Owner / caretaker</SectionTitle>
-              <InfoRow label="Name" value={submission.landlord_name} />
-              <InfoRow label="Phone" value={submission.landlord_phone} />
-            </Card>
+
 
             <Card>
               <SectionTitle>Facilities</SectionTitle>

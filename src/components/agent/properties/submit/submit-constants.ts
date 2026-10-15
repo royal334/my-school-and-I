@@ -7,4 +7,4 @@ export const ROOM_TYPES = [
   "Other",
 ];
 
-export const STEPS = ["Property", "Owner", "Facilities", "Photos"];
+export const STEPS = ["Property", "Facilities", "Photos"];

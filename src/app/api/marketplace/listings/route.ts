@@ -160,7 +160,7 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const {
-      title, description, category, subcategory,
+      title, description, category,
       price, negotiable, condition, location, is_urgent,
     } = body;
 
@@ -223,7 +223,6 @@ export async function POST(request: Request) {
         title,
         description: description || null,
         category,
-        subcategory: subcategory || null,
         price: parseFloat(price),
         negotiable: negotiable ?? false,
         condition,

@@ -12,9 +12,11 @@ interface ListingImageUploaderProps {
   listingId: string;
   sellerId: string;
   onUploaded: (paths: string[]) => void;
+  /** Adjusts the finish button wording when adding photos to an existing listing. */
+  isEditing?: boolean;
 }
 
-export function ListingImageUploader({ listingId, sellerId, onUploaded }: ListingImageUploaderProps) {
+export function ListingImageUploader({ listingId, sellerId, onUploaded, isEditing = false }: ListingImageUploaderProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [existingCount, setExistingCount] = useState(0);
@@ -196,12 +198,14 @@ export function ListingImageUploader({ listingId, sellerId, onUploaded }: Listin
         </div>
       )}
 
-      <Button type="button" onClick={upload} disabled={uploading || files.length === 0} className="min-h-11 w-full">
+      <Button type="button" onClick={upload} disabled={uploading} className="min-h-11 w-full">
         {uploading
           ? `Uploading ${progress}%…`
           : files.length > 0
-            ? `Upload ${files.length} photo${files.length > 1 ? 's' : ''} & publish`
-            : 'Skip photos & publish'}
+            ? `Upload ${files.length} photo${files.length > 1 ? 's' : ''}${isEditing ? '' : ' & publish'}`
+            : isEditing
+              ? 'Done'
+              : 'Skip photos & publish'}
       </Button>
     </div>
   );

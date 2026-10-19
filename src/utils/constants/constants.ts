@@ -327,7 +327,7 @@ export const API_ROUTES = {
   MATERIALS: {
     LIST: "/api/materials",
     DETAIL: "/api/materials/[id]",
-    DOWNLOAD: "/api/materials/download/[id]",
+    DOWNLOAD: "/api/materials/[id]/download",
     UPLOAD: "/api/materials/upload",
   },
   CGPA: {

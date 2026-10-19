@@ -18,18 +18,38 @@ export async function GET() {
   }
 
   try {
-    // Read once, unfiltered, and aggregate here so the tiles describe the whole
-    // library rather than whatever filter a tab happens to have applied.
-    const [submissionsResult, materialsResult] = await Promise.all([
-      supabase.from('material_submissions').select('status'),
-      supabase.from('materials').select('is_approved, download_count'),
+    // Read the whole library once and aggregate here so the tiles describe
+    // the whole library rather than whatever filter a tab happens to have
+    // applied. Supabase caps a single request at 1000 rows, so page through
+    // explicitly — otherwise totals silently truncate on large libraries.
+    const PAGE_SIZE = 1000;
+    const MAX_PAGES = 100;
+
+    const fetchAll = async <T,>(table: string, columns: string): Promise<T[]> => {
+      const rows: T[] = [];
+      for (let page = 0; page < MAX_PAGES; page++) {
+        const from = page * PAGE_SIZE;
+        const { data, error } = await supabase
+          .from(table)
+          .select(columns)
+          .range(from, from + PAGE_SIZE - 1);
+        if (error) throw error;
+        const batch = (data ?? []) as T[];
+        rows.push(...batch);
+        if (batch.length < PAGE_SIZE) return rows;
+      }
+      throw new Error(
+        `${table} exceeds ${MAX_PAGES * PAGE_SIZE} rows; refusing to aggregate partial stats`,
+      );
+    };
+
+    const [submissions, materials] = await Promise.all([
+      fetchAll<{ status: string }>("material_submissions", "status"),
+      fetchAll<{ is_approved: boolean; download_count: number | null }>(
+        "materials",
+        "is_approved, download_count",
+      ),
     ]);
-
-    if (submissionsResult.error) throw submissionsResult.error;
-    if (materialsResult.error) throw materialsResult.error;
-
-    const submissions = submissionsResult.data ?? [];
-    const materials = materialsResult.data ?? [];
 
     const countBy = <T,>(rows: T[], key: keyof T, value: unknown) =>
       rows.filter((row) => row[key] === value).length;

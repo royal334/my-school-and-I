@@ -104,7 +104,8 @@ export function SellWizard({ sellerId, slots, initialDraft, editId }: SellWizard
 
       if (editId) {
         toast.success('Listing updated.');
-        router.push(`${MARKETPLACE_BASE_PATH}/${editId}`);
+        setCreatedListingId(editId);
+        setStep(2);
         return;
       }
 

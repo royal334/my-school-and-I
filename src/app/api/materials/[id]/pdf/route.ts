@@ -1,6 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import {
+  incrementMaterialCount,
+  logMaterialAccess,
+} from "@/utils/supabase/queries";
 
 export async function GET(
   request: Request,
@@ -31,6 +35,23 @@ export async function GET(
       { error: "Could not generate a download URL for this file" },
       { status: 500 },
     );
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    try {
+      await incrementMaterialCount(id, "view_count");
+      await logMaterialAccess(id, user.id, "view", {
+        ipAddress:
+          request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? null,
+        userAgent: request.headers.get("user-agent"),
+      });
+    } catch (countError) {
+      console.error("Failed to record material view:", countError);
+    }
   }
 
   return NextResponse.json({ url: urlData.signedUrl });

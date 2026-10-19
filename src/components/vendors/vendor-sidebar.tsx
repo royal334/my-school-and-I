@@ -35,11 +35,13 @@ import {
   LogOut,
   MessageSquare,
   Settings,
+  Store,
 } from "lucide-react";
 import { CampusMeLogo } from "@/components/brand/logo";
 
 const vendorNavigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Marketplace", href: "/dashboard/market", icon: Store },
   { name: "Analytics", href: "/dashboard/vendors/analytics", icon: BarChart3 },
   { name: "Subscription", href: "/dashboard/subscription", icon: Crown },
   { name: "Notifications", href: "/dashboard/notifications", icon: MessageSquare },
@@ -49,6 +51,11 @@ const vendorNavigation = [
 function isNavActive(pathname: string, href: string): boolean {
   if (href === "/dashboard") {
     return pathname === "/dashboard";
+  }
+  if (href === "/dashboard/market") {
+    return ["/dashboard/market", "/dashboard/marketplace"].some(
+      (base) => pathname === base || pathname.startsWith(`${base}/`),
+    );
   }
   return pathname === href || pathname.startsWith(`${href}/`);
 }

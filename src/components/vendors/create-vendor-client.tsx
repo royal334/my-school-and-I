@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Lock } from 'lucide-react';
 import type { VendorCategory } from './category-types';
 import type { VendorListing } from './vendor-form';
+import { ROUTES } from '@/utils/constants/constants';
 
 interface CreateVendorClientProps {
   categories: VendorCategory[];
@@ -19,7 +20,7 @@ export default function CreateVendorClient({ categories }: CreateVendorClientPro
 
   const handleVendorCreated = (newVendor: VendorListing) => {
     setVendor(newVendor);
-    setActiveTab('media');
+    window.location.href = ROUTES.VENDORS;
   };
 
   return (

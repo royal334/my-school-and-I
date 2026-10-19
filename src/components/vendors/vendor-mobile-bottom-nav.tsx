@@ -8,11 +8,13 @@ import {
   LayoutDashboard,
   Settings,
   ShieldCheck,
+  Store,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const vendorNavItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Home" },
+  { href: "/dashboard/market", icon: Store, label: "Market" },
   { href: "/dashboard/vendors/analytics", icon: BarChart3, label: "Analytics" },
   { href: "/dashboard/subscription", icon: Crown, label: "Plan" },
   { href: "/dashboard/settings", icon: Settings, label: "Settings" },
@@ -35,15 +37,21 @@ export function VendorMobileBottomNav({
     ? [
         vendorNavItems[0],
         vendorNavItems[1],
-        verificationNavItem,
         vendorNavItems[2],
+        verificationNavItem,
         vendorNavItems[3],
+        vendorNavItems[4],
       ]
     : vendorNavItems;
 
   const isActive = (href: string) => {
     if (href === "/dashboard") {
       return pathname === "/dashboard" || pathname === "/dashboard/";
+    }
+    if (href === "/dashboard/market") {
+      return ["/dashboard/market", "/dashboard/marketplace"].some(
+        (base) => pathname === base || pathname.startsWith(`${base}/`),
+      );
     }
     return pathname === href || pathname.startsWith(`${href}/`);
   };

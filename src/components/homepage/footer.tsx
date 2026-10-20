@@ -18,6 +18,7 @@ const SUPPORT_LINKS = [
   { label: "FAQs", href: "#faq" },
   { label: "Terms of service", href: "/terms" },
   { label: "Privacy policy", href: "/privacy" },
+  { label: "Agent agreement", href: "/agent-agreement" },
 ];
 
 // const SOCIAL_ICONS = [

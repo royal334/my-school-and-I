@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Campus&Me
+
+Campus&Me is a campus platform for engineering students built with Next.js 16, TypeScript, Tailwind CSS v4, and Supabase. It brings together study materials, a student marketplace, vendor listings, accommodation, CGPA tracking, and announcements in one place.
+
+## Features
+
+- **Materials Library** — Browse, upload, and download course materials with course/level/semester filters. Approved materials are available to users; premium content is gated behind an active subscription. Downloads and views are tracked.
+- **Marketplace** — Buy and sell items with listings, images, boosts, saves, and seller dashboards. Supports student and vendor sellers with slot limits.
+- **Vendors** — Vendor directory with profiles, categories, reviews, analytics, subscriptions/tiers, and verification. Vendors can manage listings and track performance.
+- **Accommodation** — Browse properties/units, submit leads/viewings, and manage agent submissions.
+- **CGPA Tracker** — Add courses/semesters and calculate GPA per semester.
+- **Announcements** — Role-scoped announcements (students/faculties/departments/societies) with read tracking.
+- **Auth & Roles** — Email/password auth via Supabase with profile data, role-based access (including admin roles stored in `admin_roles`), and subscription status.
+- **Admin Panel** — Manage materials (submissions/library/stats), marketplace (listings/reports), vendors, accommodation, agents, and more.
+
+## Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, React 19)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), [Radix UI](https://www.radix-ui.com/)
+- **Backend/DB/Auth/Storage**: [Supabase](https://supabase.com/) (Postgres, Auth, Storage)
+- **Forms/Validation**: [react-hook-form](https://react-hook-form.com/), [zod](https://zod.dev/)
+- **Analytics**: [PostHog](https://posthog.com/), [Vercel Analytics](https://vercel.com/analytics)
+- **Monitoring**: [Sentry](https://sentry.io/)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18+ (recommended 20+)
+- npm (or pnpm/yarn/bun)
+- A Supabase project with the required schema and storage buckets
+
+### Environment Variables
+
+Create a `.env.local` (or `.env`) file in the project root with:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+NEXT_PUBLIC_POSTHOG_KEY=your_posthog_key  # optional
+NEXT_PUBLIC_POSTHOG_HOST=your_posthog_host # optional
+SENTRY_DSN=your_sentry_dsn                # optional
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+See `AGENTS.md` for database schema notes (roles via `admin_roles`, RLS/client usage).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Install & Run
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+### Build & Start
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Lint
 
-## Deploy on Vercel
+```bash
+npm run lint
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/           # Next.js App Router (routes, API handlers)
+├── components/    # UI and feature components (shadcn/ui + custom)
+├── hooks/         # Custom React hooks
+├── lib/           # Shared utilities
+└── utils/         # Supabase clients, queries, helpers, constants
+```
+
+## License
+
+Private project.

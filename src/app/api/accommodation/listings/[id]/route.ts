@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { withAccommodationMediaUrls } from '@/utils/lib/accommodation-media';
 
-const SERVICE_FEE_MULTIPLIER = 1.2;
+const SERVICE_FEE_MULTIPLIER = 1.15;
 
 export async function GET(
   request: Request,

@@ -95,10 +95,28 @@ export function LegalDocument({ title, summary, updatedAt, sections }: LegalDocu
                   {section.title}
                 </h2>
                 <div className="mt-4 space-y-4 text-[15px] leading-7 text-muted-foreground">
-                  {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                  {section.paragraphs.map((paragraph, pi) => (
+                    <p key={`${section.id}-${pi}`}>
+                      {paragraph.split(/(\b[^:\n]+:)/g).map((part, i) => {
+                        if (i % 2 === 1 && part.match(/\b[^:\n]+:$/)) {
+                          return <span key={i} className="font-semibold">{part}</span>;
+                        }
+                        return part;
+                      })}
+                    </p>
+                  ))}
                   {section.bullets && (
                     <ul className="list-disc space-y-2 pl-5 marker:text-primary-500">
-                      {section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}
+                      {section.bullets.map((bullet, bi) => (
+                        <li key={`${section.id}-b-${bi}`}>
+                          {bullet.split(/(\b[^:\n]+:)/g).map((part, i) => {
+                            if (i % 2 === 1 && part.match(/\b[^:\n]+:$/)) {
+                              return <span key={i} className="font-semibold">{part}</span>;
+                            }
+                            return part;
+                          })}
+                        </li>
+                      ))}
                     </ul>
                   )}
                 </div>

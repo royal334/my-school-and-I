@@ -102,10 +102,10 @@ export const COMMISSION_FILTERS: Array<{ key: string; label: string }> = [
 ];
 
 /** The platform's own take of the landlord rent, shown in the breakdown. */
-export const PLATFORM_FEE_RATE = 10;
+export const PLATFORM_FEE_RATE = 5;
 
 /** Campus&Me's in-house agent take, shown in the breakdown. */
 export const PLATFORM_AGENT_RATE = 5;
 
 /** Markup added on top of the landlord rent before the student pays. */
-export const MARKUP_RATE = 20;
+export const MARKUP_RATE = 15;

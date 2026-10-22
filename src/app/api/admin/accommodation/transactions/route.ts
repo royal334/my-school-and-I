@@ -1,6 +1,6 @@
 // app/api/admin/accommodation/transactions/route.ts
 // REPLACES existing admin-accommodation-transactions-route.ts
-// Added: 20% markup calculation, referrer_type detection (agent vs student),
+// Added: 15% markup calculation, referrer_type detection (agent vs student),
 // commission splitting, agent_commission_records creation
 
 import { createClient } from '@/utils/supabase/server';
@@ -214,7 +214,7 @@ export async function POST(request: Request) {
               unit_id,
               agent_id: agentRecord.id,
               landlord_rent_minor: transactionLandlordRentMinor,
-              markup_rate_bps: 2000,
+              markup_rate_bps: 1500,
               markup_amount_minor: transactionMarkupMinor,
               student_pays_minor: transactionStudentPaysMinor,
               referrer_rate_bps: 500,
@@ -410,7 +410,7 @@ export async function POST(request: Request) {
       agent_commission: agentCommission,
       commission_summary: {
         landlord_rent: formatNaira(landlordRentMinor),
-        markup_20_percent: formatNaira(markup_amount_minor),
+        markup_15_percent: formatNaira(markup_amount_minor),
         student_pays: formatNaira(student_pays_minor),
         platform_keeps: formatNaira(platform_commission_minor),
         referrer_commission: formatNaira(referrer_commission_minor),

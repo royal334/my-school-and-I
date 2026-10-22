@@ -85,7 +85,7 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="your.email@university.edu"
+                  placeholder="your.email@university.edu/youremail@gmail.com"
                   autoComplete="email"
                   {...register("email", {
                     required: "Email is required",

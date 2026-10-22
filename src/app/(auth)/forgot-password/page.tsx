@@ -133,7 +133,7 @@ export default function ForgotPasswordPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="your.email@university.edu"
+                placeholder="your.email@university.edu/youremail@gmail.com"
                 {...register("email")}
                 className={errors.email ? "border-destructive" : ""}
                 autoFocus

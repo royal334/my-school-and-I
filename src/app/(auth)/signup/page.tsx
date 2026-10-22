@@ -428,7 +428,7 @@ defaultValues: {
               <Input
                 id="email"
                 type="email"
-                placeholder="your.email@university.edu"
+                placeholder="your.email@university.edu/youremail@gmail.com"
                 {...register("email")}
               />
               {errors.email && (

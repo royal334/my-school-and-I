@@ -5,7 +5,12 @@ export const OPERATING_AREAS = [
   'Agu-Awka',
   'Amawbia',
   'Okpuno',
-  'Nawfia',
+  'Amansea',
+  'Tempsite',
+  'Regina',
+  'Nibo',
+  'Eke awka',
+  'Aroma',
   'Mgbakwu',
   'Other',
 ];
